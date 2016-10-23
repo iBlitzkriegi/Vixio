@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions;
+package me.iblitzkriegi.vixio.expressions.user;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;

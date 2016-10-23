@@ -10,7 +10,7 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/15/2016.
  */
-public class EffReply extends Effect{
+public class EffSendToChannel extends Effect{
     private Expression<String> message;
     private Expression<String> channel;
     @Override

@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.events;
 
 import net.dv8tion.jda.entities.Channel;
+import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -13,18 +14,28 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
     private boolean cancel = false;
     private User sAuthor;
     private Channel sChannel;
-    private String sMsg;
+    private Message sMsg;
+    private User sMentioned;
 
-    public EvntGuildMsgReceived(User author, Channel channel, String msg) {
+    public EvntGuildMsgReceived(User author, Channel channel, Message msg, User mentioned) {
         cancel = false;
         sAuthor = author;
         sChannel = channel;
         sMsg = msg;
+        sMentioned = mentioned;
     }
 
     public User getEvtAuthor() {
         return sAuthor;
     }
+    public User getMentioned() {
+        if(sMentioned==null){
+            return null;
+        }else {
+            return sMentioned;
+        }
+    }
+    public String getEvtMessageAsString(){return sMsg.getContent();}
 
     public String getEvtChannel() {
         return sChannel.getId();
@@ -32,7 +43,7 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
     public String getEvntChannelId(){return sChannel.getId();}
 
     public String getEvtMsg() {
-        return sMsg;
+        return sMsg.getId();
     }
 
     public boolean isCancelled() {
@@ -41,6 +52,9 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
 
     public void setCancelled(boolean c) {
         cancel = c;
+    }
+    public Message getMsgObject(){
+        return sMsg;
     }
 
     @Override

@@ -28,8 +28,8 @@ public class CondBeginsWith extends Condition {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        string1 = (Expression<String>) expr[1];
-        string2 = (Expression<String>) expr[0];
+        string1 = (Expression<String>) expr[0];
+        string2 = (Expression<String>) expr[1];
         return true;
     }
 }

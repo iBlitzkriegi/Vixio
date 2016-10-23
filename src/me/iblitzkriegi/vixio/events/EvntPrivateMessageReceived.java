@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.events;
 
+import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.PrivateChannel;
 import net.dv8tion.jda.entities.User;
 import org.bukkit.event.Cancellable;
@@ -13,8 +14,8 @@ public class EvntPrivateMessageReceived extends org.bukkit.event.Event implement
     private boolean cancel = false;
     private User Author;
     private PrivateChannel Channel;
-    private String message;
-    public EvntPrivateMessageReceived(User author, PrivateChannel channel, String msg){
+    private Message message;
+    public EvntPrivateMessageReceived(User author, PrivateChannel channel, Message msg){
         cancel = false;
         Author = author;
         Channel = channel;
@@ -26,7 +27,8 @@ public class EvntPrivateMessageReceived extends org.bukkit.event.Event implement
     public String getAsMention(){
         return Author.getAsMention();
     }
-    public String getEvntMsg(){return message;}
+    public String getEvntMsg(){return message.getId();}
+    public String getEvntMsgAsString(){return message.getContent();}
     @Override
     public boolean isCancelled() {
         return false;

@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions;
+package me.iblitzkriegi.vixio.expressions.user;
 
 
 import ch.njol.skript.ScriptLoader;
@@ -7,6 +7,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberJoin;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.events.EvntGuildMsgReceived;
 import me.iblitzkriegi.vixio.events.EvntPrivateMessageReceived;
 import org.bukkit.event.Event;
@@ -14,7 +16,7 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/15/2016.
  */
-public class ExprAuthorAsId extends SimpleExpression<String> {
+public class ExprUser extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         return new String[]{getAuthorAsId(e)};
@@ -41,8 +43,12 @@ public class ExprAuthorAsId extends SimpleExpression<String> {
             return true;
         }else if(ScriptLoader.isCurrentEvent(EvntPrivateMessageReceived.class)){
             return true;
+        }else if(ScriptLoader.isCurrentEvent(EvntGuildMemberJoin.class)){
+            return true;
+        }else if(ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)){
+            return true;
         }
-        Skript.warning("Cannot use 'AuthorAsId' outside of discord events!");
+        Skript.warning("Cannot use 'event-user' outside of discord events!");
         return false;
     }
     private static String getAuthorAsId(Event e) {
@@ -52,6 +58,10 @@ public class ExprAuthorAsId extends SimpleExpression<String> {
             return ((EvntGuildMsgReceived) e).getEvtAuthor().getId();
         }else if(e instanceof EvntPrivateMessageReceived){
             return ((EvntPrivateMessageReceived)e).getEvntAuthor().getId();
+        }else if(e instanceof EvntGuildMemberLeave){
+            return ((EvntGuildMemberLeave)e).getEvntUser().getId();
+        }else if(e instanceof EvntGuildMemberJoin){
+            return ((EvntGuildMemberJoin)e).getEvntUser();
         }
         return null;
     }

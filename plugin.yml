@@ -1,5 +1,5 @@
 name: Vixio
 author: iBlitzkriegi
 main: me.iblitzkriegi.vixio.Vixio
-version: 1.0.1
+version: 1.0.4
 depend: [Skript]

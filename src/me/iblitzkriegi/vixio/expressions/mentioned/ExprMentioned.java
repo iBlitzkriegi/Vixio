@@ -1,23 +1,20 @@
-package me.iblitzkriegi.vixio.expressions;
+package me.iblitzkriegi.vixio.expressions.mentioned;
 
-
-import ch.njol.skript.ScriptLoader;
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.events.EvntGuildMsgReceived;
-import me.iblitzkriegi.vixio.events.EvntPrivateMessageReceived;
 import org.bukkit.event.Event;
 
 /**
- * Created by Blitz on 10/15/2016.
+ * Created by Blitz on 10/21/2016.
  */
-public class ExprChannel extends SimpleExpression<String> {
+public class ExprMentioned extends SimpleExpression<String>{
     @Override
     protected String[] get(Event e) {
-        return new String[]{getChannel(e)};
+        return new String[]{getMentioned(e)};
     }
 
     @Override
@@ -37,23 +34,14 @@ public class ExprChannel extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (ScriptLoader.isCurrentEvent(EvntGuildMsgReceived.class)) {
-            return true;
-        }else if (ScriptLoader.isCurrentEvent(EvntPrivateMessageReceived.class)) {
-            return true;
-        }
-        Skript.warning("Cannot use 'Channel' outside of discord events!");
-        return false;
+        return true;
     }
-    private static String getChannel(Event e) {
+    private static String getMentioned(Event e) {
         if (e == null)
             return null;
         if (e instanceof EvntGuildMsgReceived) {
-            return ((EvntGuildMsgReceived) e).getEvtChannel();
-        }else if(e instanceof EvntPrivateMessageReceived){
-            return ((EvntPrivateMessageReceived)e).getEvntChannel();
+            return ((EvntGuildMsgReceived) e).getMentioned().getId();
         }
         return null;
     }
-
 }
