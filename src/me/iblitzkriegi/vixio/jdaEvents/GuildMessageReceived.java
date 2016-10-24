@@ -18,11 +18,11 @@ public class GuildMessageReceived extends ListenerAdapter {
             TextChannel channel = e.getChannel();
             if (e.getMessage().getMentionedUsers().size() > 0) {
                 User mentioned = e.getMessage().getMentionedUsers().get(0);
-                EvntGuildMsgReceived efc = new EvntGuildMsgReceived(author, channel, e.getMessage(), mentioned);
+                EvntGuildMsgReceived efc = new EvntGuildMsgReceived(author, channel, e.getMessage(), mentioned, e.getGuild());
                 Bukkit.getServer().getPluginManager().callEvent(efc);
                 return;
             } else {
-                EvntGuildMsgReceived efc = new EvntGuildMsgReceived(author, channel, e.getMessage(), null);
+                EvntGuildMsgReceived efc = new EvntGuildMsgReceived(author, channel, e.getMessage(), null, e.getGuild());
                 Bukkit.getServer().getPluginManager().callEvent(efc);
             }
         }

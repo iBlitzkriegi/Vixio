@@ -17,8 +17,6 @@ public class GuildMemberLeave extends ListenerAdapter {
     public static HashMap<String, Guild> heWhoLeftsGuild = new HashMap<>();
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent e){
-        heWhoLeft.put("Username", e.getUser().getUsername());
-        heWhoLeftsGuild.put("Guild", e.getGuild());
         User user = e.getUser();
         Guild guild = e.getGuild();
         EvntGuildMemberLeave efc = new EvntGuildMemberLeave(user, guild);

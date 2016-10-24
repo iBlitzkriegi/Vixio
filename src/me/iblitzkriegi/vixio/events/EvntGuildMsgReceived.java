@@ -1,8 +1,6 @@
 package me.iblitzkriegi.vixio.events;
 
-import net.dv8tion.jda.entities.Channel;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.entities.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
@@ -16,13 +14,15 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
     private Channel sChannel;
     private Message sMsg;
     private User sMentioned;
+    private Guild sGuild;
 
-    public EvntGuildMsgReceived(User author, Channel channel, Message msg, User mentioned) {
+    public EvntGuildMsgReceived(User author, Channel channel, Message msg, User mentioned, Guild guild) {
         cancel = false;
         sAuthor = author;
         sChannel = channel;
         sMsg = msg;
         sMentioned = mentioned;
+        sGuild = guild;
     }
 
     public User getEvtAuthor() {
@@ -36,6 +36,7 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
         }
     }
     public String getEvtMessageAsString(){return sMsg.getContent();}
+    public Guild getEvntGuild(){return sGuild;}
 
     public String getEvtChannel() {
         return sChannel.getId();
@@ -56,10 +57,12 @@ public class EvntGuildMsgReceived extends org.bukkit.event.Event implements Canc
     public Message getMsgObject(){
         return sMsg;
     }
-
     @Override
     public HandlerList getHandlers() {
         return hls;
+    }
+    public Channel getEvntChannelOb(){
+        return sChannel;
     }
 
     public static HandlerList getHandlerList() {

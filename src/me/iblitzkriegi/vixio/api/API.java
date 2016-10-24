@@ -1,6 +1,6 @@
 package me.iblitzkriegi.vixio.api;
 
-import me.iblitzkriegi.vixio.effects.EffLogin;
+import me.iblitzkriegi.vixio.effects.effGenerals.EffLogin;
 import net.dv8tion.jda.JDA;
 
 /**

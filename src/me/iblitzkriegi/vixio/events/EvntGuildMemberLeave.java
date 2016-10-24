@@ -29,4 +29,7 @@ public class EvntGuildMemberLeave extends Event{
     public String getEvntUserMention(){
         return sUser.getAsMention();
     }
+    public Guild getEvntGuild(){
+        return sGuild;
+    }
 }
