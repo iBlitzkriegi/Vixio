@@ -1,39 +1,44 @@
 package me.iblitzkriegi.vixio.events;
 
+import me.iblitzkriegi.vixio.registration.EvntAnnotation;
+import me.iblitzkriegi.vixio.util.MultiBotGuildCompare;
+import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created by Blitz on 10/22/2016.
+ * Created by Blitz on 11/4/2016.
  */
-public class EvntGuildMemberJoin extends Event{
+@EvntAnnotation.Event(name = "GuildMemberJoin", type = MultiBotGuildCompare.class, syntax = "[discord] guild member join seen by %string%")
+public class EvntGuildMemberJoin extends Event {
     private static final HandlerList hls = new HandlerList();
-    private Guild sGuild;
-    private User sUser;
     @Override
     public HandlerList getHandlers() {
         return hls;
     }
-    public static HandlerList getHandlerList(){
+    public static HandlerList getHandlerList() {
         return hls;
     }
-    public EvntGuildMemberJoin(User user, Guild guild){
-        sGuild = guild;
-        sUser = user;
+    private User vUser;
+    private Guild vGuild;
+    private JDA vJDA;
+    public EvntGuildMemberJoin(User user, Guild guild, JDA jda){
+        vUser = user;
+        vGuild = guild;
+        vJDA = jda;
     }
-    public String getEvntUser(){
-        return sUser.getId();
+    public JDA getEvntJDA(){
+        return vJDA;
     }
-    public User getEvntUserObj(){
-        return sUser;
+    public User getEvntUser(){
+        return vUser;
     }
-    public String getEvntUserMention(){
-        return sUser.getAsMention();
+    public User getEvntBot(){
+        return vJDA.getSelfInfo();
     }
     public Guild getEvntGuild(){
-        return sGuild;
+        return vGuild;
     }
-
 }

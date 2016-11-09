@@ -3,16 +3,16 @@ package me.iblitzkriegi.vixio.events;
 import me.iblitzkriegi.vixio.registration.EvntAnnotation;
 import me.iblitzkriegi.vixio.util.MultiBotGuildCompare;
 import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.OnlineStatus;
 import net.dv8tion.jda.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Created by Blitz on 11/4/2016.
+ * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "GuildMemberLeave", type = MultiBotGuildCompare.class, syntax = "[discord]guild member leave seen by %string%")
-public class EvntGuildMemberLeave extends Event {
+@EvntAnnotation.Event(name = "UserOnlineStatusUpdate", type = MultiBotGuildCompare.class, syntax = "[discord] [user] status change seen by %string%")
+public class EvntUserStatusChange extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override
     public HandlerList getHandlers() {
@@ -21,12 +21,14 @@ public class EvntGuildMemberLeave extends Event {
     public static HandlerList getHandlerList() {
         return hls;
     }
+    private OnlineStatus vOnlineStatus;
+    private OnlineStatus vOldOnlineStatus;
     private User vUser;
-    private Guild vGuild;
     private JDA vJDA;
-    public EvntGuildMemberLeave(User user, Guild guild, JDA jda){
-        vUser = user;
-        vGuild = guild;
+    public EvntUserStatusChange(User eventuser, OnlineStatus newstatus, OnlineStatus oldstatus, JDA jda){
+        vUser = eventuser;
+        vOnlineStatus = newstatus;
+        vOldOnlineStatus = oldstatus;
         vJDA = jda;
     }
     public JDA getEvntJDA(){
@@ -35,10 +37,11 @@ public class EvntGuildMemberLeave extends Event {
     public User getEvntUser(){
         return vUser;
     }
-    public User getEvntBot(){
-        return vJDA.getSelfInfo();
+    public OnlineStatus getEvntOldStatus(){
+        return vOldOnlineStatus;
     }
-    public Guild getEvntGuild(){
-        return vGuild;
+    public OnlineStatus getEvntNewStatus(){
+        return vOnlineStatus;
     }
+
 }

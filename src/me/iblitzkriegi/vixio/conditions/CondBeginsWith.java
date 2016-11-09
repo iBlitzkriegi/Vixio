@@ -4,11 +4,13 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.registration.CondAnnotation;
 import org.bukkit.event.Event;
 
 /**
- * Created by Blitz on 10/16/2016.
+ * Created by Blitz on 10/30/2016.
  */
+@CondAnnotation.Condition(syntax = "%string% (begins|starts) with %string%")
 public class CondBeginsWith extends Condition {
     private Expression<String> string1;
     private Expression<String> string2;
