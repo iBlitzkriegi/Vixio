@@ -50,7 +50,7 @@ public class ExprStatus extends SimpleExpression<String>{
         }
         if(e instanceof EvntUserStatusChange){
             if(((EvntUserStatusChange)e).getEvntNewStatus().name().equalsIgnoreCase("UNKNOWN")){
-                return "Do Not Distrub";
+                return "Do Not Disturb";
             }else{
                 return ((EvntUserStatusChange)e).getEvntNewStatus().name();
             }
