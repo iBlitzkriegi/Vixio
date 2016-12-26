@@ -91,3 +91,8 @@ youtube-dl
 *.exe
 pfp.jpg
 *.xml
+*.dat
+testserver/plugins/Skript/features.sk
+*.json
+testserver/logs/2016-12-08-1.log.gz
+*.gz

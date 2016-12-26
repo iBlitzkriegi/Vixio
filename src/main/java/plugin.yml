@@ -1,0 +1,5 @@
+name: @name@
+main: @mainClass@
+version: 1.0.7
+author: Blitz
+description: Vixio, The Discord addon created to meet all of your Discord needs.
