@@ -45,6 +45,7 @@ public class ExprBot extends SimpleExpression<User> {
                 | ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)
                 | ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)
                 | ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)
+                | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
                 ){
             return true;
         }
@@ -65,6 +66,10 @@ public class ExprBot extends SimpleExpression<User> {
             return ((EvntGuildMemberLeave) e).getEvntJDA().getSelfUser();
         }else if (e instanceof EvntUserStatusChange) {
             return ((EvntUserStatusChange) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntUserJoinVc) {
+            return ((EvntUserJoinVc) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntUserLeaveVc) {
+            return ((EvntUserLeaveVc) e).getEvntJDA().getSelfUser();
         }
         return null;
     }

@@ -18,7 +18,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "voice channel of %string%")
+@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "voice channel of [user] %string%")
 public class ExprVoiceChannelOf extends SimpleExpression<String> {
     Expression<String> vID;
     @Override

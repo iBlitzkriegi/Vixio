@@ -102,7 +102,7 @@ public class TypesAndConverter {
 
                     @Override
                     public String toString(TextChannel msg, int flags) {
-                        return null;
+                        return msg.getId();
                     }
 
                     @Override

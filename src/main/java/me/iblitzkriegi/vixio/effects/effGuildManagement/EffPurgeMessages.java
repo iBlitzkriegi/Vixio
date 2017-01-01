@@ -21,7 +21,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
  */
 @EffectAnnotation.Effect(syntax = "(purge|clear) %number% message[']s in [channel] %string% with %string%")
 public class EffPurgeMessages extends Effect {
-    private Expression<Integer> vPurge;
+    private Expression<Number> vPurge;
     private Expression<String> vBot;
     private Expression<String> vChannel;
     @Override
@@ -30,7 +30,7 @@ public class EffPurgeMessages extends Effect {
             JDA jda = bots.get(vBot.getSingle(e));
             TextChannel channel = jda.getTextChannelById(vChannel.getSingle(e));
             MessageHistory history = channel .getHistory();
-            List<Message> messages = (List<Message>) history.retrievePast(vPurge.getSingle(e));
+            List<Message> messages = history.retrievePast(Integer.parseInt(String.valueOf(vPurge.getSingle(e)))).complete();
             for (Message s : messages) {
                 s.deleteMessage().queue();
             }
@@ -47,9 +47,9 @@ public class EffPurgeMessages extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vPurge = (Expression<Integer>) expr[0];
-        vBot = (Expression<String>) expr[2];
+        vPurge = (Expression<Number>) expr[0];
         vChannel = (Expression<String>) expr[1];
+        vBot = (Expression<String>) expr[2];
         return true;
     }
 }

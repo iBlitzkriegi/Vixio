@@ -39,7 +39,13 @@ public class ExprUser extends SimpleExpression<User>{
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class) | ScriptLoader.isCurrentEvent(EvntGuildMemberJoin.class)| ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)|ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class) | ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)){
+        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMemberJoin.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)
+                |ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)
+                | ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)
+                | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
+                ){
             return true;
         }
         Skript.warning("Cannot use 'event-user' outside of discord events!");
@@ -58,6 +64,10 @@ public class ExprUser extends SimpleExpression<User>{
             return ((EvntGuildMemberLeave) e).getEvntUser();
         }else if (e instanceof EvntUserStatusChange) {
             return ((EvntUserStatusChange) e).getEvntUser();
+        }else if (e instanceof EvntUserJoinVc) {
+            return ((EvntUserJoinVc) e).getEvntUser();
+        }else if (e instanceof EvntUserLeaveVc) {
+            return ((EvntUserLeaveVc) e).getEvntUser();
         }
         return null;
     }

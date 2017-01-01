@@ -7,13 +7,14 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
  * Created by Blitz on 10/30/2016.
  */
 @EvntAnnotation.Event(name = "GuildMessageReceived", type = MultiBotGuildCompare.class, syntax = "[discord ]guild message receive[d] seen by %string%")
-public class EvntGuildMessageReceive extends org.bukkit.event.Event{
+public class EvntGuildMessageReceive extends Event{
     private static final HandlerList hls = new HandlerList();
     private boolean cancel = false;
     private User sAuthor;

@@ -9,6 +9,8 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
 import me.iblitzkriegi.vixio.events.EvntPrivateMessageReceive;
+import me.iblitzkriegi.vixio.events.EvntUserJoinVc;
+import me.iblitzkriegi.vixio.events.EvntUserLeaveVc;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.entities.Channel;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -41,7 +43,9 @@ public class ExprChannel extends SimpleExpression<Channel> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)){
+        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)
+                | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
+                ){
             return true;
         }
         Skript.warning("You may not use Event-Channel outside of Discord events.");
@@ -55,6 +59,10 @@ public class ExprChannel extends SimpleExpression<Channel> {
             return ((EvntGuildMessageReceive) e).getEvntChannel();
         }else if(e instanceof EvntPrivateMessageReceive){
             ((EvntPrivateMessageReceive)e).getEvntChannel();
+        }else if(e instanceof EvntUserJoinVc){
+            ((EvntUserJoinVc)e).getEvntChannel();
+        }else if(e instanceof EvntUserLeaveVc){
+            ((EvntUserLeaveVc)e).getEvntChannel();
         }
         return null;
     }

@@ -51,7 +51,6 @@ public class Vixio extends JavaPlugin {
         pluginFile = this.getDataFolder();
         DocsStuff.setUpSyntaxes();
         this.getLogger().info("Successfully loaded " + classes + " classes.");
-
     }
     private void startMetrics() {
         try {

@@ -40,6 +40,7 @@ import java.util.concurrent.LinkedBlockingQueue;
         }
         EvntAudioPlayerTrackEnd efc = new EvntAudioPlayerTrackEnd(player, track, endReason);
         Bukkit.getServer().getPluginManager().callEvent(efc);
+
     }
     public AudioPlayer getPlayer() {
         return player;

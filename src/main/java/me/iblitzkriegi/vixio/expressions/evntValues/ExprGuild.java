@@ -7,9 +7,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import me.iblitzkriegi.vixio.events.EvntGuildMemberJoin;
-import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
-import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
+import me.iblitzkriegi.vixio.events.*;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -42,7 +40,11 @@ public class ExprGuild extends SimpleExpression<Guild> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class) | ScriptLoader.isCurrentEvent(EvntGuildMemberJoin.class)| ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)){
+        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMemberJoin.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMemberLeave.class)
+                | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
+                ){
             return true;
         }
         Skript.warning("You may not use event-guild outside of Discord events.");
@@ -58,6 +60,10 @@ public class ExprGuild extends SimpleExpression<Guild> {
             return ((EvntGuildMemberJoin) e).getEvntGuild();
         }else if (e instanceof EvntGuildMemberLeave) {
             return ((EvntGuildMemberLeave) e).getEvntGuild();
+        }else if (e instanceof EvntUserJoinVc) {
+            return ((EvntUserJoinVc) e).getEvntGuild();
+        }else if (e instanceof EvntUserLeaveVc) {
+            return ((EvntUserLeaveVc) e).getEvntGuild();
         }
         return null;
     }

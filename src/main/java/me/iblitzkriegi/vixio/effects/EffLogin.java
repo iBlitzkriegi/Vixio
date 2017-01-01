@@ -58,6 +58,8 @@ public class EffLogin extends Effect {
                         .addListener(new GuildMemberJoin())
                         .addListener(new GuildMemberLeave())
                         .addListener(new UserUpdateStatus())
+                        .addListener(new UserJoinVc())
+                        .addListener(new UserLeaveVc())
                         .buildBlocking();
                 // Audio hashmaps \\
                 AudioPlayerManager playerManager = new DefaultAudioPlayerManager();

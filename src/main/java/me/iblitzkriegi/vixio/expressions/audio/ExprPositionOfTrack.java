@@ -39,11 +39,14 @@ public class ExprPositionOfTrack extends SimpleExpression<String> {
         vTrack = (Expression<com.sedmelluq.discord.lavaplayer.track.AudioTrack>) expr[0];
         return true;
     }
-    private static String getPosition(Event e){
+    private static String getPosition(Event e) {
         com.sedmelluq.discord.lavaplayer.track.AudioTrack track = vTrack.getSingle(e);
-        if(track.getDuration()/1000%60 < 10) {
-            return String.valueOf(track.getPosition() / 1000 / 60 + ":0" + track.getPosition() / 1000 % 60).toString();
+        if (track != null) {
+            if (track.getDuration() / 1000 % 60 < 10) {
+                return String.valueOf(track.getPosition() / 1000 / 60 + ":0" + track.getPosition() / 1000 % 60).toString();
+            }
+            return String.valueOf(track.getPosition() / 1000 / 60 + ":" + track.getPosition() / 1000 % 60).toString();
         }
-        return String.valueOf(track.getPosition() / 1000 / 60 + ":" + track.getPosition() / 1000 % 60).toString();
+        return "Null Audiotrack";
     }
 }

@@ -56,6 +56,16 @@ public class MultiBotGuildCompare extends SkriptEvent {
             if(player.equals(((EvntAudioPlayerTrackStart)e).getPlayer())){
                 return true;
             }
+        }else if(e instanceof EvntUserJoinVc) {
+            User bot = ((EvntUserJoinVc) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
+        }else if(e instanceof EvntUserLeaveVc) {
+            User bot = ((EvntUserLeaveVc) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
         }
         return false;
     }
