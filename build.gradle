@@ -80,7 +80,7 @@ dependencies {
     
     // Jars to include in that shaded jar
     compile fileTree(dir: 'libs/compile', include: '*.jar')
-    compile 'com.sedmelluq:lavaplayer:1.1.25'
+    compile 'com.sedmelluq:lavaplayer:1.1.41'
     compile 'ca.pjer:chatter-bot-api:1.4.3'
 
 
