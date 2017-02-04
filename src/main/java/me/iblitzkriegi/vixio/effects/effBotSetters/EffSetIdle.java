@@ -13,7 +13,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = " set idle state of bot %string% to %boolean%")
+@EffectAnnotation.Effect(syntax = "set idle state of bot %string% to %boolean%")
 public class EffSetIdle extends Effect{
     Expression<String> vBot;
     Expression<Boolean> vIdle;
