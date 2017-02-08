@@ -17,8 +17,8 @@ import org.bukkit.event.Event;
 public class ExprVolumeOf extends SimpleExpression<String> {
     Expression<String> vBot;
     @Override
-    protected String[] get(Event event) {
-        return new String[]{};
+    protected String[] get(Event e) {
+        return new String[]{getVolume(e)};
     }
 
     @Override

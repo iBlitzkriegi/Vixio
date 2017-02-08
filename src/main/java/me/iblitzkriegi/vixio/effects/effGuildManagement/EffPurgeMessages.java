@@ -19,7 +19,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EffectAnnotation.Effect(syntax = "(purge|clear) %number% message[']s in [channel] %string% with %string%")
+@EffectAnnotation.Effect(syntax = "(purge|clear) %number% message[']s in [channel with id] %string% with %string%")
 public class EffPurgeMessages extends Effect {
     private Expression<Number> vPurge;
     private Expression<String> vBot;

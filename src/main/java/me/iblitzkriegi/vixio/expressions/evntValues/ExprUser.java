@@ -45,6 +45,8 @@ public class ExprUser extends SimpleExpression<User>{
                 |ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)
                 | ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)
                 | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
+                | ScriptLoader.isCurrentEvent(EvntUserAvatarUpdate.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildBan.class)
                 ){
             return true;
         }
@@ -68,6 +70,10 @@ public class ExprUser extends SimpleExpression<User>{
             return ((EvntUserJoinVc) e).getEvntUser();
         }else if (e instanceof EvntUserLeaveVc) {
             return ((EvntUserLeaveVc) e).getEvntUser();
+        }else if (e instanceof EvntUserAvatarUpdate) {
+            return ((EvntUserAvatarUpdate) e).getEvntUser();
+        }else if (e instanceof EvntGuildBan) {
+            return ((EvntGuildBan) e).getEvntUser();
         }
         return null;
     }

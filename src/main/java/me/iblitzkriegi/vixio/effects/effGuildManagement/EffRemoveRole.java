@@ -19,7 +19,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] (remove|take) role %string% from user %string% in guild %string% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] (remove|take) role [named] %string% from user [with id] %string% in guild [with id] %string% with [bot] %string%")
 public class EffRemoveRole extends Effect {
     Expression<String> vRole;
     Expression<String> vUser;

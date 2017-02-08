@@ -23,7 +23,6 @@ public class EffLogout extends Effect{
             JDA jda = bots.get(vBot.getSingle(e));
             jda.shutdown();
             bots.put(vBot.getSingle(e), null);
-//            musicPlayerHashMap.put(vBot.getSingle(e),null);
             users.put(vBot.getSingle(e), null);
             botruntime.put(vBot.getSingle(e), null);
         }else{

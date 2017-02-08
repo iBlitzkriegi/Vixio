@@ -19,7 +19,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] give role %string% to user %string% in guild %string% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] give role [named] %string% to user [named] %string% in guild [with id] %string% with [bot] %string%")
 public class EffGiveRole extends Effect {
     Expression<String> vRole;
     Expression<String> vUser;
@@ -30,7 +30,14 @@ public class EffGiveRole extends Effect {
         try {
             JDA jda = bots.get(vBot.getSingle(e));
             Guild guild = jda.getGuildById(vGuild.getSingle(e));
-            User user = jda.getUserById(vUser.getSingle(e));
+            User user = null;
+            for(Member member : guild.getMembers()){
+                if(member.getUser().getId().equalsIgnoreCase(vUser.getSingle(e))){
+                    user = member.getUser();
+                }else if(member.getUser().getName().equalsIgnoreCase(vUser.getSingle(e))){
+                    user = member.getUser();
+                }
+            }
 
             for(Role r : guild.getRoles()){
                 if(r.getName().equalsIgnoreCase(vRole.getSingle(e))){

@@ -14,7 +14,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] (make|create) [discord] role [named] %string% in [guild] %string% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] (make|create) [discord] role [named] %string% in [guild with id] %string% with %string%")
 public class EffMakeRole extends Effect {
     private Expression<String> sName;
     private Expression<String> vGuild;

@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "skip current track player %string% is playing")
+@EffectAnnotation.Effect(syntax = "skip current track player [named] %string% is playing")
 public class EffSkipTrack extends Effect {
     Expression<String> vBot;
     @Override

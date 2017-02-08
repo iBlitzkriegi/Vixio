@@ -17,7 +17,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] delete message %message% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] delete message %message% with [bot] %string%")
 public class EffDeleteMessage extends Effect {
     Expression<Message> vMessage;
     Expression<String> vBot;

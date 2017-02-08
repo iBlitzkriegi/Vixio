@@ -12,6 +12,7 @@ import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.event.Event;
+import sun.font.Script;
 
 /**
  * Created by Blitz on 11/1/2016.
@@ -46,6 +47,9 @@ public class ExprBot extends SimpleExpression<User> {
                 | ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)
                 | ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)
                 | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
+                | ScriptLoader.isCurrentEvent(EvntTextChannelCreated.class)
+                | ScriptLoader.isCurrentEvent(EvntTextChannelDeleted.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildBan.class)
                 ){
             return true;
         }
@@ -70,6 +74,14 @@ public class ExprBot extends SimpleExpression<User> {
             return ((EvntUserJoinVc) e).getEvntJDA().getSelfUser();
         }else if (e instanceof EvntUserLeaveVc) {
             return ((EvntUserLeaveVc) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntTextChannelCreated) {
+            return ((EvntTextChannelCreated) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntTextChannelDeleted) {
+            return ((EvntTextChannelDeleted) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntUserAvatarUpdate) {
+            return ((EvntUserAvatarUpdate) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntGuildBan) {
+            return ((EvntGuildBan) e).getEvntJDA().getSelfUser();
         }
         return null;
     }

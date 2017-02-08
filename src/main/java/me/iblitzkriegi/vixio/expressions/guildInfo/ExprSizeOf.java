@@ -17,7 +17,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] size of [guild|server] %string%")
+@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] size of (guild|server|voicechannel) %string%")
 public class ExprSizeOf extends SimpleExpression<String> {
     private Expression<String> vID;
 
@@ -49,12 +49,11 @@ public class ExprSizeOf extends SimpleExpression<String> {
 
     private String getSize(Event e) {
         for (Map.Entry<String, JDA> u : bots.entrySet()) {
-            for (Guild vg : u.getValue().getGuilds()) {
-                if (vg.getId().equalsIgnoreCase(vID.getSingle(e))) {
-                    return String.valueOf(vg.getMembers().size());
-                }
+            if(u.getValue().getGuildById(vID.getSingle(e))!=null){
+                return String.valueOf(u.getValue().getGuildById(vID.getSingle(e)).getMembers().size());
+            }else if(u.getValue().getVoiceChannelById(vID.getSingle(e))!=null){
+                return String.valueOf(u.getValue().getVoiceChannelById(vID.getSingle(e)).getMembers().size());
             }
-
         }
         return "Could not find guild by that ID.";
     }

@@ -66,6 +66,26 @@ public class MultiBotGuildCompare extends SkriptEvent {
             if (bot.equals(user)) {
                 return true;
             }
+        }else if(e instanceof EvntTextChannelCreated) {
+            User bot = ((EvntTextChannelCreated) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
+        }else if(e instanceof EvntTextChannelDeleted) {
+            User bot = ((EvntTextChannelDeleted) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
+        }else if(e instanceof EvntUserAvatarUpdate) {
+            User bot = ((EvntUserAvatarUpdate) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
+        }else if(e instanceof EvntGuildBan) {
+            User bot = ((EvntGuildBan) e).getEvntJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
         }
         return false;
     }

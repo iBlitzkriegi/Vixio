@@ -22,7 +22,6 @@ public class EffSendUserMessage extends Effect {
     protected void execute(Event e) {
         JDA jda = bots.get(vBot.getSingle(e));
         if(jda.getUserById(vUser.getSingle(e))!=null){
-            jda.getUserById(vUser.getSingle(e)).getPrivateChannel().sendMessage(vMessage.getSingle(e)).queue();
             jda.getUserById(vUser.getSingle(e)).openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(vMessage.getSingle(e)).queue());
         }
     }

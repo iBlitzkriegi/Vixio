@@ -14,7 +14,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] (make|create) [discord] [text-]channel [named] %string% in [guild] %string% as %string%")
+@EffectAnnotation.Effect(syntax = "[discord] (make|create) [discord] [text-]channel [named] %string% in [guild with id] %string% as %string%")
 public class EffMakeChannel extends Effect {
     private Expression<String> sName;
     private Expression<String> vGuild;

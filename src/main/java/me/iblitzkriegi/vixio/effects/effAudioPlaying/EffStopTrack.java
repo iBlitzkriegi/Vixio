@@ -16,7 +16,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.audioPlayers;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "stop playing track with %string%")
+@EffectAnnotation.Effect(syntax = "stop playing track player [named] %string% is playing")
 public class EffStopTrack extends Effect {
     Expression<String> vBot;
     @Override

@@ -9,20 +9,21 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.event.Event;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Blitz on 12/26/2016.
+ * Created by Blitz on 2/7/2017.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "users of bot %string%")
-public class ExprUsersOfBot extends SimpleExpression<User> {
-    Expression<String> vBot;
+@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "members in guild [with id] %string%")
+public class ExprMembersInGuild extends SimpleExpression<Member>{
+    Expression<String> vGuild;
     @Override
-    protected User[] get(Event e) {
-        return getUsers(e).toArray(new User[0]);
+    protected Member[] get(Event e) {
+        return getMembers(e).toArray(new Member[0]);
     }
 
     @Override
@@ -31,8 +32,8 @@ public class ExprUsersOfBot extends SimpleExpression<User> {
     }
 
     @Override
-    public Class<? extends User> getReturnType() {
-        return User.class;
+    public Class<? extends Member> getReturnType() {
+        return Member.class;
     }
 
     @Override
@@ -42,15 +43,16 @@ public class ExprUsersOfBot extends SimpleExpression<User> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vBot = (Expression<String>) expressions[0];
+        vGuild = (Expression<String>) expressions[0];
         return true;
     }
-    private List<User> getUsers(Event e){
-        JDA jda = EffLogin.bots.get(vBot.getSingle(e));
-        if(jda!=null){
-            return jda.getUsers();
+    private List<Member> getMembers(Event e){
+        for(Map.Entry<String, JDA> jda : EffLogin.bots.entrySet()){
+            if(jda.getValue().getGuildById(vGuild.getSingle(e))!=null){
+                return jda.getValue().getGuildById(vGuild.getSingle(e)).getMembers();
+            }
         }
-        Skript.warning("Bot not found by that name.");
+        Skript.warning("Could not find guild with that ID!");
         return null;
     }
 }

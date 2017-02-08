@@ -1,6 +1,5 @@
-package me.iblitzkriegi.vixio.expressions.loopables;
+package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -13,16 +12,17 @@ import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by Blitz on 12/26/2016.
+ * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "users of bot %string%")
-public class ExprUsersOfBot extends SimpleExpression<User> {
-    Expression<String> vBot;
+@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "user with name %string%")
+public class ExprUserWithName extends SimpleExpression<User> {
+    Expression<String> vUser;
     @Override
     protected User[] get(Event e) {
-        return getUsers(e).toArray(new User[0]);
+        return getUser(e).toArray(new User[0]);
     }
 
     @Override
@@ -42,15 +42,15 @@ public class ExprUsersOfBot extends SimpleExpression<User> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vBot = (Expression<String>) expressions[0];
+        vUser = (Expression<String>) expressions[0];
         return true;
     }
-    private List<User> getUsers(Event e){
-        JDA jda = EffLogin.bots.get(vBot.getSingle(e));
-        if(jda!=null){
-            return jda.getUsers();
+    private List<User> getUser(Event e){
+        for(Map.Entry<String, JDA> jda : EffLogin.bots.entrySet()){
+            if(jda.getValue().getUsersByName(vUser.getSingle(e), false)!=null){
+                return jda.getValue().getUsersByName(vUser.getSingle(e), false);
+            }
         }
-        Skript.warning("Bot not found by that name.");
         return null;
     }
 }

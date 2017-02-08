@@ -15,7 +15,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] leave voice channel %string% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] leave voice channel [with id] %string% with %string%")
 public class EffLeaveVoiceChannel extends Effect {
     private Expression<String> vID;
     private Expression<String> vBot;

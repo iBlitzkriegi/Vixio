@@ -14,7 +14,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set channel %string% name to %string% with %string%")
+@EffectAnnotation.Effect(syntax = "[discord] set channel [with id] %string% name to %string% with [bot] %string%")
 public class EffSetChannelName extends Effect{
     Expression<String> vChannel;
     Expression<String> vTopic;

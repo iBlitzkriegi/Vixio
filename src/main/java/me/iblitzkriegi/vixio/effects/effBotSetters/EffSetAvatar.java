@@ -22,7 +22,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set avatar of %string% to %string%")
+@EffectAnnotation.Effect(syntax = "[discord] set avatar of [bot] %string% to %string%")
 public class EffSetAvatar extends Effect {
     Expression<String> vBot;
     Expression<String> vUrl;
