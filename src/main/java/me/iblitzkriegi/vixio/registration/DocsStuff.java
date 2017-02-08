@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class DocsStuff {
     public static void setUpSyntaxes() {
-        File file = new File(Vixio.pluginFile, "Syntaxs.txt");
+        File file = new File(Vixio.pluginFile, "Syntaxes.txt");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -34,7 +34,11 @@ public class DocsStuff {
                     }
                     BufferedWriter bw = new BufferedWriter(fw);
                     try {
+                        bw.newLine();
+                        bw.newLine();
+                        bw.newLine();
                         bw.write("-=Expressions=-");
+                        bw.newLine();
 
                     } catch (IOException b) {
                         b.printStackTrace();
@@ -106,7 +110,11 @@ public class DocsStuff {
                     }
                     BufferedWriter bw = new BufferedWriter(fw);
                     try {
+                        bw.newLine();
+                        bw.newLine();
+                        bw.newLine();
                         bw.write("-=Effects=-");
+                        bw.newLine();
 
                     } catch (IOException b) {
                         b.printStackTrace();
@@ -178,7 +186,11 @@ public class DocsStuff {
                     }
                     BufferedWriter bw = new BufferedWriter(fw);
                     try {
+                        bw.newLine();
+                        bw.newLine();
+                        bw.newLine();
                         bw.write("-=Events=-");
+                        bw.newLine();
 
                     } catch (IOException b) {
                         b.printStackTrace();
@@ -249,7 +261,11 @@ public class DocsStuff {
                     }
                     BufferedWriter bw = new BufferedWriter(fw);
                     try {
+                        bw.newLine();
+                        bw.newLine();
+                        bw.newLine();
                         bw.write("-=Conditions=-");
+                        bw.newLine();
 
                     } catch (IOException b) {
                         b.printStackTrace();
@@ -313,7 +329,7 @@ public class DocsStuff {
     }
 
     private static void finishSyntax() {
-        File file = new File(Vixio.pluginFile, "Syntaxs.txt");
+        File file = new File(Vixio.pluginFile, "Syntaxes.txt");
         try {
             FileWriter fw = null;
             try {
@@ -323,11 +339,16 @@ public class DocsStuff {
             }
             BufferedWriter bw = new BufferedWriter(fw);
             try {
+                bw.newLine();
+                bw.newLine();
+                bw.newLine();
+                bw.newLine();
                 bw.write("-=Statistics=-");
+                bw.newLine();
                 bw.newLine();
                 bw.write("Conditions: " + VixioAnnotationParser.vConditions.size());
                 bw.newLine();
-                bw.write("Events:" + VixioAnnotationParser.vEvents.size());
+                bw.write("Events: " + VixioAnnotationParser.vEvents.size());
                 bw.newLine();
                 bw.write("Expressions: " + VixioAnnotationParser.vExpressions.size());
                 bw.newLine();
