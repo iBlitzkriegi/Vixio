@@ -18,7 +18,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/6/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "nickname of [user] %string% in [guild] %string%")
+@ExprAnnotation.Expression(
+        name = "NicknameOfUser",
+        title = "Nickname of User",
+        desc = "Get the Nickname of a User in a Guild",
+        syntax = "nickname of [user] %string% in [guild] %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprNicknameOf extends SimpleExpression<String> {
     private Expression<String> vID;
     private Expression<String> vGuild;
@@ -58,13 +66,13 @@ public class ExprNicknameOf extends SimpleExpression<String> {
                 if (member.getNickname() != null) {
                     return member.getNickname();
                 } else {
-                    return "null";
+                    return "NONE";
                 }
             } else {
                 return "User specified is not in the Guild you specified.";
             }
 
         }
-        return "null";
+        return "NONE";
     }
 }

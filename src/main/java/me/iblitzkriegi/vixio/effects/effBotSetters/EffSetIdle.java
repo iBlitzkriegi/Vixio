@@ -13,7 +13,22 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "set idle state of bot %string% to %boolean%")
+@EffectAnnotation.Effect(
+        name = "SetIdle",
+        title = "Set Idle State",
+        desc = "Set the idle state of the bot. Meaning make it go into Online mode or Away mode. True is away.",
+        syntax = "set idle state of bot %string% to %boolean%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$setidle\\\":\\n" +
+                "\\t\\tif {_args::2} starts with \\\"true\\\":\\n" +
+                "\\t\\t\\tset {_rawr} to true\\n" +
+                "\\t\\telse if {_args::2} starts with \\\"false\\\":\\n" +
+                "\\t\\t\\tset {_rawr} to false\\n" +
+                "\\t\\tset idle state of bot \\\"Rawr\\\" to {_rawr}\\n" +
+                "\\t\\treply with \\\"Updated.\\\"")
 public class EffSetIdle extends Effect{
     Expression<String> vBot;
     Expression<Boolean> vIdle;

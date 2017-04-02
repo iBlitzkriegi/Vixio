@@ -12,7 +12,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/26/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "content of message %message%")
+@ExprAnnotation.Expression(
+        name = "ContentOf",
+        title = "Content of Message",
+        desc = "Get the content of a Message, can get one via message with id",
+        syntax = "content of message %message%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprContentOf extends SimpleExpression<String>{
     Expression<Message> vMessage;
     @Override

@@ -16,7 +16,20 @@ import java.util.HashMap;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "set color of embed %string% to %string%")
+@EffectAnnotation.Effect(
+        name = "SetColorOfEmbed",
+        title = "Set Color Of Embed",
+        desc = "Set the color of a Embed",
+        syntax = "set color of embed %string% to %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$update\\\":\\n" +
+                "\\t\\tmake embed \\\"Vixio110\\\"\\n" +
+                "\\t\\tset color of embed \\\"Vixio110\\\" to \\\"BLUE\\\"\\n" +
+                "\\t\\tsend embed \\\"Vixio110\\\" to channel event-channel with \\\"Rawr\\\"\\n" +
+                "\\t\\tclear embed \\\"Vixio110\\\"")
 public class EffSetColorOfEmbed extends Effect{
     Expression<String> vName;
     Expression<String> vColor;

@@ -18,7 +18,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[event-]audioplayer")
+@ExprAnnotation.Expression(
+        name = "eventaudioplayer",
+        title = "event-audioplayer",
+        desc = "Returns the Player from the TrackEnd and TrackStart events",
+        syntax = "[event-]audioplayer",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprAudioPlayer extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
@@ -46,20 +54,14 @@ public class ExprAudioPlayer extends SimpleExpression<String> {
     }
     private static String getPlayer(Event e){
         if(e instanceof EvntAudioPlayerTrackStart){
-            System.out.println("Is Start Event");
             for(Map.Entry<String, AudioPlayer> player : EffLogin.audioPlayers.entrySet()){
-                System.out.println("Is Looping in start");
                 if(((EvntAudioPlayerTrackStart) e).getPlayer().equals(player)){
-                    System.out.println("Found player in start");
                     return player.getKey();
                 }
             }
         }else if(e instanceof EvntAudioPlayerTrackEnd){
-            System.out.println("Is End Event");
             for(Map.Entry<String, AudioPlayer> player : EffLogin.audioPlayers.entrySet()){
-                System.out.println("Is looping in end");
                 if(((EvntAudioPlayerTrackEnd) e).getPlayer().equals(player)){
-                    System.out.println("found play in end");
                     return player.getKey();
                 }
             }

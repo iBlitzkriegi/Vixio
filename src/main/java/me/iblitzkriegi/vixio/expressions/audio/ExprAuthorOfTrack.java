@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.audio;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -13,12 +12,20 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "title of track %track%")
-public class ExprTitleOf extends SimpleExpression<String> {
-    private static Expression<AudioTrack> vTrack;
+@ExprAnnotation.Expression(
+        name = "AuthorOfTrack",
+        title = "Author Of Track",
+        desc = "Get the Author of a track",
+        syntax = "author of track %object%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
+public class ExprAuthorOfTrack extends SimpleExpression<String> {
+    Expression<Object> vTrack;
     @Override
     protected String[] get(Event e) {
-        return new String[]{getAuthor(e)};
+        return new String[]{getInfo(e)};
     }
 
     @Override
@@ -38,15 +45,15 @@ public class ExprTitleOf extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vTrack = (Expression<AudioTrack>) expr[0];
+        vTrack = (Expression<Object>) expr[0];
         return true;
     }
-    private static String getAuthor(Event e){
-        AudioTrack track = vTrack.getSingle(e);
-        if(track!=null) {
-            return track.getInfo().title;
+    private String getInfo(Event e){
+        if(vTrack.getSingle(e) instanceof AudioTrack){
+            return ((AudioTrack) vTrack.getSingle(e)).getInfo().author;
+        }else{
+            System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
+            return "Something dun fuk'd'd'd'd'";
         }
-        Skript.warning("Null AudioTrack");
-        return null;
     }
 }

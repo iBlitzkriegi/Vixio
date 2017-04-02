@@ -8,6 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.events.EvntUserAvatarUpdate;
+import me.iblitzkriegi.vixio.events.EvntUserStartStreaming;
 import me.iblitzkriegi.vixio.events.EvntUserStatusChange;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import org.bukkit.event.Event;
@@ -15,7 +16,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[event-]old")
+@ExprAnnotation.Expression(
+        name = "eventold",
+        title = "event-old",
+        desc = "Get the old status out of the StatusChange, Avatar update, and User start streaming events",
+        syntax = "[event-]old",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprOldStatus extends SimpleExpression<String>{
     @Override
     protected String[] get(Event e) {
@@ -41,6 +50,7 @@ public class ExprOldStatus extends SimpleExpression<String>{
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         if(ScriptLoader.isCurrentEvent(EvntUserStatusChange.class)
                 | ScriptLoader.isCurrentEvent(EvntUserAvatarUpdate.class)
+                | ScriptLoader.isCurrentEvent(EvntUserStartStreaming.class)
                 ){
             return true;
         }
@@ -59,6 +69,8 @@ public class ExprOldStatus extends SimpleExpression<String>{
             }
         }else if (e instanceof EvntUserAvatarUpdate) {
             return ((EvntUserAvatarUpdate) e).getOld();
+        }else if (e instanceof EvntUserStartStreaming) {
+            return ((EvntUserStartStreaming) e).getEvntOld();
         }
         return "idfk how you managed to get this value but...Uh..Hi?";
     }

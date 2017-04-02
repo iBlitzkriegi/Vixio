@@ -17,7 +17,23 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "send embed %string% to channel %string% with %string%")
+@EffectAnnotation.Effect(
+        name = "SendEmbed",
+        title = "Send Embed",
+        desc = "Send a Embed to a channel",
+        syntax = "send embed %string% to channel %string% with %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$nowplaying\\\":\\n" +
+                "\\t\\tset {ptsd} to track player {name} is playing\\n" +
+                "\\t\\tclear embed \\\"Nowplaying\\\"\\n" +
+                "\\t\\tmake embed \\\"Nowplaying\\\"\\n" +
+                "\\t\\tset title of embed \\\"Nowplaying\\\" to \\\"Displaying information for the track that is currently playing\\\"\\n" +
+                "\\t\\tset color of embed \\\"Nowplaying\\\" to \\\"PINK\\\"\\n" +
+                "\\t\\tadd field \\\"**Title**\\\", with value \\\"%title of track {ptsd}%\\\", split true to embed \\\"Nowplaying\\\"\\n" +
+                "\\t\\tsend embed \\\"Nowplaying\\\" to channel event-channel with \\\"Rawr\\\"")
 public class EffSendEmbed extends Effect{
     Expression<String> vName;
     Expression<String> vChannel;

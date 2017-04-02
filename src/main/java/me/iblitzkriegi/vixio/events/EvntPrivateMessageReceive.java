@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@EvntAnnotation.Event(name = "PrivateMessageReceived", type = MultiBotGuildCompare.class, syntax = "[discord ]private message sent to %string%")
+@EvntAnnotation.Event(name = "PrivateMessageReceived", title = "Private Message Received", desc = "Fired when the bot gets a private message",  type = MultiBotGuildCompare.class, syntax = "[discord ]private message sent to %string%", example = "TESTING STUFF")
 public class EvntPrivateMessageReceive extends org.bukkit.event.Event{
     private static final HandlerList hls = new HandlerList();
     private boolean cancel = false;

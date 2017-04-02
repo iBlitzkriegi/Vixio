@@ -11,7 +11,20 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@CondAnnotation.Condition(syntax = "embed [named] %string% exists")
+@CondAnnotation.Condition(
+        name = "EmbedExists",
+        title = "Embed Exists",
+        desc = "Check if a Embed builder exists",
+        syntax = "embed [named] %string% exists",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$exist\\\":\\n" +
+                "\\t\\tif embed \\\"Vixio110\\\" exists:\\n" +
+                "\\t\\t\\tclear embed \\\"Vixio110\\\"\\n" +
+                "\\t\\telse:\\n" +
+                "\\t\\t\\tmake embed \\\"Vixio110\\\"")
 public class CondEmbedExists extends Condition {
     Expression<String> vName;
     @Override

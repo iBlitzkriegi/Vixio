@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EvntAnnotation.Event(name = "TextChannelDelete", type = MultiBotGuildCompare.class, syntax = "[discord] text[-]channel deleted seen by %string%")
+@EvntAnnotation.Event(name = "TextChannelDelete", title = "Text Channel Delete", desc = "Fired when a text-channel is deleted",  type = MultiBotGuildCompare.class, syntax = "[discord] text[-]channel deleted seen by %string%", example = "TESTING STUFF")
 public class EvntTextChannelDeleted extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

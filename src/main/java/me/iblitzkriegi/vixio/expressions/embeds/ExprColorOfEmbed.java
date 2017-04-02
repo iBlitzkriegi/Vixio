@@ -14,7 +14,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "color of embed %string%")
+@ExprAnnotation.Expression(
+        name = "ColorOfEmbed",
+        title = "Color of Embed",
+        desc = "Get the current Color of one of your Embeds",
+        syntax = "color of embed %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprColorOfEmbed extends SimpleExpression<String>{
     private Expression<String> vEmbed;
     @Override

@@ -17,7 +17,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "region of %string%")
+@ExprAnnotation.Expression(
+        name = "RegionOf",
+        title = "Region Of Guild",
+        desc = "Get the region of a Guild Via its ID",
+        syntax = "region of guild [with id] %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprRegionOf extends SimpleExpression<String>{
     private Expression<String> vID;
     @Override

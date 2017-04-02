@@ -17,7 +17,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = User.class, type = ExpressionType.SIMPLE, syntax = "text[channel] with id %string%")
+@ExprAnnotation.Expression(
+        name = "Channelwitid",
+        title = "Textchannel with ID",
+        desc = "Get a TextChannel via its ID",
+        syntax = "text[channel] with id %string%",
+        returntype = User.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprTextChannelWithId extends SimpleExpression<TextChannel> {
     Expression<String> vTextChannel;
     @Override

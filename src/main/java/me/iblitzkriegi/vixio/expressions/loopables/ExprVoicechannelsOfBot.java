@@ -17,7 +17,15 @@ import java.util.List;
 /**
  * Created by Blitz on 12/26/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "voicechannels of bot %string%")
+@ExprAnnotation.Expression(
+        name = "VcoBot",
+        title = "Voicechannels of bot",
+        desc = "Get the Voicechannels your Bot can see",
+        syntax = "voicechannels of bot %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprVoicechannelsOfBot extends SimpleExpression<VoiceChannel> {
     Expression<String> vBot;
     @Override

@@ -12,7 +12,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "UserLeaveVoiceChannel", type = MultiBotGuildCompare.class, syntax = "[discord] user leave voice[[-]channel] seen by %string%")
+@EvntAnnotation.Event(name = "UserLeaveVoiceChannel", title = "User Leave Voice Channel", desc = "Fired when a user leaves a voice-channel",  type = MultiBotGuildCompare.class, syntax = "[discord] user leave voice[[-]channel] seen by %string%", example = "TESTING STUFF")
 public class EvntUserLeaveVc extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

@@ -14,7 +14,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "UserJoinVoiceChannel", type = MultiBotGuildCompare.class, syntax = "[discord] user join voice[[-]channel] seen by %string%")
+@EvntAnnotation.Event(name = "UserJoinVoiceChannel", title = "User Join Voice Channel", desc = "Fired when a user joins a Voice Channel",  type = MultiBotGuildCompare.class, syntax = "[discord] user join voice[[-]channel] seen by %string%", example = "TESTING STUFF")
 public class EvntUserJoinVc extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

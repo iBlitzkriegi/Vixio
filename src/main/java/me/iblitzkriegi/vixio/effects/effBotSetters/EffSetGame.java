@@ -14,7 +14,18 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set game of bot %string% to %string%")
+@EffectAnnotation.Effect(
+        name = "SetGame",
+        title = "Set Game",
+        desc = "Set the game of one of your bot's!",
+        syntax = "[discord] set game of bot %string% to %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$setgame\\\":\\n" +
+                "\\t\\tset game of bot \\\"Rawr\\\" to {_args::2}\\n" +
+                "\\t\\treply with \\\"Game updated.\\\"")
 public class EffSetGame extends Effect{
     Expression<String> vBot;
     Expression<String> vGame;

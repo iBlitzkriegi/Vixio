@@ -17,7 +17,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "user with name %string%")
+@ExprAnnotation.Expression(
+        name = "UserWithName",
+        title = "User with Name",
+        desc = "Get a User via their username",
+        syntax = "user with name %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprUserWithName extends SimpleExpression<User> {
     Expression<String> vUser;
     @Override

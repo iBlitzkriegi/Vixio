@@ -17,7 +17,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = AudioTrack.class, type = ExpressionType.SIMPLE, syntax = "[event-]track")
+@ExprAnnotation.Expression(
+        name = "eventtrack",
+        title = "event-track",
+        desc = "Get the AudioTrack out of the Vixio Audio Events",
+        syntax = "[event-]track",
+        returntype = AudioTrack.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprTrack extends SimpleExpression<AudioTrack> {
     @Override
     protected AudioTrack[] get(Event e) {
@@ -41,7 +49,9 @@ public class ExprTrack extends SimpleExpression<AudioTrack> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntAudioPlayerTrackStart.class)) {
+        if(ScriptLoader.isCurrentEvent(EvntAudioPlayerTrackStart.class)
+                |ScriptLoader.isCurrentEvent(EvntAudioPlayerTrackEnd.class)
+                ) {
             return true;
         }else{
             Skript.warning("You may not use event-track outside of Audio events!");

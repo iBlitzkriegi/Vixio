@@ -18,7 +18,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@ExprAnnotation.Expression(returntype = Member.class, type = ExpressionType.SIMPLE, syntax = "owner of %string%")
+@ExprAnnotation.Expression(
+        name = "OwnerOf",
+        title = "Owner Of",
+        desc = "Get the Owner of a Guild via it's ID",
+        syntax = "owner of %string%",
+        returntype = Member.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprOwnerOf  extends SimpleExpression<Member>{
     private Expression<Member> vID;
     @Override

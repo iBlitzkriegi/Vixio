@@ -16,7 +16,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = Channel.class, type = ExpressionType.SIMPLE, syntax = "[event-]channel")
+@ExprAnnotation.Expression(
+        name = "eventchannel",
+        title = "event-channel",
+        desc = "Get the Channel out of any Message Received Vixio event",
+        syntax = "[event-]channel",
+        returntype = Channel.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprChannel extends SimpleExpression<Channel> {
     @Override
     protected Channel[] get(Event e) {
@@ -44,6 +52,8 @@ public class ExprChannel extends SimpleExpression<Channel> {
                 | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
                 | ScriptLoader.isCurrentEvent(EvntTextChannelCreated.class)
                 | ScriptLoader.isCurrentEvent(EvntTextChannelDeleted.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
+                | ScriptLoader.isCurrentEvent(EvntMessageAddReaction.class)
                 ){
             return true;
         }
@@ -59,15 +69,20 @@ public class ExprChannel extends SimpleExpression<Channel> {
         }else if(e instanceof EvntPrivateMessageReceive){
             ((EvntPrivateMessageReceive)e).getEvntChannel();
         }else if(e instanceof EvntUserJoinVc){
-            ((EvntUserJoinVc)e).getEvntChannel();
+            return ((EvntUserJoinVc)e).getEvntChannel();
         }else if(e instanceof EvntUserLeaveVc){
-            ((EvntUserLeaveVc)e).getEvntChannel();
+            return ((EvntUserLeaveVc)e).getEvntChannel();
         }else if (e instanceof EvntTextChannelCreated) {
             return ((EvntTextChannelCreated) e).getEvntChannel();
         }else if (e instanceof EvntTextChannelDeleted) {
             return ((EvntTextChannelDeleted) e).getEvntChannel();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getEvntChannel();
+        }else if (e instanceof EvntMessageAddReaction) {
+            return ((EvntMessageAddReaction) e).getEvntChannel();
         }
         return null;
     }
+
 
 }

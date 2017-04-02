@@ -13,7 +13,13 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EvntAnnotation.Event(name = "PlayerTrackStart", type = MultiBotGuildCompare.class, syntax = "[discord] track (begin|start) by player %string%")
+@EvntAnnotation.Event(
+        name = "PlayerTrackStart",
+        title = "Player Track Start",
+        desc = "Fired when the Player starts playing",
+        type = MultiBotGuildCompare.class,
+        syntax = "[discord] track (begin|start) by player %string%",
+        example = "on track end by player \\\"Rawr\\\"\\n\\tbroadcast \\\"Played started by player %event-player%\\\"")
 public class EvntAudioPlayerTrackStart extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

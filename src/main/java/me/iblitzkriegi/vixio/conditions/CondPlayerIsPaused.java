@@ -12,7 +12,12 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@CondAnnotation.Condition(syntax = "[audio] player %string% is paused")
+@CondAnnotation.Condition(
+        name = "PlayerIsPaused",
+        title = "Player is paused",
+        desc = "Check if a player is paused",
+        syntax = "[audio] player %string% is paused",
+        example = "if player \\\"Rawr\\\" is paused")
 public class CondPlayerIsPaused extends Condition {
     Expression<String> vBot;
     @Override

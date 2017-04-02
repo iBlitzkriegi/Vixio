@@ -17,7 +17,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/20/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "[discord] roles in guild %string%")
+@ExprAnnotation.Expression(
+        name = "RolesInGuild",
+        title = "Roles in Guild",
+        desc = "Get the Roles in a Guild via its ID",
+        syntax = "[discord] roles in guild [with id] %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprRolesInGuild extends SimpleExpression<List> {
     Expression<String> vGuild;
     @Override

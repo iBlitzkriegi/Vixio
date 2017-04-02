@@ -12,7 +12,13 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "UserAvatarUpdate", type = MultiBotGuildCompare.class, syntax = "[discord] user avatar update seen by %string%")
+@EvntAnnotation.Event(
+        name = "UserAvatarUpdate",
+        title = "User Avatar Update",
+        desc = "Fired when a user updates their avatar.",
+        type = MultiBotGuildCompare.class,
+        syntax = "[discord] user avatar update seen by %string%",
+        example = "TESTING STUFF")
 public class EvntUserAvatarUpdate extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

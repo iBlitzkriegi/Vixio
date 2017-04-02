@@ -17,7 +17,19 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@CondAnnotation.Condition(syntax = "[discord] user %string% is in a voice channel")
+@CondAnnotation.Condition(
+        name = "BotIsInVc",
+        title = "Bot is in Voicechannel",
+        desc = "Check if your bot is in a Voice Channel",
+        syntax = "[discord] bot %string% is in a voice channel",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$leave\\\":\\n" +
+                "\\t\\tif event-bot is in a voice channel:\\n" +
+                "\\t\\t\\tleave voice channel voice channel of event-bot with \\\"Rawr\\\"\\n" +
+                "\\t\\t\\treply with \\\"I have left your voice channel.... :wave:\\\"")
 public class CondBotIsInVc extends Condition {
     Expression<String> vBot;
     @Override

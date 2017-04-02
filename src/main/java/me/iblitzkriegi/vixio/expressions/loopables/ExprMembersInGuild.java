@@ -18,7 +18,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 2/7/2017.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "members in guild [with id] %string%")
+@ExprAnnotation.Expression(
+        name = "MembersInGuild",
+        title = "Users in Guild",
+        desc = "Get the Users in a Guild, loopable",
+        syntax = "members in guild [with id] %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprMembersInGuild extends SimpleExpression<Member>{
     Expression<String> vGuild;
     @Override

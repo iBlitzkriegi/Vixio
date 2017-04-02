@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EvntAnnotation.Event(name = "TextChannelCreate", type = MultiBotGuildCompare.class, syntax = "[discord] text[-]channel created seen by %string%")
+@EvntAnnotation.Event(name = "TextChannelCreate", title = "Text Channel Create", desc = "Fired when a text-channel is created",  type = MultiBotGuildCompare.class, syntax = "[discord] text[-]channel created seen by %string%", example = "TESTING STUFF")
 public class EvntTextChannelCreated extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

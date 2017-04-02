@@ -14,7 +14,21 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "skip current track player [named] %string% is playing")
+@EffectAnnotation.Effect(
+        name = "SkipCurrentTrack",
+        title = "Skip Current Track of Player",
+        desc = "Skip the current track a player is playing",
+        syntax = "skip current track player [named] %string% is playing",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$skip\\\":\\n" +
+                "\\t\\tif player \\\"Rawr\\\" is playing audio:\\n" +
+                "\\t\\t\\tskip current track player \\\"Rawr\\\" is playing\\n" +
+                "\\t\\t\\treply with \\\"Skipped the track\\\"\\n" +
+                "\\t\\telse:\\n" +
+                "\\t\\t\\treply with \\\"Wasnt playing anything anyways\\\"")
 public class EffSkipTrack extends Effect {
     Expression<String> vBot;
     @Override

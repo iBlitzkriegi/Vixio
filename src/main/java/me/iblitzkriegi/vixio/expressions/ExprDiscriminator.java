@@ -5,6 +5,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
@@ -15,7 +16,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "discriminator of %string%")
+@ExprAnnotation.Expression(
+        name = "Disio",
+        title = "Discriminator of User",
+        desc = "Get the Discriminator of a User",
+        syntax = "discriminator of %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprDiscriminator extends SimpleExpression<String> {
     private Expression<String> vID;
     @Override
@@ -45,12 +54,14 @@ public class ExprDiscriminator extends SimpleExpression<String> {
     }
     @Nullable
     private String getGame(Event e) {
-
         JDA jda = ((EvntGuildMessageReceive)e).getJDA();
         for(User s : jda.getUsers()){
             if(s.getId().equals(vID.getSingle(e))){
                 return s.getDiscriminator();
             }
+        }
+        if(e instanceof EvntGuildMemberLeave){
+            return ((EvntGuildMemberLeave) e).getEvntUser().getDiscriminator();
         }
         return null;
     }

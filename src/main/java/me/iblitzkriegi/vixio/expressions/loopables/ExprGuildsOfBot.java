@@ -17,7 +17,15 @@ import java.util.List;
 /**
  * Created by Blitz on 12/26/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "guilds of bot %string%")
+@ExprAnnotation.Expression(
+        name = "GuildsOfBot",
+        title = "Guilds of Bot",
+        desc = "Get the Guilds of a Bot, loopable",
+        syntax = "guilds of bot %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprGuildsOfBot extends SimpleExpression<Guild> {
     Expression<String> vBot;
     @Override

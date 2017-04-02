@@ -14,9 +14,13 @@ public class ExprAnnotation {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Expression {
+        String name();
+        String title();
+        String desc();
+        String syntax();
         Class returntype();
         ExpressionType type();
-        String syntax();
+        String example();
     }
 
 }

@@ -16,10 +16,11 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 public class TypesAndConverter {
     public static void setupTypes() {
         Converters.registerConverter(User.class, String.class, (Converter<User, String>) u -> u.getId());
+        Converters.registerConverter(Member.class, User.class, (Converter<Member, User>) u -> u.getUser());
         Converters.registerConverter(Guild.class, String.class, (Converter<Guild, String>) u -> u.getId());
         Converters.registerConverter(Channel.class, String.class, (Converter<Channel, String>) u -> u.getId());
         Converters.registerConverter(PrivateChannel.class, String.class, (Converter<PrivateChannel, String>) u -> u.getId());
-        //Converters.registerConverter(Message.class, String.class, (Converter<Message, String>) u -> u.getId());
+        Converters.registerConverter(Message.class, String.class, (Converter<Message, String>) u -> u.getId());
         Classes.registerClass(new ClassInfo<>(Message.class, "message")
                 .name("message").parser(new Parser<Message>() {
                     @Override
@@ -70,8 +71,6 @@ public class TypesAndConverter {
                 }));
         Classes.registerClass(new ClassInfo<>(AudioTrack.class, "track")
                 .name("track").parser(new Parser<AudioTrack>() {
-
-
                     @Override
                     public AudioTrack parse(String s, ParseContext parseContext) {
                         return null;

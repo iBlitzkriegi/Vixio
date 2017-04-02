@@ -19,7 +19,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/20/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "[discord] users with role %string% in guild %string%")
+@ExprAnnotation.Expression(
+        name = "UsersWithRole",
+        title = "Users with Role",
+        desc = "Get the Users with a Role via the Role's Name and the Guilds ID",
+        syntax = "[discord] users with role %string% in guild %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprUsersWithRole extends SimpleExpression<List> {
     Expression<String> vRole;
     Expression<String> vGuild;

@@ -16,7 +16,15 @@ import static me.iblitzkriegi.vixio.jdaEvents.GuildMessageReceived.getLast;
 /**
  * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = Message.class, type = ExpressionType.SIMPLE, syntax = "last message sent by user %user%")
+@ExprAnnotation.Expression(
+        name = "LastMessagesentof",
+        title = "Last Message sent by User",
+        desc = "Get the Last message sent by a specific User",
+        syntax = "last message sent by user %user%",
+        returntype = Message.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprLastSendByUser extends SimpleExpression<Message> {
     Expression<User> vUser;
     @Override

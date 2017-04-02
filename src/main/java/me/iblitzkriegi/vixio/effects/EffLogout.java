@@ -14,7 +14,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.*;
 /**
  * Created by Blitz on 11/19/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] logout of bot %string%")
+@EffectAnnotation.Effect(
+        name = "LogoutOfBot",
+        title = "Logout of Bot",
+        desc = "Logout of one of your Bots",
+        syntax = "[discord] logout of bot %string%",
+        example = "SOON"
+)
 public class EffLogout extends Effect{
     Expression<String> vBot;
     @Override

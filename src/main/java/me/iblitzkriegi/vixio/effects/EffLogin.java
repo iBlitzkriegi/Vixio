@@ -37,7 +37,13 @@ import java.util.Map;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord ]login to user with token %string% with name %string%")
+@EffectAnnotation.Effect(
+        name = "LoginToBot",
+        title = "Connect To Bot",
+        desc = "Connect to a Bot via a Token, Tutorial on Vixio YT channel",
+        syntax = "[discord ]login to user with token %string% with name %string%",
+        example = "SOON"
+)
 public class EffLogin extends Effect {
     public static HashMap<String, JDA> bots = new HashMap<>();
     public static HashMap<String, Long> botruntime = new HashMap<>();
@@ -64,6 +70,9 @@ public class EffLogin extends Effect {
                         .addListener(new TextChannelDeleted())
                         .addListener(new UserAvatarChange())
                         .addListener(new GuildBan())
+                        .addListener(new BotSendGuildMessage())
+                        .addListener(new UserStartStreaming())
+                        .addListener(new MessageAddReaction())
                         .buildBlocking();
                 // Audio hashmaps \\
                 AudioPlayerManager playerManager = new DefaultAudioPlayerManager();

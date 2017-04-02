@@ -16,7 +16,22 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.audioPlayers;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "stop playing track player [named] %string% is playing")
+@EffectAnnotation.Effect(
+        name = "StopPlayerTrack",
+        title = "Stop Player Track",
+        desc = "Stop the current track of one of your players",
+        syntax = "stop playing track player [named] %string% is playing",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$stop\\\":\\n" +
+                "\\t\\tif player \\\"Rawr\\\" is playing audio:\\n" +
+                "\\t\\t\\tstop playing track player \\\"Rawr\\\" is playing\\n" +
+                "\\t\\t\\treply with \\\"Stopped the track\\\"\\n" +
+                "\\t\\telse:\\n" +
+                "\\t\\t\\treply with \\\"Wasnt playing anything anyways\\\""
+)
 public class EffStopTrack extends Effect {
     Expression<String> vBot;
     @Override

@@ -12,7 +12,11 @@ public class CondAnnotation {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Condition {
+        String name();
+        String title();
+        String desc();
         String syntax();
+        String example();
     }
 
 }

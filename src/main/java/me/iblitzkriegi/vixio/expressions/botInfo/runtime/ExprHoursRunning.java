@@ -14,7 +14,15 @@ import java.util.Date;
 /**
  * Created by Blitz on 11/2/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "hours running for (bot|user) %string%")
+@ExprAnnotation.Expression(
+        name = "HoursRunningOfBot",
+        title = "Hours Running Of Bot",
+        desc = "Get the Hours running of one of your Bots",
+        syntax = "hours running for (bot|user) %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprHoursRunning extends SimpleExpression<String> {
     private Expression<String> vBotName;
     @Override

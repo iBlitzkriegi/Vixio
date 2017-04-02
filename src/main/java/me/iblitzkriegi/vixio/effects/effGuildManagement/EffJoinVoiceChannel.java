@@ -27,7 +27,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] join voice channel [with id] %string% with [bot] %string%")
+@EffectAnnotation.Effect(
+        name = "JoinVoiceChannel",
+        title = "Join Voice Channel",
+        desc = "Join a Voice Channel",
+        syntax = "[discord] join voice channel [with id] %string% with [bot] %string%",
+        example = "SOONLOL"
+)
 public class EffJoinVoiceChannel extends Effect {
     private Expression<String> vID;
     private Expression<String> vBot;

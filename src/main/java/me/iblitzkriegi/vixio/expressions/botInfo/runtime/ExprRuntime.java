@@ -14,7 +14,15 @@ import java.util.Date;
 /**
  * Created by Blitz on 11/2/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "(runtime|uptime) of (bot|user) %string%")
+@ExprAnnotation.Expression(
+        name = "RuntimeOfBot",
+        title = "Runtime Of Bot",
+        desc = "Get the Runtime of one of your Bot's in a special format",
+        syntax = "(runtime|uptime) of (bot|user) %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprRuntime extends SimpleExpression<String> {
     private Expression<String> vBotName;
     @Override

@@ -17,7 +17,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] size of (guild|server|voicechannel) %string%")
+@ExprAnnotation.Expression(
+        name = "SizeOfThing",
+        title = "Size Of",
+        desc = "Get the Size of a guild/server/voicechannel",
+        syntax = "[discord] size of (guild|server|voicechannel) %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprSizeOf extends SimpleExpression<String> {
     private Expression<String> vID;
 

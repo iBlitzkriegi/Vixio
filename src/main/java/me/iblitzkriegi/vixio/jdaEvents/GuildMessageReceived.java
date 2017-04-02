@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Blitz on 10/30/2016.
@@ -22,15 +23,14 @@ public class GuildMessageReceived extends ListenerAdapter {
             TextChannel channel = e.getChannel();
             User bot = e.getJDA().getUserById(e.getJDA().getSelfUser().getId());
             if (e.getMessage().getMentionedUsers().size() > 0) {
-                User mentioned = e.getMessage().getMentionedUsers().get(0);
-                EvntGuildMessageReceive efc = new EvntGuildMessageReceive(author, channel, e.getMessage(), mentioned, e.getGuild(), bot, e.getJDA());
+                List list = e.getMessage().getMentionedUsers();
+                EvntGuildMessageReceive efc = new EvntGuildMessageReceive(author, channel, e.getMessage(), list, e.getGuild(), bot, e.getJDA());
                 Bukkit.getServer().getPluginManager().callEvent(efc);
                 return;
             } else {
-                EvntGuildMessageReceive efc = new EvntGuildMessageReceive(author, channel, e.getMessage(), null, e.getGuild(), bot, e.getJDA());
+                EvntGuildMessageReceive efc = new EvntGuildMessageReceive(e.getAuthor(), e.getChannel(), e.getMessage(), null, e.getGuild(), e.getJDA().getSelfUser(), e.getJDA());
                 Bukkit.getServer().getPluginManager().callEvent(efc);
             }
-            getLast.put(e.getAuthor(), e.getMessage());
         }
     }
 }

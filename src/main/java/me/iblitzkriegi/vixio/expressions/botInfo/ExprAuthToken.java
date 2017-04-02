@@ -14,7 +14,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/20/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "auth token of bot %string%")
+@ExprAnnotation.Expression(
+        name = "AuthTokenOfBot",
+        title = "Auth Token of Bot",
+        desc = "Get the Auth Token of your bot (DO NOT SHOW THIS TO ANYONE)",
+        syntax = "auth token of bot %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprAuthToken extends SimpleExpression<String> {
     Expression<String> vBot;
     @Override

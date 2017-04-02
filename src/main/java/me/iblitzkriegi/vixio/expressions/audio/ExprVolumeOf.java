@@ -13,12 +13,20 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 1/20/2017.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "volume of player [named] %string%")
-public class ExprVolumeOf extends SimpleExpression<String> {
-    Expression<String> vBot;
+@ExprAnnotation.Expression(
+        name = "VolumeOfPlayer",
+        title = "Volume Of Player",
+        desc = "Get the Volume of a player",
+        syntax = "volume of player [named] %Number%",
+        returntype = Number.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
+public class ExprVolumeOf extends SimpleExpression<Number> {
+    Expression<Number> vBot;
     @Override
-    protected String[] get(Event e) {
-        return new String[]{getVolume(e)};
+    protected Number[] get(Event e) {
+        return new Number[]{getVolume(e)};
     }
 
     @Override
@@ -27,8 +35,8 @@ public class ExprVolumeOf extends SimpleExpression<String> {
     }
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Number> getReturnType() {
+        return Number.class;
     }
 
     @Override
@@ -38,11 +46,11 @@ public class ExprVolumeOf extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vBot = (Expression<String>) expressions[0];
+        vBot = (Expression<Number>) expressions[0];
         return true;
     }
-    public String getVolume(Event e){
+    public Number getVolume(Event e){
         AudioPlayer player = EffLogin.audioPlayers.get(vBot.getSingle(e));
-        return String.valueOf(player.getVolume());
+        return player.getVolume();
     }
 }

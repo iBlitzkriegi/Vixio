@@ -16,7 +16,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = User.class, type = ExpressionType.SIMPLE, syntax = "user with id %string%")
+@ExprAnnotation.Expression(
+        name = "UserWithID",
+        title = "User with ID",
+        desc = "Get a User via their ID, can get any User on Discord",
+        syntax = "user with id %string%",
+        returntype = User.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprUserWithId extends SimpleExpression<User> {
     Expression<String> vUser;
     @Override
@@ -48,6 +56,8 @@ public class ExprUserWithId extends SimpleExpression<User> {
         for(Map.Entry<String, JDA> jda : EffLogin.bots.entrySet()){
             if(jda.getValue().getUserById(vUser.getSingle(e))!=null){
                 return jda.getValue().getUserById(vUser.getSingle(e));
+            }else{
+                return jda.getValue().retrieveUserById(vUser.getSingle(e)).complete();
             }
         }
         return null;

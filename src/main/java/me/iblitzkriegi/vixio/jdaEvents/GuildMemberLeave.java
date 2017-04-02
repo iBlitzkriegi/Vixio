@@ -18,7 +18,7 @@ public class GuildMemberLeave extends ListenerAdapter {
             User user = e.getMember().getUser();
             JDA jda = e.getJDA();
             Guild guild = e.getGuild();
-            EvntGuildMemberLeave efc = new EvntGuildMemberLeave(user, guild, jda);
+            EvntGuildMemberLeave efc = new EvntGuildMemberLeave(e.getMember().getUser(), guild, jda);
             Bukkit.getServer().getPluginManager().callEvent(efc);
         }
     }

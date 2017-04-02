@@ -5,6 +5,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
@@ -17,7 +18,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "(avatar|icon) url of %string%")
+@ExprAnnotation.Expression(
+        name = "AvatarOf",
+        title = "Icon / Avatar url of",
+        desc = "Get the Avatar/Icon URL of either a User or a Guild",
+        syntax = "(avatar|icon) url of %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprAvatarOf extends SimpleExpression<String> {
     private Expression<String> vID;
     @Override
@@ -49,11 +58,15 @@ public class ExprAvatarOf extends SimpleExpression<String> {
     private String getAvatar(Event e) {
         for (Map.Entry<String, JDA> u : bots.entrySet()) {
             if(u.getValue().getUserById(vID.getSingle(e))!=null){
-                return u.getValue().getUserById(vID.getSingle(e)).getName();
+                return u.getValue().getUserById(vID.getSingle(e)).getAvatarUrl();
             }else if(u.getValue().getGuildById(vID.getSingle(e))!=null){
                 return u.getValue().getGuildById(vID.getSingle(e)).getIconUrl();
             }
         }
+        if(e instanceof EvntGuildMemberLeave){
+            return ((EvntGuildMemberLeave) e).getEvntUser().getAvatarUrl();
+        }
+
         return null;
     }
 

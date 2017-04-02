@@ -16,7 +16,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/2/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "topic of %string%")
+@ExprAnnotation.Expression(
+        name = "TopicOf",
+        title = "Topic of",
+        desc = "Get the topic of a TextChannel",
+        syntax = "topic of channel [with id] %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprTopicOf extends SimpleExpression<String> {
     private Expression<String> vID;
     @Override

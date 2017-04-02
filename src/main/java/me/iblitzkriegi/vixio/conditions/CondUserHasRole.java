@@ -17,7 +17,18 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/19/2016.
  */
-@CondAnnotation.Condition(syntax = "[discord] user %string% has role %string% in %string%")
+@CondAnnotation.Condition(
+        name = "UserHasRole",
+        title = "User has Role",
+        desc = "Check if a User has a specific role",
+        syntax = "[discord] user %string% has role %string% in %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$permcheck\\\":\\n" +
+                "\\t\\tif user event-user has role \\\"Vixio Fanclub\\\" in event-guild:\\n" +
+                "\\t\\t\\tbroadcast \\\"Does\\\"")
 public class CondUserHasRole extends Condition {
     Expression<String> vRole;
     Expression<String> vGuild;

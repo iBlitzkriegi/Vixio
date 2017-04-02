@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.audio;
+package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -13,7 +13,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@ExprAnnotation.Expression(returntype = Boolean.class, type = ExpressionType.SIMPLE, syntax = "bot %string% is streaming track")
+@ExprAnnotation.Expression(
+        name = "BotIsStreaming",
+        title = "Bot is Streaming",
+        desc = "Check if one of your Bots is streaming",
+        syntax = "bot %string% is streaming track",
+        returntype = Boolean.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprIsPlayingStream extends SimpleExpression<Boolean> {
     private static Expression<String> vBot;
     @Override

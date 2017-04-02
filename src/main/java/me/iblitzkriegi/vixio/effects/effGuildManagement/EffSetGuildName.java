@@ -14,7 +14,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set guild [with id] %string% name to %string% with [bot] %string%")
+@EffectAnnotation.Effect(
+        name = "SetGuildName",
+        title = "Set Guild Name",
+        desc = "Set the name of a Guild with a bot, must have permission to do so",
+        syntax = "[discord] set guild [with id] %string% name to %string% with [bot] %string%",
+        example = "SOON"
+)
 public class EffSetGuildName extends Effect {
     private Expression<String> sName;
     private Expression<String> vGuild;

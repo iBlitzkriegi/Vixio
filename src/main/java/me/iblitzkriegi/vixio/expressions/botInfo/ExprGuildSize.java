@@ -14,7 +14,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/2/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "(amount|size) of %string%['s] guilds")
+@ExprAnnotation.Expression(
+        name = "",
+        title = "",
+        desc = "",
+        syntax = "(amount|size) of %string%['s] guilds",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprGuildSize extends SimpleExpression<String> {
     private Expression<String> vBotName;
     @Override

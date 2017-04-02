@@ -19,7 +19,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] [online] status of %string% in guild %string%")
+@ExprAnnotation.Expression(
+        name = "OnlineStatusouser",
+        title = "Online status of User",
+        desc = "Get the Online status of a User",
+        syntax = "[discord] [online] status of %string% in guild %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprStatusOf extends SimpleExpression<String> {
     private Expression<String> vID;
     private Expression<String> vGuild;
@@ -46,6 +54,7 @@ public class ExprStatusOf extends SimpleExpression<String> {
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         vID = (Expression<String>) expr[0];
+        vGuild = (Expression<String>) expr[1];
         return true;
     }
     @Nullable

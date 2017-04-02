@@ -20,7 +20,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/19/2016.
  */
-@ExprAnnotation.Expression(returntype = RestAction.class, type = ExpressionType.SIMPLE, syntax = "[discord] pinned messages in channel %string%")
+@ExprAnnotation.Expression(
+        name = "PinnedMessages",
+        title = "Pinned Messages in Channel",
+        desc = "Get all of the Pinned messages in a TextChannel via its ID",
+        syntax = "[discord] pinned messages in channel %string%",
+        returntype = RestAction.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprPinnedMessages extends SimpleExpression<RestAction> {
     Expression<String> vChannel;
     @Override

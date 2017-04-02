@@ -16,7 +16,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "ctitle of embed %string%")
+@ExprAnnotation.Expression(
+        name = "TitleOfEmbed",
+        title = "Title of Embed",
+        desc = "Get the current set Title of one of your Embeds",
+        syntax = "title of embed %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprTitleOfEmbed extends SimpleExpression<String>{
     private Expression<String> vEmbed;
     @Override

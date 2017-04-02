@@ -14,7 +14,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord ]send message %string% to channel [with id] %string% as [bot] %string%")
+@EffectAnnotation.Effect(
+        name = "SendMessage",
+        title = "Send Message",
+        desc = "Send a Message to a channel",
+        syntax = "[discord ]send message %string% to channel [with id] %string% as [bot] %string%",
+        example = "SOON"
+)
 public class EffSendMessage extends Effect {
     private Expression<String> sMsg;
     private Expression<String> sChannel;

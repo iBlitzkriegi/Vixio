@@ -15,15 +15,27 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.audioPlayers;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "set [audio] player %string% volume to %integer%")
+@EffectAnnotation.Effect(
+        name = "SetVolumeOfPlayer",
+        title = "Set Volume Of Player",
+        desc = "Set the volume of the player to a number",
+        syntax = "set [audio] player %string% volume to %number%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$volume\\\":\\n" +
+                "\\t\\tif {_args::2} is set:\\n" +
+                "\\t\\t\\tset player \\\"Rawr\\\" volume to {_args::2}\\n" +
+                "\\t\\t\\treply with \\\"Set the volume to %{_args::2}%\\\"")
 public class EffSetVolume extends Effect {
     Expression<String> vBot;
-    Expression<Integer> vVolume;
+    Expression<Number> vVolume;
     @Override
     protected void execute(Event e) {
         if(audioPlayers.get(vBot.getSingle(e))!=null) {
             AudioPlayer player = audioPlayers.get(vBot.getSingle(e));
-            player.setVolume(vVolume.getSingle(e));
+            player.setVolume(Integer.valueOf(String.valueOf(vVolume.getSingle(e))));
         }else{
             Skript.warning("No player exists by the name \"" + vBot.getSingle(e)+"\n");
         }
@@ -37,7 +49,7 @@ public class EffSetVolume extends Effect {
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         vBot = (Expression<String>) expr[0];
-        vVolume = (Expression<Integer>) expr[1];
+        vVolume = (Expression<Number>) expr[1];
         return true;
     }
 }

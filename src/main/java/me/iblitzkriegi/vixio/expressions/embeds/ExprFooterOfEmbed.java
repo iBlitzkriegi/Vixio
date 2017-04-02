@@ -14,7 +14,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "footer of embed %string%")
+@ExprAnnotation.Expression(
+        name = "FooterOfEmbed",
+        title = "Footer of Embed",
+        desc = "Get the current set Footer of one of your Embeds",
+        syntax = "footer of embed %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprFooterOfEmbed extends SimpleExpression<String>{
     private Expression<String> vEmbed;
     @Override

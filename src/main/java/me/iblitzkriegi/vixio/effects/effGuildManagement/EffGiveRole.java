@@ -19,7 +19,12 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] give role [named] %string% to user [named] %string% in guild [with id] %string% with [bot] %string%")
+@EffectAnnotation.Effect(
+        name = "GiveRole",
+        title = "Give Role",
+        desc = "Give a User a role",
+        syntax = "[discord] give role [named] %string% to user [named] %string% in guild [with id] %string% with [bot] %string%",
+        example = "SOON")
 public class EffGiveRole extends Effect {
     Expression<String> vRole;
     Expression<String> vUser;

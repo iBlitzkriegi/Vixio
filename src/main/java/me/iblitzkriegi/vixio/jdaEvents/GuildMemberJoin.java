@@ -20,6 +20,7 @@ public class GuildMemberJoin extends ListenerAdapter {
             Guild guild = e.getGuild();
             EvntGuildMemberJoin efc = new EvntGuildMemberJoin(user, guild, jda);
             Bukkit.getServer().getPluginManager().callEvent(efc);
+            e.getJDA().retrieveUserById("").complete();
         }
     }
 }

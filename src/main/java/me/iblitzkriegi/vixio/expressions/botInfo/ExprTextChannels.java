@@ -16,7 +16,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/20/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "[discord] %string%('s|s) textchannel[s]")
+@ExprAnnotation.Expression(
+        name = "TextChannelsOfBot",
+        title = "Text Channels of Bot",
+        desc = "Get all the Text-Channel's your bot is in",
+        syntax = "[discord] %string%('s|s) textchannel[s]",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprTextChannels extends SimpleExpression<List> {
     Expression<String> vBot;
     @Override

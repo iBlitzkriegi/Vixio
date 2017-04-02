@@ -15,7 +15,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@ExprAnnotation.Expression(returntype = User.class, type = ExpressionType.SIMPLE, syntax = "[event-]user")
+@ExprAnnotation.Expression(
+        name = "eventuser",
+        title = "event-user",
+        desc = "Get the User out of various Vixio events",
+        syntax = "[event-]user",
+        returntype = User.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprUser extends SimpleExpression<User>{
     @Override
     protected User[] get(Event e) {
@@ -47,6 +55,9 @@ public class ExprUser extends SimpleExpression<User>{
                 | ScriptLoader.isCurrentEvent(EvntUserJoinVc.class)
                 | ScriptLoader.isCurrentEvent(EvntUserAvatarUpdate.class)
                 | ScriptLoader.isCurrentEvent(EvntGuildBan.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
+                | ScriptLoader.isCurrentEvent(EvntUserStartStreaming.class)
+                | ScriptLoader.isCurrentEvent(EvntMessageAddReaction.class)
                 ){
             return true;
         }
@@ -74,6 +85,12 @@ public class ExprUser extends SimpleExpression<User>{
             return ((EvntUserAvatarUpdate) e).getEvntUser();
         }else if (e instanceof EvntGuildBan) {
             return ((EvntGuildBan) e).getEvntUser();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getEvntUser();
+        }else if (e instanceof EvntUserStartStreaming) {
+            return ((EvntUserStartStreaming) e).getEvntUser();
+        }else if (e instanceof EvntMessageAddReaction) {
+            return ((EvntMessageAddReaction) e).getEvntUser();
         }
         return null;
     }

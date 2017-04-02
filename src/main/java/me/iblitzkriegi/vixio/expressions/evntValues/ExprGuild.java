@@ -17,7 +17,15 @@ import sun.font.Script;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = Guild.class, type = ExpressionType.SIMPLE, syntax = "[event-]guild")
+@ExprAnnotation.Expression(
+        name = "eventguild",
+        title = "event-guild",
+        desc = "Get the Guild out of various Vixio events",
+        syntax = "[event-]guild",
+        returntype = Guild.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprGuild extends SimpleExpression<Guild> {
     @Override
     protected Guild[] get(Event e) {
@@ -48,6 +56,8 @@ public class ExprGuild extends SimpleExpression<Guild> {
                 | ScriptLoader.isCurrentEvent(EvntTextChannelCreated.class)
                 | ScriptLoader.isCurrentEvent(EvntTextChannelDeleted.class)
                 | ScriptLoader.isCurrentEvent(EvntGuildBan.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
+                | ScriptLoader.isCurrentEvent(EvntUserStartStreaming.class)
                 ){
             return true;
         }
@@ -74,6 +84,10 @@ public class ExprGuild extends SimpleExpression<Guild> {
             return ((EvntTextChannelDeleted) e).getEvntGuild();
         }else if (e instanceof EvntGuildBan) {
             return ((EvntGuildBan) e).getEvntGuild();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getGuild();
+        }else if (e instanceof EvntUserStartStreaming) {
+            return ((EvntUserStartStreaming) e).getEvntGuild();
         }
         return null;
     }

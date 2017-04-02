@@ -11,7 +11,21 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "add field %string%, with value %string%, split %boolean% to embed %string%")
+@EffectAnnotation.Effect(
+        name = "AddFieldToEmbed",
+        title = "Add Field To Embed",
+        desc = "Add a field to a embed, must create one first!",
+        syntax = "add field %string%, with value %string%, split %boolean% to embed %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$nowplaying\\\":\\n" +
+                "\\t\\tset {ptsd} to track player {name} is playing\\n" +
+                "\\t\\tmake embed \\\"Nowplaying\\\"\\n" +
+                "\\t\\tadd field \\\"**Title**\\\", with value \\\"%title of track {ptsd}%\\\", split true to embed \\\"Nowplaying\\\"\\n" +
+                "\\t\\tsend embed \\\"Nowplaying\\\" to channel event-channel with \\\"Rawr\\\"\\n"+
+                "\\t\\tclear embed \\\"Nowplaying\\\"")
 public class EffAddFieldToEmbed extends Effect{
     Expression<String> vField;
     Expression<String> vValue;

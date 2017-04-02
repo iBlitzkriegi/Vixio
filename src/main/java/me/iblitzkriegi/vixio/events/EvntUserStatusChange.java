@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "UserOnlineStatusUpdate", type = MultiBotGuildCompare.class, syntax = "[discord] [user] status change seen by %string%")
+@EvntAnnotation.Event(name = "UserOnlineStatusUpdate", title = "User Online Status Update", desc = "Fired when a user updates their online status.", type = MultiBotGuildCompare.class, syntax = "[discord] [user] status change seen by %string%", example = "TESTING STUFF")
 public class EvntUserStatusChange extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

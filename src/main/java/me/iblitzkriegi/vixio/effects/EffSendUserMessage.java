@@ -13,7 +13,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "send discord message of %string% to %string% with %string%")
+@EffectAnnotation.Effect(
+        name = "SendUserMessage",
+        title = "Send User Message",
+        desc = "Send a Message to a User",
+        syntax = "send discord message of %string% to %string% with %string%",
+        example = "SOON"
+)
 public class EffSendUserMessage extends Effect {
     Expression<String> vMessage;
     Expression<String> vUser;

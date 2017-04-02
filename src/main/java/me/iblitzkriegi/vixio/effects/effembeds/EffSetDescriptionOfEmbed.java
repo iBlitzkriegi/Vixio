@@ -13,7 +13,19 @@ import java.util.HashMap;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "set desc[ription] of embed %string% to %string%")
+@EffectAnnotation.Effect(
+        name = "SetDescOfEmbed",
+        title = "Set Description Of Embed",
+        desc = "Set the description of one of your Embeds",
+        syntax = "set desc[ription] of embed %string% to %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$update\\\":\\n" +
+                "\\t\\tmake embed \\\"Vixio110\\\"\\n" +
+                "\\t\\tset desc of embed \\\"Vixio110\\\" to \\\"New Events and made all the syntaxes more new Skript user friendly!\\\""+
+                "\\t\\tsend embed \\\"Vixio110\\\" to channel event-channel with \\\"Rawr\\\"")
 public class EffSetDescriptionOfEmbed extends Effect{
     Expression<String> vName;
     Expression<String> vDesc;

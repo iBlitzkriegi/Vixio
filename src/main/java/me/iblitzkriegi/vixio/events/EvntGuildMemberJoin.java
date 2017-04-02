@@ -11,7 +11,7 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EvntAnnotation.Event(name = "GuildMemberJoin", type = MultiBotGuildCompare.class, syntax = "[discord] guild member join seen by %string%")
+@EvntAnnotation.Event(name = "GuildMemberJoin", title = "Guild Member Join", desc = "Fired when a user joins a Guild",  type = MultiBotGuildCompare.class, syntax = "[discord] guild member join seen by %string%", example = "TESTING STUFF")
 public class EvntGuildMemberJoin extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

@@ -21,7 +21,15 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Blitz on 12/22/2016.
  */
-@ExprAnnotation.Expression(returntype = Message.class, type = ExpressionType.SIMPLE, syntax = "message with id %string% in textchannel %string%")
+@ExprAnnotation.Expression(
+        name = "Messagewitid",
+        title = "Message with ID",
+        desc = "Get a Message via its ID",
+        syntax = "message with id %string% in textchannel %string%",
+        returntype = Message.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprMessageWithID extends SimpleExpression<Message> {
     Expression<String> vID;
     Expression<String> vChannel;

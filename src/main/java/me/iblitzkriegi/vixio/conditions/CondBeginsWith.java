@@ -10,7 +10,17 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@CondAnnotation.Condition(syntax = "%string% (begins|starts) with %string%")
+@CondAnnotation.Condition(
+        name = "BeginsWith",
+        title = "Begins With",
+        desc = "Check if a string begins/starts with another string",
+        syntax = "%string% (begins|starts) with %string%",
+        example = "on guild message received seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$ping\\\":\\n" +
+                "\\t\\treply with \\\"pong\\\"")
 public class CondBeginsWith extends Condition {
     private Expression<String> string1;
     private Expression<String> string2;

@@ -14,7 +14,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set channel [with id] %string% topic to %string% with [bot] %string%")
+@EffectAnnotation.Effect(
+        name = "SetChannelTopic",
+        title = "Set Channel Topic",
+        desc = "Set the topic of a Channel in a Guild, bot must have permission to do so",
+        syntax = "[discord] set channel [with id] %string% topic to %string% with [bot] %string%",
+        example = "SOON"
+)
 public class EffSetChannelTopic extends Effect{
     Expression<String> vChannel;
     Expression<String> vTopic;

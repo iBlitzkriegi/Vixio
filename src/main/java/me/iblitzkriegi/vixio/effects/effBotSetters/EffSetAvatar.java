@@ -22,7 +22,18 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set avatar of [bot] %string% to %string%")
+@EffectAnnotation.Effect(
+        name = "SetAvatar",
+        title = "Set Avatar",
+        desc = "Set the avatar of one of your bots via a direct link to a image.",
+        syntax = "[discord] set avatar of [bot] %string% to %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$ava\\\":\\n" +
+                "\\t\\tset avatar of \\\"Rawr\\\" to {_args::2}\\n" +
+                "\\t\\treply with \\\"Avatar updated.\\\"")
 public class EffSetAvatar extends Effect {
     Expression<String> vBot;
     Expression<String> vUrl;

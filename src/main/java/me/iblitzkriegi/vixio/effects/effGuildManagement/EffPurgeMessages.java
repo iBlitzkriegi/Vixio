@@ -6,8 +6,8 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageHistory;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageHistory;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -19,7 +19,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EffectAnnotation.Effect(syntax = "(purge|clear) %number% message[']s in [channel with id] %string% with %string%")
+@EffectAnnotation.Effect(
+        name = "PurgeMessages",
+        title = "Purge Messages",
+        desc = "Remove/Clear a certain amount of messages in a channel, must have permission to do so",
+        syntax = "(purge|clear) %number% message[']s in [channel with id] %string% with %string%",
+        example = "SOON"
+)
 public class EffPurgeMessages extends Effect {
     private Expression<Number> vPurge;
     private Expression<String> vBot;

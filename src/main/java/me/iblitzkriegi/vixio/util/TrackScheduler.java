@@ -35,11 +35,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        if (endReason.mayStartNext) {
-            nextTrack();
-        }
         EvntAudioPlayerTrackEnd efc = new EvntAudioPlayerTrackEnd(player, track, endReason);
         Bukkit.getServer().getPluginManager().callEvent(efc);
+        if (endReason.mayStartNext) {
+            nextTrack();
+
+        }
 
     }
     public AudioPlayer getPlayer() {
@@ -50,7 +51,6 @@ import java.util.concurrent.LinkedBlockingQueue;
     }
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        JDA jda = EffLogin.bots.get("t");
         EvntAudioPlayerTrackStart efc = new EvntAudioPlayerTrackStart(player, track);
         Bukkit.getServer().getPluginManager().callEvent(efc);
     }

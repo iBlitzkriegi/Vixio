@@ -1,26 +1,31 @@
 package me.iblitzkriegi.vixio.expressions.audio;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.iblitzkriegi.vixio.effects.EffLogin;
-import me.iblitzkriegi.vixio.events.EvntAudioPlayerTrackStart;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import org.bukkit.event.Event;
 
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "author of track %track%")
-public class ExprAuthorOf extends SimpleExpression<String> {
-    private static Expression<AudioTrack> vTrack;
+@ExprAnnotation.Expression(
+        name = "TitleOfTrack",
+        title = "Title Of Track",
+        desc = "Get the Title of a Track",
+        syntax = "title of track %object%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
+public class ExprTitleOfTrack extends SimpleExpression<String> {
+    Expression<Object> vTrack;
     @Override
     protected String[] get(Event e) {
-        return new String[]{getAuthor(e)};
+        return new String[]{getInfo(e)};
     }
 
     @Override
@@ -40,17 +45,15 @@ public class ExprAuthorOf extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vTrack = (Expression<AudioTrack>) expr[0];
+        vTrack = (Expression<Object>) expr[0];
         return true;
     }
-    private static String getAuthor(Event e){
-        AudioTrack track = vTrack.getSingle(e);
-        if(track!=null) {
-            return track.getInfo().author.toString();
+    private String getInfo(Event e){
+        if(vTrack.getSingle(e) instanceof AudioTrack){
+            return ((AudioTrack) vTrack.getSingle(e)).getInfo().title;
         }else{
-            Skript.warning("Null Audiotrack");
-            return null;
+            System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
+            return "Something dun fuk'd'd'd'd'";
         }
-
     }
 }

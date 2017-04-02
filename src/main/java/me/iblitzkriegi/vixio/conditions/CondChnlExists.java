@@ -16,7 +16,18 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/20/2016.
  */
-@CondAnnotation.Condition(syntax = "channel named %string% exists in guild %string%")
+@CondAnnotation.Condition(
+        name = "ChannelExists",
+        title = "Channel Exists",
+        desc = "Check if a channel exists",
+        syntax = "channel named %string% exists in guild %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$exist\\\":\\n" +
+                "\\t\\tif channel named \\\"general\\\" exists in guild event-guild:\\n" +
+                "\\t\\t\\tbroadcast \\\"That channel is der lolz\\\"")
 public class CondChnlExists extends Condition {
     Expression<String> vName;
     Expression<String> vGuild;

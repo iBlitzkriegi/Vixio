@@ -17,7 +17,21 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@CondAnnotation.Condition(syntax = "%string% is in a voice channel")
+@CondAnnotation.Condition(
+        name = "UserIsInVc",
+        title = "User is in Vc",
+        desc = "Check if a user is in a Voicechannel",
+        syntax = "%string% is in a voice channel",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$summon\\\":\\n" +
+                "\\t\\tif event-user is in a voice channel:\\n" +
+                "\\t\\t\\tjoin voice channel voice channel of event-user with \\\"Rawr\\\"\\n" +
+                "\\t\\t\\treply with \\\"Successfully joined your voice channel.\\\"\\n" +
+                "\\t\\telse:\\n" +
+                "\\t\\t\\treply with \\\"You aren't currently in a voice channel silly!\\\"")
 public class CondIsInVc extends Condition {
     Expression<String> vID;
     @Override

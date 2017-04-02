@@ -17,7 +17,15 @@ import sun.font.Script;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@ExprAnnotation.Expression(returntype = User.class, type = ExpressionType.SIMPLE, syntax = "[event-]bot")
+@ExprAnnotation.Expression(
+        name = "eventbot",
+        title = "event-bot",
+        desc = "Get the Bot out of any Vixio event",
+        syntax = "[event-]bot",
+        returntype = User.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprBot extends SimpleExpression<User> {
     @Override
     protected User[] get(Event e) {
@@ -50,6 +58,9 @@ public class ExprBot extends SimpleExpression<User> {
                 | ScriptLoader.isCurrentEvent(EvntTextChannelCreated.class)
                 | ScriptLoader.isCurrentEvent(EvntTextChannelDeleted.class)
                 | ScriptLoader.isCurrentEvent(EvntGuildBan.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
+                | ScriptLoader.isCurrentEvent(EvntUserStartStreaming.class)
+                | ScriptLoader.isCurrentEvent(EvntMessageAddReaction.class)
                 ){
             return true;
         }
@@ -82,6 +93,12 @@ public class ExprBot extends SimpleExpression<User> {
             return ((EvntUserAvatarUpdate) e).getEvntJDA().getSelfUser();
         }else if (e instanceof EvntGuildBan) {
             return ((EvntGuildBan) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getJDA().getSelfUser();
+        }else if (e instanceof EvntUserStartStreaming) {
+            return ((EvntUserStartStreaming) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntMessageAddReaction) {
+            return ((EvntMessageAddReaction) e).getEvntJDA().getSelfUser();
         }
         return null;
     }

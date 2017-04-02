@@ -12,7 +12,11 @@ public class EffectAnnotation {
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
     public @interface Effect {
+        String name();
+        String title();
+        String desc();
         String syntax();
+        String example();
     }
 
 }

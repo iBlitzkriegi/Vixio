@@ -11,7 +11,12 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/4/2016.
  */
-@EvntAnnotation.Event(name = "PlayerTrackEnd", type = MultiBotGuildCompare.class, syntax = "[discord] track (end|stop) by player %string%")
+@EvntAnnotation.Event(
+        name = "PlayerTrackEnd",
+        title = "Player Track End", desc = "Fired when the track ends",
+        type = MultiBotGuildCompare.class,
+        syntax = "[discord] track (end|stop) by player %string%",
+        example = "on track end by player \\\"Rawr\\\"\\n\\tbroadcast \\\"Event seen by %event-player%\\\"")
 public class EvntAudioPlayerTrackEnd extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override

@@ -5,6 +5,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -19,7 +20,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] mention tag of %string%")
+@ExprAnnotation.Expression(
+        name = "Mentiontagof",
+        title = "Mention tag of",
+        desc = "Get the Mention tag of a User/Guild/Channel",
+        syntax = "[discord] mention tag of %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprMentionOf extends SimpleExpression<String> {
     private Expression<String> id;
     @Override
@@ -47,6 +56,7 @@ public class ExprMentionOf extends SimpleExpression<String> {
         id = (Expression<String>) expr[0];
         return true;
     }
+
     @Nullable
     private String getMention(Event e) {
         for(Map.Entry<String, JDA> u : bots.entrySet()){
@@ -64,6 +74,9 @@ public class ExprMentionOf extends SimpleExpression<String> {
 
                 }
             }
+        }
+        if(e instanceof EvntGuildMemberLeave){
+            return ((EvntGuildMemberLeave) e).getEvntUser().getAsMention();
         }
         return null;
     }

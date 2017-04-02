@@ -14,7 +14,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "author of embed %string%")
+@ExprAnnotation.Expression(
+        name = "AuthorOfEmbed",
+        title = "Author of Embed",
+        desc = "Get the Author of one of your Embeds",
+        syntax = "author of embed %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprAuthorOfEmbed extends SimpleExpression<String>{
     private Expression<String> vEmbed;
     @Override

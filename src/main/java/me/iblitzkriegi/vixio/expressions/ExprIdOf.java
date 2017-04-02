@@ -5,6 +5,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -18,7 +19,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "id of %string%")
+@ExprAnnotation.Expression(
+        name = "IdOf",
+        title = "ID of",
+        desc = "Get the ID of anything in Discord",
+        syntax = "id of %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprIdOf extends SimpleExpression<String> {
     private Expression<String> id;
 
@@ -73,6 +82,9 @@ public class ExprIdOf extends SimpleExpression<String> {
             }else{
                 return u.getValue().getUserById(id.getSingle(e)).getId();
             }
+        }
+        if(e instanceof EvntGuildMemberLeave){
+            return ((EvntGuildMemberLeave) e).getEvntUser().getId();
         }
 
         return null;

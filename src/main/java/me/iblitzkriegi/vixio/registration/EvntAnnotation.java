@@ -13,8 +13,11 @@ public class EvntAnnotation {
     @Target(ElementType.TYPE)
     public @interface Event {
         String name();
+        String title();
+        String desc();
         Class type();
         String syntax();
+        String example();
     }
 
 }

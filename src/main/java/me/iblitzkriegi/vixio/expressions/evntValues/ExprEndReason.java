@@ -19,7 +19,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[event-]reason")
+@ExprAnnotation.Expression(
+        name = "eventreason",
+        title = "event-reason",
+        desc = "Get the reason the Track ended in the AudioTrackEnd event",
+        syntax = "[event-]reason",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprEndReason extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {

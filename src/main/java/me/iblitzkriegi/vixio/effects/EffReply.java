@@ -17,7 +17,13 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord ]reply with %string%")
+@EffectAnnotation.Effect(
+        name = "ReplytoaMessage",
+        title = "Reply to a Message",
+        desc = "Reply to a Message in a event",
+        syntax = "[discord ]reply with %string%",
+        example = "SOON"
+)
 public class EffReply extends Effect{
     private Expression<String> message;
     @Override
@@ -25,11 +31,11 @@ public class EffReply extends Effect{
         if(e instanceof EvntGuildMessageReceive) {
             JDA jda = ((EvntGuildMessageReceive)e).getJDA();
             TextChannel chnl = (TextChannel) ((EvntGuildMessageReceive) e).getEvntChannel();
-            chnl.sendMessage(message.getSingle(e)).queue();
+            jda.getTextChannelById(chnl.getId()).sendMessage(message.getSingle(e)).queue();
         }else if(e instanceof EvntPrivateMessageReceive){
             JDA jda = ((EvntPrivateMessageReceive)e).getJDA();
             PrivateChannel id = ((EvntPrivateMessageReceive)e).getEvntChannel();
-            id.sendMessage(message.getSingle(e)).queue();
+            jda.getPrivateChannelById(id.getId()).sendMessage(message.getSingle(e)).queue();
         }else{
             Skript.warning("You dun diddly dun did fuk up famberino. Bouta sassarino u four eit rn. Damn son, next tiem u might want sum lube b4 u get fuked by dis error.");
         }

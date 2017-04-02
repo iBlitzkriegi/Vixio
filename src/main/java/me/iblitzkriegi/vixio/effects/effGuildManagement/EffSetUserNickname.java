@@ -16,7 +16,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] set nickname of user [with id] %string% to %string% with [bot] %string% in guild [with id] %string%")
+@EffectAnnotation.Effect(
+        name = "SetUserNickname",
+        title = "Set User Nickname",
+        desc = "Set a user's nickname, bot must have permission to do so",
+        syntax = "[discord] set nickname of user [with id] %string% to %string% with [bot] %string% in guild [with id] %string%",
+        example = "SOON"
+)
 public class EffSetUserNickname extends Effect {
     private Expression<String> sName;
     private Expression<String> vGuild;

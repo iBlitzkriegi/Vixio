@@ -16,7 +16,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/2/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] channel position of %string%")
+@ExprAnnotation.Expression(
+        name = "ChannelPositionOf",
+        title = "Channel Position",
+        desc = "Get the Position of a TextChannel via it's ID",
+        syntax = "[discord] channel position of [channel with id] %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprChannelPosition extends SimpleExpression<String> {
     private Expression<String> vID;
     @Override

@@ -14,7 +14,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/1/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] (make|create) [discord] role [named] %string% in [guild with id] %string% with %string%")
+@EffectAnnotation.Effect(
+        name = "CreateRole",
+        title = "Create Role",
+        desc = "Create a Role in a Guild, bot must have permission to do so!",
+        syntax = "[discord] (make|create) [discord] role [named] %string% in [guild with id] %string% with %string%",
+        example = "SOON"
+)
 public class EffMakeRole extends Effect {
     private Expression<String> sName;
     private Expression<String> vGuild;

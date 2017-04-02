@@ -17,7 +17,15 @@ import java.util.List;
 /**
  * Created by Blitz on 12/19/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "queue of [audio] player %string%")
+@ExprAnnotation.Expression(
+        name = "QueueOfPlayer",
+        title = "Queue Of Player",
+        desc = "Get the Queue of one of your players",
+        syntax = "queue of [audio] player %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprPlayerQueueOf extends SimpleExpression<AudioTrack> {
     private static Expression<String> vBot;
     @Override

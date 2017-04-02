@@ -12,12 +12,20 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/18/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "identifier of track %track%")
+@ExprAnnotation.Expression(
+        name = "IdentifierOfTrack",
+        title = "Identifier Of Track",
+        desc = "Get the Identifier of a track",
+        syntax = "identifier of track %object%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprIdentifierOfTrack extends SimpleExpression<String> {
-    private static Expression<AudioTrack> vTrack;
+    Expression<Object> vTrack;
     @Override
     protected String[] get(Event e) {
-        return new String[]{getIdentifier(e)};
+        return new String[]{getInfo(e)};
     }
 
     @Override
@@ -37,11 +45,15 @@ public class ExprIdentifierOfTrack extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        vTrack = (Expression<AudioTrack>) expr[0];
+        vTrack = (Expression<Object>) expr[0];
         return true;
     }
-    private static String getIdentifier(Event e){
-        AudioTrack track = vTrack.getSingle(e);
-        return track.getInfo().identifier;
+    private String getInfo(Event e){
+        if(vTrack.getSingle(e) instanceof AudioTrack){
+            return ((AudioTrack) vTrack.getSingle(e)).getInfo().identifier;
+        }else{
+            System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
+            return "Something dun fuk'd'd'd'd'";
+        }
     }
 }

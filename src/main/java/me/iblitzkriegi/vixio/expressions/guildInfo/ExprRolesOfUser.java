@@ -19,7 +19,15 @@ import java.util.Map;
 /**
  * Created by Blitz on 12/31/2016.
  */
-@ExprAnnotation.Expression(returntype = Role.class, type = ExpressionType.SIMPLE, syntax = "role[s] of user %user% in [guild] [with id] %string%")
+@ExprAnnotation.Expression(
+        name = "RolesOfUser",
+        title = "Roles of User in Guild",
+        desc = "Get the Roles of a User in a Guild via the Guild's ID and the User",
+        syntax = "role[s] of user %user% in [guild] [with id] %string%",
+        returntype = Role.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprRolesOfUser extends SimpleExpression<Role> {
     Expression<User> vUser;
     Expression<String> vGuild;

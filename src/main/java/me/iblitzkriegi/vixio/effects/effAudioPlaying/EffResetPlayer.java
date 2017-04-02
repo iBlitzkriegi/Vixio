@@ -14,7 +14,21 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@EffectAnnotation.Effect(syntax = "(reset|clear) [audio] player [named] %string%")
+@EffectAnnotation.Effect(
+        name = "ResetPlayer",
+        title = "Reset Player",
+        desc = "Reset one of your AudioPlayers",
+        syntax = "(reset|clear) [audio] player [named] %string%",
+        example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
+                "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
+                "\\tset {_command} to {_args::1}\\n" +
+                "\\tremove {_args::1} from {_args::*}\\n" +
+                "\\tif {_command} starts with \\\"$reset\\\":\\n" +
+                "\\t\\tif bot \\\"Rawr\\\" is playing audio:\\n" +
+                "\\t\\t\\treset player \\\"Rawr\\\"\\n" +
+                "\\t\\t\\treply with \\\"You have successfully reset the player.\\\"\\n" +
+                "\\t\\telse:\\n" +
+                "\\t\\t\\treply with \\\"You weren't playing anything\\\"")
 public class EffResetPlayer extends Effect {
     Expression<String> vBot;
     @Override

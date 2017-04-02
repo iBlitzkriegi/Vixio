@@ -16,7 +16,13 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 /**
  * Created by Blitz on 11/8/2016.
  */
-@EffectAnnotation.Effect(syntax = "[discord] (make|create) codeblock %string% [with lang %-string%] for %string% with %string%")
+@EffectAnnotation.Effect(
+        name = "MakeCodeblock",
+        title = "Create Codeblock",
+        desc = "Create a codeblock and send it to a Channe;",
+        syntax = "[discord] (make|create) codeblock %string% [with lang %-string%] for %string% with %string%",
+        example = "SOON"
+)
 public class EffMakeCodeblock extends Effect {
     Expression<String> vCodeblock;
     Expression<String> vChannel;
@@ -50,7 +56,7 @@ public class EffMakeCodeblock extends Effect {
                 }
                 builder.append(vToBuild).append("\n");
                 builder.append("```").append("\n");
-                tc.getPrivateChannel().sendMessage(builder.build()).queue();
+                tc.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(builder.build()).queue());
             }
         }
     }

@@ -7,6 +7,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.events.EvntGuildMessageBotSend;
 import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
 import me.iblitzkriegi.vixio.events.EvntPrivateMessageReceive;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
@@ -16,7 +17,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 10/30/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[event-]string")
+@ExprAnnotation.Expression(
+        name = "eventstring",
+        title = "event-string",
+        desc = "Get the content of the message out of the Vixio Message Receive events",
+        syntax = "[event-]string",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprString extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
@@ -40,12 +49,13 @@ public class ExprString extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)) {
-            return true;
-        }else if (ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)) {
+        if (ScriptLoader.isCurrentEvent(EvntGuildMessageReceive.class)
+                | ScriptLoader.isCurrentEvent(EvntPrivateMessageReceive.class)
+                |ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
+                ) {
             return true;
         }
-        Skript.warning("Cannot use 'Message' outside of discord events!");
+        Skript.warning("Cannot use 'event-string' outside of discord events!");
         return false;
     }
     @Nullable
@@ -56,6 +66,8 @@ public class ExprString extends SimpleExpression<String> {
             return ((EvntGuildMessageReceive) e).getEvntMessage().getContent();
         }else if(e instanceof EvntPrivateMessageReceive){
             return ((EvntPrivateMessageReceive)e).getEvntMessage().getContent();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getEvntMessage().getContent();
         }
         return null;
     }

@@ -15,7 +15,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = String.class, type = ExpressionType.SIMPLE, syntax = "[discord] cleverbot response for %string%")
+@ExprAnnotation.Expression(
+        name = "CleverbotResponseo",
+        title = "Cleverbot response for string",
+        desc = "Get the cleverbot response for a string",
+        syntax = "[discord] cleverbot response for %string%",
+        returntype = String.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprChatterbotResponse extends SimpleExpression<String> {
     Expression<String> vText;
     @Override

@@ -16,7 +16,15 @@ import java.util.List;
 /**
  * Created by Blitz on 12/21/2016.
  */
-@ExprAnnotation.Expression(returntype = List.class, type = ExpressionType.SIMPLE, syntax = "fields of embed %string%")
+@ExprAnnotation.Expression(
+        name = "FieldsOfEmbed",
+        title = "Fields of Embed",
+        desc = "Get the current added Fields to one of your Embeds",
+        syntax = "fields of embed %string%",
+        returntype = List.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprFieldsOfEmbed extends SimpleExpression<List>{
     private Expression<String> vEmbed;
     @Override

@@ -15,7 +15,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 12/17/2016.
  */
-@ExprAnnotation.Expression(returntype = AudioTrack.class, type = ExpressionType.SIMPLE, syntax = "track [audio] player %string% is playing]")
+@ExprAnnotation.Expression(
+        name = "TrackPlayerIsPlaying",
+        title = "Track Player Is Playing",
+        desc = "Get the Track one of your player's is playing",
+        syntax = "track [audio] player %string% is playing]",
+        returntype = AudioTrack.class,
+        type = ExpressionType.SIMPLE,
+        example = "SUBMIT EXAMPLES TO Blitz#3273"
+)
 public class ExprPlayerTrack extends SimpleExpression<AudioTrack> {
     private static Expression<String> vBot;
     @Override

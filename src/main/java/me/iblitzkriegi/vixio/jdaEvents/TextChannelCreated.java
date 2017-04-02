@@ -15,5 +15,6 @@ public class TextChannelCreated extends ListenerAdapter {
     public void onTextChannelCreate(TextChannelCreateEvent e){
         EvntTextChannelCreated efc = new EvntTextChannelCreated(e.getChannel(), e.getGuild(), e.getJDA(), e.getChannel().getCreationTime());
         Bukkit.getServer().getPluginManager().callEvent(efc);
+
     }
 }

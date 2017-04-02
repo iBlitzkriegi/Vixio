@@ -6,13 +6,18 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Blitz on 11/2/2016.
  */
 public class DocsStuff {
-    public static void setUpSyntaxes() {
-        File file = new File(Vixio.pluginFile, "Syntaxs.txt");
+    public static void setupSyntaxes(){
+        File oldfile = new File(Vixio.pluginFile, "Syntaxs.txt");
+        if(oldfile.exists()){
+            oldfile.delete();
+        }
+        File file = new File(Vixio.pluginFile, "Syntaxes.txt");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -22,341 +27,188 @@ public class DocsStuff {
         } else {
             file.delete();
         }
-        int it = 0;
-        for (String s : VixioAnnotationParser.vExpressions) {
-            if (it == 0) {
-                try {
-                    FileWriter fw = null;
-                    try {
-                        fw = new FileWriter(file, true);
-                    } catch (IOException r) {
-                        r.printStackTrace();
-                    }
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    try {
-                        bw.write("-=Expressions=-");
-
-                    } catch (IOException b) {
-                        b.printStackTrace();
-                    }
-                    try {
-                        bw.newLine();
-                    } catch (IOException t) {
-                        t.printStackTrace();
-                    }
-                    try {
-                        bw.flush();
-                    } catch (IOException m) {
-                        m.printStackTrace();
-                    }
-                    try {
-                        bw.close();
-                    } catch (IOException p) {
-                        p.printStackTrace();
-                    }
-                } catch (Exception x) {
-                    x.printStackTrace();
-                }
-                it++;
-            }
-            String towrite = s.replaceAll("expression: ", "");
-            try {
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(file, true);
-                } catch (IOException r) {
-                    r.printStackTrace();
-                }
-                BufferedWriter bw = new BufferedWriter(fw);
-                try {
-                    bw.write(towrite);
-
-                } catch (IOException b) {
-                    b.printStackTrace();
-                }
-                try {
-                    bw.newLine();
-                } catch (IOException t) {
-                    t.printStackTrace();
-                }
-                try {
-                    bw.flush();
-                } catch (IOException m) {
-                    m.printStackTrace();
-                }
-                try {
-                    bw.close();
-                } catch (IOException p) {
-                    p.printStackTrace();
-                }
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-
-        }
-        int itt = 0;
-        for (String s : VixioAnnotationParser.vEffects) {
-            if (itt == 0) {
-                try {
-                    FileWriter fw = null;
-                    try {
-                        fw = new FileWriter(file, true);
-                    } catch (IOException r) {
-                        r.printStackTrace();
-                    }
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    try {
-                        bw.write("-=Effects=-");
-
-                    } catch (IOException b) {
-                        b.printStackTrace();
-                    }
-                    try {
-                        bw.newLine();
-                    } catch (IOException t) {
-                        t.printStackTrace();
-                    }
-                    try {
-                        bw.flush();
-                    } catch (IOException m) {
-                        m.printStackTrace();
-                    }
-                    try {
-                        bw.close();
-                    } catch (IOException p) {
-                        p.printStackTrace();
-                    }
-                } catch (Exception x) {
-                    x.printStackTrace();
-                }
-                itt++;
-            }
-            String towrite = s.replaceAll("effect: ", "");
-            try {
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(file, true);
-                } catch (IOException r) {
-                    r.printStackTrace();
-                }
-                BufferedWriter bw = new BufferedWriter(fw);
-                try {
-                    bw.write(towrite);
-
-                } catch (IOException b) {
-                    b.printStackTrace();
-                }
-                try {
-                    bw.newLine();
-                } catch (IOException t) {
-                    t.printStackTrace();
-                }
-                try {
-                    bw.flush();
-                } catch (IOException m) {
-                    m.printStackTrace();
-                }
-                try {
-                    bw.close();
-                } catch (IOException p) {
-                    p.printStackTrace();
-                }
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-
-        }
-        int ittt = 0;
-        for (String s : VixioAnnotationParser.vEvents) {
-            if (ittt == 0) {
-                try {
-                    FileWriter fw = null;
-                    try {
-                        fw = new FileWriter(file, true);
-                    } catch (IOException r) {
-                        r.printStackTrace();
-                    }
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    try {
-                        bw.write("-=Events=-");
-
-                    } catch (IOException b) {
-                        b.printStackTrace();
-                    }
-                    try {
-                        bw.newLine();
-                    } catch (IOException t) {
-                        t.printStackTrace();
-                    }
-                    try {
-                        bw.flush();
-                    } catch (IOException m) {
-                        m.printStackTrace();
-                    }
-                    try {
-                        bw.close();
-                    } catch (IOException p) {
-                        p.printStackTrace();
-                    }
-                } catch (Exception x) {
-                    x.printStackTrace();
-                }
-                ittt++;
-            }
-            String towrite = s.replaceAll("event: ", "");
-            try {
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(file, true);
-                } catch (IOException r) {
-                    r.printStackTrace();
-                }
-                BufferedWriter bw = new BufferedWriter(fw);
-                try {
-                    bw.write(towrite);
-
-                } catch (IOException b) {
-                    b.printStackTrace();
-                }
-                try {
-                    bw.newLine();
-                } catch (IOException t) {
-                    t.printStackTrace();
-                }
-                try {
-                    bw.flush();
-                } catch (IOException m) {
-                    m.printStackTrace();
-                }
-                try {
-                    bw.close();
-                } catch (IOException p) {
-                    p.printStackTrace();
-                }
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-        }
-        int itttt = 0;
-        for (String s : VixioAnnotationParser.vConditions) {
-            if (itttt == 0) {
-                try {
-                    FileWriter fw = null;
-                    try {
-                        fw = new FileWriter(file, true);
-                    } catch (IOException r) {
-                        r.printStackTrace();
-                    }
-                    BufferedWriter bw = new BufferedWriter(fw);
-                    try {
-                        bw.write("-=Conditions=-");
-
-                    } catch (IOException b) {
-                        b.printStackTrace();
-                    }
-                    try {
-                        bw.newLine();
-                    } catch (IOException t) {
-                        t.printStackTrace();
-                    }
-                    try {
-                        bw.flush();
-                    } catch (IOException m) {
-                        m.printStackTrace();
-                    }
-                    try {
-                        bw.close();
-                    } catch (IOException p) {
-                        p.printStackTrace();
-                    }
-                } catch (Exception x) {
-                    x.printStackTrace();
-                }
-                itttt++;
-            }
-            String towrite = s.replaceAll("condition: ", "");
-            try {
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(file, true);
-                } catch (IOException r) {
-                    r.printStackTrace();
-                }
-                BufferedWriter bw = new BufferedWriter(fw);
-                try {
-                    bw.write(towrite);
-
-                } catch (IOException b) {
-                    b.printStackTrace();
-                }
-                try {
-                    bw.newLine();
-                } catch (IOException t) {
-                    t.printStackTrace();
-                }
-                try {
-                    bw.flush();
-                } catch (IOException m) {
-                    m.printStackTrace();
-                }
-                try {
-                    bw.close();
-                } catch (IOException p) {
-                    p.printStackTrace();
-                }
-
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-        }
-        finishSyntax();
-    }
-
-    private static void finishSyntax() {
-        File file = new File(Vixio.pluginFile, "Syntaxs.txt");
         try {
-            FileWriter fw = null;
-            try {
-                fw = new FileWriter(file, true);
-            } catch (IOException r) {
-                r.printStackTrace();
-            }
+            FileWriter fw;
+            fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            try {
-                bw.write("-=Statistics=-");
-                bw.newLine();
-                bw.write("Conditions: " + VixioAnnotationParser.vConditions.size());
-                bw.newLine();
-                bw.write("Events:" + VixioAnnotationParser.vEvents.size());
-                bw.newLine();
-                bw.write("Expressions: " + VixioAnnotationParser.vExpressions.size());
-                bw.newLine();
-                bw.write("Effects: " + VixioAnnotationParser.vEffects.size());
-                bw.newLine();
-                bw.write("Classes: " + VixioAnnotationParser.classes);
-
-            } catch (IOException b) {
-                b.printStackTrace();
+            bw.write("{\n\t\"conditions\":{");
+            bw.newLine();
+            int i = 0;
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vCondTitle.entrySet()){
+                if(i != VixioAnnotationParser.vCondTitle.size() - 1) {
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vCondShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vCondSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vCondExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vCondDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t},");
+                    bw.newLine();
+                    i++;
+                }else{
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vCondShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vCondSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vCondExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vCondDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t}");
+                    bw.newLine();
+                    i++;
+                }
             }
-            try {
-                bw.newLine();
-            } catch (IOException t) {
-                t.printStackTrace();
-            }
-            try {
-                bw.flush();
-            } catch (IOException m) {
-                m.printStackTrace();
-            }
-            try {
-                bw.close();
-
-            } catch (IOException p) {
-                p.printStackTrace();
-            }
-        } catch (Exception x) {
-            x.printStackTrace();
+            bw.write("\t},");
+            bw.newLine();
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        try {
+            FileWriter fw;
+            fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("\t\"events\":{");
+            bw.newLine();
+            int i = 0;
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vEventTitle.entrySet()){
+                if(i != VixioAnnotationParser.vEventTitle.size() - 1) {
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vEvntShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vEventSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vEventExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vEventDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t},");
+                    bw.newLine();
+                    i++;
+                }else {
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vEvntShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vEventSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vEventExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vEventDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t}");
+                    bw.newLine();
+                    i++;
+                }
+            }
+            bw.write("\t},");
+            bw.newLine();
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fw;
+            fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("\t\"effects\":{");
+            bw.newLine();
+            int i = 0;
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vEffTitle.entrySet()){
+                if(i != VixioAnnotationParser.vEffTitle.size() - 1) {
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vEffShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vEffSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vEffExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vEffDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t},");
+                    bw.newLine();
+                    i++;
+                }else{
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vEffTitle.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vEffSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vEffExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vEffDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t}");
+                    bw.newLine();
+                    i++;
+                }
+            }
+            bw.write("\t},");
+            bw.newLine();
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            FileWriter fw;
+            fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("\t\"expressions\":{");
+            bw.newLine();
+            int i = 0;
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vExprTitle.entrySet()){
+                if(i != VixioAnnotationParser.vExprTitle.size() - 1) {
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vExprShowroom.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vExprSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vExprExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vExprDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t},");
+                    bw.newLine();
+                    i++;
+                }else{
+                    bw.write("\t\t\"" + s.getValue() + "\":{");
+                    bw.newLine();
+                    bw.write("\t\t\t\"title\":\"" + VixioAnnotationParser.vExprTitle.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"syntax\":\"" + VixioAnnotationParser.vExprSyntax.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"example\":\"" + VixioAnnotationParser.vExprExample.get(s.getValue()) + "\",");
+                    bw.newLine();
+                    bw.write("\t\t\t\"description\":\"" + VixioAnnotationParser.vExprDesc.get(s.getValue()) + "\"");
+                    bw.newLine();
+                    bw.write("\t\t}");
+                    bw.newLine();
+                    i++;
+                }
+            }
+            bw.write("\t}");
+            bw.newLine();
+            bw.write("}");
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
