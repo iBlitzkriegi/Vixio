@@ -66,13 +66,13 @@ public class ExprNicknameOf extends SimpleExpression<String> {
                 if (member.getNickname() != null) {
                     return member.getNickname();
                 } else {
-                    return "NONE";
+                    return member.getUser().getName();
                 }
             } else {
                 return "User specified is not in the Guild you specified.";
             }
 
         }
-        return "NONE";
+        return "<none>";
     }
 }

@@ -8,7 +8,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
 import java.util.Map;
@@ -22,16 +22,16 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
         name = "OwnerOf",
         title = "Owner Of",
         desc = "Get the Owner of a Guild via it's ID",
-        syntax = "owner of %string%",
-        returntype = Member.class,
+        syntax = "owner of guild [with id] %string%",
+        returntype = User.class,
         type = ExpressionType.SIMPLE,
         example = "SUBMIT EXAMPLES TO Blitz#3273"
 )
-public class ExprOwnerOf  extends SimpleExpression<Member>{
-    private Expression<Member> vID;
+public class ExprOwnerOf  extends SimpleExpression<User>{
+    private Expression<User> vID;
     @Override
-    protected Member[] get(Event e) {
-        return new Member[]{getOwnerOf(e)};
+    protected User[] get(Event e) {
+        return new User[]{getOwnerOf(e)};
     }
 
     @Override
@@ -40,8 +40,8 @@ public class ExprOwnerOf  extends SimpleExpression<Member>{
     }
 
     @Override
-    public Class<? extends Member> getReturnType() {
-        return Member.class;
+    public Class<? extends User> getReturnType() {
+        return User.class;
     }
 
     @Override
@@ -53,10 +53,10 @@ public class ExprOwnerOf  extends SimpleExpression<Member>{
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         return true;
     }
-    private Member getOwnerOf(Event e) {
+    private User getOwnerOf(Event e) {
         for (Map.Entry<String, JDA> u : bots.entrySet()) {
             for (Guild vG : u.getValue().getGuilds()) {
-                return vG.getOwner();
+                return vG.getOwner().getUser();
             }
         }
         return null;

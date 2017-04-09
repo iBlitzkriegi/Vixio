@@ -7,7 +7,6 @@ import ch.njol.util.Kleenean;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 

@@ -4,10 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.EvntAudioPlayerTrackEnd;
 import me.iblitzkriegi.vixio.events.EvntAudioPlayerTrackStart;
-import net.dv8tion.jda.core.JDA;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

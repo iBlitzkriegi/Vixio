@@ -17,10 +17,9 @@ public class UserUpdateStatus extends ListenerAdapter {
     public void onUserOnlineStatusUpdate(UserOnlineStatusUpdateEvent e){
         User user = e.getUser();
         JDA jda = e.getJDA();
-        OnlineStatus oldStatus = e.getPreviousOnlineStatus();
         Guild g = e.getGuild();
         OnlineStatus newStatus = g.getMember(e.getUser()).getOnlineStatus();
-        EvntUserStatusChange efc = new EvntUserStatusChange(user, newStatus, oldStatus, jda);
+        EvntUserStatusChange efc = new EvntUserStatusChange(user, newStatus, g, jda);
         Bukkit.getServer().getPluginManager().callEvent(efc);
     }
 }

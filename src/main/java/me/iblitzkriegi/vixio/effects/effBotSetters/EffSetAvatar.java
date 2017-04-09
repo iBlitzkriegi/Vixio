@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
-
 /**
  * Created by Blitz on 11/8/2016.
  */

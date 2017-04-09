@@ -1,8 +1,6 @@
 package me.iblitzkriegi.vixio.jdaEvents;
 
-import me.iblitzkriegi.vixio.events.EvntUserJoinVc;
 import me.iblitzkriegi.vixio.events.EvntUserLeaveVc;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;

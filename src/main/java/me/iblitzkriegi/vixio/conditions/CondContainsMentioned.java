@@ -3,11 +3,8 @@ package me.iblitzkriegi.vixio.conditions;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.localization.Message;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.registration.CondAnnotation;
-import me.iblitzkriegi.vixio.registration.ExprAnnotation;
-import net.dv8tion.jda.core.JDA;
 import org.bukkit.event.Event;
 
 /**

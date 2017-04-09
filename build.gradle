@@ -1,6 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "1.2.4"
-	id 'com.github.ben-manes.versions' version '0.13.0'
+    id 'com.github.ben-manes.versions' version '0.13.0'
     id "de.undercouch.download" version "3.1.2"
     id 'java'
 }
@@ -26,71 +26,71 @@ version = project.property("version")
 sourceCompatibility = project.property("sourceversion")
 
 configurations {
-	plugins {
+    plugins {
         description = 'dependencies that need to be present for compilation and on the server, but not in it\'s classpath'
         transitive = true
-	}
-	
-	providedServer {
+    }
+
+    providedServer {
         description = 'dependencies that need to be present for compilation and on the server'
         transitive = true
-	}
-	
-	provided {
+    }
+
+    provided {
         description = 'dependencies that only need to be present for compilation'
         transitive = true
-        
+
         extendsFrom providedServer
         extendsFrom plugins
-	}
-	
-	compileOnly.extendsFrom provided
-	
-	serverOnly {
+    }
+
+    compileOnly.extendsFrom provided
+
+    serverOnly {
         description = 'dependencies that only need to be present for on the server'
         transitive = true
-		
-		extendsFrom providedServer
-		exclude group: 'org.spigotmc', module: 'spigot-api'
-	}
+
+        extendsFrom providedServer
+        exclude group: 'org.spigotmc', module: 'spigot-api'
+    }
 }
 
 dependencies {
 
-	// Spigot API
+    // Spigot API
     provided group: 'org.spigotmc', name: 'spigot-api', version: project.property("apiversion")
-    
+
     // Spigot server
     serverOnly group: 'org.spigotmc', name: 'spigot', version: project.property("apiversion")
-	
-	// Bukkit 
+
+    // Bukkit
     providedServer group: 'org.bukkit', name: 'bukkit', version: project.property("apiversion")
-	
-	// Craftbukkit
-	providedServer group: 'org.bukkit', name: 'craftbukkit', version: project.property("apiversion")
-    
-	// JDA
+
+    // Craftbukkit
+    providedServer group: 'org.bukkit', name: 'craftbukkit', version: project.property("apiversion")
+
+    // JDA
     compile 'net.dv8tion:JDA:3.0.BETA2_138'
-    
+
     // Provided local jars
     provided fileTree(dir: 'libs/provided', include: '*.jar')
-	
-	// Other plugins this depends on
+
+    // Other plugins this depends on
     plugins fileTree(dir: 'libs/plugins', include: '*.jar')
-    
+
     // Jars to include in that shaded jar
     compile fileTree(dir: 'libs/compile', include: '*.jar')
     compile 'com.sedmelluq:lavaplayer:1.2.10'
-    compile 'ca.pjer:chatter-bot-api:1.4.5'
+    compile 'ca.pjer:chatter-bot-api:1.4.7'
     compile 'com.vdurmont:emoji-java:3.1.3'
 
 
 }
 
 shadowJar {
-	classifier = ''
-	
-	relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
+    classifier = ''
+
+    relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
     relocate 'org.apache.http', project.group + ".org.apache.http"
     destinationDir = new File("C:\\Users\\matthew\\Desktop\\VixioSk\\plugins");
 }
@@ -99,7 +99,7 @@ processResources {
     from ('src/main/java') {
         include 'plugin.yml'
     }
-    
+
     filter ReplaceTokens, tokens: [
             "apiversion": project.property("apiversion"),
             "name"   : project.property("name"),
@@ -157,13 +157,13 @@ task buildSpigot(type: Exec) {
         enabled = false;
     } else {
         dependsOn 'cleanSpigotBuild', 'downloadBuildTools'
-     	
-     	if (System.getProperty('os.name').toLowerCase().contains('windows')) {
-     		commandLine "where git".execute().text.trim().replace('cmd\\git.exe', 'bin\\sh.exe'), '-login', '-c', "java -jar BuildTools.jar --rev " + project.property("apibuildtoolversion")
-     	} else {
-     		commandLine "java -jar BuildTools.jar --rev " + project.property("apibuildtoolversion")
-     	}
-    	workingDir = spigotBuildDir
+
+        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+            commandLine "where git".execute().text.trim().replace('cmd\\git.exe', 'bin\\sh.exe'), '-login', '-c', "java -jar BuildTools.jar --rev " + project.property("apibuildtoolversion")
+        } else {
+            commandLine "java -jar BuildTools.jar --rev " + project.property("apibuildtoolversion")
+        }
+        workingDir = spigotBuildDir
     }
 }
 
@@ -192,5 +192,5 @@ def hasArtifact(groupId, artifactId, version) {
 }
 
 wrapper {
-	gradleVersion = '3.2.1'
+    gradleVersion = '3.2.1'
 }

@@ -1,8 +1,6 @@
 package me.iblitzkriegi.vixio.jdaEvents;
 
-import me.iblitzkriegi.vixio.events.EvntTextChannelCreated;
 import me.iblitzkriegi.vixio.events.EvntTextChannelDeleted;
-import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelDeleteEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;

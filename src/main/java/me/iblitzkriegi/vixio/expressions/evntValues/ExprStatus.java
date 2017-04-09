@@ -58,15 +58,8 @@ public class ExprStatus extends SimpleExpression<String>{
     private static String getOnlineStatus(Event e){
         if(e == null){
             return null;
-        }
-        if(e instanceof EvntUserStatusChange){
-            if(((EvntUserStatusChange)e).getEvntNewStatus().name().equalsIgnoreCase("UNKNOWN")){
-                return "Do Not Disturb";
-            }else{
-                return ((EvntUserStatusChange)e).getEvntNewStatus().name();
-            }
-        }else if (e instanceof EvntUserStartStreaming) {
-            return ((EvntUserStartStreaming) e).getEvntCurrent();
+        }if (e instanceof EvntUserStartStreaming) {
+            return ((EvntUserStartStreaming) e).getEvntCur();
         }
         return "idfk how you managed to get this value but...Uh..Hi?";
     }

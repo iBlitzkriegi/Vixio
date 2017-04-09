@@ -38,7 +38,7 @@ public class EffPurgeMessages extends Effect {
             MessageHistory history = channel .getHistory();
             List<Message> messages = history.retrievePast(Integer.parseInt(String.valueOf(vPurge.getSingle(e)))).complete();
             for (Message s : messages) {
-                s.deleteMessage().queue();
+                s.delete().queue();
             }
         } catch (PermissionException x){
             x.printStackTrace();

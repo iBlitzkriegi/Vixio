@@ -7,14 +7,9 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.EvntAudioPlayerTrackEnd;
-import me.iblitzkriegi.vixio.events.EvntAudioPlayerTrackStart;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import org.bukkit.event.Event;
-
-import java.util.Map;
 
 /**
  * Created by Blitz on 12/18/2016.

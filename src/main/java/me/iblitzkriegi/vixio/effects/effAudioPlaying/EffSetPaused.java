@@ -6,7 +6,6 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import org.bukkit.event.Event;
 

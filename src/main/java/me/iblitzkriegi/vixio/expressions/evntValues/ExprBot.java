@@ -12,7 +12,6 @@ import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.event.Event;
-import sun.font.Script;
 
 /**
  * Created by Blitz on 11/1/2016.

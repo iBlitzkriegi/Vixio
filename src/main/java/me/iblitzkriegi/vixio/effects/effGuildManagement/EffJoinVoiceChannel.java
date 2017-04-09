@@ -1,23 +1,14 @@
 package me.iblitzkriegi.vixio.effects.effGuildManagement;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.effects.EffLog;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import me.iblitzkriegi.vixio.util.AudioPlayerSendHandler;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.audio.hooks.ConnectionListener;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.managers.AudioManager;
 import org.bukkit.event.Event;

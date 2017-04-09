@@ -1,7 +1,6 @@
 package me.iblitzkriegi.vixio.effects.effAudioPlaying;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.effects.EffLog;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -14,15 +13,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.managers.AudioManager;
 import org.bukkit.event.Event;
 
 import static me.iblitzkriegi.vixio.effects.EffLogin.audioManagers;
-import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 
 /**
  * Created by Blitz on 12/17/2016.

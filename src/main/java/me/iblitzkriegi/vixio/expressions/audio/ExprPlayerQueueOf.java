@@ -11,7 +11,6 @@ import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
 import org.bukkit.event.Event;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

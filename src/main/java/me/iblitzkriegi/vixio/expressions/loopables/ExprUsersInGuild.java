@@ -10,8 +10,11 @@ import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,19 +22,19 @@ import java.util.Map;
  * Created by Blitz on 2/7/2017.
  */
 @ExprAnnotation.Expression(
-        name = "MembersInGuild",
+        name = "UsersInGuild",
         title = "Users in Guild",
         desc = "Get the Users in a Guild, loopable",
-        syntax = "members in guild [with id] %string%",
+        syntax = "users in guild [with id] %string%",
         returntype = List.class,
         type = ExpressionType.SIMPLE,
         example = "SUBMIT EXAMPLES TO Blitz#3273"
 )
-public class ExprMembersInGuild extends SimpleExpression<Member>{
+public class ExprUsersInGuild extends SimpleExpression<User>{
     Expression<String> vGuild;
     @Override
-    protected Member[] get(Event e) {
-        return getMembers(e).toArray(new Member[0]);
+    protected User[] get(Event e) {
+        return getUsers(e).toArray(new User[0]);
     }
 
     @Override
@@ -40,8 +43,8 @@ public class ExprMembersInGuild extends SimpleExpression<Member>{
     }
 
     @Override
-    public Class<? extends Member> getReturnType() {
-        return Member.class;
+    public Class<? extends User> getReturnType() {
+        return User.class;
     }
 
     @Override
@@ -54,11 +57,17 @@ public class ExprMembersInGuild extends SimpleExpression<Member>{
         vGuild = (Expression<String>) expressions[0];
         return true;
     }
-    private List<Member> getMembers(Event e){
+    private List<User> getUsers(Event e){
+        List<User> users = new ArrayList<>();
         for(Map.Entry<String, JDA> jda : EffLogin.bots.entrySet()){
             if(jda.getValue().getGuildById(vGuild.getSingle(e))!=null){
-                return jda.getValue().getGuildById(vGuild.getSingle(e)).getMembers();
+                for(Member m : jda.getValue().getGuildById(vGuild.getSingle(e)).getMembers()){
+                    users.add(m.getUser());
+                }
             }
+        }
+        if(users!=null){
+            return users;
         }
         Skript.warning("Could not find guild with that ID!");
         return null;

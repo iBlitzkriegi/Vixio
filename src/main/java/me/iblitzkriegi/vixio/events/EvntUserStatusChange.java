@@ -4,6 +4,7 @@ import me.iblitzkriegi.vixio.registration.EvntAnnotation;
 import me.iblitzkriegi.vixio.util.MultiBotGuildCompare;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -11,7 +12,8 @@ import org.bukkit.event.HandlerList;
 /**
  * Created by Blitz on 11/7/2016.
  */
-@EvntAnnotation.Event(name = "UserOnlineStatusUpdate", title = "User Online Status Update", desc = "Fired when a user updates their online status.", type = MultiBotGuildCompare.class, syntax = "[discord] [user] status change seen by %string%", example = "TESTING STUFF")
+@EvntAnnotation.Event(name = "UserOnlineStatusUpdate", title = "User Online Status Update", desc = "Fired when a user updates their online status.",
+        type = MultiBotGuildCompare.class, syntax = "[discord] [user] status change seen by %string%", example = "TESTING STUFF")
 public class EvntUserStatusChange extends Event {
     private static final HandlerList hls = new HandlerList();
     @Override
@@ -22,14 +24,14 @@ public class EvntUserStatusChange extends Event {
         return hls;
     }
     private OnlineStatus vOnlineStatus;
-    private OnlineStatus vOldOnlineStatus;
     private User vUser;
     private JDA vJDA;
-    public EvntUserStatusChange(User eventuser, OnlineStatus newstatus, OnlineStatus oldstatus, JDA jda){
-        vUser = eventuser;
-        vOnlineStatus = newstatus;
-        vOldOnlineStatus = oldstatus;
+    private Guild vGuild;
+    public EvntUserStatusChange(User user, OnlineStatus status, Guild g, JDA jda){
+        vUser = user;
+        vOnlineStatus = status;
         vJDA = jda;
+        vGuild = g;
     }
     public JDA getEvntJDA(){
         return vJDA;
@@ -37,11 +39,11 @@ public class EvntUserStatusChange extends Event {
     public User getEvntUser(){
         return vUser;
     }
-    public OnlineStatus getEvntOldStatus(){
-        return vOldOnlineStatus;
-    }
-    public OnlineStatus getEvntNewStatus(){
+    public OnlineStatus getEvntStatus(){
         return vOnlineStatus;
+    }
+    public Guild getEvntGuild(){
+        return vGuild;
     }
 
 }

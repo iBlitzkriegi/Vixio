@@ -7,7 +7,6 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
-import me.iblitzkriegi.vixio.jdaEvents.GuildMessageReceived;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;

@@ -13,21 +13,22 @@ import org.bukkit.event.Event;
  * Created by Blitz on 11/8/2016.
  */
 @EffectAnnotation.Effect(
-        name = "DeleteMessage",
-        title = "Delete Message",
-        desc = "Delete a Message",
-        syntax = "[discord] delete message %message% with [bot] %string%",
+        name = "EditMessage",
+        title = "Edit Message",
+        desc = "Edit a Message",
+        syntax = "[discord] edit message %message% to say %string% with [bot] %string%",
         example = "SOON"
 )
-public class EffDeleteMessage extends Effect {
+public class EffEditMessage extends Effect {
     Expression<Message> vMessage;
     Expression<String> vBot;
+    Expression<String> vNew;
 
     @Override
     protected void execute(Event e) {
         JDA jda = EffLogin.bots.get(vBot.getSingle(e));
         Message msg = vMessage.getSingle(e);
-        jda.getTextChannelById(msg.getTextChannel().getId()).deleteMessageById(msg.getId()).queue();
+        jda.getTextChannelById(msg.getTextChannel().getId()).editMessageById(msg.getId(), vNew.getSingle(e)).queue();
 
     }
 
@@ -41,7 +42,8 @@ public class EffDeleteMessage extends Effect {
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         vMessage = (Expression<Message>) expr[0];
-        vBot = (Expression<String>) expr[1];
+        vNew = (Expression<String>) expr[1];
+        vBot = (Expression<String>) expr[2];
         return true;
     }
 }

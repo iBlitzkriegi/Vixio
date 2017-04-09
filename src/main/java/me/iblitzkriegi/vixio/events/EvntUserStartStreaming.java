@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import java.net.URL;
+
 /**
  * Created by Blitz on 11/7/2016.
  */
@@ -29,25 +31,23 @@ public class EvntUserStartStreaming extends Event {
     }
     private User vUser;
     private JDA vJDA;
-    private String vOld;
     private Guild vGuild;
-    private String vCurrent;
-    public EvntUserStartStreaming(User user, String previous, JDA jda, Guild guild, String current){
+    private URL vUrl;
+    private String vCur;
+    public EvntUserStartStreaming(User user, JDA jda, Guild guild, URL url, String current){
         vUser = user;
         vJDA = jda;
-        vOld = previous;
+        vUrl = url;
         vGuild = guild;
-        vCurrent = current;
+        vCur = current;
     }
-    public String getEvntCurrent(){return vCurrent;}
+    public String getEvntCur(){return vCur;}
+    public URL getEvntUrl(){return vUrl;}
     public Guild getEvntGuild(){return vGuild;}
     public JDA getEvntJDA(){
         return vJDA;
     }
     public User getEvntUser(){
         return vUser;
-    }
-    public String getEvntOld(){
-        return vOld;
     }
 }

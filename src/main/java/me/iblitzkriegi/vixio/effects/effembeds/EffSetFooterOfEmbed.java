@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.effects.effembeds;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -9,8 +8,6 @@ import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.event.Event;
 
-import java.awt.*;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 
 /**

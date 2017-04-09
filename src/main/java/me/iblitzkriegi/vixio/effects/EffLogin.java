@@ -1,38 +1,27 @@
 package me.iblitzkriegi.vixio.effects;
 
-import ch.njol.skript.effects.EffLog;
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
-import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.jdaEvents.*;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
-import me.iblitzkriegi.vixio.util.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.managers.AudioManager;
-import net.dv8tion.jda.core.managers.impl.AudioManagerImpl;
 import net.dv8tion.jda.core.utils.SimpleLog;
 import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Blitz on 10/30/2016.
@@ -96,6 +85,8 @@ public class EffLogin extends Effect {
             } catch (RateLimitedException e1) {
                 e1.printStackTrace();
             }
+        }else{
+            Skript.warning("There is already a bot logged in with that name!");
         }
     }
 

@@ -12,12 +12,71 @@ import java.util.Map;
  * Created by Blitz on 11/2/2016.
  */
 public class DocsStuff {
-    public static void setupSyntaxes(){
-        File oldfile = new File(Vixio.pluginFile, "Syntaxs.txt");
-        if(oldfile.exists()){
-            oldfile.delete();
-        }
+    public static void setupSyntaxes() {
         File file = new File(Vixio.pluginFile, "Syntaxes.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            file.delete();
+        }
+        try{
+            FileWriter fw;
+            fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("-=Conditions=-");
+            bw.newLine();
+            int condSize = 0;
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vCondTitle.entrySet()){
+                bw.write(VixioAnnotationParser.vCondSyntax.get(s.getValue()));
+                bw.newLine();
+                condSize++;
+            }
+            int effSize = 0;
+            bw.write("-=Effects-=");
+            bw.newLine();
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vEffTitle.entrySet()){
+                bw.write(VixioAnnotationParser.vEffSyntax.get(s.getValue()));
+                bw.newLine();
+                effSize++;
+            }
+            int exprSize = 0;
+            bw.write("-=Expressions-=");
+            bw.newLine();
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vExprTitle.entrySet()){
+                bw.write(VixioAnnotationParser.vExprSyntax.get(s.getValue()));
+                bw.newLine();
+                exprSize++;
+            }
+            int evntSize = 0;
+            bw.write("-=Events-=");
+            bw.newLine();
+            for(Map.Entry<String, String> s : VixioAnnotationParser.vEventTitle.entrySet()){
+                bw.write(VixioAnnotationParser.vEventSyntax.get(s.getValue()));
+                bw.newLine();
+                evntSize++;
+            }
+            bw.write("-=Statistics=-");
+            bw.newLine();
+            bw.write("Conditions: " + condSize);
+            bw.newLine();
+            bw.write("Events: " + evntSize);
+            bw.newLine();
+            bw.write("Effects: "+ effSize);
+            bw.newLine();
+            bw.write("Expressions: " + exprSize);
+            bw.flush();
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void setupSyntaxjson(){
+        File file = new File(Vixio.pluginFile, "syntaxes.json");
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -208,6 +267,7 @@ public class DocsStuff {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
     }
 

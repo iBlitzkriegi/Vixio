@@ -8,8 +8,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.effects.effembeds.EffCreateEmbed;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
 

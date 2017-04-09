@@ -1,15 +1,11 @@
 package me.iblitzkriegi.vixio.jdaEvents;
 
 import me.iblitzkriegi.vixio.events.EvntGuildMessageBotSend;
-import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
-
-import java.util.HashMap;
 
 /**
  * Created by Blitz on 10/30/2016.

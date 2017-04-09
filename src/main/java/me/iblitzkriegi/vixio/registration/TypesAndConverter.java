@@ -3,12 +3,16 @@ package me.iblitzkriegi.vixio.registration;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.classes.Parser;
+import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
+import java.net.URL;
 
 /**
  * Created by Blitz on 10/30/2016.
@@ -21,7 +25,10 @@ public class TypesAndConverter {
         Converters.registerConverter(Channel.class, String.class, (Converter<Channel, String>) u -> u.getId());
         Converters.registerConverter(PrivateChannel.class, String.class, (Converter<PrivateChannel, String>) u -> u.getId());
         Converters.registerConverter(Message.class, String.class, (Converter<Message, String>) u -> u.getId());
+        Converters.registerConverter(URL.class, String.class, (Converter<URL, String>) u -> u.toString());
         Classes.registerClass(new ClassInfo<>(Message.class, "message")
+                .user("message")
+                .defaultExpression(new EventValueExpression<>(Message.class))
                 .name("message").parser(new Parser<Message>() {
                     @Override
                     @Nullable
@@ -43,9 +50,39 @@ public class TypesAndConverter {
                     public String getVariableNamePattern() {
                         return ".+";
                     }
+                }
+                ));
+        Classes.registerClass(new ClassInfo<>(Guild.class, "guild")
+                .user("guild")
+                .defaultExpression(new EventValueExpression<>(Guild.class))
+                .name("guild").parser(new Parser<Guild>() {
+                    @Override
+                    public Guild parse(String s, ParseContext parseContext) {
+                        return null;
+                    }
 
-                }));
+                    @Override
+                    public String toString(Guild guild, int i) {
+                        return guild.getId();
+                    }
+
+                    @Override
+                    public String toVariableNameString(Guild guild) {
+                        return guild.getId();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+
+
+
+        );
         Classes.registerClass(new ClassInfo<>(User.class, "user")
+                .user("user")
+                .defaultExpression(new EventValueExpression<>(User.class))
                 .name("user").parser(new Parser<User>() {
                     @Override
                     @Nullable
@@ -68,8 +105,11 @@ public class TypesAndConverter {
                         return ".+";
                     }
 
-                }));
+                }
+                ));
         Classes.registerClass(new ClassInfo<>(AudioTrack.class, "track")
+                .user("track")
+                .defaultExpression(new EventValueExpression<>(AudioTrack.class))
                 .name("track").parser(new Parser<AudioTrack>() {
                     @Override
                     public AudioTrack parse(String s, ParseContext parseContext) {
@@ -91,21 +131,23 @@ public class TypesAndConverter {
                         return ".+";
                     }
                 }));
-        Classes.registerClass(new ClassInfo<>(TextChannel.class, "textchannel")
-                .name("textchannel").parser(new Parser<TextChannel>() {
+        Classes.registerClass(new ClassInfo<>(Channel.class, "channel")
+                .user("channel")
+                .defaultExpression(new EventValueExpression<>(Channel.class))
+                .name("channel").parser(new Parser<Channel>() {
                     @Override
                     @Nullable
-                    public TextChannel parse(String s, ParseContext context) {
+                    public Channel parse(String s, ParseContext context) {
                         return null;
                     }
 
                     @Override
-                    public String toString(TextChannel msg, int flags) {
+                    public String toString(Channel msg, int flags) {
                         return msg.getId();
                     }
 
                     @Override
-                    public String toVariableNameString(TextChannel msg) {
+                    public String toVariableNameString(Channel msg) {
                         return null;
                     }
 
@@ -115,5 +157,61 @@ public class TypesAndConverter {
                     }
 
                 }));
+        Classes.registerClass(new ClassInfo<>(URL.class, "url")
+                .user("url")
+                .defaultExpression(new EventValueExpression<>(URL.class))
+                .name("url").parser(new Parser<URL>() {
+                    @Override
+                    public URL parse(String s, ParseContext parseContext) {
+                        return null;
+                    }
+
+                    @Override
+                    public String toString(URL url, int i) {
+                        return url.toString();
+                    }
+
+                    @Override
+                    public String toVariableNameString(URL url) {
+                        return null;
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
+        Classes.registerClass(new ClassInfo<>(OnlineStatus.class, "status")
+        .user("status")
+                .defaultExpression(new EventValueExpression<>(OnlineStatus.class))
+                .name("status").parser(new Parser<OnlineStatus>() {
+                            @Override
+                            public OnlineStatus parse(String s, ParseContext parseContext) {
+                                return null;
+                            }
+
+                            @Override
+                            public String toString(OnlineStatus onlineStatus, int i) {
+                                if(onlineStatus.name().equalsIgnoreCase("DO NOT DISTURB")){
+                                    return "Do Not Disturb";
+                                }
+                                return onlineStatus.name();
+                            }
+
+                            @Override
+                            public String toVariableNameString(OnlineStatus onlineStatus) {
+                                return null;
+                            }
+
+                            @Override
+                            public String getVariableNamePattern() {
+                                return ".+";
+                            }
+                        })
+
+
+        );
+
     }
 }
