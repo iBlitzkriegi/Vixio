@@ -50,7 +50,7 @@ public class ExprPosOfTrack extends SimpleExpression<String> {
     }
     private String getInfo(Event e){
         if(vTrack.getSingle(e) instanceof AudioTrack){
-            if (((AudioTrack) vTrack.getSingle(e)).getDuration() / 1000 % 60 < 10) {
+            if (((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 % 60 < 10) {
                 return String.valueOf(((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 / 60 + ":0" + ((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 % 60);
             }
             return String.valueOf(((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 / 60 + ":" + ((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 % 60);

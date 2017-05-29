@@ -35,6 +35,7 @@ public class CondBotIsInVc extends Condition {
     @Override
     public boolean check(Event e) {
         for(Map.Entry<String, JDA> jda : bots.entrySet()){
+
             for(VoiceChannel vc : jda.getValue().getVoiceChannels()){
                 for(Member user : vc.getMembers()){
                     if(user.getUser().getName().equalsIgnoreCase(vBot.getSingle(e))){

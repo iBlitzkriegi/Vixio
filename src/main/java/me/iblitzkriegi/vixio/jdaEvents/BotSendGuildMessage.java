@@ -17,7 +17,7 @@ public class BotSendGuildMessage extends ListenerAdapter {
             User author = e.getAuthor();
             TextChannel channel = e.getChannel();
             User bot = e.getJDA().getUserById(e.getJDA().getSelfUser().getId());
-            EvntGuildMessageBotSend efc = new EvntGuildMessageBotSend(author, channel, e.getMessage(), e.getGuild(), bot, e.getJDA());
+            EvntGuildMessageBotSend efc = new EvntGuildMessageBotSend(author, channel, e.getMessage(), e.getGuild(), bot, e.getJDA(), e.getChannel());
             Bukkit.getServer().getPluginManager().callEvent(efc);
             return;
         }

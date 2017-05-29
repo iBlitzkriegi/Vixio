@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
         name = "UploadFile",
         title = "Upload File",
         desc = "Upload a File to a channel",
-        syntax = "[discord ]upload file %string% [with message %-string%] to channel [with id] %string% as [bot] %string%",
+        syntax = "[discord ]upload file %string% [with message %-string%] to (channel|user) [with id] %string% as [bot] %string%",
         example = "SOON"
 )
 public class EffSendFile extends Effect {
@@ -35,23 +36,54 @@ public class EffSendFile extends Effect {
     protected void execute(Event e) {
         if(bots.get(sBot.getSingle(e))!=null) {
             JDA jda = bots.get(sBot.getSingle(e));
-            File file = new File(sFilePath.getSingle(e));
-            if(file.exists()){
-                try {
-                    if(sMsg.getSingle(e)==null) {
-                        jda.getTextChannelById(sChannel.getSingle(e)).sendFile(file, null).queue();
-                    }else{
+            if (jda.getTextChannelById(sChannel.getSingle(e)) != null) {
+                File file = new File(sFilePath.getSingle(e));
+                if (file.exists()) {
+                    try {
+                        if (sMsg == null) {
+                            jda.getTextChannelById(sChannel.getSingle(e)).sendFile(file, null).queue();
+                        } else {
+                            MessageBuilder m = new MessageBuilder();
+                            m.append(sMsg.getSingle(e));
+                            Message send = m.build();
+                            jda.getTextChannelById(sChannel.getSingle(e)).sendFile(file, send).queue();
+                        }
+                    } catch (IOException e1) {
+
+                    }
+
+                }
+            } else if (jda.getUserById(sChannel.getSingle(e)) != null) {
+                File file = new File(sFilePath.getSingle(e));
+                if (file.exists()) {
+                    if (sMsg == null) {
+                            jda.getUserById(sChannel.getSingle(e)).openPrivateChannel().queue(pv -> {
+                                try {
+                                    pv.sendFile(file, null).queue();
+                                } catch (IOException e1) {
+                                    e1.printStackTrace();
+                                }
+                            });
+                    } else {
                         MessageBuilder m = new MessageBuilder();
                         m.append(sMsg.getSingle(e));
                         Message send = m.build();
-                        jda.getTextChannelById(sChannel.getSingle(e)).sendFile(file, send).queue();
 
+                        jda.getUserById(sChannel.getSingle(e)).openPrivateChannel().queue(privateChannel -> {
+                            try {
+                                privateChannel.sendFile(file, send).queue();
+                            } catch (IOException e1) {
+                                Skript.warning("Either could not find file or user could not be found.");
+                            }
+                        });
                     }
-                } catch (IOException e1) {
-
                 }
 
+            }else{
+                Skript.warning("Could not find a User/TextChannel via the provided ID.");
             }
+
+
         }else{
             Skript.warning("Could not find bot with the name: " + sBot.getSingle(e));
         }
@@ -64,10 +96,17 @@ public class EffSendFile extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        sFilePath = (Expression<String>) expr[0];
-        sMsg = (Expression<String>) expr[1];
-        sChannel = (Expression<String>) expr[2];
-        sBot = (Expression<String>) expr[3];
+        if(expr[3]!=null) {
+            sFilePath = (Expression<String>) expr[0];
+            sMsg = (Expression<String>) expr[1];
+            sChannel = (Expression<String>) expr[2];
+            sBot = (Expression<String>) expr[3];
+        }else{
+            sFilePath = (Expression<String>) expr[0];
+            sMsg = null;
+            sChannel = (Expression<String>) expr[1];
+            sBot = (Expression<String>) expr[2];
+        }
         return true;
     }
 }

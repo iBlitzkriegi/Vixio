@@ -37,13 +37,17 @@ public class EffSetColorOfEmbed extends Effect{
     @Override
     protected void execute(Event e) {
         EmbedBuilder embedBuilder = EffCreateEmbed.embedBuilders.get(vName.getSingle(e));
-            Color color;
             try {
-                Field field = Class.forName("java.awt.Color").getField(vColor.getSingle(e));
-                color = (Color)field.get(null);
-                embedBuilder.setColor(color);
-            } catch (Exception x) {
-                Skript.warning("Color " + vColor.getSingle(e) + " could not be found");
+                embedBuilder.setColor(Color.decode(vColor.getSingle(e)));
+            } catch (NumberFormatException x) {
+               try{
+                   final Field f = Color.class.getField(vColor.getSingle(e));
+                   embedBuilder.setColor((Color)f.get(null));
+               } catch (IllegalAccessException e1) {
+                   e1.printStackTrace();
+               } catch (NoSuchFieldException e1) {
+                   e1.printStackTrace();
+               }
             }
         embedBuilders.put(vName.getSingle(e), embedBuilder);
     }

@@ -17,7 +17,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
         name = "SendUserMessage",
         title = "Send User Message",
         desc = "Send a Message to a User",
-        syntax = "send discord message of %string% to %string% with %string%",
+        syntax = "send discord message of %string% to user [with id] %string% with [bot] %string%",
         example = "SOON"
 )
 public class EffSendUserMessage extends Effect {

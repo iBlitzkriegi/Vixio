@@ -9,6 +9,7 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
+import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import org.bukkit.event.Event;
 
@@ -55,7 +56,7 @@ public class ExprChatterbotResponse extends SimpleExpression<String> {
         ChatterBotFactory factory = new ChatterBotFactory();
         ChatterBot bot1 = null;
         try {
-            bot1 = factory.create(ChatterBotType.CLEVERBOT);
+            bot1 = factory.create(ChatterBotType.CLEVERBOT, Vixio.getPl().getConfig().getString("api-key"));
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -63,9 +64,11 @@ public class ExprChatterbotResponse extends SimpleExpression<String> {
         String msg = vText.getSingle(e);
         try {
             msg = bot1session.think(msg);
+            return msg;
         } catch (Exception e1) {
             e1.printStackTrace();
         }
+
         return msg;
     }
 }

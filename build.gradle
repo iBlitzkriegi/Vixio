@@ -70,7 +70,7 @@ dependencies {
     providedServer group: 'org.bukkit', name: 'craftbukkit', version: project.property("apiversion")
 
     // JDA
-    compile 'net.dv8tion:JDA:3.0.BETA2_138'
+    compile 'net.dv8tion:JDA:3.0.0_185'
 
     // Provided local jars
     provided fileTree(dir: 'libs/provided', include: '*.jar')
@@ -80,8 +80,8 @@ dependencies {
 
     // Jars to include in that shaded jar
     compile fileTree(dir: 'libs/compile', include: '*.jar')
-    compile 'com.sedmelluq:lavaplayer:1.2.10'
-    compile 'ca.pjer:chatter-bot-api:1.4.7'
+    compile 'com.sedmelluq:lavaplayer:1.2.36'
+    compile 'ca.pjer:chatter-bot-api:2.0.1'
     compile 'com.vdurmont:emoji-java:3.1.3'
 
 

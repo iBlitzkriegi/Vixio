@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.expressions;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -63,12 +64,11 @@ public class ExprIdOf extends SimpleExpression<String> {
                 if(u.getValue().getGuildById(id.getSingle(e))==null){
                     if(u.getValue().getTextChannelById(id.getSingle(e))==null){
                         if(u.getValue().getVoiceChannelById(id.getSingle(e))==null){
-                            for(Guild s : u.getValue().getGuilds()){
-                                for(Role r : s.getRoles()){
-                                    if(r.getId().equalsIgnoreCase(id.getSingle(e))){
-                                        return r.getId();
-                                    }
-                                }
+                            if(u.getValue().getRoleById(id.getSingle(e))==null){
+                                Skript.warning("Could not find anything with that ID.");
+                                return "<none>";
+                            }else{
+                                return u.getValue().getRoleById(id.getSingle(e)).getId();
                             }
                         }else{
                             return u.getValue().getVoiceChannelById(id.getSingle(e)).getId();

@@ -26,6 +26,7 @@ public class TypesAndConverter {
         Converters.registerConverter(PrivateChannel.class, String.class, (Converter<PrivateChannel, String>) u -> u.getId());
         Converters.registerConverter(Message.class, String.class, (Converter<Message, String>) u -> u.getId());
         Converters.registerConverter(URL.class, String.class, (Converter<URL, String>) u -> u.toString());
+        Converters.registerConverter(Role.class, String.class, (Converter<Role, String>) u -> u.getId());
         Classes.registerClass(new ClassInfo<>(Message.class, "message")
                 .user("message")
                 .defaultExpression(new EventValueExpression<>(Message.class))

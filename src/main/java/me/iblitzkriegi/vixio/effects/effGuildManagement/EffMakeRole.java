@@ -45,7 +45,7 @@ public class EffMakeRole extends Effect {
     private void createRole(Event e) {
         JDA jda = bots.get(vBot.getSingle(e));
         Guild vG = jda.getGuildById(vGuild.getSingle(e));
-        vG.getController().createTextChannel(sName.getSingle(e)).queue();
+        vG.getController().createRole().setName(sName.getSingle(e)).queue();
     }
 
 }

@@ -4,16 +4,24 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import me.iblitzkriegi.vixio.util.AudioPlayerSendHandler;
+import me.iblitzkriegi.vixio.util.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
+import me.iblitzkriegi.vixio.util.VixioAudioHandlers;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.managers.AudioManager;
 import org.bukkit.event.Event;
 
+import java.util.Map;
+
 import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
+import static me.iblitzkriegi.vixio.effects.EffLogin.trackSchedulers;
+import static me.iblitzkriegi.vixio.util.VixioAudioHandlers.getGuildAudioPlayer;
 
 /**
  * Created by Blitz on 12/17/2016.
@@ -30,12 +38,21 @@ public class EffJoinVoiceChannel extends Effect {
     private Expression<String> vBot;
     @Override
     protected void execute(Event e) {
-        JDA jda = bots.get(vBot.getSingle(e));
-        TrackScheduler trackScheduler = EffLogin.trackSchedulers.get(vBot.getSingle(e));
-        AudioManager manager = jda.getVoiceChannelById(vID.getSingle(e)).getGuild().getAudioManager();
-        manager.openAudioConnection(jda.getVoiceChannelById(vID.getSingle(e)));
-        Guild g = jda.getVoiceChannelById(vID.getSingle(e)).getGuild();
-        g.getAudioManager().setSendingHandler(new AudioPlayerSendHandler(trackScheduler.getPlayer()));
+        JDA jda = EffLogin.bots.get(vBot.getSingle(e));
+        if(jda!=null){
+            VoiceChannel vc = jda.getVoiceChannelById(vID.getSingle(e));
+            Guild g = vc.getGuild();
+            if(g!=null||vc!=null){
+                g.getAudioManager().openAudioConnection(vc);
+                if(trackSchedulers.get(jda.getSelfUser().getId())==null) {
+                    GuildMusicManager musicManager = getGuildAudioPlayer(g);
+                    TrackScheduler  scheduler = new TrackScheduler(musicManager.scheduler.getPlayer());
+                    trackSchedulers.put(jda.getSelfUser().getId(), scheduler);
+                    EffLogin.audioPlayers.put(scheduler.getPlayer(), jda.getSelfUser());
+                    Vixio.reverseGuilds.put(musicManager.player, g);
+                }
+            }
+        }
 
     }
 

@@ -63,9 +63,6 @@ public class ExprAvatarOf extends SimpleExpression<String> {
                 return u.getValue().getGuildById(vID.getSingle(e)).getIconUrl();
             }
         }
-        if(e instanceof EvntGuildMemberLeave){
-            return ((EvntGuildMemberLeave) e).getEvntUser().getAvatarUrl();
-        }
 
         return null;
     }

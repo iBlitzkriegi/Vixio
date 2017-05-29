@@ -60,6 +60,9 @@ public class ExprBot extends SimpleExpression<User> {
                 | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
                 | ScriptLoader.isCurrentEvent(EvntUserStartStreaming.class)
                 | ScriptLoader.isCurrentEvent(EvntMessageAddReaction.class)
+                | ScriptLoader.isCurrentEvent(EvntAudioPlayerTrackStart.class)
+                | ScriptLoader.isCurrentEvent(EvntAudioPlayerTrackEnd.class)
+                | ScriptLoader.isCurrentEvent(EvntGuildMessageBotSend.class)
                 ){
             return true;
         }
@@ -98,6 +101,12 @@ public class ExprBot extends SimpleExpression<User> {
             return ((EvntUserStartStreaming) e).getEvntJDA().getSelfUser();
         }else if (e instanceof EvntMessageAddReaction) {
             return ((EvntMessageAddReaction) e).getEvntJDA().getSelfUser();
+        }else if (e instanceof EvntAudioPlayerTrackStart) {
+            return ((EvntAudioPlayerTrackStart) e).getBot();
+        }else if (e instanceof EvntAudioPlayerTrackEnd) {
+            return ((EvntAudioPlayerTrackEnd) e).getBot();
+        }else if (e instanceof EvntGuildMessageBotSend) {
+            return ((EvntGuildMessageBotSend) e).getBot();
         }
         return null;
     }

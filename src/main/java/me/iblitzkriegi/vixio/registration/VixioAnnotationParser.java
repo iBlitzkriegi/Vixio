@@ -171,9 +171,15 @@ public class VixioAnnotationParser {
             }
 
         }, 0);
+        EventValues.registerEventValue(EvntAudioPlayerTrackEnd.class, Guild.class, new Getter<Guild, EvntAudioPlayerTrackEnd>() {
+            @Override
+            public Guild get(EvntAudioPlayerTrackEnd e) {
+                return e.getGuild();
+            }
 
+        }, 0);
 
-        // Track End \\
+        // Track Start \\
         EventValues.registerEventValue(EvntAudioPlayerTrackStart.class, com.sedmelluq.discord.lavaplayer.track.AudioTrack.class, new Getter<com.sedmelluq.discord.lavaplayer.track.AudioTrack, EvntAudioPlayerTrackStart>() {
             @Override
             public com.sedmelluq.discord.lavaplayer.track.AudioTrack get(EvntAudioPlayerTrackStart e) {
@@ -181,6 +187,14 @@ public class VixioAnnotationParser {
             }
 
         }, 0);
+        EventValues.registerEventValue(EvntAudioPlayerTrackStart.class, Guild.class, new Getter<Guild, EvntAudioPlayerTrackStart>() {
+            @Override
+            public Guild get(EvntAudioPlayerTrackStart e) {
+                return e.getGuild();
+            }
+
+        }, 0);
+
 
 
         //Guild Ban\\
@@ -262,7 +276,13 @@ public class VixioAnnotationParser {
             }
 
         }, 0);
+        EventValues.registerEventValue(EvntGuildMessageBotSend.class, User.class, new Getter<User, EvntGuildMessageBotSend>() {
+            @Override
+            public User get(EvntGuildMessageBotSend e) {
+                return e.getEvntUser();
+            }
 
+        }, 0);
         // Message Add Reaction \\
         EventValues.registerEventValue(EvntMessageAddReaction.class, User.class, new Getter<User, EvntMessageAddReaction>() {
             @Override
@@ -308,6 +328,14 @@ public class VixioAnnotationParser {
             }
 
         }, 0);
+        EventValues.registerEventValue(EvntPrivateMessageReceive.class, String.class, new Getter<String, EvntPrivateMessageReceive>() {
+            @Override
+            public String get(EvntPrivateMessageReceive e) {
+                return e.getEvntMessage().getContent();
+            }
+
+        }, 0);
+
 
         // Textchannel created \\
         EventValues.registerEventValue(EvntTextChannelCreated.class, Channel.class, new Getter<Channel, EvntTextChannelCreated>() {
@@ -454,6 +482,20 @@ public class VixioAnnotationParser {
                 return e.getEvntStatus();
             }
 
+        }, 0);
+
+        // Private Message Send \\
+        EventValues.registerEventValue(EvntPrivateMessageSend.class, String.class, new Getter<String, EvntPrivateMessageSend>() {
+            @Override
+            public String get(EvntPrivateMessageSend e) {
+                return e.getEvntMessage().getContent();
+            }
+        }, 0);
+        EventValues.registerEventValue(EvntPrivateMessageSend.class, User.class, new Getter<User, EvntPrivateMessageSend>() {
+            @Override
+            public User get(EvntPrivateMessageSend e) {
+                return e.getEvntUser();
+            }
         }, 0);
     }
 }

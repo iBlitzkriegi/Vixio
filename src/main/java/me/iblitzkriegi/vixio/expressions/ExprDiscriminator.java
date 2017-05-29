@@ -5,6 +5,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.events.EvntGuildMessageReceive;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
@@ -12,6 +13,8 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
 import org.bukkit.event.Event;
+
+import java.util.Map;
 
 /**
  * Created by Blitz on 11/1/2016.
@@ -29,7 +32,7 @@ public class ExprDiscriminator extends SimpleExpression<String> {
     private Expression<String> vID;
     @Override
     protected String[] get(Event e) {
-        return new String[]{getGame(e)};
+        return new String[]{getDisi(e)};
     }
 
     @Override
@@ -53,17 +56,14 @@ public class ExprDiscriminator extends SimpleExpression<String> {
         return true;
     }
     @Nullable
-    private String getGame(Event e) {
-        JDA jda = ((EvntGuildMessageReceive)e).getJDA();
-        for(User s : jda.getUsers()){
-            if(s.getId().equals(vID.getSingle(e))){
-                return s.getDiscriminator();
+    private String getDisi(Event e) {
+        for(Map.Entry<String, JDA> jda : EffLogin.bots.entrySet()){
+            if(jda.getValue().getUserById(vID.getSingle(e))!=null){
+                return jda.getValue().getUserById(vID.getSingle(e)).getDiscriminator();
             }
         }
-        if(e instanceof EvntGuildMemberLeave){
-            return ((EvntGuildMemberLeave) e).getEvntUser().getDiscriminator();
-        }
-        return null;
+        return "<none>";
+
     }
 
 }

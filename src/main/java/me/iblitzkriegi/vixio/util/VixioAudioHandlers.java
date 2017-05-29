@@ -2,67 +2,57 @@ package me.iblitzkriegi.vixio.util;
 
 import ch.njol.skript.Skript;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.effects.EffLogin;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.managers.AudioManager;
+import net.dv8tion.jda.core.entities.User;
 
-import java.util.HashMap;
-import java.util.Map;
+import static me.iblitzkriegi.vixio.Vixio.musicManagers;
+import static me.iblitzkriegi.vixio.Vixio.playerManager;
+import static me.iblitzkriegi.vixio.Vixio.reverseGuilds;
 
 /**
  * Created by Blitz on 12/17/2016. >Ready for comments about static abuse
  */
 public class VixioAudioHandlers {
-    public static AudioPlayerManager playerManager;
-    public static Map<Long, GuildMusicManager> musicManagers;
-    public VixioAudioHandlers(){
-        this.musicManagers = new HashMap<>();
-        this.playerManager = new DefaultAudioPlayerManager();
-        AudioSourceManagers.registerRemoteSources(playerManager);
-        AudioSourceManagers.registerLocalSource(playerManager);
-    }
     public static synchronized GuildMusicManager getGuildAudioPlayer(Guild guild) {
-        long guildId = Long.parseLong(guild.getId());
+        String guildId = guild.getId();
         GuildMusicManager musicManager = musicManagers.get(guildId);
-
         if (musicManager == null) {
             musicManager = new GuildMusicManager(playerManager);
             musicManagers.put(guildId, musicManager);
+
         }
 
         guild.getAudioManager().setSendingHandler(musicManager.getSendHandler());
 
         return musicManager;
     }
-    public static void loadAndPlay(final VoiceChannel channel, final String trackUrl) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-        Skript.warning("Here");
+
+    public static void loadAndPlay(final Guild guild, final String trackUrl, User bot) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+        if(Vixio.reverseGuilds.get(musicManager.player)==null){
+            reverseGuilds.put(musicManager.player, guild);
+        }
+        if(EffLogin.audioPlayers.get(musicManager.player)==null){
+            EffLogin.audioPlayers.put(musicManager.player, bot);
+
+        }
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                Skript.warning("Here2");
-                musicManager.scheduler.queue(track);
-                musicManager.player.playTrack(track);
-
-
+                play(musicManager, track);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                AudioTrack firstTrack = playlist.getSelectedTrack();
-                if (firstTrack == null) {
-                    firstTrack = playlist.getTracks().get(0);
+                for (AudioTrack track : playlist.getTracks()) {
+                    musicManager.scheduler.queue(track);
                 }
-                Skript.warning("Here");
-                musicManager.scheduler.queue(firstTrack);
-                musicManager.player.playTrack(firstTrack);
             }
 
             @Override
@@ -78,24 +68,13 @@ public class VixioAudioHandlers {
         });
     }
 
-    public static void play(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
-        connectToFirstVoiceChannel(guild.getAudioManager());
+    public static void play(GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
+
     }
 
     public static void skipTrack(TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
         musicManager.scheduler.nextTrack();
-
-        channel.sendMessage("Skipped to next track.").queue();
-    }
-
-    public static void connectToFirstVoiceChannel(AudioManager audioManager) {
-        if (!audioManager.isConnected() && !audioManager.isAttemptingToConnect()) {
-            for (VoiceChannel voiceChannel : audioManager.getGuild().getVoiceChannels()) {
-                audioManager.openAudioConnection(voiceChannel);
-                break;
-            }
-        }
     }
 }

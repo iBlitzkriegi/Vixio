@@ -7,6 +7,7 @@ import ch.njol.skript.lang.SkriptParser;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.*;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
@@ -31,8 +32,13 @@ public class MultiBotGuildCompare extends SkriptEvent {
             if (bot.equals(user)) {
                 return true;
             }
-        }else if(e instanceof EvntPrivateMessageReceive){
+        }else if(e instanceof EvntPrivateMessageReceive) {
             User bot = ((EvntPrivateMessageReceive) e).getJDA().getSelfUser();
+            if (bot.equals(user)) {
+                return true;
+            }
+        }else if(e instanceof EvntPrivateMessageSend){
+            User bot = ((EvntPrivateMessageSend) e).getJDA().getSelfUser();
             if (bot.equals(user)) {
                 return true;
             }
@@ -49,11 +55,6 @@ public class MultiBotGuildCompare extends SkriptEvent {
         }else if(e instanceof EvntUserStatusChange){
             User bot = ((EvntUserStatusChange) e).getEvntJDA().getSelfUser();
             if (bot.equals(user)) {
-                return true;
-            }
-        }else if(e instanceof EvntAudioPlayerTrackStart){
-            AudioPlayer player = EffLogin.audioPlayers.get(sBotName.getSingle(e));
-            if(player.equals(((EvntAudioPlayerTrackStart)e).getPlayer())){
                 return true;
             }
         }else if(e instanceof EvntUserJoinVc) {
@@ -94,11 +95,6 @@ public class MultiBotGuildCompare extends SkriptEvent {
         }else if(e instanceof EvntUserStartStreaming) {
             User bot = ((EvntUserStartStreaming) e).getEvntJDA().getSelfUser();
             if (bot.equals(user)) {
-                return true;
-            }
-        }else if(e instanceof EvntAudioPlayerTrackEnd) {
-            AudioPlayer player = EffLogin.audioPlayers.get(sBotName.getSingle(e));
-            if (player.equals(((EvntAudioPlayerTrackEnd) e).getPlayer())) {
                 return true;
             }
         }else if(e instanceof EvntMessageAddReaction) {

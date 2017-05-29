@@ -51,7 +51,8 @@ public class ExprJoinDiscordDateOfUser extends SimpleExpression<String> {
     }
     private String getDate(Event e){
         User u = vUser.getSingle(e);
-        String dcjoindate = String.valueOf(MiscUtil.getCreationTime(u.getId()).getMonthValue()) + "-" + String.valueOf(MiscUtil.getCreationTime(u.getId()).getDayOfMonth()) + "-" + String.valueOf(MiscUtil.getCreationTime(u.getId()).getYear());
+
+        String dcjoindate = String.valueOf(MiscUtil.getCreationTime(u.getIdLong()).getMonthValue()) + "-" + String.valueOf(MiscUtil.getCreationTime(u.getIdLong()).getDayOfMonth()) + "-" + String.valueOf(MiscUtil.getCreationTime(u.getIdLong()).getYear());
         return dcjoindate;
     }
 }

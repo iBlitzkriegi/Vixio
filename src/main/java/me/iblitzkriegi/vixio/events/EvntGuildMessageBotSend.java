@@ -3,10 +3,7 @@ package me.iblitzkriegi.vixio.events;
 import me.iblitzkriegi.vixio.registration.EvntAnnotation;
 import me.iblitzkriegi.vixio.util.MultiBotGuildCompare;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -30,6 +27,7 @@ public class EvntGuildMessageBotSend extends Event{
     private Guild sGuild;
     private User sBot;
     private JDA sJDA;
+    private TextChannel vChnl;
 
 
 
@@ -37,16 +35,20 @@ public class EvntGuildMessageBotSend extends Event{
     public HandlerList getHandlers() {
         return hls;
     }
-    public EvntGuildMessageBotSend(User author, Channel channel, Message msg, Guild guild, User bot, JDA jda) {
+    public EvntGuildMessageBotSend(User author, Channel channel, Message msg, Guild guild, User bot, JDA jda, TextChannel chnl) {
         sAuthor = author;
         sChannel = channel;
         sMsg = msg;
         sGuild = guild;
         sBot = bot;
         sJDA = jda;
+        vChnl = chnl;
     }
     public User getEvntUser(){
         return sAuthor;
+    }
+    public TextChannel getEvntTextChannel(){
+        return vChnl;
     }
     public User getBot(){
         return sBot;

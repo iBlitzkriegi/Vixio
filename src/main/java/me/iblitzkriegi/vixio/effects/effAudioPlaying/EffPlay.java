@@ -12,8 +12,14 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.EffectAnnotation;
+import me.iblitzkriegi.vixio.util.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
+import me.iblitzkriegi.vixio.util.VixioAudioHandlers;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
+
+import java.util.Map;
 
 import static me.iblitzkriegi.vixio.effects.EffLogin.audioManagers;
 
@@ -24,7 +30,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.audioManagers;
         name = "PlayAudio",
         title = "Play Audio",
         desc = "Play audio through your bot! First %string% can be any audio link that when clicked automatically plays audio without having to be logged in! Like Youtube/Soundcloud/etc...",
-        syntax = "[discord] play audio %string% with [audio] player [named] %string%",
+        syntax = "[discord] play audio %string% with [audio] player [named] %string% in guild %string%",
         example = "on guild message receive seen by \\\"Rawr\\\":\\n" +
                 "\\tset {_args::*} to event-string split at \\\" \\\"\\n" +
                 "\\tset {_command} to {_args::1}\\n" +
@@ -39,37 +45,15 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.audioManagers;
 public class EffPlay extends Effect {
     Expression<String> vBot;
     Expression<String> vTrackUrl;
+    Expression<String> vGuild;
     @Override
     protected void execute(Event e) {
-        if(EffLogin.trackSchedulers.get(vBot.getSingle(e))!=null||audioManagers.get(vBot.getSingle(e))!=null) {
-            TrackScheduler trackScheduler = EffLogin.trackSchedulers.get(vBot.getSingle(e));
-            AudioPlayerManager playerManager = audioManagers.get(vBot.getSingle(e));
-            playerManager.loadItem(vTrackUrl.getSingle(e), new AudioLoadResultHandler() {
-
-                @Override
-                public void trackLoaded(AudioTrack track) {
-                    trackScheduler.queue(track);
-                }
-
-                @Override
-                public void playlistLoaded(AudioPlaylist playlist) {
-                    for (AudioTrack track : playlist.getTracks()) {
-                        trackScheduler.queue(track);
-                    }
-                }
-
-                @Override
-                public void noMatches() {
-                    Skript.warning("Corrupt audio Url. I can't play anything from this URL!?");
-                }
-
-                @Override
-                public void loadFailed(FriendlyException exception) {
-                    Skript.warning("Something's gone...So wrong...Oh so very wrong. I messed up loading apparently...?");
-                }
-            });
+        JDA jda = EffLogin.bots.get(vBot.getSingle(e));
+        Guild g = jda.getGuildById(vGuild.getSingle(e));
+        if(g!=null) {
+            VixioAudioHandlers.loadAndPlay(g, vTrackUrl.getSingle(e), jda.getSelfUser());
         }else{
-            Skript.warning("No player exists by the name \"" + vBot.getSingle(e)+"\n");
+            Skript.warning("Could not find Guild via that ID.");
         }
     }
 
@@ -81,6 +65,7 @@ public class EffPlay extends Effect {
     @Override
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         vTrackUrl = (Expression<String>) expr[0];
+        vGuild = (Expression<String>) expr[2];
         vBot = (Expression<String>) expr[1];
         return true;
     }

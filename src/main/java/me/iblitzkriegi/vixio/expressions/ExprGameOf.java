@@ -66,13 +66,13 @@ public class ExprGameOf extends SimpleExpression<String> {
                     return member.getGame().getName();
                 } else {
                     Skript.warning("null");
-                    return "null";
+                    return "<none>";
                 }
             }
 
-            return "null";
+            return "<none>";
         }catch (NullPointerException x){
-            return "null";
+            return "<none>";
         }
     }
 

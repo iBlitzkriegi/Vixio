@@ -1,10 +1,12 @@
 package me.iblitzkriegi.vixio.expressions;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.EvntGuildMemberLeave;
 import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
@@ -24,7 +26,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
         name = "NameOf",
         title = "Name of",
         desc = "Get the Name of anything in Discord",
-        syntax = "[discord] name of %string%",
+        syntax = "discord name of %string%",
         returntype = String.class,
         type = ExpressionType.SIMPLE,
         example = "SUBMIT EXAMPLES TO Blitz#3273"
@@ -63,12 +65,11 @@ public class ExprNameOf extends SimpleExpression<String> {
                 if(u.getValue().getGuildById(id.getSingle(e))==null){
                     if(u.getValue().getTextChannelById(id.getSingle(e))==null){
                         if(u.getValue().getVoiceChannelById(id.getSingle(e))==null){
-                            for(Guild s : u.getValue().getGuilds()){
-                                for(Role r : s.getRoles()){
-                                    if(r.getId().equalsIgnoreCase(id.getSingle(e))){
-                                        return r.getName();
-                                    }
-                                }
+                            if(u.getValue().getRoleById(id.getSingle(e))==null){
+                                Skript.warning("Could not find anything with that ID.");
+                                return "<none>";
+                            }else{
+                                return u.getValue().getRoleById(id.getSingle(e)).getName();
                             }
                         }else{
                             return u.getValue().getVoiceChannelById(id.getSingle(e)).getName();

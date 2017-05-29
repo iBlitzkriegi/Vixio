@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.expressions.guildInfo;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -50,13 +51,19 @@ public class ExprRegionOf extends SimpleExpression<String>{
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+        vID = (Expression<String>) expressions[0];
         return true;
     }
     private String getRegionOf(Event e) {
-        for (Map.Entry<String, JDA> u : bots.entrySet()) {
-            for (Guild vG : u.getValue().getGuilds()) {
-                return vG.getRegion().getName();
+        try {
+            for (Map.Entry<String, JDA> u : bots.entrySet()) {
+                if (u.getValue().getGuildById(vID.getSingle(e)) != null) {
+                    return u.getValue().getGuildById(vID.getSingle(e)).getRegion().name();
+                }
             }
+
+        }catch (NullPointerException x){
+            Skript.warning("Could not find a Guild with that ID.");
         }
         return null;
     }

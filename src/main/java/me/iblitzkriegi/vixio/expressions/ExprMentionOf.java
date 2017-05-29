@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.expressions;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -60,19 +61,19 @@ public class ExprMentionOf extends SimpleExpression<String> {
     @Nullable
     private String getMention(Event e) {
         for(Map.Entry<String, JDA> u : bots.entrySet()){
-            if(u.getValue().getUserById(id.getSingle(e))!=null){
-                return u.getValue().getUserById(id.getSingle(e)).getAsMention();
-            }else if (u.getValue().getTextChannelById(id.getSingle(e))!=null){
-                return u.getValue().getTextChannelById(id.getSingle(e)).getAsMention();
-            }else{
-                for(Guild g : u.getValue().getGuilds()){
-                    for(Role r : g.getRoles()){
-                        if(r.getId().equalsIgnoreCase(id.getSingle(e))){
-                            return r.getAsMention();
-                        }
+            if(u.getValue().getUserById(id.getSingle(e))==null) {
+                if (u.getValue().getTextChannelById(id.getSingle(e)) == null) {
+                    if (u.getValue().getRoleById(id.getSingle(e)) == null) {
+                        Skript.warning("Could not find anything with that ID.");
+                        return "<none>";
+                    } else {
+                        return u.getValue().getRoleById(id.getSingle(e)).getAsMention();
                     }
-
+                } else {
+                    return u.getValue().getTextChannelById(id.getSingle(e)).getAsMention();
                 }
+            }else{
+                return u.getValue().getUserById(id.getSingle(e)).getAsMention();
             }
         }
         if(e instanceof EvntGuildMemberLeave){

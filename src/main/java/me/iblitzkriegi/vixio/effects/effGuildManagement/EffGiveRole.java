@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.requests.restaction.InviteAction;
 import org.bukkit.event.Event;
 
 import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
