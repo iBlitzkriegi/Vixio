@@ -6,6 +6,14 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.*;
+import me.iblitzkriegi.vixio.events.audio.EvntAudioPlayerTrackEnd;
+import me.iblitzkriegi.vixio.events.audio.EvntAudioPlayerTrackStart;
+import me.iblitzkriegi.vixio.events.member.*;
+import me.iblitzkriegi.vixio.events.message.*;
+import me.iblitzkriegi.vixio.registration.annotation.CondAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.EffectAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.EvntAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
@@ -33,6 +41,7 @@ public class VixioAnnotationParser {
     public static HashMap<String, String> vEvntShowroom = new HashMap<>();
     public static HashMap<String, String> vEventSyntax = new HashMap<>();
     public static HashMap<String, String> vEventDesc = new HashMap<>();
+
     public static HashMap<String, String> vCondExample = new HashMap<>();
     public static HashMap<String, String> vCondTitle = new HashMap<>();
     public static HashMap<String, String> vCondShowroom = new HashMap<>();
@@ -59,6 +68,7 @@ public class VixioAnnotationParser {
             e.printStackTrace();
         }
         registerValues();
+
         for(Class clazz : getClasses(file, "me.iblitzkriegi.vixio")) {
             if (clazz.isAnnotationPresent(ExprAnnotation.Expression.class)) {
                 ExprAnnotation.Expression ExprAnon = (ExprAnnotation.Expression) clazz.getAnnotation(ExprAnnotation.Expression.class);
@@ -134,6 +144,13 @@ public class VixioAnnotationParser {
             }
 
         }, 0);
+        EventValues.registerEventValue(EvntGuildMessageReceive.class, User.class, new Getter<User, EvntGuildMessageReceive>() {
+            @Override
+            public User get(EvntGuildMessageReceive evntGuildMessageReceive) {
+                return evntGuildMessageReceive.getEvntUser();
+            }
+
+        }, 0);
         EventValues.registerEventValue(EvntGuildMessageReceive.class, Message.class, new Getter<Message, EvntGuildMessageReceive>() {
             @Override
             public Message get(EvntGuildMessageReceive evntGuildMessageReceive) {
@@ -161,6 +178,7 @@ public class VixioAnnotationParser {
                 return evntGuildMessageReceive.getEvntMessage().getContent();
             }
         }, 0);
+
 
 
         // Track End \\

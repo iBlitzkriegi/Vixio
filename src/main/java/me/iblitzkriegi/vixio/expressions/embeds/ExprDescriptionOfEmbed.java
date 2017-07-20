@@ -5,8 +5,8 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import me.iblitzkriegi.vixio.effects.effembeds.EffCreateEmbed;
-import me.iblitzkriegi.vixio.registration.ExprAnnotation;
+import me.iblitzkriegi.vixio.effects.embeds.EffCreateEmbed;
+import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
@@ -56,6 +56,6 @@ public class ExprDescriptionOfEmbed extends SimpleExpression<String>{
         if(embed.getDescription()!=null){
             return embed.getDescription();
         }
-        return "<none>";
+        return null;
     }
 }

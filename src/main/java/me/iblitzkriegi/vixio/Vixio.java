@@ -63,7 +63,6 @@ public class Vixio extends JavaPlugin {
         p.saveConfig();
         this.getCommand("vixio").setExecutor(new VixioCMD());
 
-
         this.getLogger().info("Successfully loaded " + classes + " classes.");
     }
     public static Plugin getPl(){

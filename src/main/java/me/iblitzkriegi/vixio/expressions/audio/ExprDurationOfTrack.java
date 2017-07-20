@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.iblitzkriegi.vixio.registration.ExprAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import org.bukkit.event.Event;
 
 /**

@@ -1,6 +1,6 @@
 package me.iblitzkriegi.vixio.events;
 
-import me.iblitzkriegi.vixio.registration.EvntAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.EvntAnnotation;
 import me.iblitzkriegi.vixio.util.MultiBotGuildCompare;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;

@@ -4,8 +4,8 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import me.iblitzkriegi.vixio.effects.effembeds.EffCreateEmbed;
-import me.iblitzkriegi.vixio.registration.CondAnnotation;
+import me.iblitzkriegi.vixio.effects.embeds.EffCreateEmbed;
+import me.iblitzkriegi.vixio.registration.annotation.CondAnnotation;
 import org.bukkit.event.Event;
 
 /**

@@ -10,7 +10,7 @@ import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.registration.ExprAnnotation;
+import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import org.bukkit.event.Event;
 
 /**

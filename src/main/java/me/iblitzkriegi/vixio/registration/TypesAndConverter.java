@@ -19,14 +19,9 @@ import java.net.URL;
  */
 public class TypesAndConverter {
     public static void setupTypes() {
-        Converters.registerConverter(User.class, String.class, (Converter<User, String>) u -> u.getId());
         Converters.registerConverter(Member.class, User.class, (Converter<Member, User>) u -> u.getUser());
-        Converters.registerConverter(Guild.class, String.class, (Converter<Guild, String>) u -> u.getId());
-        Converters.registerConverter(Channel.class, String.class, (Converter<Channel, String>) u -> u.getId());
-        Converters.registerConverter(PrivateChannel.class, String.class, (Converter<PrivateChannel, String>) u -> u.getId());
-        Converters.registerConverter(Message.class, String.class, (Converter<Message, String>) u -> u.getId());
         Converters.registerConverter(URL.class, String.class, (Converter<URL, String>) u -> u.toString());
-        Converters.registerConverter(Role.class, String.class, (Converter<Role, String>) u -> u.getId());
+        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         Classes.registerClass(new ClassInfo<>(Message.class, "message")
                 .user("message")
                 .defaultExpression(new EventValueExpression<>(Message.class))
@@ -39,12 +34,12 @@ public class TypesAndConverter {
 
                     @Override
                     public String toString(Message msg, int flags) {
-                        return msg.getStrippedContent();
+                        return msg.getId();
                     }
 
                     @Override
                     public String toVariableNameString(Message msg) {
-                        return msg.getStrippedContent();
+                        return msg.getId();
                     }
 
                     @Override
@@ -210,8 +205,6 @@ public class TypesAndConverter {
                                 return ".+";
                             }
                         })
-
-
         );
 
     }
