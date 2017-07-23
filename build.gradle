@@ -74,7 +74,7 @@ shadowJar {
     relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
     relocate 'org.apache.http', project.group + ".org.apache.http"
     relocate 'org.apache.commons.io', project.group + ".org.apache.commons.io"
-    archiveName = 'Vixio-1.1.4.jar'
+    archiveName = 'Vixio-2.0.0-dev1.jar'
     destinationDir = new File("C:\\Users\\matthew\\Desktop\\VixioSk\\plugins")
 }
 
