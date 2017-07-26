@@ -2,4 +2,6 @@ name: Vixio
 main: me.iblitzkriegi.vixio.Vixio
 version: 2.0.0-dev1
 author: Blitz
+website: http://vixio.space
+depend: [Skript]
 description: Vixio, The Discord addon created to meet all of your Discord needs.

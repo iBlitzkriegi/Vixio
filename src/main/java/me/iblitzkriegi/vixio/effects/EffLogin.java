@@ -29,6 +29,10 @@ import java.util.Set;
  * Created by Blitz on 7/22/2017.
  */
 public class EffLogin extends Effect {
+    static {
+        System.out.println("HERE");
+        Vixio.registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]").setName("Connect effect").setDesc("Login to a bot account with a token").setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
+    }
     private Expression<String> token;
     private Expression<String> name;
     @Override
@@ -44,7 +48,8 @@ public class EffLogin extends Effect {
             }
             try {
                 api = prebuild
-                        .addEventListener(new GuildMessageReceived()).buildBlocking();
+                        .addEventListener(new GuildMessageReceived())
+                        .buildBlocking();
             } catch (LoginException e1) {
                 Skript.error("Error when logging in, token could be invalid?");
             } catch (InterruptedException e1) {

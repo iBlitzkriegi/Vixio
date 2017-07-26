@@ -11,7 +11,7 @@ public class Registration {
     private String vExample;
     private Class<?> vClass;
     private String[] vSyntaxes;
-    public Registration(Class<?> cls, String[] syntaxes){
+    public Registration(Class<?> cls, String... syntaxes){
         vClass = cls;
         vSyntaxes = syntaxes;
     }

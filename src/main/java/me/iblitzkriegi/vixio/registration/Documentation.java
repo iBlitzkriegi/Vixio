@@ -12,6 +12,7 @@ import java.io.IOException;
  */
 public class Documentation {
     public static void setupSyntaxFile(){
+
         File file = new File(Vixio.getInstance().getDataFolder(), "Syntaxes.txt");
         try {
             if (!file.exists()) {
@@ -22,13 +23,14 @@ public class Documentation {
         }catch (IOException x){
 
         }
+
         try {
             FileWriter fw;
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("-=Effects=-");
             bw.newLine();
-            for(Registration reg : Vixio.effects){
+            for(Registration reg : Vixio.effects) {
                 bw.write("name: " + reg.getName());
                 bw.newLine();
                 bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
@@ -38,6 +40,36 @@ public class Documentation {
                 bw.write("\texample: " + reg.getExample());
                 bw.newLine();
             }
+            bw.write("-=Events=-");
+            bw.newLine();
+            for(Registration reg : Vixio.events) {
+                bw.write("name: " + reg.getName());
+                bw.newLine();
+                bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                bw.newLine();
+                bw.write("\tdescription: " + reg.getDesc());
+                bw.newLine();
+                bw.write("\texample: " + reg.getExample());
+                bw.newLine();
+            }
+            bw.write("-=Expressions=-");
+            bw.newLine();
+            for(Registration reg : Vixio.expressions){
+                bw.write("name: " + reg.getName());
+                bw.newLine();
+                boolean t = reg.getSyntaxes().length == 2 ? true : false;
+                if(t){
+                    bw.write("\tsyntax: " + "{" + reg.getSyntaxes()[0] + ", " + reg.getSyntaxes()[1] + "}");
+                }else{
+                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                }
+                bw.newLine();
+                bw.write("\tdescription: " + reg.getDesc());
+                bw.newLine();
+                bw.write("\texample: " + reg.getExample());
+                bw.newLine();
+            }
+
             bw.flush();
             bw.close();
             fw.close();
