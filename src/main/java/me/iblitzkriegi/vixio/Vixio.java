@@ -6,20 +6,19 @@ import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.expressions.base.EventValueExpression;
-import ch.njol.skript.expressions.base.PropertyExpression;
-import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.*;
-import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
-import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
-import me.iblitzkriegi.vixio.events.EvntGuildMessageReceived;
+import me.iblitzkriegi.vixio.events.DiscordEventHandler;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -35,10 +34,13 @@ public class Vixio extends JavaPlugin {
     private static SkriptAddon addonInstance;
     public static List<Registration> conditions = new ArrayList<>();
     public static List<Registration> events = new ArrayList<>();
+    public static HashMap<String, Registration> eventsSyntax = new HashMap<>();
     public static List<Registration> effects = new ArrayList<>();
     public static List<Registration> expressions = new ArrayList<>();
     public static HashMap<String, JDA> bots = new HashMap<>();
-    public static List<JDA> jdas = new ArrayList<>();
+    public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
+    public static List<JDA> jdaInstances = new ArrayList<>();
+    public static List<Class<? extends Event>> list = new ArrayList<>();
     public Vixio() {
         if (instance == null) {
             instance = this;
@@ -48,10 +50,17 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
+        list.add(GuildVoiceLeaveEvent.class); list.add(GuildMemberNickChangeEvent.class);
+        for(Class clazz : list){
+            String syntax = clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("Event", "");
+            registerEvent(clazz.getSimpleName(), SimpleEvent.class, DiscordEventHandler.class, syntax)
+                .setName(syntax)
+                .setDesc("Discord event")
+                .setExample("on " + syntax);
+        }
         try {
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects");
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "events");
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "expressions");
+            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
+            Vixio.setup();
             Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,11 +69,7 @@ public class Vixio extends JavaPlugin {
             this.getDataFolder().mkdir();
         }
         Metrics metrics = new Metrics(this);
-        Vixio.setup();
         Documentation.setupSyntaxFile();
-
-
-
     }
     public static Vixio getInstance(){
         if(instance == null){
@@ -88,6 +93,7 @@ public class Vixio extends JavaPlugin {
         Skript.registerEvent(name, type, clazz, patterns[0]);
         Registration registration = new Registration(clazz, patterns);
         events.add(registration);
+        eventsSyntax.put(clazz.getSimpleName(), registration);
         return registration;
     }
     public static Registration registerEffect(Class<? extends Effect> eff, String... patterns){
@@ -110,32 +116,32 @@ public class Vixio extends JavaPlugin {
     }
     private static void setup(){
         Classes.registerClass(new ClassInfo<>(Message.class, "message").user("message").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
-                    @Override
-                    public Message parse(String s, ParseContext context) {return null;}
-                     @Override
-                     public String toString(Message msg, int flags) {return msg.getId();}
-                     @Override
-                     public String toVariableNameString(Message msg) {return msg.getId();}
-                     @Override
-                     public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(TextChannel.class, "textchannel").user("textchannel").defaultExpression(new EventValueExpression<>(TextChannel.class)).name("textchannel").parser(new Parser<TextChannel>() {
             @Override
-            public TextChannel parse(String s, ParseContext context) {return null;}
+            public Message parse(String s, ParseContext context) {return null;}
             @Override
-            public String toString(TextChannel msg, int flags) {return msg.getId();}
+            public String toString(Message msg, int flags) {return msg.getId();}
             @Override
-            public String toVariableNameString(TextChannel msg) {return msg.getId();}
+            public String toVariableNameString(Message msg) {return msg.getId();}
+            @Override
+            public String getVariableNamePattern() {return ".+";}}));
+        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
+            @Override
+            public Channel parse(String s, ParseContext context) {return null;}
+            @Override
+            public String toString(Channel msg, int flags) {return msg.getId();}
+            @Override
+            public String toVariableNameString(Channel msg) {return msg.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
         Classes.registerClass(new ClassInfo<>(User.class, "user").user("user").defaultExpression(new EventValueExpression<>(User.class)).name("user").parser(new Parser<User>() {
-                    @Override
-                    public User parse(String s, ParseContext context) {return null;}
-                    @Override
-                    public String toString(User usr, int flags) {return usr.getId();}
-                    @Override
-                    public String toVariableNameString(User usr) {return usr.getId();}
-                    @Override
-                    public String getVariableNamePattern() {return ".+";}}));
+            @Override
+            public User parse(String s, ParseContext context) {return null;}
+            @Override
+            public String toString(User usr, int flags) {return usr.getId();}
+            @Override
+            public String toVariableNameString(User usr) {return usr.getId();}
+            @Override
+            public String getVariableNamePattern() {return ".+";}}));
         Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("user").parser(new Parser<Guild>() {
             @Override
             public Guild parse(String s, ParseContext context) {return null;}
@@ -145,22 +151,16 @@ public class Vixio extends JavaPlugin {
             public String toVariableNameString(Guild gui) {return gui.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
-        EventValues.registerEventValue(EvntGuildMessageReceived.class, User.class, new Getter<User, EvntGuildMessageReceived>() {
+        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voicechannel").user("voicechannel").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("user").parser(new Parser<VoiceChannel>() {
             @Override
-            public User get(EvntGuildMessageReceived evntGuildMessageReceive) {return evntGuildMessageReceive.author();}
-        },0);
-        EventValues.registerEventValue(EvntGuildMessageReceived.class, Guild.class, new Getter<Guild, EvntGuildMessageReceived>() {
+            public VoiceChannel parse(String s, ParseContext context) {return null;}
             @Override
-            public Guild get(EvntGuildMessageReceived evntGuildMessageReceive) {return evntGuildMessageReceive.getGuild();}
-        },0);
-        EventValues.registerEventValue(EvntGuildMessageReceived.class, Channel.class, new Getter<Channel, EvntGuildMessageReceived>() {
+            public String toString(VoiceChannel gui, int flags) {return gui.getId();}
             @Override
-            public Channel get(EvntGuildMessageReceived evntGuildMessageReceive) {return evntGuildMessageReceive.getChannel();}
-        },0);
-        EventValues.registerEventValue(EvntGuildMessageReceived.class, Message.class, new Getter<Message, EvntGuildMessageReceived>() {
+            public String toVariableNameString(VoiceChannel gui) {return gui.getId();}
             @Override
-            public Message get(EvntGuildMessageReceived evntGuildMessageReceive) {return evntGuildMessageReceive.getMessage();}
-        },0);
+            public String getVariableNamePattern() {return ".+";}}));
+
 
     }
 

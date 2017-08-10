@@ -8,7 +8,9 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.jda.GenericJDAEvent;
 import me.iblitzkriegi.vixio.jda.GuildMessageReceived;
+import me.iblitzkriegi.vixio.jda.MultiEvent;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -20,9 +22,6 @@ import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,7 +29,6 @@ import java.util.Set;
  */
 public class EffLogin extends Effect {
     static {
-        System.out.println("HERE");
         Vixio.registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]").setName("Connect effect").setDesc("Login to a bot account with a token").setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
     private Expression<String> token;
@@ -49,6 +47,8 @@ public class EffLogin extends Effect {
             try {
                 api = prebuild
                         .addEventListener(new GuildMessageReceived())
+                        .addEventListener(new GenericJDAEvent())
+                        .addEventListener(new MultiEvent())
                         .buildBlocking();
             } catch (LoginException e1) {
                 Skript.error("Error when logging in, token could be invalid?");
@@ -60,7 +60,8 @@ public class EffLogin extends Effect {
             if(name.getSingle(e)!=null) {
                 Vixio.bots.put(name.getSingle(e), api);
             }
-            Vixio.jdas.add(api);
+            Vixio.jdaUsers.put(api.getSelfUser(), api);
+            Vixio.jdaInstances.add(api);
             if (getNext() != null) {
                 TriggerItem.walk(getNext(), e);
             }

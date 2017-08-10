@@ -8,7 +8,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.events.EvntGuildMessageReceived;
+import me.iblitzkriegi.vixio.events.EventGuildMessageReceived;
+import me.iblitzkriegi.vixio.events.EventJDAEvent;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
@@ -24,8 +27,8 @@ public class ExprBot extends SimpleExpression<User>{
     }
 
     @Override
-    protected User[] get(Event event) {
-        return new User[]{(getBot(event))};
+    protected SelfUser[] get(Event event) {
+        return new SelfUser[]{(getBot(event))};
     }
 
     @Override
@@ -34,29 +37,35 @@ public class ExprBot extends SimpleExpression<User>{
     }
 
     @Override
-    public Class<? extends User> getReturnType() {
-        return User.class;
+    public Class<? extends SelfUser> getReturnType() {
+        return SelfUser.class;
     }
 
     @Override
     public String toString(Event event, boolean b) {
-        return getClass().getName();
+        return "event-bot in event " + event.getEventName();
     }
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntGuildMessageReceived.class)){
+        if(ScriptLoader.isCurrentEvent(EventGuildMessageReceived.class)){
             return true;
         }
         Skript.error("There is no event-bot outside of Vixio events!");
         return false;
     }
-    private static User getBot(Event e){
+    private static SelfUser getBot(Event e){
         if(e == null){
             return null;
         }
-        if(e instanceof EvntGuildMessageReceived){
-            return ((EvntGuildMessageReceived) e).getBot();
+        if(e instanceof EventGuildMessageReceived){
+            return ((EventGuildMessageReceived) e).getJDA().getSelfUser();
+        }else if(e instanceof EventJDAEvent){
+            if(((EventJDAEvent) e).getObject("JDA") != null){
+                if(((EventJDAEvent) e).getObject("JDA") instanceof JDA){
+                    return ((JDA) ((EventJDAEvent) e).getObject("JDA")).getSelfUser();
+                }
+            }
         }
         return null;
     }

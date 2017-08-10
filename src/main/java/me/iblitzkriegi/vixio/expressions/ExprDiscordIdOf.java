@@ -1,21 +1,18 @@
 package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import ch.njol.skript.lang.ExpressionType;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ISnowflake;
-import net.dv8tion.jda.core.entities.User;
 
 /**
  * Created by Blitz on 7/26/2017.
  */
-public class DiscordIdOf extends SimplePropertyExpression<Object, String> {
+public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.registerPropertyExpression(DiscordIdOf.class, String.class, "discord id", "objects")
-            .setName("ID of")
+        Vixio.registerPropertyExpression(ExprDiscordIdOf.class, String.class, "discord id", "channel/guild/user/message")
+            .setName("Discord ID of")
             .setDesc("Get the ID of a discord object")
             .setExample("discord id of event-user");
     }
