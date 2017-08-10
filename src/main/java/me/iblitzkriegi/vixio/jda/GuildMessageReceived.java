@@ -1,6 +1,6 @@
 package me.iblitzkriegi.vixio.jda;
 
-import me.iblitzkriegi.vixio.events.EvntGuildMessageReceived;
+import me.iblitzkriegi.vixio.events.EventGuildMessageReceived;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
@@ -13,11 +13,11 @@ public class GuildMessageReceived extends ListenerAdapter{
     public void onGuildMessageReceived(GuildMessageReceivedEvent e){
         if(!e.getJDA().getSelfUser().getId().equalsIgnoreCase(e.getAuthor().getId())){
             Boolean t = e.getMessage().getMentionedUsers()!=null ? true : false;
-            EvntGuildMessageReceived evnt;
+            EventGuildMessageReceived evnt;
             if(t){
-                evnt = new EvntGuildMessageReceived(e.getAuthor(), e.getChannel(), e.getMessage(), e.getMessage().getMentionedUsers(), e.getGuild(), e.getJDA().getSelfUser(), e.getJDA());
+                evnt = new EventGuildMessageReceived(e.getAuthor(), e.getChannel(), e.getMessage(), e.getMessage().getMentionedUsers(), e.getGuild(), e.getJDA().getSelfUser(), e.getJDA());
             }else{
-                 evnt = new EvntGuildMessageReceived(e.getAuthor(), e.getChannel(), e.getMessage(), null, e.getGuild(), e.getJDA().getSelfUser(), e.getJDA());
+                 evnt = new EventGuildMessageReceived(e.getAuthor(), e.getChannel(), e.getMessage(), null, e.getGuild(), e.getJDA().getSelfUser(), e.getJDA());
             }
             Bukkit.getServer().getPluginManager().callEvent(evnt);
         }
