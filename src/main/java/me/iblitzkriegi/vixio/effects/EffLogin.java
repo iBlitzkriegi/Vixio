@@ -8,9 +8,9 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.jda.DiscordEventHandlerListener;
 import me.iblitzkriegi.vixio.jda.GenericJDAEvent;
 import me.iblitzkriegi.vixio.jda.GuildMessageReceived;
-import me.iblitzkriegi.vixio.jda.MultiEvent;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -48,7 +48,7 @@ public class EffLogin extends Effect {
                 api = prebuild
                         .addEventListener(new GuildMessageReceived())
                         .addEventListener(new GenericJDAEvent())
-                        .addEventListener(new MultiEvent())
+                        .addEventListener(new DiscordEventHandlerListener())
                         .buildBlocking();
             } catch (LoginException e1) {
                 Skript.error("Error when logging in, token could be invalid?");

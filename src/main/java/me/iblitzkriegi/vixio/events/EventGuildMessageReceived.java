@@ -44,15 +44,21 @@ public class EventGuildMessageReceived extends Event{
                 return evntGuildMessageReceive.getMessage();
             }
         },0);
+        EventValues.registerEventValue(EventGuildMessageReceived.class, String.class, new Getter<String, EventGuildMessageReceived>() {
+            @Override
+            public String get(EventGuildMessageReceived evntGuildMessageReceive) {
+                return evntGuildMessageReceive.getMessage().getContent();
+            }
+        },0);
     }
     private static final HandlerList hls = new HandlerList();
-    private User vAuthor;
-    private TextChannel vChannel;
-    private Message vMsg;
-    private List<?> vMentioned;
-    private Guild vGuild;
-    private User vBot;
-    private JDA vJDA;
+    private User author;
+    private TextChannel channel;
+    private Message message;
+    private List<?> mentionedUsers;
+    private Guild guild;
+    private SelfUser bot;
+    private JDA jda;
     @Override
     public HandlerList getHandlers() {
         return hls;
@@ -60,35 +66,35 @@ public class EventGuildMessageReceived extends Event{
     public static HandlerList getHandlerList() {
         return hls;
     }
-    public EventGuildMessageReceived(User author, TextChannel channel, Message msg, List<?> mentioned, Guild guild, User bot, JDA jda){
-        vAuthor = author;
-        vChannel = channel;
-        vMsg = msg;
-        vMentioned = mentioned;
-        vGuild = guild;
-        vBot = bot;
-        vJDA = jda;
+    public EventGuildMessageReceived(User author, TextChannel channel, Message message, List<?> mentioned, Guild guild, SelfUser bot, JDA jda){
+        this.author = author;
+        this.channel = channel;
+        this.message = message;
+        this.mentionedUsers = mentioned;
+        this.guild = guild;
+        this.bot = bot;
+        this.jda = jda;
     }
     public User author(){
-        return vAuthor;
+        return author;
     }
-    public  TextChannel getChannel(){
-        return vChannel;
+    public TextChannel getChannel(){
+        return channel;
     }
     public Message getMessage(){
-        return vMsg;
+        return message;
     }
     public List<?> getMentioned(){
-        return vMentioned;
+        return mentionedUsers;
     }
     public Guild getGuild(){
-        return vGuild;
+        return guild;
     }
-    public User getBot(){
-        return vBot;
+    public SelfUser getBot(){
+        return bot;
     }
     public JDA getJDA(){
-        return vJDA;
+        return jda;
     }
 
 

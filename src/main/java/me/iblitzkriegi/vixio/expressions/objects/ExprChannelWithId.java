@@ -8,6 +8,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
@@ -15,15 +16,15 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 7/26/2017.
  */
-public class ExprTextchannelWithId extends SimpleExpression<TextChannel> {
+public class ExprChannelWithId extends SimpleExpression<Channel> {
     static {
-        Vixio.registerExpression(ExprTextchannelWithId.class, TextChannel.class, ExpressionType.SIMPLE, "text[-]channel with id %string% [in guild %guild%]");
+        Vixio.registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %string%]");
     }
     private Expression<String> id;
     private Expression<Guild> guild;
     @Override
-    protected TextChannel[] get(Event event) {
-        return new TextChannel[]{getTextChannel(event)};
+    protected Channel[] get(Event event) {
+        return new Channel[]{getChannel(event)};
     }
 
     @Override
@@ -32,13 +33,13 @@ public class ExprTextchannelWithId extends SimpleExpression<TextChannel> {
     }
 
     @Override
-    public Class<? extends TextChannel> getReturnType() {
-        return TextChannel.class;
+    public Class<? extends Channel> getReturnType() {
+        return Channel.class;
     }
 
     @Override
     public String toString(Event e, boolean b) {
-        return guild.getSingle(e) != null ? "text-channel with id " + id.getSingle(e) + " in guild " + guild.getSingle(e) : "text-channel with id " + id.getSingle(e);
+        return guild.getSingle(e) != null ? "channel with id " + id.getSingle(e) + " in guild " + guild.getSingle(e) : "channel with id " + id.getSingle(e);
     }
 
     @Override
@@ -47,32 +48,45 @@ public class ExprTextchannelWithId extends SimpleExpression<TextChannel> {
         guild = (Expression<Guild>) expressions[1];
         return true;
     }
-    private TextChannel getTextChannel(Event e){
+    private Channel getChannel(Event e){
         if(id.getSingle(e)!=null) {
             if(guild.getSingle(e)==null) {
                 if (Vixio.jdaInstances != null) {
                     for (JDA jda : Vixio.jdaInstances) {
-                        if (jda.getTextChannelById(id.getSingle(e)) != null) {
+                        if (jda.getTextChannelById(id.getSingle(e)) == null) {
+                            if(jda.getVoiceChannelById(id.getSingle(e))==null){
+                                Skript.error("Could not find TextChannel or VoiceChannel with the provided ID, check your ID and try again.");
+                                return null;
+                            }else{
+                                return jda.getVoiceChannelById(id.getSingle(e));
+                            }
+                        }else{
                             return jda.getTextChannelById(id.getSingle(e));
                         }
                     }
-                    Skript.error("Could not find TextChannel with the provided ID, check your ID and try again.");
-                    return null;
                 } else {
                     Skript.error("You must login to a bot via the connect effect before you may attempt to use this expression.");
                     return null;
                 }
             }else{
                 Guild g = guild.getSingle(e);
-                if(g.getTextChannelById(id.getSingle(e))!=null){
+                if(g.getTextChannelById(id.getSingle(e))==null){
+                    if(g.getVoiceChannelById(id.getSingle(e))==null){
+                        Skript.error("Could not find TextChannel via the provided ID");
+                        return null;
+                    }else{
+                        return g.getVoiceChannelById(id.getSingle(e));
+                    }
+                }else{
                     return g.getTextChannelById(id.getSingle(e));
                 }
-                Skript.error("Could not find TextChannel via the provided ID");
-                return null;
             }
         }else{
             Skript.error("You must provide a ID to use this expression! May not leave blank.");
             return null;
         }
+        Skript.error("Could not find VoiceChannel or a TextChannel via the provided id.");
+        return null;
+
     }
 }

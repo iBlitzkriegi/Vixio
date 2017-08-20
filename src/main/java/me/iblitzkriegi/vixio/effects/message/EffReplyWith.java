@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.effects;
+package me.iblitzkriegi.vixio.effects.message;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
@@ -16,7 +16,10 @@ import org.bukkit.event.Event;
  */
 public class EffReplyWith extends Effect {
     static {
-        Vixio.registerEffect(EffReplyWith.class, "reply with %strings%");
+        Vixio.registerEffect(EffReplyWith.class, "reply with %strings%")
+            .setName("Reply with")
+            .setDesc("Reply with a message in a event")
+            .setExample("reply with \"Hello %mention tag of event-user%\"");
     }
 
     private Expression<String> message;

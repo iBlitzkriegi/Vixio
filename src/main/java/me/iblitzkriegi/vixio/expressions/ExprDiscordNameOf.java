@@ -3,10 +3,7 @@ package me.iblitzkriegi.vixio.expressions;
 import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 
 /**
  * Created by Blitz on 7/25/2017.
@@ -14,9 +11,9 @@ import net.dv8tion.jda.core.entities.User;
 public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
     static {
         Vixio.registerPropertyExpression(ExprDiscordNameOf.class, String.class,"discord name", "channel/guild/user")
-                .setName("Name of")
+                .setName("Discord Name of")
                 .setDesc("Get the name of something/someone")
-                .setExample("discord username of event-user");
+                .setExample("discord name of event-user");
     }
 
     @Override

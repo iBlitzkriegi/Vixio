@@ -5,23 +5,30 @@ import ch.njol.skript.SkriptAddon;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.classes.Parser;
+import ch.njol.skript.classes.Serializer;
 import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.*;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
+import ch.njol.yggdrasil.Fields;
 import me.iblitzkriegi.vixio.events.DiscordEventHandler;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.impl.TextChannelImpl;
+import net.dv8tion.jda.core.entities.impl.UserImpl;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.StreamCorruptedException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +48,7 @@ public class Vixio extends JavaPlugin {
     public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public static List<JDA> jdaInstances = new ArrayList<>();
     public static List<Class<? extends Event>> list = new ArrayList<>();
+    public static Message lastRetrievedMessage;
     public Vixio() {
         if (instance == null) {
             instance = this;
@@ -60,6 +68,7 @@ public class Vixio extends JavaPlugin {
         }
         try {
             getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
+
             Vixio.setup();
             Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         } catch (IOException e) {
@@ -70,6 +79,11 @@ public class Vixio extends JavaPlugin {
         }
         Metrics metrics = new Metrics(this);
         Documentation.setupSyntaxFile();
+    }
+    public void onDisable(){
+        for(JDA jda : jdaInstances){
+            jda.shutdown();
+        }
     }
     public static Vixio getInstance(){
         if(instance == null){
@@ -126,22 +140,40 @@ public class Vixio extends JavaPlugin {
             public String getVariableNamePattern() {return ".+";}}));
         Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
             @Override
-            public Channel parse(String s, ParseContext context) {return null;}
+            public Channel parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Channel msg, int flags) {return msg.getId();}
+            public String toString(Channel msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(Channel msg) {return msg.getId();}
+            public String toVariableNameString(Channel msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(User.class, "user").user("user").defaultExpression(new EventValueExpression<>(User.class)).name("user").parser(new Parser<User>() {
             @Override
-            public User parse(String s, ParseContext context) {return null;}
+            public User parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(User usr, int flags) {return usr.getId();}
+            public String toString(User usr, int flags) {
+                return usr.getId();
+            }
             @Override
-            public String toVariableNameString(User usr) {return usr.getId();}
+            public String toVariableNameString(User usr) {
+                return usr.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("user").parser(new Parser<Guild>() {
             @Override
             public Guild parse(String s, ParseContext context) {return null;}
@@ -158,6 +190,15 @@ public class Vixio extends JavaPlugin {
             public String toString(VoiceChannel gui, int flags) {return gui.getId();}
             @Override
             public String toVariableNameString(VoiceChannel gui) {return gui.getId();}
+            @Override
+            public String getVariableNamePattern() {return ".+";}}));
+        Classes.registerClass(new ClassInfo<>(SelfUser.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(SelfUser.class)).name("bot").parser(new Parser<SelfUser>() {
+            @Override
+            public SelfUser parse(String s, ParseContext context) {return null;}
+            @Override
+            public String toString(SelfUser gui, int flags) {return gui.getId();}
+            @Override
+            public String toVariableNameString(SelfUser gui) {return gui.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
 

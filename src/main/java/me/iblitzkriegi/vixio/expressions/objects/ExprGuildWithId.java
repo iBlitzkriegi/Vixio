@@ -16,7 +16,10 @@ import org.bukkit.event.Event;
  */
 public class ExprGuildWithId extends SimpleExpression<Guild> {
     static {
-        Vixio.registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE, "guild with id %string%");
+        Vixio.registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE, "(server|guild) with id %string%")
+            .setName("Guild with id")
+            .setDesc("Get a server/guild via it's ID")
+            .setExample("guild with id \"16165198461\"");
     }
 
     private Expression<String> id;
