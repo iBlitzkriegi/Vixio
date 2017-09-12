@@ -56,7 +56,7 @@ public class ExprPosOfTrack extends SimpleExpression<String> {
             return String.valueOf(((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 / 60 + ":" + ((AudioTrack) vTrack.getSingle(e)).getPosition() / 1000 % 60);
         }else{
             System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
-            return "Something dun fuk'd'd'd'd'";
+            return null;
         }
     }
 }

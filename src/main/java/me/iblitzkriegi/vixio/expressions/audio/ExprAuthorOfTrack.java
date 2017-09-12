@@ -53,7 +53,7 @@ public class ExprAuthorOfTrack extends SimpleExpression<String> {
             return ((AudioTrack) vTrack.getSingle(e)).getInfo().author;
         }else{
             System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
-            return "Something dun fuk'd'd'd'd'";
+            return null;
         }
     }
 }

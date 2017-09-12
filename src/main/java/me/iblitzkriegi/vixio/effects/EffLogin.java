@@ -62,46 +62,31 @@ public class EffLogin extends Effect {
 
         Bukkit.getScheduler().runTaskAsynchronously(Vixio.getPl(), () -> {
         if (bots.get(name.getSingle(e)) == null) {
+            JDABuilder builder;
             try {
                 SimpleLog.LEVEL = SimpleLog.Level.OFF;
                 try {
-                    api = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e))
-                            .addEventListener(new GuildMessageReceived())
-                            .addEventListener(new PrivateMessageReceived())
-                            .addEventListener(new GuildMemberJoin())
-                            .addEventListener(new GuildMemberLeave())
-                            .addEventListener(new UserUpdateStatus())
-                            .addEventListener(new UserJoinVc())
-                            .addEventListener(new UserLeaveVc())
-                            .addEventListener(new TextChannelCreated())
-                            .addEventListener(new TextChannelDeleted())
-                            .addEventListener(new UserAvatarChange())
-                            .addEventListener(new GuildBan())
-                            .addEventListener(new BotSendGuildMessage())
-                            .addEventListener(new UserStartStreaming())
-                            .addEventListener(new MessageAddReaction())
-                            .addEventListener(new PrivateMessageSent())
-                            .buildBlocking();
-                }catch (AccountTypeException x){
-                    api = new JDABuilder(AccountType.CLIENT).setToken(token.getSingle(e))
-                            .addEventListener(new GuildMessageReceived())
-                            .addEventListener(new PrivateMessageReceived())
-                            .addEventListener(new GuildMemberJoin())
-                            .addEventListener(new GuildMemberLeave())
-                            .addEventListener(new UserUpdateStatus())
-                            .addEventListener(new UserJoinVc())
-                            .addEventListener(new UserLeaveVc())
-                            .addEventListener(new TextChannelCreated())
-                            .addEventListener(new TextChannelDeleted())
-                            .addEventListener(new UserAvatarChange())
-                            .addEventListener(new GuildBan())
-                            .addEventListener(new BotSendGuildMessage())
-                            .addEventListener(new UserStartStreaming())
-                            .addEventListener(new MessageAddReaction())
-                            .addEventListener(new PrivateMessageSent())
-                            .buildBlocking();
-                }
+                    builder = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e));
 
+                }catch (AccountTypeException x){
+                    builder = new JDABuilder(AccountType.CLIENT).setToken(token.getSingle(e));
+                }
+                builder.addEventListener(new GuildMessageReceived())
+                        .addEventListener(new PrivateMessageReceived())
+                        .addEventListener(new GuildMemberJoin())
+                        .addEventListener(new GuildMemberLeave())
+                        .addEventListener(new UserUpdateStatus())
+                        .addEventListener(new UserJoinVc())
+                        .addEventListener(new UserLeaveVc())
+                        .addEventListener(new TextChannelCreated())
+                        .addEventListener(new TextChannelDeleted())
+                        .addEventListener(new UserAvatarChange())
+                        .addEventListener(new GuildBan())
+                        .addEventListener(new BotSendGuildMessage())
+                        .addEventListener(new UserStartStreaming())
+                        .addEventListener(new MessageAddReaction())
+                        .addEventListener(new PrivateMessageSent());
+                api = builder.buildBlocking();
                 bots.put(name.getSingle(e), api);
                 users.put(name.getSingle(e), api.getSelfUser());
                 java.util.Date date = new java.util.Date();

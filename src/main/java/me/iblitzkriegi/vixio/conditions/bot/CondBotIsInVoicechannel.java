@@ -5,26 +5,35 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.effects.EffLogin;
+import me.iblitzkriegi.vixio.registration.Documentation;
+import me.iblitzkriegi.vixio.registration.VixioAnnotationParser;
 import me.iblitzkriegi.vixio.registration.annotation.CondAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
 
+import static me.iblitzkriegi.vixio.registration.VixioAnnotationParser.vCondShowroom;
+
 /**
  * Created by Blitz on 11/8/2016.
  */
-@CondAnnotation.Condition(
-        name = "BotIsInVc",
-        title = "Bot is in Voicechannel",
-        desc = "Check if your bot is in a Voice Channel",
-        syntax = "[discord] bot %string% [(1¦is|2¦is not)] in [a] voice channel in guild %string%",
-        example = "N/A")
-public class CondBotIsInVc extends Condition {
-    Expression<String> vBot;
-    Expression<String> vGuild;
-    SkriptParser.ParseResult parseResult;
+public class CondBotIsInVoicechannel extends Condition {
+    static{
+        Documentation docs = Vixio.registerCondition(CondBotIsInVoicechannel.class, "[discord] bot %string% is in [a] voice channel in guild %string%", "[discord] bot %string% is not in [a] voice channel in guild %string%")
+            .setName("Bot is in Voice channel")
+            .setDesc("Check if one of your bots is in a voice channel in a specific Guild")
+            .setExample("COMING SOON");
+        String t = docs.getName().replaceAll(" ", "");
+        vCondShowroom.put(t, docs.getName());
+        VixioAnnotationParser.vCondSyntax.put(docs.getName().replaceAll(" ", ""), docs.getSyntaxes()[0]);
+        VixioAnnotationParser.vCondExample.put(docs.getName().replaceAll(" ", ""), docs.getExample());
+        VixioAnnotationParser.vCondDesc.put(docs.getName().replaceAll(" ", ""), docs.getDesc());
+    }
+    private Expression<String> vBot;
+    private Expression<String> vGuild;
+    private boolean not;
     @Override
     public boolean check(Event e) {
         JDA jda;
@@ -34,18 +43,10 @@ public class CondBotIsInVc extends Condition {
             if(jda.getGuildById(vGuild.getSingle(e))!=null){
                 guild = jda.getGuildById(vGuild.getSingle(e));
                 Boolean t = guild.getMember(jda.getSelfUser()).getVoiceState().inVoiceChannel();
-                if(parseResult.mark == 1) {
-                    if(t){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else if(parseResult.mark == 2){
-                    if(t){
-                        return false;
-                    }else{
-                        return true;
-                    }
+                if((not && t) || (not && !t)){
+                    return (not == t);
+                }else if((!not && t) || (!not && !t)){
+                    return (not == t);
                 }
             }else{
                 Skript.warning("Could not find Guild by the provided ID.");
@@ -53,6 +54,7 @@ public class CondBotIsInVc extends Condition {
         }else{
             Skript.warning("Could not find bot via that name, check your login effect for the name that should be provided.");
         }
+
         return false;
     }
 
@@ -63,9 +65,9 @@ public class CondBotIsInVc extends Condition {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult pResult) {
-        parseResult = pResult;
         vBot = (Expression<String>) expressions[0];
         vGuild = (Expression<String>) expressions[1];
+        not = i == 0;
         return true;
     }
 }

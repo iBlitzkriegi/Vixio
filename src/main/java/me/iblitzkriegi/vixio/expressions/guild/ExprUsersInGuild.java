@@ -9,6 +9,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
@@ -63,6 +64,8 @@ public class ExprUsersInGuild extends SimpleExpression<User>{
                 for(Member m : jda.getValue().getGuildById(vGuild.getSingle(e)).getMembers()){
                     users.add(m.getUser());
                 }
+            }else{
+                Skript.warning("Could not find guild with that ID!");
             }
         }
         if(users!=null){

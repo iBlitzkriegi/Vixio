@@ -39,6 +39,8 @@ public class EffSetUsername extends Effect {
             jda.getSelfUser().getManager().setName(vName.getSingle(e)).queue();
         }catch (NullPointerException x){
             Skript.warning("Could not find a bot by that name.");
+        }catch (IllegalArgumentException x){
+            Skript.warning("You must provide a password to do this with client accounts.");
         }
     }
 

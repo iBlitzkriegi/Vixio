@@ -56,7 +56,7 @@ public class ExprDurationOfTrack extends SimpleExpression<String> {
                 return String.valueOf(((AudioTrack) vTrack.getSingle(e)).getDuration()/1000/60 + ":" + ((AudioTrack) vTrack.getSingle(e)).getDuration() / 1000 % 60);
             }
         }else{
-            return "Something dun fuk'd'd'd'd'";
+            return null;
         }
     }
 }

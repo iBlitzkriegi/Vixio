@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.effects.guild;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -7,6 +8,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.registration.annotation.EffectAnnotation;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
@@ -31,7 +33,7 @@ public class EffMakeChannel extends Effect {
 
     @Override
     public String toString(Event event, boolean b) {
-        return null;
+        return "create channel " + sName.getSingle(event) + " in guild " + vGuild.getSingle(event) + "as " + vBot.getSingle(event);
     }
 
     @Override
@@ -45,7 +47,11 @@ public class EffMakeChannel extends Effect {
     private void createChannel(Event e) {
         JDA jda = bots.get(vBot.getSingle(e));
         Guild vG = jda.getGuildById(vGuild.getSingle(e));
-        vG.getController().createTextChannel(sName.getSingle(e)).queue();
+        try {
+            vG.getController().createTextChannel(sName.getSingle(e)).queue();
+        }catch (PermissionException x){
+            Skript.error("Provided bot does not have enough permission to execute this action.");
+        }
     }
 
 }

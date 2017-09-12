@@ -24,10 +24,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -119,6 +116,15 @@ public class VixioAnnotationParser {
 
 
     }
+    public static void registerSyntax(Class cls, String name, String example,  String description, String... patterns){
+        if(cls.getName().startsWith("Cond")){
+            Skript.registerCondition(cls, patterns);
+        }else if(cls.getName().startsWith("Eff")){
+            Skript.registerEffect(cls, patterns);
+        }else if(cls.getName().startsWith("Evnt")){
+
+        }
+    }
     public static Set<Class<?>> getClasses(File jarFile, String packageName) {
         Set<Class<?>> classes = new HashSet<>();
         try {
@@ -198,6 +204,7 @@ public class VixioAnnotationParser {
         }, 0);
 
         // Track Start \\
+        String s;
         EventValues.registerEventValue(EvntAudioPlayerTrackStart.class, com.sedmelluq.discord.lavaplayer.track.AudioTrack.class, new Getter<com.sedmelluq.discord.lavaplayer.track.AudioTrack, EvntAudioPlayerTrackStart>() {
             @Override
             public com.sedmelluq.discord.lavaplayer.track.AudioTrack get(EvntAudioPlayerTrackStart e) {
