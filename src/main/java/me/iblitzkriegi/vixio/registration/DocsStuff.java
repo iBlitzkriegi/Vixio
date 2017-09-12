@@ -74,7 +74,6 @@ public class DocsStuff {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     private static void setupSyntaxjson(){
         File file = new File(Vixio.pluginFile, "syntaxes.json");
