@@ -54,7 +54,6 @@ public class EffSetAvatar extends Effect {
     private void cacheImage(String url,String name, Event e){
         try {
             JDA jda = EffLogin.bots.get(vBot.getSingle(e));
-            jda.getGuildById("t").getMember(jda.getSelfUser()).getRoles();
             File imgf = new File(name + "." + "png");
             BufferedImage img = ImageIO.read(new URL(url));
             ImageIO.write(img, "png", imgf);
