@@ -4,10 +4,10 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.events.*;
-import me.iblitzkriegi.vixio.events.member.*;
-import me.iblitzkriegi.vixio.events.message.*;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 

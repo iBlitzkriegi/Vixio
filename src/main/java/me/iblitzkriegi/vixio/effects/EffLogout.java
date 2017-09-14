@@ -5,7 +5,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import me.iblitzkriegi.vixio.registration.annotation.EffectAnnotation;
+import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import net.dv8tion.jda.core.JDA;
 import org.bukkit.event.Event;
 

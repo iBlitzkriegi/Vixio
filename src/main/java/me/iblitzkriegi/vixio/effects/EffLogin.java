@@ -9,17 +9,12 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import io.netty.util.internal.logging.Slf4JLoggerFactory;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.jda.guild.GuildBan;
-import me.iblitzkriegi.vixio.jda.guild.GuildMessageReceived;
-import me.iblitzkriegi.vixio.jda.guild.TextChannelCreated;
-import me.iblitzkriegi.vixio.jda.guild.TextChannelDeleted;
-import me.iblitzkriegi.vixio.jda.member.*;
-import me.iblitzkriegi.vixio.jda.message.BotSendGuildMessage;
-import me.iblitzkriegi.vixio.jda.message.MessageAddReaction;
-import me.iblitzkriegi.vixio.jda.message.PrivateMessageReceived;
-import me.iblitzkriegi.vixio.jda.message.PrivateMessageSent;
-import me.iblitzkriegi.vixio.registration.annotation.EffectAnnotation;
+import me.iblitzkriegi.vixio.jdaEvents.*;
+import me.iblitzkriegi.vixio.registration.EffectAnnotation;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -62,31 +57,46 @@ public class EffLogin extends Effect {
 
         Bukkit.getScheduler().runTaskAsynchronously(Vixio.getPl(), () -> {
         if (bots.get(name.getSingle(e)) == null) {
-            JDABuilder builder;
             try {
                 SimpleLog.LEVEL = SimpleLog.Level.OFF;
                 try {
-                    builder = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e));
-
+                    api = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e))
+                            .addEventListener(new GuildMessageReceived())
+                            .addEventListener(new PrivateMessageReceived())
+                            .addEventListener(new GuildMemberJoin())
+                            .addEventListener(new GuildMemberLeave())
+                            .addEventListener(new UserUpdateStatus())
+                            .addEventListener(new UserJoinVc())
+                            .addEventListener(new UserLeaveVc())
+                            .addEventListener(new TextChannelCreated())
+                            .addEventListener(new TextChannelDeleted())
+                            .addEventListener(new UserAvatarChange())
+                            .addEventListener(new GuildBan())
+                            .addEventListener(new BotSendGuildMessage())
+                            .addEventListener(new UserStartStreaming())
+                            .addEventListener(new MessageAddReaction())
+                            .addEventListener(new PrivateMessageSent())
+                            .buildBlocking();
                 }catch (AccountTypeException x){
-                    builder = new JDABuilder(AccountType.CLIENT).setToken(token.getSingle(e));
+                    api = new JDABuilder(AccountType.CLIENT).setToken(token.getSingle(e))
+                            .addEventListener(new GuildMessageReceived())
+                            .addEventListener(new PrivateMessageReceived())
+                            .addEventListener(new GuildMemberJoin())
+                            .addEventListener(new GuildMemberLeave())
+                            .addEventListener(new UserUpdateStatus())
+                            .addEventListener(new UserJoinVc())
+                            .addEventListener(new UserLeaveVc())
+                            .addEventListener(new TextChannelCreated())
+                            .addEventListener(new TextChannelDeleted())
+                            .addEventListener(new UserAvatarChange())
+                            .addEventListener(new GuildBan())
+                            .addEventListener(new BotSendGuildMessage())
+                            .addEventListener(new UserStartStreaming())
+                            .addEventListener(new MessageAddReaction())
+                            .addEventListener(new PrivateMessageSent())
+                            .buildBlocking();
                 }
-                builder.addEventListener(new GuildMessageReceived())
-                        .addEventListener(new PrivateMessageReceived())
-                        .addEventListener(new GuildMemberJoin())
-                        .addEventListener(new GuildMemberLeave())
-                        .addEventListener(new UserUpdateStatus())
-                        .addEventListener(new UserJoinVc())
-                        .addEventListener(new UserLeaveVc())
-                        .addEventListener(new TextChannelCreated())
-                        .addEventListener(new TextChannelDeleted())
-                        .addEventListener(new UserAvatarChange())
-                        .addEventListener(new GuildBan())
-                        .addEventListener(new BotSendGuildMessage())
-                        .addEventListener(new UserStartStreaming())
-                        .addEventListener(new MessageAddReaction())
-                        .addEventListener(new PrivateMessageSent());
-                api = builder.buildBlocking();
+
                 bots.put(name.getSingle(e), api);
                 users.put(name.getSingle(e), api.getSelfUser());
                 java.util.Date date = new java.util.Date();

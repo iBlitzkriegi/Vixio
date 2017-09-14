@@ -8,7 +8,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.effects.EffLogin;
-import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
+import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import me.iblitzkriegi.vixio.util.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.TrackScheduler;
 import net.dv8tion.jda.core.JDA;

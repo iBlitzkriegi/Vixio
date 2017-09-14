@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
+import me.iblitzkriegi.vixio.registration.ExprAnnotation;
 import org.bukkit.event.Event;
 
 /**
@@ -52,7 +52,6 @@ public class ExprTitleOfTrack extends SimpleExpression<String> {
         if(vTrack.getSingle(e) instanceof AudioTrack){
             return ((AudioTrack) vTrack.getSingle(e)).getInfo().title;
         }else{
-            System.out.println(vTrack.getSingle(e) + " is the object idiot. Not a AudioTrack.");
             return null;
         }
     }

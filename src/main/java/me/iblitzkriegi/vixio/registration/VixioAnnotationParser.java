@@ -6,14 +6,6 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.*;
-import me.iblitzkriegi.vixio.events.audio.EvntAudioPlayerTrackEnd;
-import me.iblitzkriegi.vixio.events.audio.EvntAudioPlayerTrackStart;
-import me.iblitzkriegi.vixio.events.member.*;
-import me.iblitzkriegi.vixio.events.message.*;
-import me.iblitzkriegi.vixio.registration.annotation.CondAnnotation;
-import me.iblitzkriegi.vixio.registration.annotation.EffectAnnotation;
-import me.iblitzkriegi.vixio.registration.annotation.EvntAnnotation;
-import me.iblitzkriegi.vixio.registration.annotation.ExprAnnotation;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
@@ -24,7 +16,10 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -38,7 +33,6 @@ public class VixioAnnotationParser {
     public static HashMap<String, String> vEvntShowroom = new HashMap<>();
     public static HashMap<String, String> vEventSyntax = new HashMap<>();
     public static HashMap<String, String> vEventDesc = new HashMap<>();
-
     public static HashMap<String, String> vCondExample = new HashMap<>();
     public static HashMap<String, String> vCondTitle = new HashMap<>();
     public static HashMap<String, String> vCondShowroom = new HashMap<>();
@@ -65,7 +59,6 @@ public class VixioAnnotationParser {
             e.printStackTrace();
         }
         registerValues();
-
         for(Class clazz : getClasses(file, "me.iblitzkriegi.vixio")) {
             if (clazz.isAnnotationPresent(ExprAnnotation.Expression.class)) {
                 ExprAnnotation.Expression ExprAnon = (ExprAnnotation.Expression) clazz.getAnnotation(ExprAnnotation.Expression.class);
@@ -116,15 +109,6 @@ public class VixioAnnotationParser {
 
 
     }
-    public static void registerSyntax(Class cls, String name, String example,  String description, String... patterns){
-        if(cls.getName().startsWith("Cond")){
-            Skript.registerCondition(cls, patterns);
-        }else if(cls.getName().startsWith("Eff")){
-            Skript.registerEffect(cls, patterns);
-        }else if(cls.getName().startsWith("Evnt")){
-
-        }
-    }
     public static Set<Class<?>> getClasses(File jarFile, String packageName) {
         Set<Class<?>> classes = new HashSet<>();
         try {
@@ -143,13 +127,6 @@ public class VixioAnnotationParser {
     }
     private static void registerValues(){
         // Guild Message Event \\
-        EventValues.registerEventValue(EvntGuildMessageReceive.class, User.class, new Getter<User, EvntGuildMessageReceive>() {
-            @Override
-            public User get(EvntGuildMessageReceive evntGuildMessageReceive) {
-                return evntGuildMessageReceive.getEvntUser();
-            }
-
-        }, 0);
         EventValues.registerEventValue(EvntGuildMessageReceive.class, User.class, new Getter<User, EvntGuildMessageReceive>() {
             @Override
             public User get(EvntGuildMessageReceive evntGuildMessageReceive) {
@@ -186,7 +163,6 @@ public class VixioAnnotationParser {
         }, 0);
 
 
-
         // Track End \\
         EventValues.registerEventValue(EvntAudioPlayerTrackEnd.class, com.sedmelluq.discord.lavaplayer.track.AudioTrack.class, new Getter<com.sedmelluq.discord.lavaplayer.track.AudioTrack, EvntAudioPlayerTrackEnd>() {
             @Override
@@ -204,7 +180,6 @@ public class VixioAnnotationParser {
         }, 0);
 
         // Track Start \\
-        String s;
         EventValues.registerEventValue(EvntAudioPlayerTrackStart.class, com.sedmelluq.discord.lavaplayer.track.AudioTrack.class, new Getter<com.sedmelluq.discord.lavaplayer.track.AudioTrack, EvntAudioPlayerTrackStart>() {
             @Override
             public com.sedmelluq.discord.lavaplayer.track.AudioTrack get(EvntAudioPlayerTrackStart e) {

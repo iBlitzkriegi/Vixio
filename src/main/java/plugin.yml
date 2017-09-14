@@ -1,6 +1,6 @@
 name: Vixio
 main: me.iblitzkriegi.vixio.Vixio
-version: 1.1.4pre-release
+version: 1.1.5
 author: Blitz
 description: Vixio, The Discord addon created to meet all of your Discord needs.
 commands:
