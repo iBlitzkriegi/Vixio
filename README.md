@@ -51,6 +51,6 @@ gradlew.bat clean build
 ```
 
 # Contact
-[<img src="https://discordapp.com/api/v7/guilds/236641445363056651/widget.png?style=banner3">](http://www.vixio.space/discord)
+<a href="http://www.vixio.space/discord"><img src="https://discordapp.com/api/v7/guilds/236641445363056651/widget.png?style=banner3"></a>
 
 
