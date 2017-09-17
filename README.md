@@ -17,11 +17,20 @@ To use Vixio, you must first have a bot on your Discord server. To do so, follow
 - Give the application a name under "App Name" then in the bottom right click "Create Application".
 - You should now see your new applicaion. Next, under "App Details" click on "Create a bot user".
 - Click "Yes, do it" on the conformation screen.
-- Next, under "App Bot User" find "Token" and click "Click to reveal" and copy the token.
-    - Remember to save that token, that's what you will use on startup with Vixio.
-- Find the "Client ID" at the top of the page.
+- Under "App Bot User" find "Token" and click "Click to reveal" and save the token. That's what you will use to log in to your bot when Vixio starts
+- Next, find the "Client ID" at the top of the page.
 - Replace the X's with the client ID in this URL: https://discordapp.com/oauth2/authorize?client_id=XXXXXXXXX&scope=bot&permissions=0 
     - You can give that link to anyone so they can add it to their guild. 
+
+- Now, in a skript add this:
+```
+on skript load:
+        login to user with token "BOT TOKEN HERE" with name "NAME OF BOT HERE"
+```
+(or using a trigger of your choice)
+
+You can now reference your bot from any skript at any time.
+
 
 # Usage
 
@@ -41,5 +50,7 @@ Vixio uses Gradle for compilation.
 gradlew.bat clean build
 ```
 
+# Contact
+[<img src="https://discordapp.com/api/v7/guilds/236641445363056651/widget.png?style=banner3">](http://www.vixio.space/discord)
 
 
