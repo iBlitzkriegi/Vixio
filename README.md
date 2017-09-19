@@ -11,7 +11,7 @@ The Skript Addon made to fit all of your Discord needs.
 
 # Setup
 
-To use Vixio, you must first have a bot on your Discord server. To do so, follow the [picture tutorial](https://imgur.com/a/RwNN4) or the instructions below:
+To use Vixio, you must first have a bot on your Discord server. To do so, follow the [video tutorial](https://youtu.be/AXGETouUzoo) or the instructions below:
 
 - Go to [discord's application dashboard](https://discordapp.com/developers/applications/me) and click on "New Application". You may have to login!
 - Give the application a name under "App Name" then in the bottom right click "Create Application".
