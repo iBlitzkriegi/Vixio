@@ -40,7 +40,7 @@ Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio
 
 Vixio uses Gradle for compilation.
 
-### Linux
+### Linux / Mac
 ```
 ./gradlew clean build
 ```
