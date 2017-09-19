@@ -34,7 +34,7 @@ You can now reference your bot from any skript at any time.
 
 # Usage
 
-Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time.
+Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time, or at http://vixio.space/docs/
 
 # Compiling
 
