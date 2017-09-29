@@ -19,7 +19,7 @@ import static me.iblitzkriegi.vixio.effects.EffLogin.bots;
 @EffectAnnotation.Effect(
         name = "MakeCodeblock",
         title = "Create Codeblock",
-        desc = "Create a codeblock and send it to a Channe;",
+        desc = "Create a codeblock and send it to a Channel",
         syntax = "[discord] (make|create) codeblock %string% [with lang %-string%] for %string% with %string%",
         example = "SOON"
 )
