@@ -1,46 +1,48 @@
 package me.iblitzkriegi.vixio.registration;
 
+import net.dv8tion.jda.core.events.Event;
+
 /**
  * Created by Blitz on 7/22/2017.
  */
 // Vixio.registerCondition(cls, patterns).setName().setDesc();
 public class Registration {
 
-    private String vName;
-    private String vDesc;
-    private String vExample;
+    private String name;
+    private String desc;
+    private String example;
     private Class<?> vClass;
-    private String[] vSyntaxes;
+    private String[] syntaxes;
     public Registration(Class<?> cls, String... syntaxes){
         vClass = cls;
-        vSyntaxes = syntaxes;
+        this.syntaxes = syntaxes;
     }
     public Registration setName(String s){
-        vName = s;
+        this.name = s;
         return this;
     }
     public Registration setDesc(String s){
-        vDesc = s;
+        this.desc = s;
         return this;
     }
     public Registration setExample(String s){
-        vExample = s;
+        this.example = s;
         return this;
     }
     public String getName(){
-        return vName;
+        return this.name;
     }
     public String getDesc(){
-        return vDesc;
+        return this.desc;
     }
     public Class<?> getVClass(){
         return vClass;
     }
     public String[] getSyntaxes(){
-        return vSyntaxes;
+        return this.syntaxes;
     }
     public String getExample(){
-        return vExample;
+        return this.example;
     }
 
 

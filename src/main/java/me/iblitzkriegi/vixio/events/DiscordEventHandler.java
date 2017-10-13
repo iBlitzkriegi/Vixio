@@ -4,7 +4,9 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -45,6 +47,7 @@ public class DiscordEventHandler extends Event{
             }},0);
 
     }
+
     private static final HandlerList hls = new HandlerList();
     private net.dv8tion.jda.core.events.Event event;
     private HashMap<String, Object> values = new HashMap<>();
@@ -62,6 +65,10 @@ public class DiscordEventHandler extends Event{
                 values.put("User", o);
             }else if(o instanceof Channel){
                 values.put("Channel", o);
+            }else if(o instanceof String){
+                values.put("String", o);
+            }else if(o instanceof Guild){
+                values.put("Guild", o);
             }
         }
 
@@ -74,6 +81,9 @@ public class DiscordEventHandler extends Event{
             return values.get(s);
         }
         return null;
+    }
+    public net.dv8tion.jda.core.events.Event getJdaEvent(){
+        return event;
     }
 
 

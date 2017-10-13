@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.eventvalues;
+package me.iblitzkriegi.vixio.expressions.eventValues;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;

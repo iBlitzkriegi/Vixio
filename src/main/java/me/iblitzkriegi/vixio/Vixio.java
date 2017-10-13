@@ -45,6 +45,7 @@ public class Vixio extends JavaPlugin {
     public static List<Registration> effects = new ArrayList<>();
     public static List<Registration> expressions = new ArrayList<>();
     public static HashMap<String, JDA> bots = new HashMap<>();
+    public static HashMap<String, Class<? extends Event>> eventSyntax = new HashMap<>();
     public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public static List<JDA> jdaInstances = new ArrayList<>();
     public static List<Class<? extends Event>> list = new ArrayList<>();
@@ -59,16 +60,16 @@ public class Vixio extends JavaPlugin {
     @Override
     public void onEnable(){
         list.add(GuildVoiceLeaveEvent.class); list.add(GuildMemberNickChangeEvent.class);
-        for(Class clazz : list){
+        for(Class<? extends Event> clazz : list){
             String syntax = clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("Event", "");
             registerEvent(clazz.getSimpleName(), SimpleEvent.class, DiscordEventHandler.class, syntax)
                 .setName(syntax)
                 .setDesc("Discord event")
                 .setExample("on " + syntax);
+            eventSyntax.put("on " + syntax, clazz);
         }
         try {
             getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
-
             Vixio.setup();
             Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         } catch (IOException e) {
@@ -79,11 +80,6 @@ public class Vixio extends JavaPlugin {
         }
         Metrics metrics = new Metrics(this);
         Documentation.setupSyntaxFile();
-    }
-    public void onDisable(){
-        for(JDA jda : jdaInstances){
-            jda.shutdown();
-        }
     }
     public static Vixio getInstance(){
         if(instance == null){
@@ -168,6 +164,24 @@ public class Vixio extends JavaPlugin {
             @Override
             public String toVariableNameString(User usr) {
                 return usr.getId();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(Member.class, "member").user("member").defaultExpression(new EventValueExpression<>(Member.class)).name("member").parser(new Parser<Member>() {
+            @Override
+            public Member parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(Member usr, int flags) {
+                return usr.getUser().getId();
+            }
+            @Override
+            public String toVariableNameString(Member usr) {
+                return usr.getUser().getId();
             }
             @Override
             public String getVariableNamePattern() {
