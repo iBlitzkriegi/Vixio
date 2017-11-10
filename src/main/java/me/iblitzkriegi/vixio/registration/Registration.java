@@ -2,6 +2,8 @@ package me.iblitzkriegi.vixio.registration;
 
 import net.dv8tion.jda.core.events.Event;
 
+import java.util.ArrayList;
+
 /**
  * Created by Blitz on 7/22/2017.
  */
@@ -17,6 +19,11 @@ public class Registration {
         vClass = cls;
         this.syntaxes = syntaxes;
     }
+
+    public Registration(Class clazz, ArrayList<String> patterns) {
+        this.syntaxes = patterns.toArray(new String[0]);
+    }
+
     public Registration setName(String s){
         this.name = s;
         return this;

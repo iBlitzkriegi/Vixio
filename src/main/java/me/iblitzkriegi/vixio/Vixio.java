@@ -5,30 +5,25 @@ import ch.njol.skript.SkriptAddon;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.classes.Parser;
-import ch.njol.skript.classes.Serializer;
 import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.*;
-import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
-import ch.njol.yggdrasil.Fields;
 import me.iblitzkriegi.vixio.events.DiscordEventHandler;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
+import me.iblitzkriegi.vixio.util.DiscordEventCompare;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.entities.impl.TextChannelImpl;
-import net.dv8tion.jda.core.entities.impl.UserImpl;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +43,9 @@ public class Vixio extends JavaPlugin {
     public static HashMap<String, Class<? extends Event>> eventSyntax = new HashMap<>();
     public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public static List<JDA> jdaInstances = new ArrayList<>();
-    public static List<Class<? extends Event>> list = new ArrayList<>();
+    public static ArrayList<Class<? extends Event>> list = new ArrayList<>();
     public static Message lastRetrievedMessage;
+    public static ArrayList<String> patterns = new ArrayList<>();
     public Vixio() {
         if (instance == null) {
             instance = this;
@@ -59,15 +55,13 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-        list.add(GuildVoiceLeaveEvent.class); list.add(GuildMemberNickChangeEvent.class);
-        for(Class<? extends Event> clazz : list){
-            String syntax = clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("Event", "");
-            registerEvent(clazz.getSimpleName(), SimpleEvent.class, DiscordEventHandler.class, syntax)
-                .setName(syntax)
-                .setDesc("Discord event")
-                .setExample("on " + syntax);
-            eventSyntax.put("on " + syntax, clazz);
+        list.add(GuildVoiceLeaveEvent.class);
+        list.add(GuildMessageReceivedEvent.class);
+        list.add(GuildVoiceJoinEvent.class);
+        for(Class clz : list){
+            patterns.add(clz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", ""));
         }
+        registerEvent("DiscordEventHandler", DiscordEventCompare.class, DiscordEventHandler.class, patterns.toArray(new String[0]));
         try {
             getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
             Vixio.setup();
@@ -100,7 +94,7 @@ public class Vixio extends JavaPlugin {
         return registration;
     }
     public static Registration registerEvent(String name, Class type, Class clazz, String... patterns){
-        Skript.registerEvent(name, type, clazz, patterns[0]);
+        Skript.registerEvent(name, type, clazz, patterns);
         Registration registration = new Registration(clazz, patterns);
         events.add(registration);
         eventsSyntax.put(clazz.getSimpleName(), registration);
@@ -134,17 +128,17 @@ public class Vixio extends JavaPlugin {
             public String toVariableNameString(Message msg) {return msg.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
+        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(TextChannel.class)).name("channel").parser(new Parser<TextChannel>() {
             @Override
-            public Channel parse(String s, ParseContext context) {
+            public TextChannel parse(String s, ParseContext context) {
                 return null;
             }
             @Override
-            public String toString(Channel msg, int flags) {
+            public String toString(TextChannel msg, int flags) {
                 return msg.getId();
             }
             @Override
-            public String toVariableNameString(Channel msg) {
+            public String toVariableNameString(TextChannel msg) {
                 return msg.getId();
             }
             @Override
@@ -197,7 +191,7 @@ public class Vixio extends JavaPlugin {
             public String toVariableNameString(Guild gui) {return gui.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voicechannel").user("voicechannel").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("user").parser(new Parser<VoiceChannel>() {
+        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voice").user("voice").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voice").parser(new Parser<VoiceChannel>() {
             @Override
             public VoiceChannel parse(String s, ParseContext context) {return null;}
             @Override

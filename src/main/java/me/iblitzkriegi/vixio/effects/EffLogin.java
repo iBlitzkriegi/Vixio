@@ -9,7 +9,6 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.jda.DiscordEventHandlerListener;
-import me.iblitzkriegi.vixio.jda.GuildMessageReceived;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -45,7 +44,6 @@ public class EffLogin extends Effect {
             }
             try {
                 api = prebuild
-                        .addEventListener(new GuildMessageReceived())
                         .addEventListener(new DiscordEventHandlerListener())
                         .buildBlocking();
             } catch (LoginException e1) {
