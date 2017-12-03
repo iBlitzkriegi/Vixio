@@ -77,6 +77,8 @@ dependencies {
 
 }
 
+jar.enabled = false
+assemble.dependsOn(shadowJar);
 
 shadowJar {
    
@@ -89,5 +91,3 @@ shadowJar {
 
 }
 
-jar.enabled = false
-assemble.dependsOn(shadowJar);
