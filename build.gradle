@@ -2,12 +2,13 @@ group 'me.iblitzkriegi.vixio'
 version '2.0.0-dev3'
 
 buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
-  }
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -46,15 +47,16 @@ repositories {
 
     maven {
         url 'http://maven.sk89q.com/repo'
-     }
+    }
 
-     maven {
+    maven {
         url 'http://nexus.hc.to/content/repositories/pub_releases'
-     }
+    }
 
-     maven {
+    maven {
         url 'https://jitpack.io'
-     }
+    }
+
 }
 
 
@@ -73,8 +75,6 @@ dependencies {
     compile group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 
-
-
 }
 
 jar.enabled = false
@@ -82,12 +82,13 @@ assemble.dependsOn(shadowJar);
 
 shadowJar {
    
-   classifier = null
+    classifier = null
 
-   dependencies {
+    dependencies {
 
-   		include(dependency('net.dv8tion:JDA:3.3.1_305'))
-   }
+        include(dependency('net.dv8tion:JDA:3.3.1_305'))
+
+    }
 
 }
 
