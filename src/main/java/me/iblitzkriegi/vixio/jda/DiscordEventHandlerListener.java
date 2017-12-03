@@ -17,7 +17,7 @@ import org.bukkit.Bukkit;
 public class DiscordEventHandlerListener extends ListenerAdapter {
     @Override
     public void onGenericEvent(Event e) {
-        if(Vixio.patterns.contains(Vixio.getPattern(e.getClass()))) {
+        if(Vixio.getInstance().patterns.contains(Vixio.getPattern(e.getClass()))) {
             DiscordEventHandler event;
             if (e instanceof GuildVoiceLeaveEvent) {
                 event = new DiscordEventHandler(e, ((GuildVoiceLeaveEvent) e).getChannelLeft(), ((GuildVoiceLeaveEvent) e).getGuild(), ((GuildVoiceLeaveEvent) e).getMember().getUser(), e.getJDA(), ((GuildVoiceLeaveEvent) e).getMember());

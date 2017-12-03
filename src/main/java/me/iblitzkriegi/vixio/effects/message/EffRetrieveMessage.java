@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
  */
 public class EffRetrieveMessage extends Effect{
     static {
-        Vixio.registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from [text[-]]channel %channel%")
+        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from [text[-]]channel %channel%")
             .setName("Retrieve message with id")
             .setDesc("Get a Message via it's ID from a Guild/TextChannel")
             .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");

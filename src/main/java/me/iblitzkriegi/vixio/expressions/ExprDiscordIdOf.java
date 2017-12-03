@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.ISnowflake;
  */
 public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.registerPropertyExpression(ExprDiscordIdOf.class, String.class, "discord id", "channel/guild/user/message")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "discord id", "channel/guild/user/message")
             .setName("Discord ID of")
             .setDesc("Get the ID of a discord object")
             .setExample("discord id of event-user");

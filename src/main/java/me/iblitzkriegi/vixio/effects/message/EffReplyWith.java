@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
  */
 public class EffReplyWith extends Effect {
     static {
-        Vixio.registerEffect(EffReplyWith.class, "reply with %strings%")
+        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %strings%")
             .setName("Reply with")
             .setDesc("Reply with a message in a event")
             .setExample("reply with \"Hello %mention tag of event-user%\"");

@@ -36,7 +36,7 @@ public class Documentation {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("-=Effects=-");
             bw.newLine();
-            for(Registration reg : Vixio.effects) {
+            for(Registration reg : Vixio.getInstance().effects) {
                 boolean t = reg.getSyntaxes().length == 2 ? true : false;
                 if(t){
                     bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");
@@ -47,7 +47,7 @@ public class Documentation {
             }
             bw.write("-=Expressions=-");
             bw.newLine();
-            for(Registration reg : Vixio.expressions){
+            for(Registration reg : Vixio.getInstance().expressions){
                 boolean t = reg.getSyntaxes().length == 2 ? true : false;
                 if(t){
                     bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");
@@ -60,7 +60,7 @@ public class Documentation {
             }
             bw.write("-=Events=-");
             bw.newLine();
-            for(Registration reg : Vixio.events){
+            for(Registration reg : Vixio.getInstance().events){
                 boolean t = reg.getSyntaxes().length == 2 ? true : false;
                 if(t){
                     bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");

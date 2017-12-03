@@ -21,7 +21,7 @@ import org.bukkit.event.Event;
  */
 public class ExprContentOfMessage extends SimpleExpression<String> {
     static {
-        Vixio.registerExpression(ExprContentOfMessage.class, String.class, ExpressionType.SIMPLE, "content of %message% [(with|as) %-bot%]")
+        Vixio.getInstance().registerExpression(ExprContentOfMessage.class, String.class, ExpressionType.SIMPLE, "content of %message% [(with|as) %-bot%]")
             .setName("Content of message")
             .setDesc("Get the content of a message")
             .setExample("content of event-message");
@@ -57,11 +57,11 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if(bot!=null||Vixio.jdaUsers.get(bot.getSingle(e))!=null){
+        if(bot!=null||Vixio.getInstance().jdaUsers.get(bot.getSingle(e))!=null){
             if(message != null){
                 switch (mode){
                     case SET:
-                        JDA jda = Vixio.jdaUsers.get(bot.getSingle(e));
+                        JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));
                         TextChannel textChannel = jda.getTextChannelById(message.getSingle(e).getTextChannel().getId());
                         try{
                             String edit;

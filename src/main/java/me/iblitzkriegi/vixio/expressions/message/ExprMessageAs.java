@@ -22,7 +22,7 @@ import org.bukkit.event.Event;
  */
 public class ExprMessageAs extends SimpleExpression<Message> {
     static {
-        Vixio.registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %message% (as|with) %bot%")
+        Vixio.getInstance().registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %message% (as|with) %bot%")
                 .setName("Message as bot")
                 .setDesc("Used to delete messages")
                 .setExample("delete event-message as event-bot");
@@ -71,7 +71,7 @@ public class ExprMessageAs extends SimpleExpression<Message> {
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
         if(bot!=null){
             if(message!=null){
-                if(Vixio.jdaUsers.get(bot.getSingle(e))!=null){
+                if(Vixio.getInstance().jdaUsers.get(bot.getSingle(e))!=null){
                     try{
                         switch (mode){
                             case DELETE:

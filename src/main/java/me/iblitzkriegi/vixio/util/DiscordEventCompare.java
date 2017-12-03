@@ -16,7 +16,7 @@ public class DiscordEventCompare extends SkriptEvent{
 
     @Override
     public boolean init(Literal<?>[] literals, int i, SkriptParser.ParseResult parseResult) {
-        this.event = Vixio.jdaEvents.get(i);
+        this.event = Vixio.getInstance().jdaEvents.get(i);
         theInt = i;
         return true;
     }
@@ -24,7 +24,7 @@ public class DiscordEventCompare extends SkriptEvent{
     @Override
     public boolean check(Event event) {
         if(event instanceof DiscordEventHandler){
-            String t = Vixio.jdaEvents.get(theInt).getSimpleName();
+            String t = Vixio.getInstance().jdaEvents.get(theInt).getSimpleName();
             String r = ((DiscordEventHandler) event).getJdaEvent().getClass().getSimpleName();
             if(t.equalsIgnoreCase(r)){
                 return true;

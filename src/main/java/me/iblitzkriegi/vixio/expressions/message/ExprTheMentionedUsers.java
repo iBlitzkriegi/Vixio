@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class ExprTheMentionedUsers extends SimplePropertyExpression<Object, List> {
     static {
-        Vixio.registerPropertyExpression(ExprTheMentionedUsers.class, List.class, "mentioned users", "message")
+        Vixio.getInstance().registerPropertyExpression(ExprTheMentionedUsers.class, List.class, "mentioned users", "message")
             .setName("Mentioned users")
             .setDesc("Get the mentioned users in a message")
             .setExample("set {_var::*} to the mentioned users in event-channel");

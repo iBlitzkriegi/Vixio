@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class EffLogin extends Effect {
     static {
-        Vixio.registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]").setName("Connect effect").setDesc("Login to a bot account with a token").setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
+        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]").setName("Connect effect").setDesc("Login to a bot account with a token").setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
     private Expression<String> token;
     private Expression<String> name;
@@ -52,10 +52,10 @@ public class EffLogin extends Effect {
                 Skript.error("You're logging in too fast! Chill m9");
             }
             if(name.getSingle(e)!=null) {
-                Vixio.bots.put(name.getSingle(e), api);
+                Vixio.getInstance().bots.put(name.getSingle(e), api);
             }
-            Vixio.jdaUsers.put(api.getSelfUser(), api);
-            Vixio.jdaInstances.add(api);
+            Vixio.getInstance().jdaUsers.put(api.getSelfUser(), api);
+            Vixio.getInstance().jdaInstances.add(api);
             if (getNext() != null) {
                 TriggerItem.walk(getNext(), e);
             }

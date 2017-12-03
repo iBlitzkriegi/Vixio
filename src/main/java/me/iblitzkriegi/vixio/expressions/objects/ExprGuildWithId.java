@@ -16,7 +16,7 @@ import org.bukkit.event.Event;
  */
 public class ExprGuildWithId extends SimpleExpression<Guild> {
     static {
-        Vixio.registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE, "(server|guild) with id %string%")
+        Vixio.getInstance().registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE, "(server|guild) with id %string%")
             .setName("Guild with id")
             .setDesc("Get a server/guild via it's ID")
             .setExample("guild with id \"16165198461\"");
@@ -52,8 +52,8 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
 
     private Guild getGuild(Event e) {
         if (id.getSingle(e) != null) {
-            if (Vixio.jdaInstances != null) {
-                for (JDA jda : Vixio.jdaInstances) {
+            if (Vixio.getInstance().jdaInstances != null) {
+                for (JDA jda : Vixio.getInstance().jdaInstances) {
                     try {
                         if (jda.getGuildById(id.getSingle(e)) != null) {
                             return jda.getGuildById(id.getSingle(e));

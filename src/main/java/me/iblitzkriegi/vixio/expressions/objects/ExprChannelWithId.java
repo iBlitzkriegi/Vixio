@@ -18,7 +18,7 @@ import org.bukkit.event.Event;
  */
 public class ExprChannelWithId extends SimpleExpression<Channel> {
     static {
-        Vixio.registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %string%]");
+        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %string%]");
     }
     private Expression<String> id;
     private Expression<Guild> guild;
@@ -51,8 +51,8 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
     private Channel getChannel(Event e){
         if(id.getSingle(e)!=null) {
             if(guild.getSingle(e)==null) {
-                if (Vixio.jdaInstances != null) {
-                    for (JDA jda : Vixio.jdaInstances) {
+                if (Vixio.getInstance().jdaInstances != null) {
+                    for (JDA jda : Vixio.getInstance().jdaInstances) {
                         if (jda.getTextChannelById(id.getSingle(e)) == null) {
                             if(jda.getVoiceChannelById(id.getSingle(e))==null){
                                 Skript.error("Could not find TextChannel or VoiceChannel with the provided ID, check your ID and try again.");

@@ -16,7 +16,7 @@ import org.bukkit.event.Event;
  */
 public class ExprBot extends SimpleExpression<SelfUser>{
     static {
-        Vixio.registerExpression(ExprBot.class, SelfUser.class, ExpressionType.SIMPLE, "event-bot").setName("event-bot").setDesc("Returns a SelfUser").setExample("event-bot");
+        Vixio.getInstance().registerExpression(ExprBot.class, SelfUser.class, ExpressionType.SIMPLE, "event-bot").setName("event-bot").setDesc("Returns a SelfUser").setExample("event-bot");
     }
     @Override
     protected SelfUser[] get(Event event) {

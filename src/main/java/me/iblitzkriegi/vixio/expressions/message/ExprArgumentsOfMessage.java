@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ExprArgumentsOfMessage extends SimpleExpression<String> {
     static {
-        Vixio.registerExpression(ExprArgumentsOfMessage.class, List.class, ExpressionType.SIMPLE, "(%message%[']s arguments|[the] vixio arguments of %message%)")
+        Vixio.getInstance().registerExpression(ExprArgumentsOfMessage.class, List.class, ExpressionType.SIMPLE, "(%message%[']s arguments|[the] vixio arguments of %message%)")
                 .setName("Arguments of message")
                 .setDesc("Get the arguments of a message split up for you")
                 .setExample("set {_var::*} to arguments of event-message");

@@ -32,19 +32,24 @@ import java.util.List;
  * Created by Blitz on 7/22/2017.
  */
 public class Vixio extends JavaPlugin {
-    private static Vixio instance;
-    private static SkriptAddon addonInstance;
-    public static List<Registration> conditions = new ArrayList<>();
-    public static List<Registration> events = new ArrayList<>();
+    // Instances \\
+    public static Vixio instance;
+    public static SkriptAddon addonInstance;
+    // Registration \\
+    public List<Registration> conditions = new ArrayList<>();
+    public List<Registration> events = new ArrayList<>();
+    public List<Registration> effects = new ArrayList<>();
+    public List<Registration> expressions = new ArrayList<>();
     public static HashMap<String, Registration> eventsSyntax = new HashMap<>();
-    public static List<Registration> effects = new ArrayList<>();
-    public static List<Registration> expressions = new ArrayList<>();
-    public static HashMap<String, JDA> bots = new HashMap<>();
-    public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
-    public static List<JDA> jdaInstances = new ArrayList<>();
-    public static ArrayList<Class<?>> jdaEvents = new ArrayList<>();
-    public static ArrayList<String> patterns = new ArrayList<>();
-    public static HashMap<Class<?>, String> syntaxEvent = new HashMap<>();
+    // JDA Related \\
+    public HashMap<String, JDA> bots = new HashMap<>();
+    public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
+    public List<JDA> jdaInstances = new ArrayList<>();
+    public ArrayList<Class<?>> jdaEvents = new ArrayList<>();
+    // Syntax related \\
+    public ArrayList<String> patterns = new ArrayList<>();
+    public HashMap<Class<?>, String> syntaxEvent = new HashMap<>();
+
     public Vixio() {
         if (instance == null) {
             instance = this;
@@ -54,13 +59,11 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-
         jdaEvents.add(GuildVoiceLeaveEvent.class);
         jdaEvents.add(GuildMessageReceivedEvent.class);
         jdaEvents.add(GuildVoiceJoinEvent.class);
         jdaEvents.add(GuildMessageReactionAddEvent.class);
         jdaEvents.add(TextChannelUpdateTopicEvent.class);
-
         for(Class<?> clz : jdaEvents){
             String syntax = getPattern(clz);
             patterns.add(syntax);
@@ -77,12 +80,12 @@ public class Vixio extends JavaPlugin {
         if(!this.getDataFolder().exists()){
             this.getDataFolder().mkdir();
         }
-        Metrics metrics = new Metrics(this);
+        new Metrics(this);
         Documentation.setupSyntaxFile();
     }
     public static Vixio getInstance(){
         if(instance == null){
-            throw new IllegalStateException();
+            return null;
         }
         return instance;
     }
@@ -92,32 +95,33 @@ public class Vixio extends JavaPlugin {
         }
         return addonInstance;
     }
-    public static Registration registerCondition(Class<? extends Condition> cond, String... patterns){
+    public Registration registerCondition(Class<? extends Condition> cond, String... patterns){
         Skript.registerCondition(cond, patterns);
         Registration registration = new Registration(cond, patterns);
         conditions.add(registration);
         return registration;
     }
-    public static Registration registerEvent(String name, Class type, Class clazz, String... patterns){
+    public Registration registerEvent(String name, Class type, Class clazz, String... patterns){
         Skript.registerEvent(name, type, clazz, patterns);
         Registration registration = new Registration(clazz, patterns);
         events.add(registration);
         eventsSyntax.put(clazz.getSimpleName(), registration);
+
         return registration;
     }
-    public static Registration registerEffect(Class<? extends Effect> eff, String... patterns){
+    public Registration registerEffect(Class<? extends Effect> eff, String... patterns){
         Skript.registerEffect(eff, patterns[0]);
         Registration reg = new Registration(eff, patterns);
         effects.add(reg);
         return reg;
     }
-    public static Registration registerExpression(Class<? extends Expression> expr, Class<?> returntype, ExpressionType exprtype, String... patterns){
+    public Registration registerExpression(Class<? extends Expression> expr, Class<?> returntype, ExpressionType exprtype, String... patterns){
         Skript.registerExpression(expr, returntype, exprtype, patterns);
         Registration registration = new Registration(expr, patterns);
         expressions.add(registration);
         return registration;
     }
-    public static Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType){
+    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType){
         Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         expressions.add(registration);

@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.entities.*;
  */
 public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.registerPropertyExpression(ExprDiscordNameOf.class, String.class,"discord name", "channel/guild/user/member")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,"discord name", "channel/guild/user/member")
                 .setName("Discord Name of")
                 .setDesc("Get the name of something/someone")
                 .setExample("discord name of event-user");

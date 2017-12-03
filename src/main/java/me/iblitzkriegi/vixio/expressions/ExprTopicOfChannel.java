@@ -20,7 +20,7 @@ import org.bukkit.event.Event;
  */
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
-        Vixio.registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channel% [(with|as) %-bot%]")
+        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channel% [(with|as) %-bot%]")
         .setName("Topic of Channel")
         .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
         .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
@@ -72,8 +72,8 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
         if(bot!=null) {
-            if (Vixio.jdaUsers.get(bot.getSingle(e)) != null) {
-                JDA jda = Vixio.jdaUsers.get(bot.getSingle(e));
+            if (Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
+                JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));
                 TextChannel channel = jda.getTextChannelById(this.channel.getSingle(e).getId());
                 try {
                     switch (mode) {

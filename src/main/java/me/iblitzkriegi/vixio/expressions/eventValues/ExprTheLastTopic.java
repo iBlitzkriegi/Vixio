@@ -19,7 +19,7 @@ public class ExprTheLastTopic extends SimpleExpression<String> {
     public static String newTopic;
     private boolean not;
     static {
-        Vixio.registerExpression(ExprTheLastTopic.class, String.class, ExpressionType.SIMPLE, "[the] old topic", "[the] new topic");
+        Vixio.getInstance().registerExpression(ExprTheLastTopic.class, String.class, ExpressionType.SIMPLE, "[the] old topic", "[the] new topic");
     }
     @Override
     protected String[] get(Event event) {
