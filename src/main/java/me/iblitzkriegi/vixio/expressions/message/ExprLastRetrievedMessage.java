@@ -17,6 +17,7 @@ import org.bukkit.event.Event;
  * Created by Blitz on 8/19/2017.
  */
 public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
+    public static Message lastRetrievedMessage;
     static {
         Vixio.registerExpression(ExprLastRetrievedMessage.class, Message.class, ExpressionType.SIMPLE, "last retrieved [discord] message")
             .setName("Last retrieved message")
@@ -25,8 +26,8 @@ public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
     }
     @Override
     protected Message[] get(Event event) {
-        if(Vixio.lastRetrievedMessage!=null) {
-            return new Message[]{Vixio.lastRetrievedMessage};
+        if(lastRetrievedMessage!=null) {
+            return new Message[]{lastRetrievedMessage};
         }else{
             Skript.error("You must use the retrieve message effect at least once first!");
             return null;

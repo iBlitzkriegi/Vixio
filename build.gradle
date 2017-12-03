@@ -70,7 +70,7 @@ dependencies {
     providedServer group: 'org.bukkit', name: 'craftbukkit', version: project.property("apiversion")
 
     // JDA
-    compile 'net.dv8tion:JDA:3.2.0_228'
+    compile 'net.dv8tion:JDA:3.3.1_305'
 
     // Provided local jars
     provided fileTree(dir: 'libs/provided', include: '*.jar')
@@ -81,8 +81,8 @@ dependencies {
     // Jars to include in that shaded jar
     compile fileTree(dir: 'libs/compile', include: '*.jar')
     compile 'com.sedmelluq:lavaplayer:1.2.42'
-    compile 'ca.pjer:chatter-bot-api:2.0.1'
-    compile 'com.vdurmont:emoji-java:3.1.3'
+    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
+
 
 
 }

@@ -14,7 +14,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.AccountTypeException;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.utils.SimpleLog;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -36,7 +35,6 @@ public class EffLogin extends Effect {
         Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
             JDA api = null;
             JDABuilder prebuild;
-            SimpleLog.LEVEL = SimpleLog.Level.OFF;
             try {
                 prebuild = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e));
             } catch (AccountTypeException x) {

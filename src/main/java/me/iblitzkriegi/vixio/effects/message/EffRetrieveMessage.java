@@ -6,6 +6,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
@@ -25,7 +26,7 @@ public class EffRetrieveMessage extends Effect{
     protected void execute(Event event) {
         if(id.getSingle(event)!=null) {
             if (channel.getSingle(event) != null) {
-                channel.getSingle(event).getMessageById(id.getSingle(event)).queue(message -> Vixio.lastRetrievedMessage = message);
+                channel.getSingle(event).getMessageById(id.getSingle(event)).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
             } else {
                 Skript.error("You must include a TextChannel in order to retrieve the Message from it");
             }

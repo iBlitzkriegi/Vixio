@@ -93,10 +93,10 @@ public class DiscordEventHandler extends Event{
         EventValues.registerEventValue(DiscordEventHandler.class, String.class, new Getter<String, DiscordEventHandler>() {
             @Override
             public String get(DiscordEventHandler event) {
-                if (event.getObject("String") != null) {
-                    if (event.getObject("String") instanceof String) {
-                        String m = (String) event.getObject("String");
-                        return m;
+                if (event.getObject("Message") != null) {
+                    if (event.getObject("Message") instanceof Message) {
+                        Message m = (Message) event.getObject("Message");
+                        return m.getContent();
                     }
                 }
                 return null;
@@ -142,9 +142,9 @@ public class DiscordEventHandler extends Event{
                 }
             }
         }
-        for(Object obj : eventValues.keySet()){
+        for(String obj : values){
             if(!noNull.contains(obj)){
-                eventValues.put(obj.getClass().getSimpleName().replaceFirst("Impl", ""), null);
+                eventValues.put(obj, null);
             }
         }
         noNull.clear();

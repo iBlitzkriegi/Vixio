@@ -16,11 +16,11 @@ import me.iblitzkriegi.vixio.util.DiscordEventCompare;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.Event;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
+import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateTopicEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -40,12 +40,11 @@ public class Vixio extends JavaPlugin {
     public static List<Registration> effects = new ArrayList<>();
     public static List<Registration> expressions = new ArrayList<>();
     public static HashMap<String, JDA> bots = new HashMap<>();
-    public static HashMap<String, Class<? extends Event>> eventSyntax = new HashMap<>();
     public static HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public static List<JDA> jdaInstances = new ArrayList<>();
-    public static ArrayList<Class<? extends Event>> list = new ArrayList<>();
-    public static Message lastRetrievedMessage;
+    public static ArrayList<Class<?>> jdaEvents = new ArrayList<>();
     public static ArrayList<String> patterns = new ArrayList<>();
+    public static HashMap<Class<?>, String> syntaxEvent = new HashMap<>();
     public Vixio() {
         if (instance == null) {
             instance = this;
@@ -55,11 +54,17 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-        list.add(GuildVoiceLeaveEvent.class);
-        list.add(GuildMessageReceivedEvent.class);
-        list.add(GuildVoiceJoinEvent.class);
-        for(Class clz : list){
-            patterns.add(clz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", ""));
+
+        jdaEvents.add(GuildVoiceLeaveEvent.class);
+        jdaEvents.add(GuildMessageReceivedEvent.class);
+        jdaEvents.add(GuildVoiceJoinEvent.class);
+        jdaEvents.add(GuildMessageReactionAddEvent.class);
+        jdaEvents.add(TextChannelUpdateTopicEvent.class);
+
+        for(Class<?> clz : jdaEvents){
+            String syntax = getPattern(clz);
+            patterns.add(syntax);
+            syntaxEvent.put(clz, syntax);
         }
         registerEvent("DiscordEventHandler", DiscordEventCompare.class, DiscordEventHandler.class, patterns.toArray(new String[0]));
         try {
@@ -164,6 +169,7 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
+
         Classes.registerClass(new ClassInfo<>(Member.class, "member").user("member").defaultExpression(new EventValueExpression<>(Member.class)).name("member").parser(new Parser<Member>() {
             @Override
             public Member parse(String s, ParseContext context) {
@@ -211,6 +217,9 @@ public class Vixio extends JavaPlugin {
             public String getVariableNamePattern() {return ".+";}}));
 
 
+    }
+    public static String getPattern(Class<?> clazz){
+        return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
     }
 
 }
