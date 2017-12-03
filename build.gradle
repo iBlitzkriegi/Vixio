@@ -40,7 +40,7 @@ repositories {
         url 'https://raw.githubusercontent.com/bensku/mvn-repo/master/'
     }
 
-    //Skript's dependencies (to override errors)
+    //Skript's dependencies (to avoid errors when compiling)
     maven {
         url 'https://repo.destroystokyo.com/repository/maven-public/'
     }
