@@ -88,3 +88,6 @@ shadowJar {
    }
 
 }
+
+jar.enabled = false
+assemble.dependsOn(shadowJar);
