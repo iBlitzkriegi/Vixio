@@ -10,7 +10,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
 /**

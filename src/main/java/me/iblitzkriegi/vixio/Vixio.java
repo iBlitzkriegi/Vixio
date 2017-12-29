@@ -9,21 +9,13 @@ import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.*;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
-import me.iblitzkriegi.vixio.events.DiscordEventHandler;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
-import me.iblitzkriegi.vixio.util.DiscordEventCompare;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.channel.text.update.TextChannelUpdateTopicEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.events.message.guild.react.GuildMessageReactionAddEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,28 +51,12 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-        jdaEvents.add(GuildVoiceLeaveEvent.class);
-        jdaEvents.add(GuildMessageReceivedEvent.class);
-        jdaEvents.add(GuildVoiceJoinEvent.class);
-        jdaEvents.add(GuildMessageReactionAddEvent.class);
-        jdaEvents.add(TextChannelUpdateTopicEvent.class);
-        for(Class<?> clz : jdaEvents){
-            String syntax = getPattern(clz);
-            patterns.add(syntax);
-            syntaxEvent.put(clz, syntax);
-        }
-        registerEvent("DiscordEventHandler", DiscordEventCompare.class, DiscordEventHandler.class, patterns.toArray(new String[0]));
-        try {
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
-            Vixio.setup();
-            Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
+        Vixio.setup();
         if(!this.getDataFolder().exists()){
             this.getDataFolder().mkdir();
         }
-        new Metrics(this);
+        Metrics mertrics = new Metrics(this);
         Documentation.setupSyntaxFile();
     }
     public static Vixio getInstance(){

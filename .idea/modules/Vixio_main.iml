@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id="Vixio:main" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="me.iblitzkriegi.vixio" external.system.module.type="sourceSet" external.system.module.version="2.0.0-dev3" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output url="file://$MODULE_DIR$/../../build/classes/main" />
+    <output url="file://$MODULE_DIR$/../../out/production/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
@@ -9,17 +9,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../libs/compile/Skript.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.3.1_305" level="project" />
-    <orderEntry type="library" name="Gradle: com.sedmelluq:lavaplayer:1.2.42" level="project" />
+    <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.4.0_318" level="project" />
+    <orderEntry type="library" name="Gradle: com.sedmelluq:lavaplayer:1.2.45" level="project" />
+    <orderEntry type="library" name="Gradle: ch.njol:skript:2.2-dev32" level="project" />
+    <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.yaml:snakeyaml:1.19" level="project" />
+    <orderEntry type="library" name="Gradle: net.md-5:bungeecord-chat:1.12-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.commons:commons-collections4:4.1" level="project" />
@@ -35,23 +34,44 @@
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" level="project" />
     <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.10.1" level="project" />
     <orderEntry type="library" name="Gradle: net.iharder:base64:2.3.9" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
-    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
+    <orderEntry type="library" name="Gradle: com.destroystokyo.paper:paper-api:1.12.1-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.eclipse.jdt:org.eclipse.jdt.annotation:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:findbugs:2.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.sk89q:worldguard:6.1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: net.milkbowl.vault:Vault:1.6.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.marcelo-mason:PreciousStones:24e3d4bf67b7240ae36b32be10e99d4091938c5c" level="project" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.10" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.13.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.persistence:persistence-api:1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.guava:guava:18.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.avaje:ebean:2.8.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.yaml:snakeyaml:1.15" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: junit:junit:4.10" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.md-5:bungeecord-chat:1.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.bukkit:bukkit:1.8.8-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.gson:gson:2.3.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.4" level="project" />
+    <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.mojang:authlib:1.5.25" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm-all:5.0.4" level="project" />
+    <orderEntry type="library" name="Gradle: net.jcip:jcip-annotations:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:bcel:2.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jFormatString:2.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: dom4j:dom4j:1.6.1" level="project" />
+    <orderEntry type="library" name="Gradle: asm:asm:3.3" level="project" />
+    <orderEntry type="library" name="Gradle: asm:asm-commons:3.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.apple:AppleJavaExtensions:1.4" level="project" />
+    <orderEntry type="library" name="Gradle: jaxen:jaxen:1.1.6" level="project" />
+    <orderEntry type="library" name="Gradle: com.sk89q:worldedit:5.5.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.sk89q.spigot:bukkit-classloader-check:1.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: org.bukkit:bukkit:1.8.6-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: com.sk89q:commandbook:2.3" level="project" />
+    <orderEntry type="library" name="Gradle: ant-contrib:ant-contrib:1.0b3" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.commons:commons-lang3:3.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: xml-apis:xml-apis:1.0.b2" level="project" />
+    <orderEntry type="library" name="Gradle: asm:asm-tree:3.3" level="project" />
+    <orderEntry type="library" name="Gradle: de.schlichtherle:truezip:6.8.3" level="project" />
+    <orderEntry type="library" name="Gradle: rhino:js:1.7R2" level="project" />
+    <orderEntry type="library" name="Gradle: com.sk89q:jchronic:0.2.4a" level="project" />
+    <orderEntry type="library" name="Gradle: org.avaje:ebean:2.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.0" level="project" />
+    <orderEntry type="library" name="Gradle: javax.persistence:persistence-api:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.10" level="project" />
   </component>
 </module>

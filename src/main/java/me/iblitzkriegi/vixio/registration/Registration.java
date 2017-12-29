@@ -1,7 +1,5 @@
 package me.iblitzkriegi.vixio.registration;
 
-import net.dv8tion.jda.core.events.Event;
-
 import java.util.ArrayList;
 
 /**
@@ -13,10 +11,10 @@ public class Registration {
     private String name;
     private String desc;
     private String example;
-    private Class<?> vClass;
+    private Class<?> clazz;
     private String[] syntaxes;
     public Registration(Class<?> cls, String... syntaxes){
-        vClass = cls;
+        clazz = cls;
         this.syntaxes = syntaxes;
     }
 
@@ -42,8 +40,8 @@ public class Registration {
     public String getDesc(){
         return this.desc;
     }
-    public Class<?> getVClass(){
-        return vClass;
+    public Class<?> getClazz(){
+        return clazz;
     }
     public String[] getSyntaxes(){
         return this.syntaxes;
