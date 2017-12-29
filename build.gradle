@@ -6,12 +6,16 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'de.undercouch:gradle-download-task:3.3.0'
     }
 
 }
 
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'de.undercouch.download'
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
@@ -40,7 +44,7 @@ repositories {
         url 'https://raw.githubusercontent.com/bensku/mvn-repo/master/'
     }
 
-    //Skript's dependencies (to override errors)
+    //Skript's dependencies (to avoid errors when compiling)
     maven {
         url 'https://repo.destroystokyo.com/repository/maven-public/'
     }
@@ -66,10 +70,10 @@ dependencies {
     compile group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
 
     // JDA
-    compile 'net.dv8tion:JDA:3.3.1_305'
+    compile 'net.dv8tion:JDA:3.4.0_318'
 
     // LavaPlayer
-    compile 'com.sedmelluq:lavaplayer:1.2.42'
+    compile 'com.sedmelluq:lavaplayer:1.2.45'
 
     // Skript API
     compile group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
@@ -86,9 +90,9 @@ shadowJar {
 
     dependencies {
 
-        include(dependency('net.dv8tion:JDA:3.3.1_305'))
+        include(dependency('net.dv8tion:JDA:3.4.0_318'))
+        include(dependency('com.sedmelluq:lavaplayer:1.2.45'))
 
     }
 
 }
-
