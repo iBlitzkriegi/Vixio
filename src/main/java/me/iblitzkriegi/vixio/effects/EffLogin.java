@@ -25,7 +25,26 @@ import java.util.Set;
  */
 public class EffLogin extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]").setName("Connect effect").setDesc("Login to a bot account with a token").setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        System.out.println("HERE!");
+        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]")
+                .setName("Connect effect")
+                .setDesc("Login to a bot account with a token")
+                .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
     private Expression<String> token;
     private Expression<String> name;
@@ -34,6 +53,7 @@ public class EffLogin extends Effect {
         Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
             JDA api = null;
             JDABuilder prebuild;
+
             try {
                 prebuild = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e));
             } catch (AccountTypeException x) {
@@ -64,7 +84,7 @@ public class EffLogin extends Effect {
 
     @Override
     public String toString(Event event, boolean b) {
-        return "login to discord account with token " + token.toString(event, b) + (name != null ? " named " + name.toString(event, b) : "");
+        return "login to discord account with token " + token.toString(event, b) + (name != null ? " named " + name.toString(event, b) : "login to discord account with token " + token.toString(event, b));
     }
 
     @Override

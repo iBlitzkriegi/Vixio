@@ -14,8 +14,14 @@ import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
+import org.apache.commons.logging.impl.SimpleLog;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.LoggerFactory;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +43,8 @@ public class Vixio extends JavaPlugin {
     public HashMap<String, JDA> bots = new HashMap<>();
     public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public List<JDA> jdaInstances = new ArrayList<>();
-    public ArrayList<Class<?>> jdaEvents = new ArrayList<>();
-    // Syntax related \\
-    public ArrayList<String> patterns = new ArrayList<>();
-    public HashMap<Class<?>, String> syntaxEvent = new HashMap<>();
+    public static Logger logger;
+
 
     public Vixio() {
         if (instance == null) {
@@ -51,8 +55,14 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
+
         Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
-        Vixio.setup();
+        try {
+            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
+            Vixio.setup();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if(!this.getDataFolder().exists()){
             this.getDataFolder().mkdir();
         }
@@ -86,7 +96,7 @@ public class Vixio extends JavaPlugin {
         return registration;
     }
     public Registration registerEffect(Class<? extends Effect> eff, String... patterns){
-        Skript.registerEffect(eff, patterns[0]);
+        Skript.registerEffect(eff, patterns);
         Registration reg = new Registration(eff, patterns);
         effects.add(reg);
         return reg;

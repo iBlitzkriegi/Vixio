@@ -67,7 +67,7 @@ repositories {
 dependencies {
 
     // Spigot API
-    compile group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
+    shadow group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
 
     // JDA
     compile 'net.dv8tion:JDA:3.4.0_318'
@@ -76,23 +76,17 @@ dependencies {
     compile 'com.sedmelluq:lavaplayer:1.2.45'
 
     // Skript API
-    compile group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
-    testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
+    shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
+    compile 'ch.qos.logback:logback-classic:1.2.3'
 
 }
 
 jar.enabled = false
-assemble.dependsOn(shadowJar);
+assemble.dependsOn(shadowJar)
 
 shadowJar {
 
     classifier = null
-
-    dependencies {
-
-        include(dependency('net.dv8tion:JDA:3.4.0_318'))
-        include(dependency('com.sedmelluq:lavaplayer:1.2.45'))
-
-    }
+    destinationDir = new File("C:\\Users\\matthew\\Desktop\\VixioSk\\plugins")
 
 }
