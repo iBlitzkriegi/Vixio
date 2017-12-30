@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.registrations.EventValues;
 import me.iblitzkriegi.vixio.Vixio;
+import org.bukkit.Effect;
 import org.bukkit.event.Event;
 
 import java.io.BufferedWriter;
@@ -17,7 +18,6 @@ import java.util.List;
  * Created by Blitz on 7/22/2017.
  */
 public class Documentation {
-    private static List<Class<?>> events = new ArrayList<>();
     public static void setupSyntaxFile(){
         File file = new File(Vixio.getInstance().getDataFolder(), "Syntaxes.txt");
         try {
@@ -29,45 +29,81 @@ public class Documentation {
         }catch (IOException x){
 
         }
-
         try {
             FileWriter fw;
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("-=Effects=-");
+            bw.write("-=Conditions=-");
             bw.newLine();
-            for(Registration reg : Vixio.getInstance().effects) {
-                boolean t = reg.getSyntaxes().length == 2 ? true : false;
-                if(t){
-                    bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");
+            for(Registration reg : Vixio.getInstance().conditions){
+                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+                if(multipleSyntax){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("\tsyntax: {\"");
+                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                        builder.append(reg.getSyntaxes()[i] + "\",");
+                    }
+                    builder.append("}");
+                    bw.write(builder.toString());
+                    bw.newLine();
                 }else{
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.newLine();
                 }
-                bw.newLine();
+            }
+            bw.write("-=Effects=-");
+            bw.newLine();
+            for(Registration reg : Vixio.getInstance().effects){
+                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+                if(multipleSyntax){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("\tsyntax: {\"");
+                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                        builder.append(reg.getSyntaxes()[i] + "\",");
+                    }
+                    builder.append("}");
+                    bw.write(builder.toString());
+                    bw.newLine();
+                }else{
+                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.newLine();
+                }
             }
             bw.write("-=Expressions=-");
             bw.newLine();
             for(Registration reg : Vixio.getInstance().expressions){
-                boolean t = reg.getSyntaxes().length == 2 ? true : false;
-                if(t){
-                    bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");
+                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+                if(multipleSyntax){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("\tsyntax: {\"");
+                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                        builder.append(reg.getSyntaxes()[i] + "\",");
+                    }
+                    builder.append("}");
+                    bw.write(builder.toString());
+                    bw.newLine();
                 }else{
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.newLine();
                 }
-                bw.newLine();
-
-
             }
             bw.write("-=Events=-");
             bw.newLine();
             for(Registration reg : Vixio.getInstance().events){
-                boolean t = reg.getSyntaxes().length == 2 ? true : false;
-                if(t){
-                    bw.write("\tsyntax: " + "{\"" + reg.getSyntaxes()[0] + "\", \"" + reg.getSyntaxes()[1] + "\"}");
+                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+                if(multipleSyntax){
+                    StringBuilder builder = new StringBuilder();
+                    builder.append("\tsyntax: {\"");
+                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                        builder.append(reg.getSyntaxes()[i] + "\",");
+                    }
+                    builder.append("}");
+                    bw.write(builder.toString());
+                    bw.newLine();
                 }else{
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.newLine();
                 }
-                bw.newLine();
             }
             bw.flush();
             bw.close();
@@ -78,14 +114,15 @@ public class Documentation {
         }
 
     }
-    private static void getEventValues(BufferedWriter bw, int time, Class<? extends Event>... classes) throws IOException {
+
+    private static void getEventValues(String syntax, BufferedWriter bw, int time, Class<? extends Event>... classes) throws IOException {
         bw.write("-=Events=-");
         bw.newLine();
         Method m = getMethod(EventValues.class, "getEventValuesList", int.class);
         List<?> values = invokeMethod(m, null, time);
         if (values != null)
             for (Class<?> c : classes) {
-                bw.write("on " + Vixio.eventsSyntax.get(c.getSimpleName()).getSyntaxes()[0]);
+                bw.write("on " + syntax);
                 bw.newLine();
                 bw.write("\tEvent values:");
                 bw.newLine();

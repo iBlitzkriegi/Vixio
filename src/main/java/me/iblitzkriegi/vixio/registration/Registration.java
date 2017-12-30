@@ -1,5 +1,7 @@
 package me.iblitzkriegi.vixio.registration;
 
+import ch.njol.skript.lang.Effect;
+
 import java.util.ArrayList;
 
 /**
@@ -13,12 +15,14 @@ public class Registration {
     private String example;
     private Class<?> clazz;
     private String[] syntaxes;
+
     public Registration(Class<?> cls, String... syntaxes){
         clazz = cls;
         this.syntaxes = syntaxes;
     }
 
     public Registration(Class clazz, ArrayList<String> patterns) {
+        this.clazz = clazz;
         this.syntaxes = patterns.toArray(new String[0]);
     }
 

@@ -38,7 +38,6 @@ public class Vixio extends JavaPlugin {
     public List<Registration> events = new ArrayList<>();
     public List<Registration> effects = new ArrayList<>();
     public List<Registration> expressions = new ArrayList<>();
-    public static HashMap<String, Registration> eventsSyntax = new HashMap<>();
     // JDA Related \\
     public HashMap<String, JDA> bots = new HashMap<>();
     public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
@@ -91,8 +90,6 @@ public class Vixio extends JavaPlugin {
         Skript.registerEvent(name, type, clazz, patterns);
         Registration registration = new Registration(clazz, patterns);
         events.add(registration);
-        eventsSyntax.put(clazz.getSimpleName(), registration);
-
         return registration;
     }
     public Registration registerEffect(Class<? extends Effect> eff, String... patterns){

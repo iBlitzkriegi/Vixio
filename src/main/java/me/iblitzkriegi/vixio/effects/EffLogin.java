@@ -8,6 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.jda.JDAEventListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -25,22 +26,6 @@ import java.util.Set;
  */
 public class EffLogin extends Effect {
     static {
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
-        System.out.println("HERE!");
         Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]")
                 .setName("Connect effect")
                 .setDesc("Login to a bot account with a token")
@@ -61,6 +46,7 @@ public class EffLogin extends Effect {
             }
             try {
                 api = prebuild
+                        .addEventListener(new JDAEventListener())
                         .buildBlocking();
             } catch (LoginException e1) {
                 Skript.error("Error when logging in, token could be invalid?");

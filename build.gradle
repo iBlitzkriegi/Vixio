@@ -1,5 +1,4 @@
 group 'me.iblitzkriegi.vixio'
-version '2.0.0-dev3'
 
 buildscript {
     repositories {
@@ -84,9 +83,27 @@ dependencies {
 jar.enabled = false
 assemble.dependsOn(shadowJar)
 
-shadowJar {
+def pluginDir = 'src/main/resources/plugin.yml'
+def tempDir = 'build/tmp/tempResources'
 
+
+processResources.doFirst {
+    copy {
+        from(pluginDir)
+        into(tempDir)
+    }
+    ant.replace(file: pluginDir, token: '@VERSION@', value: project.property('version'))
+}
+
+processResources.doLast {
+    copy {
+        from(tempDir + '/plugin.yml')
+        into(project.file(pluginDir).parent)
+    }
+}
+
+shadowJar {
     classifier = null
-    destinationDir = new File("C:\\Users\\matthew\\Desktop\\VixioSk\\plugins")
+    destinationDir = new File(project.property('destinationDir'))
 
 }
