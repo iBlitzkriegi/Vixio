@@ -8,27 +8,17 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
 
-import java.lang.reflect.Field;
-
-public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, String> {
-
-    private static Field URL_FIELD = null;
+public class ExprImageOfEmbed extends SimplePropertyExpression<EmbedBuilder, MessageEmbed.ImageInfo> {
 
     static {
-        try {
-            URL_FIELD = EmbedBuilder.class.getDeclaredField("url");
-            URL_FIELD.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            Skript.error("Vixio was unable to find EmbedBuilder's url field");
-        }
-        Vixio.getInstance().registerPropertyExpression(ExprTitleUrlOfEmbed.class, String.class,
-                "[title] url[s]", "embedbuilders")
-                .setName("Title Url of Embed")
-                .setDesc("Returns the url of an embed's title. Can be set to any valid https/http url. (e.g. \"https://i.imgur.com/TQgR2hW.jpg\")");
+        Vixio.getInstance().registerPropertyExpression(ExprImageOfEmbed.class, MessageEmbed.ImageInfo.class,
+                "image[s]", "embedbuilders", "embed[s]")
+                .setName("Image of Embed")
+                .setDesc("Returns the image of an embed. Can be set any url (e.g. \"https://i.imgur.com/TQgR2hW.jpg\").");
     }
-
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
@@ -38,13 +28,8 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
     }
 
     @Override
-    public String convert(final EmbedBuilder embed) {
-        try {
-            return (String) URL_FIELD.get(embed);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public MessageEmbed.ImageInfo convert(final EmbedBuilder embed) {
+        return embed.isEmpty() ? null : embed.build().getImage();
     }
 
     @Override
@@ -69,35 +54,32 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
 
             case RESET:
             case DELETE:
-                try {
-                    URL_FIELD.set(embed, null);
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                }
+                embed.setImage(null);
                 return;
 
             case SET:
+                String url = (String) delta[0];
                 try {
-                    URL_FIELD.set(embed, delta[0]);
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
+                    embed.setImage(url);
+                } catch (IllegalArgumentException e1) {
+                    Skript.error("Vixio encountered the error \"" + e1.getMessage() + "\" while trying to set the image of " + getExpr().toString(e, false) + " to " + "\"" + url + "\"");
                 }
         }
     }
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends MessageEmbed.ImageInfo> getReturnType() {
+        return MessageEmbed.ImageInfo.class;
     }
 
     @Override
     protected String getPropertyName() {
-        return "url of embed";
+        return "image of embed";
     }
 
     @Override
     public String toString(final Event e, final boolean debug) {
-        return "the url of " + getExpr().toString(e, debug);
+        return "the image of " + getExpr().toString(e, debug);
     }
 
 }

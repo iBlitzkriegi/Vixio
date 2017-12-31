@@ -30,7 +30,7 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
     @Override
     public Color[] get(final Event e) {
         Number red = this.red.getSingle(e);
-        Number green = this.red.getSingle(e);
+        Number green = this.green.getSingle(e);
         Number blue = this.blue.getSingle(e);
 
         if (red == null || green == null || blue == null) return null;

@@ -1,20 +1,21 @@
-package me.iblitzkriegi.vixio.expressions.embeds.thumbnail;
+package me.iblitzkriegi.vixio.expressions.embeds.image;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Thumbnail;
 import org.bukkit.event.Event;
 
-public class ExprDimensionOfThumbnail extends SimplePropertyExpression<Thumbnail, Number> {
+public class ExprDimensionOfImage extends SimplePropertyExpression<Object, Number> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDimensionOfThumbnail.class, Thumbnail.class,
-                "[thumbnail] <width|height>[s]", "thumbnails")
-                .setName("Dimension of Embed")
-                .setDesc("Returns a dimension of an embed. You can specify either width of height.");
+        Vixio.getInstance().registerPropertyExpression(ExprDimensionOfImage.class, Thumbnail.class,
+                "[thumbnail] <width|height>[s]", "thumbnails/imageinfos")
+                .setName("Dimension of Image")
+                .setDesc("Returns a dimension of an embed's thumbnail. You can specify either width or height.");
     }
 
     private boolean height = false;
@@ -23,13 +24,20 @@ public class ExprDimensionOfThumbnail extends SimplePropertyExpression<Thumbnail
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         height = parseResult.regexes.get(0).equals("height");
-        setExpr((Expression<Thumbnail>) exprs[0]);
+        setExpr(exprs[0]);
         return true;
     }
 
     @Override
-    public Number convert(final Thumbnail thumb) {
-        return height ? thumb.getHeight() : thumb.getWidth();
+    public Number convert(final Object image) {
+        if (image instanceof MessageEmbed.ImageInfo) {
+            MessageEmbed.ImageInfo img = (MessageEmbed.ImageInfo) image;
+            return height ? img.getHeight() : img.getWidth();
+        } else if (image instanceof Thumbnail) {
+            Thumbnail img = (Thumbnail) image;
+            return height ? img.getHeight() : img.getWidth();
+        }
+        return null;
     }
 
     @Override

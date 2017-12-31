@@ -248,12 +248,44 @@ public class Vixio extends JavaPlugin {
 
                     @Override
                     public String toString(MessageEmbed.Thumbnail o, int flags) {
-                        return o == null ? null : o.getUrl();
+                        return o.getUrl();
                     }
 
                     @Override
                     public String toVariableNameString(MessageEmbed.Thumbnail o) {
-                        return o == null ? null : o.getUrl();
+                        return o.getUrl();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
+
+        Classes.registerClass(new ClassInfo<>(MessageEmbed.ImageInfo.class, "imageinfo")
+                .user("image ?infos?")
+                .description("Represents a ImageInfo with various properties.")
+                .name("Image Info")
+                .parser(new Parser<MessageEmbed.ImageInfo>() {
+                    @Override
+                    public MessageEmbed.ImageInfo parse(String s, ParseContext context) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean canParse(final ParseContext context) {
+                        return false;
+                    }
+
+                    @Override
+                    public String toString(MessageEmbed.ImageInfo o, int flags) {
+                        return o.getUrl();
+                    }
+
+                    @Override
+                    public String toVariableNameString(MessageEmbed.ImageInfo o) {
+                        return o.getUrl();
                     }
 
                     @Override
