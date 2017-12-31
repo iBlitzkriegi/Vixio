@@ -15,15 +15,13 @@ import java.lang.reflect.Field;
 
 public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Color> {
 
-    private static Field colorField;
+    private static Field COLOR_FIELD;
 
     static {
         try {
-            colorField = EmbedBuilder.class.getDeclaredField("color");
-            colorField.setAccessible(true);
+            COLOR_FIELD = EmbedBuilder.class.getDeclaredField("color");
+            COLOR_FIELD.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            Skript.error("Vixio couldn't find the color field in the EmbedBuilder class");
-            Skript.exception(e);
             Skript.error("Vixio couldn't find the color field in the EmbedBuilder class");
         }
         Vixio.getInstance().registerPropertyExpression(ExprColorOfEmbed.class, Color.class,
@@ -36,7 +34,7 @@ public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Col
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
-        return true;
+        return COLOR_FIELD != null;
     }
 
     @Override
@@ -44,7 +42,7 @@ public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Col
         if (embed.isEmpty()) {
             Color color = null;
             try {
-                color = (Color) colorField.get(embed);
+                color = (Color) COLOR_FIELD.get(embed);
             } catch (IllegalAccessException e) {
                 Skript.exception(e);
             }

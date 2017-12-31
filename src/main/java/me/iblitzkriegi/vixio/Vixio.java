@@ -231,6 +231,38 @@ public class Vixio extends JavaPlugin {
                 })
         );
 
+        Classes.registerClass(new ClassInfo<>(MessageEmbed.Thumbnail.class, "thumbnail")
+                .user("thumbnail")
+                .description("Represents a Thumbnail with various properties.")
+                .name("Thumbnail")
+                .parser(new Parser<MessageEmbed.Thumbnail>() {
+                    @Override
+                    public MessageEmbed.Thumbnail parse(String s, ParseContext context) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean canParse(final ParseContext context) {
+                        return false;
+                    }
+
+                    @Override
+                    public String toString(MessageEmbed.Thumbnail o, int flags) {
+                        return o == null ? null : o.getUrl();
+                    }
+
+                    @Override
+                    public String toVariableNameString(MessageEmbed.Thumbnail o) {
+                        return o == null ? null : o.getUrl();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
+
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override
             public java.awt.Color convert(ch.njol.skript.util.Color color) {
