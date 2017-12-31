@@ -12,15 +12,15 @@ import ch.njol.skript.registrations.Converters;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
+import me.iblitzkriegi.vixio.util.Util;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
-import org.apache.commons.logging.impl.SimpleLog;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.LoggerFactory;
 
-
+import javax.annotation.Nullable;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,12 +101,6 @@ public class Vixio extends JavaPlugin {
     public Registration registerExpression(Class<? extends Expression> expr, Class<?> returntype, ExpressionType exprtype, String... patterns){
         Skript.registerExpression(expr, returntype, exprtype, patterns);
         Registration registration = new Registration(expr, patterns);
-        expressions.add(registration);
-        return registration;
-    }
-    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType){
-        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
-        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         expressions.add(registration);
         return registration;
     }
@@ -203,8 +197,66 @@ public class Vixio extends JavaPlugin {
             @Override
             public String getVariableNamePattern() {return ".+";}}));
 
+        Classes.registerClass(new ClassInfo<>(EmbedBuilder.class, "embedbuilder")
+                .user("embed ?builders?")
+                .description("Represents an embed with various properties.")
+                .name("Embed Builder")
+        );
 
+        Classes.registerClass(new ClassInfo<>(java.awt.Color.class, "javacolor")
+                .user("java ?colors?")
+                .description("Represents Java's color type")
+                .name("Java Color")
+                .parser(new Parser<java.awt.Color>() {
+                    @Override
+                    public java.awt.Color parse(String s, ParseContext context) {
+                        return Util.getColorFromString(s);
+                    }
+
+                    @Override
+                    public String toString(Color c, int flags) {
+                        return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
+                    }
+
+                    @Override
+                    public String toVariableNameString(Color c) {
+                        return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+
+                })
+        );
+
+        Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
+            @Override
+            public java.awt.Color convert(ch.njol.skript.util.Color color) {
+                if (color == null) return null;
+                org.bukkit.Color bukkitColor = color.getBukkitColor();
+                return new java.awt.Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
+            }
+        });
     }
+
+    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType) {
+        return registerPropertyExpression(c, type, property, fromType, null);
+    }
+
+    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType, @Nullable String prefix) {
+        prefix = prefix == null ? "" : prefix + " ";
+        String[] patterns = new String[]{
+                "[the] " + property + " of " + prefix + "%" + fromType + "%",
+                prefix + "%" + fromType + "%'[s] " + property
+        };
+        Skript.registerExpression(c, type, ExpressionType.PROPERTY, patterns);
+        Registration registration = new Registration(c, patterns);
+        expressions.add(registration);
+        return registration;
+    }
+
     public static String getPattern(Class<?> clazz){
         return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
     }
