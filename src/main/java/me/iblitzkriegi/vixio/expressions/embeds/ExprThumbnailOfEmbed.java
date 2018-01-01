@@ -17,7 +17,8 @@ public class ExprThumbnailOfEmbed extends SimplePropertyExpression<EmbedBuilder,
         Vixio.getInstance().registerPropertyExpression(ExprThumbnailOfEmbed.class, Thumbnail.class,
                 "thumbnail[s]", "embedbuilders")
                 .setName("Thumbnail of Embed")
-                .setDesc("Returns the thumbnail of an embed. Can be set to any string (e.g. \"https://i.imgur.com/TQgR2hW.jpg\").");
+                .setDesc("Returns the thumbnail of an embed. Can be set to any string (e.g. \"https://i.imgur.com/TQgR2hW.jpg\").")
+                .setExample("set the thumbnail of {_embed} to \"https://i.imgur.com/TQgR2hW.jpg\"");
     }
 
     @Override

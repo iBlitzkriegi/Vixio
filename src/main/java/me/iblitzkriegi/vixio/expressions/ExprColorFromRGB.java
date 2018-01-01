@@ -1,11 +1,11 @@
 package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.Vixio;
 import org.bukkit.event.Event;
 
 import java.awt.*;
@@ -14,7 +14,11 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
 
 
     static {
-        Skript.registerExpression(ExprColorFromRGB.class, Color.class, ExpressionType.SIMPLE, "[java[ ]]colo[u]r from rgb %number%(,[ ]| and )%number%(,[ ]| and )%number%");
+        Vixio.getInstance().registerExpression(ExprColorFromRGB.class, Color.class, ExpressionType.SIMPLE,
+                "[java[ ]]colo[u]r from rgb %number%(,[ ]| and )%number%(,[ ]| and )%number%")
+                .setName("Color")
+                .setDesc("A color that can be more specific that Skript's default type.")
+                .setExample("set {_color} to color from rgb 0, 0 and 0 # results in black");
     }
 
     private Expression<? extends Number> red, green, blue;

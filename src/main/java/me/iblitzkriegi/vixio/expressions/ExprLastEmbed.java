@@ -14,7 +14,10 @@ public class ExprLastEmbed extends SimpleExpression<EmbedBuilder> {
 
     static {
         Vixio.getInstance().registerExpression(ExprLastEmbed.class, EmbedBuilder.class, ExpressionType.SIMPLE,
-                "[the] last[ly] [(made|created)] embed[[ ]builder]");
+                "[the] last[ly] [(made|created)] embed[[ ]builder]")
+                .setName("Last Made Embed")
+                .setDesc("Returns the embed that was last made in a embed scope")
+                .setExample("set {_embed} to the last embed");
     }
 
     @Override

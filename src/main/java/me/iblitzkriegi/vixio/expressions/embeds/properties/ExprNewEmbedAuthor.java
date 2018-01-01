@@ -14,10 +14,10 @@ import org.bukkit.event.Event;
 public class ExprNewEmbedAuthor extends SimpleExpression<MessageEmbed.AuthorInfo> {
     static {
         Vixio.getInstance().registerExpression(ExprNewEmbedAuthor.class, MessageEmbed.AuthorInfo.class, ExpressionType.SIMPLE,
-                "author named %string% with [([the] url %-string%|no url)[( and [the]|, )]] [(icon %-string%|no icon)]]")
+                "[an] author named %string% with [([the] url %-string%|no url)[( and [the]|, )]] [(icon %-string%|no icon)]]")
                 .setName("New Author Info")
                 .setDesc("Returns a author with the specified data")
-                .setExample("set author of {_embed} to author named \"Pikachu\" with the url \"http://vixio.space/docs\" and icon \"https://i.imgur.com/TQgR2hW.jpg\"");
+                .setExample("set author of {_embed} to an author named \"Pikachu\" with the url \"http://vixio.space/docs\" and icon \"https://i.imgur.com/TQgR2hW.jpg\"");
     }
 
     private Expression<String> text;

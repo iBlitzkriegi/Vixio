@@ -1,6 +1,6 @@
 package me.iblitzkriegi.vixio.registration;
 
-import ch.njol.skript.lang.Effect;
+import ch.njol.util.StringUtils;
 
 import java.util.ArrayList;
 
@@ -38,6 +38,12 @@ public class Registration {
         this.example = s;
         return this;
     }
+
+    // makes documenting scopes (and other multi line examples) easier
+    public Registration setExample(String... s) {
+        return setExample(StringUtils.join(s, "\n"));
+    }
+
     public String getName(){
         return this.name;
     }

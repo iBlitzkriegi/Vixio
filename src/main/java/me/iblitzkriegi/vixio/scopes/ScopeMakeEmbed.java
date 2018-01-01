@@ -16,7 +16,16 @@ public class ScopeMakeEmbed extends EffectSection {
     static {
         Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "make [embed] %embedbuilder%")
                 .setName("Make Embed")
-                .setDesc("");
+                .setDesc("Provides a pretty and easy way of making a new embed with a bunch of different attributes")
+                .setExample(
+                        "command scope:",
+                        "\ttrigger:",
+                        "\t\tmake a new embed:",
+                        "\t\t\tset color of embed the embed to red",
+                        "\t\t\tset url of the embed to \"https://google.com\"",
+                        "\t\t\tset title of the embed to \"Google!\"",
+                        "\t\tset {_embed} to last made embed"
+                );
     }
 
     private Expression<EmbedBuilder> builder;
@@ -38,7 +47,7 @@ public class ScopeMakeEmbed extends EffectSection {
 
         if (checkIfCondition())
             return false;
-        if (!hasSection()) { //Self explanatory
+        if (!hasSection()) {
             Skript.error("You can't make an embed without a section!");
             return false;
         }

@@ -26,7 +26,8 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
         Vixio.getInstance().registerPropertyExpression(ExprTitleUrlOfEmbed.class, String.class,
                 "[title] url[s]", "embedbuilders")
                 .setName("Title Url of Embed")
-                .setDesc("Returns the url of an embed's title. Can be set to any valid https/http url. (e.g. \"https://i.imgur.com/TQgR2hW.jpg\")");
+                .setDesc("Returns the url of an embed's title. Can be set to any valid https/http url. (e.g. \"https://i.imgur.com/TQgR2hW.jpg\")")
+                .setExample("set url of {_embed} to \"https://i.imgur.com/TQgR2hW.jpg\"");
     }
 
 
