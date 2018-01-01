@@ -57,7 +57,7 @@ public class Vixio extends JavaPlugin {
 
         Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         try {
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
+            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions", "scopes");
             Vixio.setup();
         } catch (IOException e) {
             e.printStackTrace();

@@ -14,7 +14,9 @@ public class ScopeMakeEmbed extends EffectSection {
     public static EmbedBuilder lastEmbed;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "make [embed] %embedbuilder%");
+        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "make [embed] %embedbuilder%")
+                .setName("Make Embed")
+                .setDesc("");
     }
 
     private Expression<EmbedBuilder> builder;
@@ -42,6 +44,8 @@ public class ScopeMakeEmbed extends EffectSection {
         }
 
         builder = (Expression<EmbedBuilder>) exprs[0];
+
+        loadSection(true);
 
         return true;
     }
