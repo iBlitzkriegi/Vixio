@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.embeds;
+package me.iblitzkriegi.vixio.expressions.embeds.properties;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
@@ -13,7 +13,8 @@ import org.bukkit.event.Event;
 
 public class ExprNewEmbedFooter extends SimpleExpression<MessageEmbed.Footer> {
     static {
-        Vixio.getInstance().registerExpression(ExprNewEmbedFooter.class, MessageEmbed.Footer.class, ExpressionType.SIMPLE, "footer with [the] text %string%[( and |, )([the] icon %-string%|no icon)]")
+        Vixio.getInstance().registerExpression(ExprNewEmbedFooter.class, MessageEmbed.Footer.class, ExpressionType.SIMPLE,
+                "footer with [the] text %string%[( and [the]|, )(icon %-string%|no icon)]")
                 .setName("New Footer")
                 .setDesc("Returns a footer with the specified data")
                 .setExample("set footer of {_embed} to footer with text \"Hi Pika\" and icon \"https://i.imgur.com/TQgR2hW.jpg\"");
@@ -28,7 +29,7 @@ public class ExprNewEmbedFooter extends SimpleExpression<MessageEmbed.Footer> {
         try {
             builder = new EmbedBuilder().setFooter(text.getSingle(e), (icon == null ? null : icon.getSingle(e)));
         } catch (IllegalArgumentException e1) {
-            Skript.error("Vixio encountered the error \"" + e1.getMessage() + "\" while trying to make footer with text \"" + text.toString(e, false) + "\" and icon " + "\"" + icon.getSingle(e) + "\"");
+            Skript.error("Vixio encountered the error \"" + e1.getMessage() + "\" while trying to make " + this.toString(e, false) + " with the icon \"" + icon.getSingle(e) + "\"");
             return null;
         }
         return new MessageEmbed.Footer[]{

@@ -327,6 +327,37 @@ public class Vixio extends JavaPlugin {
                 })
         );
 
+        Classes.registerClass(new ClassInfo<>(MessageEmbed.AuthorInfo.class, "authorinfo")
+                .user("author ?infos?")
+                .description("Represents a Author Info with various properties.")
+                .name("Author Info")
+                .parser(new Parser<MessageEmbed.AuthorInfo>() {
+                    @Override
+                    public MessageEmbed.AuthorInfo parse(String s, ParseContext context) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean canParse(final ParseContext context) {
+                        return false;
+                    }
+
+                    @Override
+                    public String toString(MessageEmbed.AuthorInfo o, int flags) {
+                        return o.getName();
+                    }
+
+                    @Override
+                    public String toVariableNameString(MessageEmbed.AuthorInfo o) {
+                        return o.getName();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
 
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override
