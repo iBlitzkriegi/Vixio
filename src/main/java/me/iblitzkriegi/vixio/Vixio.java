@@ -295,6 +295,39 @@ public class Vixio extends JavaPlugin {
                 })
         );
 
+        Classes.registerClass(new ClassInfo<>(MessageEmbed.Footer.class, "footer")
+                .user("embed ?footers?")
+                .description("Represents a Footer with various properties.")
+                .name("Embed Footer")
+                .parser(new Parser<MessageEmbed.Footer>() {
+                    @Override
+                    public MessageEmbed.Footer parse(String s, ParseContext context) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean canParse(final ParseContext context) {
+                        return false;
+                    }
+
+                    @Override
+                    public String toString(MessageEmbed.Footer o, int flags) {
+                        return o.getText();
+                    }
+
+                    @Override
+                    public String toVariableNameString(MessageEmbed.Footer o) {
+                        return o.getText();
+                    }
+
+                    @Override
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
+
+
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override
             public java.awt.Color convert(ch.njol.skript.util.Color color) {

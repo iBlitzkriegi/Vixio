@@ -23,7 +23,7 @@ public class ExprDimensionOfImage extends SimplePropertyExpression<Object, Numbe
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
-        height = parseResult.regexes.get(0).equals("height");
+        height = parseResult.regexes.get(0).group(0).equals("height");
         setExpr(exprs[0]);
         return true;
     }
