@@ -55,8 +55,7 @@ public class ExprNewEmbedFooter extends SimpleExpression<MessageEmbed.Footer> {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         text = (Expression<String>) exprs[0];
-        if (exprs[1] != null)
-            icon = (Expression<String>) exprs[1];
+        icon = (Expression<String>) exprs[1];
         return true;
     }
 }

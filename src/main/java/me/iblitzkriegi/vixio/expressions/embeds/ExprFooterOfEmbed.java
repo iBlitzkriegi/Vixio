@@ -45,8 +45,6 @@ public class ExprFooterOfEmbed extends SimplePropertyExpression<EmbedBuilder, Me
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
 
-        if (delta == null && (mode != Changer.ChangeMode.DELETE && mode != Changer.ChangeMode.RESET)) return;
-
         EmbedBuilder embed = getExpr().getSingle(e);
         if (embed == null) return;
 

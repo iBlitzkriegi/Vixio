@@ -24,7 +24,7 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
             Skript.error("Vixio was unable to find EmbedBuilder's url field");
         }
         Vixio.getInstance().registerPropertyExpression(ExprTitleUrlOfEmbed.class, String.class,
-                "[title] url[s]", "embedbuilders")
+                "[title] url[s]", "embedbuilders", "[embed[s]]")
                 .setName("Title Url of Embed")
                 .setDesc("Returns the url of an embed's title. Can be set to any valid https/http url. (e.g. \"https://i.imgur.com/TQgR2hW.jpg\")")
                 .setExample("set url of {_embed} to \"https://i.imgur.com/TQgR2hW.jpg\"");
@@ -35,7 +35,7 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
-        return true;
+        return URL_FIELD != null;
     }
 
     @Override
@@ -60,8 +60,6 @@ public class ExprTitleUrlOfEmbed extends SimplePropertyExpression<EmbedBuilder, 
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-
-        if (delta == null && (mode != Changer.ChangeMode.DELETE && mode != Changer.ChangeMode.RESET)) return;
 
         EmbedBuilder embed = getExpr().getSingle(e);
         if (embed == null) return;

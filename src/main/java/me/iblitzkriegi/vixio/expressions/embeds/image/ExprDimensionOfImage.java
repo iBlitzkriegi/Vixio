@@ -13,7 +13,7 @@ public class ExprDimensionOfImage extends SimplePropertyExpression<Object, Numbe
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDimensionOfImage.class, Thumbnail.class,
-                "[thumbnail] <width|height>[s]", "thumbnails/imageinfos")
+                "[(thumbnail|icon|image)] <width|height>[s]", "thumbnails/imageinfos")
                 .setName("Dimension of Image")
                 .setDesc("Returns a dimension of an embed's thumbnail, image, footer icon or icon. You can specify either width or height.")
                 .setExample("reply with \"%width of {_embed}'s thumbnail%\"");

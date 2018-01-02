@@ -13,10 +13,10 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Str
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprTitleOfEmbed.class, String.class,
-                "title", "embedbuilders", "embed[s]")
+                "embed title", "embedbuilders")
                 .setName("Title of Embed")
                 .setDesc("Returns the title of an embed.")
-                .setExample("set the title of {_embed} to \"hey this is a cool title!\"");
+                .setExample("set the embed title of {_embed} to \"hey this is a cool title!\"");
     }
 
 
@@ -44,8 +44,6 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Str
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-
-        if (delta == null && (mode != Changer.ChangeMode.DELETE && mode != Changer.ChangeMode.RESET)) return;
 
         EmbedBuilder embed = getExpr().getSingle(e);
         if (embed == null) return;

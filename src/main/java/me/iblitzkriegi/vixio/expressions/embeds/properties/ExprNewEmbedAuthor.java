@@ -56,10 +56,8 @@ public class ExprNewEmbedAuthor extends SimpleExpression<MessageEmbed.AuthorInfo
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         text = (Expression<String>) exprs[0];
-        if (exprs[1] != null)
-            url = (Expression<String>) exprs[1];
-        if (exprs[2] != null)
-            icon = (Expression<String>) exprs[2];
+        url = (Expression<String>) exprs[1];
+        icon = (Expression<String>) exprs[2];
         return true;
     }
 }

@@ -46,8 +46,6 @@ public class ExprAuthorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Me
     @Override
     public void change(final Event e, final Object[] delta, final ChangeMode mode) {
 
-        if (delta == null && (mode != ChangeMode.DELETE && mode != ChangeMode.RESET)) return;
-
         EmbedBuilder embed = getExpr().getSingle(e);
         if (embed == null) return;
 
