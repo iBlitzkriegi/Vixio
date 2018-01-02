@@ -17,7 +17,7 @@ public class ExprTimestampOfEmbed extends SimplePropertyExpression<EmbedBuilder,
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprTimestampOfEmbed.class, Date.class,
-                "(timestamp|date)[s]", "embedbuilders", "[embed[s]]")
+                "(timestamp|date)[s]", "embedbuilders")
                 .setName("Timestamp of Embed")
                 .setDesc("Returns the timestamp of an embed. Can be set to any date (e.g. now).")
                 .setExample("set the timestamp of {_embed} to now",

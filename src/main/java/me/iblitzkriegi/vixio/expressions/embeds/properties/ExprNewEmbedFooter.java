@@ -13,7 +13,7 @@ import org.bukkit.event.Event;
 
 public class ExprNewEmbedFooter extends SimpleExpression<MessageEmbed.Footer> {
     static {
-        Vixio.getInstance().registerExpression(ExprNewEmbedFooter.class, MessageEmbed.Footer.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprNewEmbedFooter.class, MessageEmbed.Footer.class, ExpressionType.COMBINED,
                 "[a] footer with [the] text %string%[( and [the]|, )(icon %-string%|no icon)]")
                 .setName("New Footer")
                 .setDesc("Returns a footer with the specified data")

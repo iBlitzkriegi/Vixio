@@ -25,7 +25,7 @@ public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Col
             Skript.error("Vixio couldn't find the color field in the EmbedBuilder class");
         }
         Vixio.getInstance().registerPropertyExpression(ExprColorOfEmbed.class, Color.class,
-                "discord colo[u]r[s]", "embedbuilders")
+                "colo[u]r[s]", "embedbuilders")
                 .setName("Color of Embed")
                 .setDesc("Returns the color of an embed. Can be set to any color (e.g. red).")
                 .setExample("set discord color of {_embed} to red");

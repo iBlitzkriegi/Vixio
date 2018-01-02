@@ -13,7 +13,7 @@ import org.bukkit.event.Event;
 
 public class ExprNewEmbedAuthor extends SimpleExpression<MessageEmbed.AuthorInfo> {
     static {
-        Vixio.getInstance().registerExpression(ExprNewEmbedAuthor.class, MessageEmbed.AuthorInfo.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprNewEmbedAuthor.class, MessageEmbed.AuthorInfo.class, ExpressionType.COMBINED,
                 "[an] author named %string% with [([the] url %-string%|no url)[( and [the]|, )]] [(icon %-string%|no icon)]]")
                 .setName("New Author Info")
                 .setDesc("Returns a author with the specified data")

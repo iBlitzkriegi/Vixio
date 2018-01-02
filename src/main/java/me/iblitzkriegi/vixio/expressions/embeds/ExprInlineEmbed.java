@@ -12,8 +12,8 @@ import org.bukkit.event.Event;
 public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprInlineEmbed.class, EmbedBuilder.class, ExpressionType.SIMPLE,
-                "%embedbuilder% (with|and) [the] (0¦title|1¦description) %string%")
+        Vixio.getInstance().registerExpression(ExprInlineEmbed.class, EmbedBuilder.class, ExpressionType.COMBINED,
+                "%embedbuilder% (with|and) [the] title %string%", "%embedbuilder% (with|and) [the] description %string%")
                 .setName("Inline Embed")
                 .setDesc("Lets you easily make an embed with a couple common properties.")
                 .setExample("set {_embed} to a new embed with the title \"Title\" and the description \"Description\"");
@@ -25,7 +25,7 @@ public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
-        title = parseResult.mark == 0;
+        title = matchedPattern == 0;
         builder = (Expression<EmbedBuilder>) exprs[0];
         string = (Expression<String>) exprs[1];
         return true;

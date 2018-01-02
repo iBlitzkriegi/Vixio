@@ -12,6 +12,7 @@ import ch.njol.skript.registrations.Converters;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
+import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -20,7 +21,6 @@ import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,167 +197,142 @@ public class Vixio extends JavaPlugin {
             @Override
             public String getVariableNamePattern() {return ".+";}}));
 
-        Classes.registerClass(new ClassInfo<>(EmbedBuilder.class, "embedbuilder")
-                .user("embed ?builders?")
-                .description("Represents an embed with various properties.")
-                .name("Embed Builder")
-        );
+        new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ? builders?") {
+            public EmbedBuilder parse(String s, ParseContext pc) {
+                return null;
+            }
 
-        Classes.registerClass(new ClassInfo<>(java.awt.Color.class, "javacolor")
-                .user("java ?colors?")
-                .description("Represents Java's color type")
-                .name("Java Color")
-                .parser(new Parser<java.awt.Color>() {
-                    @Override
-                    public java.awt.Color parse(String s, ParseContext context) {
-                        return Util.getColorFromString(s);
-                    }
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
 
-                    @Override
-                    public String toString(Color c, int flags) {
-                        return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
-                    }
+            @Override
+            public String toString(EmbedBuilder builder, int arg1) {
+                return "embed";
+            }
 
-                    @Override
-                    public String toVariableNameString(Color c) {
-                        return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
-                    }
+            @Override
+            public String toVariableNameString(EmbedBuilder builder) {
+                return "embed";
 
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
+            }
+        };
 
-                })
-        );
+        new SimpleType<java.awt.Color>(java.awt.Color.class, "javacolor", "java ?colors?") {
 
-        Classes.registerClass(new ClassInfo<>(MessageEmbed.Thumbnail.class, "thumbnail")
-                .user("thumbnail")
-                .description("Represents a Thumbnail with various properties.")
-                .name("Thumbnail")
-                .parser(new Parser<MessageEmbed.Thumbnail>() {
-                    @Override
-                    public MessageEmbed.Thumbnail parse(String s, ParseContext context) {
-                        return null;
-                    }
+            @Override
+            public java.awt.Color parse(String s, ParseContext context) {
+                return Util.getColorFromString(s);
+            }
 
-                    @Override
-                    public boolean canParse(final ParseContext context) {
-                        return false;
-                    }
+            @Override
+            public String toString(java.awt.Color c, int flags) {
+                return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
+            }
 
-                    @Override
-                    public String toString(MessageEmbed.Thumbnail o, int flags) {
-                        return o.getUrl();
-                    }
+            @Override
+            public String toVariableNameString(java.awt.Color c) {
+                return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
+            }
 
-                    @Override
-                    public String toVariableNameString(MessageEmbed.Thumbnail o) {
-                        return o.getUrl();
-                    }
+        };
 
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
-                })
-        );
+        new SimpleType<MessageEmbed.Thumbnail>(MessageEmbed.Thumbnail.class, "thumbnail", "thumbnails?") {
 
-        Classes.registerClass(new ClassInfo<>(MessageEmbed.ImageInfo.class, "imageinfo")
-                .user("image ?infos?")
-                .description("Represents a ImageInfo with various properties.")
-                .name("Image Info")
-                .parser(new Parser<MessageEmbed.ImageInfo>() {
-                    @Override
-                    public MessageEmbed.ImageInfo parse(String s, ParseContext context) {
-                        return null;
-                    }
+            @Override
+            public MessageEmbed.Thumbnail parse(String s, ParseContext pc) {
+                return null;
+            }
 
-                    @Override
-                    public boolean canParse(final ParseContext context) {
-                        return false;
-                    }
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
 
-                    @Override
-                    public String toString(MessageEmbed.ImageInfo o, int flags) {
-                        return o.getUrl();
-                    }
+            @Override
+            public String toString(MessageEmbed.Thumbnail thumb, int arg1) {
+                return thumb.getUrl();
+            }
 
-                    @Override
-                    public String toVariableNameString(MessageEmbed.ImageInfo o) {
-                        return o.getUrl();
-                    }
+            @Override
+            public String toVariableNameString(MessageEmbed.Thumbnail thumb) {
+                return thumb.getUrl();
+            }
 
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
-                })
-        );
+        };
 
-        Classes.registerClass(new ClassInfo<>(MessageEmbed.Footer.class, "footer")
-                .user("embed ?footers?")
-                .description("Represents a Footer with various properties.")
-                .name("Embed Footer")
-                .parser(new Parser<MessageEmbed.Footer>() {
-                    @Override
-                    public MessageEmbed.Footer parse(String s, ParseContext context) {
-                        return null;
-                    }
+        new SimpleType<MessageEmbed.ImageInfo>(MessageEmbed.ImageInfo.class, "imageinfo", "image ? infos?") {
 
-                    @Override
-                    public boolean canParse(final ParseContext context) {
-                        return false;
-                    }
+            @Override
+            public MessageEmbed.ImageInfo parse(String s, ParseContext pc) {
+                return null;
+            }
 
-                    @Override
-                    public String toString(MessageEmbed.Footer o, int flags) {
-                        return o.getText();
-                    }
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
 
-                    @Override
-                    public String toVariableNameString(MessageEmbed.Footer o) {
-                        return o.getText();
-                    }
+            @Override
+            public String toString(MessageEmbed.ImageInfo image, int arg1) {
+                return image.getUrl();
+            }
 
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
-                })
-        );
+            @Override
+            public String toVariableNameString(MessageEmbed.ImageInfo image) {
+                return image.getUrl();
+            }
 
-        Classes.registerClass(new ClassInfo<>(MessageEmbed.AuthorInfo.class, "authorinfo")
-                .user("author ?infos?")
-                .description("Represents a Author Info with various properties.")
-                .name("Author Info")
-                .parser(new Parser<MessageEmbed.AuthorInfo>() {
-                    @Override
-                    public MessageEmbed.AuthorInfo parse(String s, ParseContext context) {
-                        return null;
-                    }
+        };
 
-                    @Override
-                    public boolean canParse(final ParseContext context) {
-                        return false;
-                    }
+        new SimpleType<MessageEmbed.Footer>(MessageEmbed.Footer.class, "footer", "footers?") {
 
-                    @Override
-                    public String toString(MessageEmbed.AuthorInfo o, int flags) {
-                        return o.getName();
-                    }
+            @Override
+            public MessageEmbed.Footer parse(String s, ParseContext pc) {
+                return null;
+            }
 
-                    @Override
-                    public String toVariableNameString(MessageEmbed.AuthorInfo o) {
-                        return o.getName();
-                    }
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
 
-                    @Override
-                    public String getVariableNamePattern() {
-                        return ".+";
-                    }
-                })
-        );
+            @Override
+            public String toString(MessageEmbed.Footer footer, int arg1) {
+                return footer.getText();
+            }
+
+            @Override
+            public String toVariableNameString(MessageEmbed.Footer footer) {
+                return footer.getText();
+            }
+
+        };
+
+        new SimpleType<MessageEmbed.AuthorInfo>(MessageEmbed.AuthorInfo.class, "authorinfo", "author ?infos?") {
+
+            @Override
+            public MessageEmbed.AuthorInfo parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(MessageEmbed.AuthorInfo author, int arg1) {
+                return author.getName();
+            }
+
+            @Override
+            public String toVariableNameString(MessageEmbed.AuthorInfo author) {
+                return author.getName();
+            }
+
+        };
 
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override

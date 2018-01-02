@@ -13,7 +13,7 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Str
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprTitleOfEmbed.class, String.class,
-                "embed title", "embedbuilders")
+                "title", "embedbuilders")
                 .setName("Title of Embed")
                 .setDesc("Returns the title of an embed.")
                 .setExample("set the embed title of {_embed} to \"hey this is a cool title!\"");
