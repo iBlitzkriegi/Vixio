@@ -6,17 +6,19 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Title;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
 
-public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, String> {
+public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Title> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprTitleOfEmbed.class, String.class,
-                "title", "embedbuilders")
+        Vixio.getInstance().registerPropertyExpression(ExprTitleOfEmbed.class, Title.class,
+                "title[s]", "embedbuilders")
                 .setName("Title of Embed")
                 .setDesc("Returns the title of an embed.")
-                .setExample("set the embed title of {_embed} to \"hey this is a cool title!\"");
+                .setExample("set the embed title of {_embed} to title with text \"hey this is a cool title!\" and no icon");
     }
 
 
@@ -28,15 +30,18 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Str
     }
 
     @Override
-    public String convert(final EmbedBuilder embed) {
-        return embed.isEmpty() ? null : embed.build().getTitle();
+    public Title convert(final EmbedBuilder embed) {
+        if (embed.isEmpty()) return null;
+
+        MessageEmbed builtEmbed = embed.build();
+        return new Title(builtEmbed.getTitle(), builtEmbed.getUrl());
     }
 
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.DELETE) && getExpr().isSingle()) {
             return new Class[]{
-                    String.class
+                    Title.class
             };
         }
         return super.acceptChange(mode);
@@ -56,13 +61,15 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Str
                 return;
 
             case SET:
-                embed.setTitle((String) delta[0]);
+                Title title = (Title) delta[0];
+                embed.setTitle(title.getText(), title.getUrl());
+
         }
     }
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Title> getReturnType() {
+        return Title.class;
     }
 
     @Override

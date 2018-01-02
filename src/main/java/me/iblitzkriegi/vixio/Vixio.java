@@ -13,6 +13,7 @@ import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.SimpleType;
+import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
@@ -334,14 +335,76 @@ public class Vixio extends JavaPlugin {
 
         };
 
+        new SimpleType<MessageEmbed>(MessageEmbed.class, "embed", "(message ?)?embeds?") {
+
+            @Override
+            public MessageEmbed parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(MessageEmbed message, int arg1) {
+                return "embed";
+            }
+
+            @Override
+            public String toVariableNameString(MessageEmbed message) {
+                return "embed";
+            }
+
+        };
+
+        new SimpleType<Title>(Title.class, "title", "titles?") {
+
+            @Override
+            public Title parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Title title, int arg1) {
+                return title.getText();
+            }
+
+            @Override
+            public String toVariableNameString(Title title) {
+                return title.getText();
+            }
+
+        };
+
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override
             public java.awt.Color convert(ch.njol.skript.util.Color color) {
-                if (color == null) return null;
                 org.bukkit.Color bukkitColor = color.getBukkitColor();
                 return new java.awt.Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
             }
         });
+
+        Converters.registerConverter(MessageEmbed.class, EmbedBuilder.class, new Converter<MessageEmbed, EmbedBuilder>() {
+            @Override
+            public EmbedBuilder convert(MessageEmbed embed) {
+                return new EmbedBuilder(embed);
+            }
+        });
+
+        Converters.registerConverter(EmbedBuilder.class, MessageEmbed.class, new Converter<EmbedBuilder, MessageEmbed>() {
+            @Override
+            public MessageEmbed convert(EmbedBuilder embed) {
+                return embed.isEmpty() ? null : embed.build();
+            }
+        });
+
     }
 
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType) {

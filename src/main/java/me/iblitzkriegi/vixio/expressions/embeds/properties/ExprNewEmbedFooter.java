@@ -49,7 +49,7 @@ public class ExprNewEmbedFooter extends SimpleExpression<MessageEmbed.Footer> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "footer with title" + text.toString(e, debug) + (icon == null ? "and no icon" : "and icon " + icon.toString(e, debug));
+        return "footer with text " + text.toString(e, debug) + (icon == null ? " and no icon" : " and icon " + icon.toString(e, debug));
     }
 
     @Override
