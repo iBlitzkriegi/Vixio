@@ -4,19 +4,19 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.Thumbnail;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 public class ExprDimensionOfImage extends SimplePropertyExpression<Object, Number> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDimensionOfImage.class, Thumbnail.class,
-                "[(thumbnail|icon|image)] <width|height>[s]", "thumbnails/imageinfos")
-                .setName("Dimension of Image")
+        register(ExprDimensionOfImage.class, Number.class,
+                "(width|height)[s]", "thumbnails/imageinfos");
+/*                .setName("Dimension of Image")
                 .setDesc("Returns a dimension of an embed's thumbnail, image, footer icon or icon. You can specify either width or height.")
-                .setExample("reply with \"%width of {_embed}'s thumbnail%\"");
+                .setExample("reply with \"%width of {_embed}'s thumbnail%\"");*/
     }
 
     private boolean height = false;
@@ -24,7 +24,7 @@ public class ExprDimensionOfImage extends SimplePropertyExpression<Object, Numbe
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
-        height = parseResult.regexes.get(0).group(0).equals("height");
+        Bukkit.broadcastMessage("parse mark is " + parseResult.mark);
         setExpr(exprs[0]);
         return true;
     }

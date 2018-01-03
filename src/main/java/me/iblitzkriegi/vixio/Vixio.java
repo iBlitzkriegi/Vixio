@@ -21,7 +21,6 @@ import net.dv8tion.jda.core.entities.*;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -432,17 +431,8 @@ public class Vixio extends JavaPlugin {
     }
 
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType) {
-        return registerPropertyExpression(c, type, property, fromType, null);
-    }
-
-    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType, @Nullable String prefix) {
-        prefix = prefix == null ? "" : prefix + " ";
-        String[] patterns = new String[]{
-                "[the] " + property + " of " + prefix + "%" + fromType + "%",
-                prefix + "%" + fromType + "%'[s] " + property
-        };
-        Skript.registerExpression(c, type, ExpressionType.PROPERTY, patterns);
-        Registration registration = new Registration(c, patterns);
+        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
+        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         expressions.add(registration);
         return registration;
     }

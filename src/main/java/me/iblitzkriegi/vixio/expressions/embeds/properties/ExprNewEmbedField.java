@@ -14,7 +14,7 @@ public class ExprNewEmbedField extends SimpleExpression<MessageEmbed.Field> {
 
     static {
         Vixio.getInstance().registerExpression(ExprNewEmbedField.class, MessageEmbed.Field.class, ExpressionType.COMBINED,
-                "[a] (split|inline) field [named %-string% [with [the]]] [value %-string%]", "[a] field [named %-string% [with [the]]] [value %-string%]")
+                "[(a|the)] (split|inline) field[s] [named %-string%] [with [the] value %-string%]", "[(a|the)] field[s] [named %-string%] [with [the] value %-string%]")
                 .setName("New Field")
                 .setDesc("Returns a field with the specified data")
                 .setExample("set field of {_embed} to a split field named \"Super cool field\" and value \"Super cool value\"");
@@ -22,7 +22,7 @@ public class ExprNewEmbedField extends SimpleExpression<MessageEmbed.Field> {
 
     private boolean split;
     private Expression<String> name;
-    private Expression<String> value = null;
+    private Expression<String> value;
 
     @Override
     protected MessageEmbed.Field[] get(Event e) {

@@ -54,7 +54,7 @@ public class ExprAuthorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Me
             case RESET:
             case DELETE:
                 embed.setAuthor(null, null, null);
-                return;
+                break;
 
             case SET:
                 MessageEmbed.AuthorInfo author = (MessageEmbed.AuthorInfo) delta[0];

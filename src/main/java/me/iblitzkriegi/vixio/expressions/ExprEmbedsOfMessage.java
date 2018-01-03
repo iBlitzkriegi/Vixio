@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -14,15 +13,13 @@ import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 
-public class ExprEmbedsOfMessage extends PropertyExpression<Message, MessageEmbed> {
+public class ExprEmbedsOfMessage extends PropertyExpression<Message, EmbedBuilder> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprEmbedsOfMessage.class, MessageEmbed.class, ExpressionType.PROPERTY,
+        Vixio.getInstance().registerExpression(ExprEmbedsOfMessage.class, EmbedBuilder.class, ExpressionType.PROPERTY,
                 "[the] embed[s] of %messages%", "%messages%'[s] embed[s]"
         );
     }
-
-    private Expression<EmbedBuilder> embeds;
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
@@ -31,31 +28,24 @@ public class ExprEmbedsOfMessage extends PropertyExpression<Message, MessageEmbe
     }
 
     @Override
-    protected MessageEmbed[] get(final Event e, final Message[] messages) {
-        ArrayList<MessageEmbed> embeds = new ArrayList<MessageEmbed>();
+    protected EmbedBuilder[] get(final Event e, final Message[] messages) {
+        ArrayList<EmbedBuilder> embeds = new ArrayList<>();
         for (Message message : messages) {
             for (MessageEmbed embed : message.getEmbeds()) {
-                embeds.add(embed);
+                embeds.add(new EmbedBuilder(embed));
             }
         }
-        return embeds.toArray(new MessageEmbed[embeds.size()]);
+        return embeds.toArray(new EmbedBuilder[embeds.size()]);
     }
 
     @Override
-    public Class<? extends MessageEmbed> getReturnType() {
-        return MessageEmbed.class;
+    public Class<? extends EmbedBuilder> getReturnType() {
+        return EmbedBuilder.class;
     }
 
     @Override
     public String toString(final Event e, final boolean debug) {
         return "the embeds of " + getExpr().toString(e, debug);
-    }
-
-    @Override
-    public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
-        return new Class[]{
-                MessageEmbed.class
-        };
     }
 
 }

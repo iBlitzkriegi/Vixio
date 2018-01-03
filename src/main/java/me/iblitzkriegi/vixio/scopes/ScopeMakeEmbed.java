@@ -14,7 +14,7 @@ public class ScopeMakeEmbed extends EffectSection {
     public static EmbedBuilder lastEmbed;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "make [embed] %embedbuilder%")
+        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "(make|create) [embed] %embedbuilder%")
                 .setName("Make Embed")
                 .setDesc("Provides a pretty and easy way of making a new embed with a bunch of different attributes")
                 .setExample(
