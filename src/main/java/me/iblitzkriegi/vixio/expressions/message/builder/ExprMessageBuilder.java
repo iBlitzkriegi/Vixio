@@ -14,7 +14,7 @@ public class ExprMessageBuilder extends SimpleExpression<MessageBuilder>{
         Vixio.getInstance().registerExpression(ExprMessageBuilder.class, MessageBuilder.class, ExpressionType.SIMPLE , "a [new] message builder")
                 .setName("Message Builder")
                 .setDesc("Create a new MessageBuilder")
-                .setExample("");
+                .setExample("set {e} to a new message builder");
     }
     @Override
     protected MessageBuilder[] get(Event e) {

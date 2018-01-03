@@ -13,13 +13,10 @@ import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
-import org.apache.commons.logging.impl.SimpleLog;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.LoggerFactory;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,22 +101,51 @@ public class Vixio extends JavaPlugin {
         expressions.add(registration);
         return registration;
     }
+
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType){
-        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
-        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
+        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + " " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + " " + property);
+        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + " " +  property);
         expressions.add(registration);
         return registration;
     }
     private static void setup(){
         Classes.registerClass(new ClassInfo<>(Message.class, "message").user("message").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
             @Override
-            public Message parse(String s, ParseContext context) {return null;}
+            public Message parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Message msg, int flags) {return msg.getId();}
+            public String toString(Message msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(Message msg) {return msg.getId();}
+            public String toVariableNameString(Message msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(MessageBuilder.class, "messagebuilder").user("messagebuilders?").defaultExpression(new EventValueExpression<>(MessageBuilder.class)).name("messagebuilder").parser(new Parser<MessageBuilder>() {
+            @Override
+            public MessageBuilder parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(MessageBuilder builder, int flags) {
+                return builder.isEmpty() ? null : builder.build().getContentRaw();
+            }
+            @Override
+            public String toVariableNameString(MessageBuilder builder) {
+                return builder.isEmpty() ? null : builder.build().getContentRaw();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+
         Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
             @Override
             public Channel parse(String s, ParseContext context) {

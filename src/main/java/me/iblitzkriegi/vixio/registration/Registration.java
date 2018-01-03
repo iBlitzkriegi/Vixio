@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.lang.Effect;
+import ch.njol.util.StringUtils;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class Registration {
     private String example;
     private Class<?> clazz;
     private String[] syntaxes;
+    private String userFacing;
 
     public Registration(Class<?> cls, String... syntaxes){
         clazz = cls;
@@ -38,6 +40,15 @@ public class Registration {
         this.example = s;
         return this;
     }
+
+    public Registration setExample(String... s) {
+        return setExample(StringUtils.join(s, "\n"));
+    }
+
+    public Registration setUserFacing(String s){
+        this.userFacing = s;
+        return this;
+    }
     public String getName(){
         return this.name;
     }
@@ -53,6 +64,7 @@ public class Registration {
     public String getExample(){
         return this.example;
     }
+    public String getUserFacing(){return this.userFacing;}
 
 
 }
