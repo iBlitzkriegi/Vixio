@@ -27,7 +27,7 @@ public class ExprNewEmbedTitle extends SimpleExpression<Title> {
         if (text == null) return null;
 
         return new Title[]{
-                new Title(text, url.getSingle(e))
+                new Title(text, (url == null ? null : url.getSingle(e)))
         };
     }
 

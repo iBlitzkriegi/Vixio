@@ -383,6 +383,30 @@ public class Vixio extends JavaPlugin {
 
         };
 
+        new SimpleType<MessageEmbed.Field>(MessageEmbed.Field.class, "field", "fields?") {
+
+            @Override
+            public MessageEmbed.Field parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(MessageEmbed.Field field, int arg1) {
+                return field.getValue();
+            }
+
+            @Override
+            public String toVariableNameString(MessageEmbed.Field field) {
+                return field.getValue();
+            }
+
+        };
+
         Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
             @Override
             public java.awt.Color convert(ch.njol.skript.util.Color color) {
