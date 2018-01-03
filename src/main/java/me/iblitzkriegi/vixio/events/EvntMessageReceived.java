@@ -15,9 +15,9 @@ public class EvntMessageReceived extends Event{
                 .setName("Guild Message Received")
                 .setDesc("Fired when a message is sent in a Text Channel that the bot can read.")
                 .setExample("on server message");
-        EventValues.registerEventValue(EvntMessageReceived.class, TextChannel.class, new Getter<TextChannel, EvntMessageReceived>() {
+        EventValues.registerEventValue(EvntMessageReceived.class, Channel.class, new Getter<Channel, EvntMessageReceived>() {
             @Override
-            public TextChannel get(EvntMessageReceived event) {
+            public Channel get(EvntMessageReceived event) {
                 return event.getChannel();
             }},0);
         EventValues.registerEventValue(EvntMessageReceived.class, User.class, new Getter<User, EvntMessageReceived>() {

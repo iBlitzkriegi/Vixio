@@ -120,17 +120,35 @@ public class Vixio extends JavaPlugin {
             public String toVariableNameString(Message msg) {return msg.getId();}
             @Override
             public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(TextChannel.class)).name("channel").parser(new Parser<TextChannel>() {
+        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
             @Override
-            public TextChannel parse(String s, ParseContext context) {
+            public Channel parse(String s, ParseContext context) {
                 return null;
             }
             @Override
-            public String toString(TextChannel msg, int flags) {
+            public String toString(Channel msg, int flags) {
                 return msg.getId();
             }
             @Override
-            public String toVariableNameString(TextChannel msg) {
+            public String toVariableNameString(Channel msg) {
+                return msg.getId();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("textchannel").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
+            @Override
+            public MessageChannel parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(MessageChannel msg, int flags) {
+                return msg.getId();
+            }
+            @Override
+            public String toVariableNameString(MessageChannel msg) {
                 return msg.getId();
             }
             @Override
@@ -175,38 +193,60 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("user").parser(new Parser<Guild>() {
+        Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("guild").parser(new Parser<Guild>() {
             @Override
-            public Guild parse(String s, ParseContext context) {return null;}
+            public Guild parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Guild gui, int flags) {return gui.getId();}
+            public String toString(Guild msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(Guild gui) {return gui.getId();}
+            public String toVariableNameString(Guild msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voice").user("voice").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voice").parser(new Parser<VoiceChannel>() {
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voicechannel").user("voicechannel").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voicechannel").parser(new Parser<VoiceChannel>() {
             @Override
-            public VoiceChannel parse(String s, ParseContext context) {return null;}
+            public VoiceChannel parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(VoiceChannel gui, int flags) {return gui.getId();}
+            public String toString(VoiceChannel msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(VoiceChannel gui) {return gui.getId();}
+            public String toVariableNameString(VoiceChannel msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(SelfUser.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(SelfUser.class)).name("bot").parser(new Parser<SelfUser>() {
             @Override
-            public SelfUser parse(String s, ParseContext context) {return null;}
+            public SelfUser parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(SelfUser gui, int flags) {return gui.getId();}
+            public String toString(SelfUser msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(SelfUser gui) {return gui.getId();}
+            public String toVariableNameString(SelfUser msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
-
-
-    }
-    public static String getPattern(Class<?> clazz){
-        return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
     }
 
 }
