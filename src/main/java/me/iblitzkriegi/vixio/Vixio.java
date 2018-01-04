@@ -334,7 +334,7 @@ public class Vixio extends JavaPlugin {
 
         };
 
-        new SimpleType<MessageEmbed>(MessageEmbed.class, "embed", "(message ?)?embeds?") {
+        new SimpleType<MessageEmbed>(MessageEmbed.class, "embed", "message ?embeds?") {
 
             @Override
             public MessageEmbed parse(String s, ParseContext pc) {
@@ -414,19 +414,9 @@ public class Vixio extends JavaPlugin {
             }
         });
 
-        Converters.registerConverter(MessageEmbed.class, EmbedBuilder.class, new Converter<MessageEmbed, EmbedBuilder>() {
-            @Override
-            public EmbedBuilder convert(MessageEmbed embed) {
-                return new EmbedBuilder(embed);
-            }
-        });
-
-        Converters.registerConverter(EmbedBuilder.class, MessageEmbed.class, new Converter<EmbedBuilder, MessageEmbed>() {
-            @Override
-            public MessageEmbed convert(EmbedBuilder embed) {
-                return embed.isEmpty() ? null : embed.build();
-            }
-        });
+        Converters.registerConverter(EmbedBuilder.class, MessageEmbed.class,
+                (Converter<EmbedBuilder, MessageEmbed>) e -> e.isEmpty() ? null : e.build()
+        );
 
     }
 
