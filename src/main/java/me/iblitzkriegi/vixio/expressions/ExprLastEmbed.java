@@ -27,9 +27,7 @@ public class ExprLastEmbed extends SimpleExpression<EmbedBuilder> {
 
     @Override
     protected EmbedBuilder[] get(final Event e) {
-        return new EmbedBuilder[]{
-                ScopeMakeEmbed.lastEmbed
-        };
+        return new EmbedBuilder[]{ScopeMakeEmbed.lastEmbed};
     }
 
     @Override
