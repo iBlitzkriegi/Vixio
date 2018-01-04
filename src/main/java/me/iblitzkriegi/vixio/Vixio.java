@@ -11,12 +11,14 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
+import me.iblitzkriegi.vixio.util.Bot;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,10 +41,8 @@ public class Vixio extends JavaPlugin {
     public List<Registration> effects = new ArrayList<>();
     public List<Registration> expressions = new ArrayList<>();
     // JDA Related \\
-    public HashMap<String, JDA> bots = new HashMap<>();
-    public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
-    public List<JDA> jdaInstances = new ArrayList<>();
-    public static Logger logger;
+    public HashMap<JDA, Bot> botHashMap = new HashMap<>();
+    public static HashMap<String, Bot> botNameHashMap = new HashMap<>();
 
 
     public Vixio() {
@@ -54,8 +54,6 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-
-        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         try {
             getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions", "scopes");
             Vixio.setup();
@@ -104,27 +102,81 @@ public class Vixio extends JavaPlugin {
         expressions.add(registration);
         return registration;
     }
+
+    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType){
+        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + " " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + " " + property);
+        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + " " +  property);
+        expressions.add(registration);
+        return registration;
+    }
+  
     private static void setup(){
-        Classes.registerClass(new ClassInfo<>(Message.class, "message").user("message").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
+        Classes.registerClass(new ClassInfo<>(Message.class, "message").user("messages?").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
             @Override
-            public Message parse(String s, ParseContext context) {return null;}
-            @Override
-            public String toString(Message msg, int flags) {return msg.getId();}
-            @Override
-            public String toVariableNameString(Message msg) {return msg.getId();}
-            @Override
-            public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(TextChannel.class)).name("channel").parser(new Parser<TextChannel>() {
-            @Override
-            public TextChannel parse(String s, ParseContext context) {
+            public Message parse(String s, ParseContext context) {
                 return null;
             }
             @Override
-            public String toString(TextChannel msg, int flags) {
+            public String toString(Message msg, int flags) {
                 return msg.getId();
             }
             @Override
-            public String toVariableNameString(TextChannel msg) {
+            public String toVariableNameString(Message msg) {
+                return msg.getId();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(MessageBuilder.class, "messagebuilder").user("messagebuilders?").defaultExpression(new EventValueExpression<>(MessageBuilder.class)).name("messagebuilder").parser(new Parser<MessageBuilder>() {
+            @Override
+            public MessageBuilder parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(MessageBuilder builder, int flags) {
+                return builder.isEmpty() ? null : builder.build().getContentRaw();
+            }
+            @Override
+            public String toVariableNameString(MessageBuilder builder) {
+                return builder.isEmpty() ? null : builder.build().getContentRaw();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+
+        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
+            @Override
+            public Channel parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(Channel msg, int flags) {
+                return msg.getId();
+            }
+            @Override
+            public String toVariableNameString(Channel msg) {
+                return msg.getId();
+            }
+            @Override
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("textchannels?").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
+            @Override
+            public MessageChannel parse(String s, ParseContext context) {
+                return null;
+            }
+            @Override
+            public String toString(MessageChannel msg, int flags) {
+                return msg.getId();
+            }
+            @Override
+            public String toVariableNameString(MessageChannel msg) {
                 return msg.getId();
             }
             @Override
@@ -169,33 +221,76 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("user").parser(new Parser<Guild>() {
+        Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("guild").parser(new Parser<Guild>() {
             @Override
-            public Guild parse(String s, ParseContext context) {return null;}
+            public Guild parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Guild gui, int flags) {return gui.getId();}
+            public String toString(Guild msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(Guild gui) {return gui.getId();}
+            public String toVariableNameString(Guild msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voice").user("voice").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voice").parser(new Parser<VoiceChannel>() {
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voicechannel").user("voicechannel").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voicechannel").parser(new Parser<VoiceChannel>() {
             @Override
-            public VoiceChannel parse(String s, ParseContext context) {return null;}
+            public VoiceChannel parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(VoiceChannel gui, int flags) {return gui.getId();}
+            public String toString(VoiceChannel msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(VoiceChannel gui) {return gui.getId();}
+            public String toVariableNameString(VoiceChannel msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
-        Classes.registerClass(new ClassInfo<>(SelfUser.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(SelfUser.class)).name("bot").parser(new Parser<SelfUser>() {
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Classes.registerClass(new ClassInfo<>(Bot.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(Bot.class)).name("bot").parser(new Parser<Bot>() {
             @Override
-            public SelfUser parse(String s, ParseContext context) {return null;}
+            public Bot parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(SelfUser gui, int flags) {return gui.getId();}
+            public String toString(Bot bot, int flags) {
+                return bot.getSelfUser().getId();
+            }
             @Override
-            public String toVariableNameString(SelfUser gui) {return gui.getId();}
+            public String toVariableNameString(Bot bot) {
+                return bot.getSelfUser().getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
+        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
+        Converters.registerConverter(String.class, Bot.class, new Converter<String, Bot>() {
+            @Override
+            public Bot convert(String bot) {
+                return botNameHashMap.get(bot);
+            }
+        });
+        Converters.registerConverter(MessageBuilder.class, Message.class, new Converter<MessageBuilder, Message>() {
+            @Override
+            public Message convert(MessageBuilder builder) {
+                return builder.isEmpty() ? null : builder.build();
+            }
+        });
+            
+            //this is a rogue leftover from merge conflicts, if theres issues with the class it's probably this. I don't know where it came from
+            //public String getVariableNamePattern() {return ".+";}}));
 
         new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ? builders?") {
             public EmbedBuilder parse(String s, ParseContext pc) {
@@ -420,14 +515,7 @@ public class Vixio extends JavaPlugin {
 
     }
 
-    public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType) {
-        Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
-        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
-        expressions.add(registration);
-        return registration;
-    }
-
-    public static String getPattern(Class<?> clazz){
+    public static String getPattern(Class<?> clazz) {
         return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
     }
 

@@ -52,10 +52,12 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
 
     private Guild getGuild(Event e) {
         if (id.getSingle(e) != null) {
-            if (Vixio.getInstance().jdaInstances != null) {
-                for (JDA jda : Vixio.getInstance().jdaInstances) {
+            if (Vixio.getInstance().botHashMap.keySet() != null) {
+                for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+                    System.out.println(Vixio.getInstance().botHashMap.get(jda).getName());
                     try {
                         if (jda.getGuildById(id.getSingle(e)) != null) {
+                            System.out.println("Found guild, named " + jda.getGuildById(id.getSingle(e)).getName());
                             return jda.getGuildById(id.getSingle(e));
                         }
                     }catch (IllegalArgumentException x){
