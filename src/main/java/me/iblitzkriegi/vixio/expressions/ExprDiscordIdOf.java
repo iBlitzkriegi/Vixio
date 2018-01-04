@@ -3,6 +3,7 @@ package me.iblitzkriegi.vixio.expressions;
 import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.entities.ISnowflake;
 
 /**
@@ -10,7 +11,7 @@ import net.dv8tion.jda.core.entities.ISnowflake;
  */
 public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "discord id", "channel/guild/user/message")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "discord id", "channel/guild/user/message/bot")
             .setName("Discord ID of")
             .setDesc("Get the ID of a discord object")
             .setExample("discord id of event-user");
@@ -24,6 +25,8 @@ public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     public String convert(Object o) {
         if(o instanceof ISnowflake){
             return ((ISnowflake) o).getId();
+        }else if(o instanceof Bot){
+            return ((Bot) o).getSelfUser().getId();
         }
         Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;

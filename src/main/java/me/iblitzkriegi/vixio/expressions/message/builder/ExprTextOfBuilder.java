@@ -16,7 +16,6 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
         Vixio.getInstance().registerPropertyExpression(ExprTextOfBuilder.class, String.class, "[<stripped>] text", "messagebuilders")
                 .setName("Text of Message Builder")
                 .setDesc("Get the text inside of a Message Builder")
-                .setExample("command /build:\n\ttrigger:\n\t\tset {e} to a new message builder\n\t\tset text of {e} to \"Hey look at this!\"\n\t\tbroadcast \"%text of {e}%")
                 .setExample(
                         "command /build:",
                         "\ttrigger:",

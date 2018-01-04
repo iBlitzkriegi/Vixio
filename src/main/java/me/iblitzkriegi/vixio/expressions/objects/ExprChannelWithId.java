@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
  */
 public class ExprChannelWithId extends SimpleExpression<Channel> {
     static {
-        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %string%]");
+        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %-string%]");
     }
     private Expression<String> id;
     private Expression<Guild> guild;
@@ -38,7 +38,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
 
     @Override
     public String toString(Event e, boolean b) {
-        return guild.getSingle(e) != null ? "channel with id " + id.getSingle(e) + " in guild " + guild.getSingle(e) : "channel with id " + id.getSingle(e);
+        return guild != null ? "channel with id " + id.toString(e, b) + " in guild " + guild.toString(e, b) : "channel with id " + id.toString(e, b);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         return true;
     }
     private Channel getChannel(Event e){
-        if(id.getSingle(e)!=null) {
-            if(guild.getSingle(e)==null) {
-                if (Vixio.getInstance().jdaInstances != null) {
-                    for (JDA jda : Vixio.getInstance().jdaInstances) {
+        if(id != null) {
+            if(guild == null) {
+                if (Vixio.getInstance().botHashMap.keySet() != null) {
+                    for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
                         if (jda.getTextChannelById(id.getSingle(e)) == null) {
                             if(jda.getVoiceChannelById(id.getSingle(e))==null){
                                 Skript.error("Could not find TextChannel or VoiceChannel with the provided ID, check your ID and try again.");

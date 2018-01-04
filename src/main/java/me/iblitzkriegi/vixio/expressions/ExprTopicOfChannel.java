@@ -8,6 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -21,12 +22,13 @@ import org.bukkit.event.Event;
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
         Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channel% [(with|as) %-bot%]")
-        .setName("Topic of Channel")
-        .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
-        .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
-}
+                .setName("Topic of Channel")
+                .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
+                .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
+    }
+
     private Expression<TextChannel> channel;
-    private Expression<SelfUser> bot;
+    private Expression<Bot> bot;
 
     @Override
     protected String[] get(Event event) {
@@ -54,40 +56,46 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         channel = (Expression<TextChannel>) expressions[0];
-        bot = (Expression<SelfUser>) expressions[1];
+        bot = (Expression<Bot>) expressions[1];
         return true;
     }
+
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.DELETE || mode == Changer.ChangeMode.RESET)
-            return new Class[] {String.class};
+            return new Class[]{String.class};
         return super.acceptChange(mode);
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        if (bot != null) {
-            JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));
-            if (bot != null) {
-                TextChannel channel = jda.getTextChannelById(this.channel.getSingle(e).getId());
-                try {
-                    switch (mode) {
-                        case RESET:
-                        case DELETE:
-                            channel.getManager().setTopic(null).queue();
-                            break;
-                        case SET:
-                            channel.getManager().setTopic((String) delta[0]).queue();
+        if (bot.getSingle(e) != null) {
+            JDA jda = bot.getSingle(e).getJDA();
+            if(jda != null) {
+                if (channel.getSingle(e) != null) {
+                    TextChannel channel = jda.getTextChannelById(this.channel.getSingle(e).getId());
+                    try {
+                        switch (mode) {
+                            case RESET:
+                            case DELETE:
+                                channel.getManager().setTopic(null).queue();
+                                break;
+                            case SET:
+                                channel.getManager().setTopic((String) delta[0]).queue();
+                        }
+                    } catch (PermissionException x) {
+                        Skript.error("Provided bot does not have enough permission to modify the topic of the provided channel");
                     }
-                } catch (PermissionException x) {
-                    Skript.error("Provided bot does not have enough permission to modify the topic of the provided channel");
+                }else{
+                    Skript.error("Provided bot could not find provided channel.");
                 }
-            } else {
-                Skript.error("Could not find stored bot");
+            }else{
+                Skript.error("Could not find stored bot by the stored bot.");
             }
         } else {
             Skript.error("You must include a bot in order to modify the topic!");
 
         }
     }
+
 }

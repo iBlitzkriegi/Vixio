@@ -11,6 +11,7 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
+import me.iblitzkriegi.vixio.util.Bot;
 import me.iblitzkriegi.vixio.util.Metrics;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -36,10 +37,8 @@ public class Vixio extends JavaPlugin {
     public List<Registration> effects = new ArrayList<>();
     public List<Registration> expressions = new ArrayList<>();
     // JDA Related \\
-    public HashMap<String, JDA> bots = new HashMap<>();
-    public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
-    public List<JDA> jdaInstances = new ArrayList<>();
-    public static Logger logger;
+    public HashMap<JDA, Bot> botHashMap = new HashMap<>();
+    public static HashMap<String, Bot> botNameHashMap = new HashMap<>();
 
 
     public Vixio() {
@@ -51,8 +50,6 @@ public class Vixio extends JavaPlugin {
     }
     @Override
     public void onEnable(){
-
-        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         try {
             getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions");
             Vixio.setup();
@@ -109,7 +106,7 @@ public class Vixio extends JavaPlugin {
         return registration;
     }
     private static void setup(){
-        Classes.registerClass(new ClassInfo<>(Message.class, "message").user("message").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
+        Classes.registerClass(new ClassInfo<>(Message.class, "message").user("messages?").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
             @Override
             public Message parse(String s, ParseContext context) {
                 return null;
@@ -164,7 +161,7 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("textchannel").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
+        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("textchannels?").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
             @Override
             public MessageChannel parse(String s, ParseContext context) {
                 return null;
@@ -255,24 +252,37 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(SelfUser.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(SelfUser.class)).name("bot").parser(new Parser<SelfUser>() {
+        Classes.registerClass(new ClassInfo<>(Bot.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(Bot.class)).name("bot").parser(new Parser<Bot>() {
             @Override
-            public SelfUser parse(String s, ParseContext context) {
+            public Bot parse(String s, ParseContext context) {
                 return null;
             }
             @Override
-            public String toString(SelfUser msg, int flags) {
-                return msg.getId();
+            public String toString(Bot bot, int flags) {
+                return bot.getSelfUser().getId();
             }
             @Override
-            public String toVariableNameString(SelfUser msg) {
-                return msg.getId();
+            public String toVariableNameString(Bot bot) {
+                return bot.getSelfUser().getId();
             }
             @Override
             public String getVariableNamePattern() {
                 return ".+";
             }
         }));
+        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
+        Converters.registerConverter(String.class, Bot.class, new Converter<String, Bot>() {
+            @Override
+            public Bot convert(String bot) {
+                return botNameHashMap.get(bot);
+            }
+        });
+        Converters.registerConverter(MessageBuilder.class, Message.class, new Converter<MessageBuilder, Message>() {
+            @Override
+            public Message convert(MessageBuilder builder) {
+                return builder.isEmpty() ? null : builder.build();
+            }
+        });
     }
 
 }

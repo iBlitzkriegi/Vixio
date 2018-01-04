@@ -9,6 +9,7 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.jda.JDAEventListener;
+import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -26,7 +27,7 @@ import java.util.Set;
  */
 public class EffLogin extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% [named %-string%]")
+        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to discord account with token %string% named %string%")
                 .setName("Connect effect")
                 .setDesc("Login to a bot account with a token")
                 .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
@@ -55,11 +56,10 @@ public class EffLogin extends Effect {
             } catch (RateLimitedException e1) {
                 Skript.error("You're logging in too fast! Chill m9");
             }
-            if(name.getSingle(e)!=null) {
-                Vixio.getInstance().bots.put(name.getSingle(e), api);
-            }
-            Vixio.getInstance().jdaUsers.put(api.getSelfUser(), api);
-            Vixio.getInstance().jdaInstances.add(api);
+            Bot bot = new Bot(name.getSingle(e), api);
+            Vixio.getInstance().botHashMap.put(api, bot);
+            Vixio.getInstance().botNameHashMap.put(name.getSingle(e), bot);
+
             if (getNext() != null) {
                 TriggerItem.walk(getNext(), e);
             }
