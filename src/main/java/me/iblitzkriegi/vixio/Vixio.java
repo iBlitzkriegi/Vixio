@@ -51,11 +51,11 @@ public class Vixio extends JavaPlugin {
     public List<Registration> events = new ArrayList<>();
     public List<Registration> effects = new ArrayList<>();
     public List<Registration> expressions = new ArrayList<>();
+    public static Logger logger;
     // JDA Related \\
     public HashMap<String, JDA> bots = new HashMap<>();
     public HashMap<SelfUser, JDA> jdaUsers = new HashMap<>();
     public List<JDA> jdaInstances = new ArrayList<>();
-    public static Logger logger;
 
 
     public Vixio() {
@@ -65,68 +65,26 @@ public class Vixio extends JavaPlugin {
             throw new IllegalStateException();
         }
     }
-    @Override
-    public void onEnable(){
 
-        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
-        try {
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions", "scopes");
-            Vixio.setup();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(!this.getDataFolder().exists()){
-            this.getDataFolder().mkdir();
-        }
-        Metrics mertrics = new Metrics(this);
-        Documentation.setupSyntaxFile();
-    }
-    public static Vixio getInstance(){
-        if(instance == null){
-            return null;
-        }
-        return instance;
-    }
-    public static SkriptAddon getAddonInstance(){
-        if(addonInstance == null) {
-            addonInstance = Skript.registerAddon(getInstance());
-        }
-        return addonInstance;
-    }
-    public Registration registerCondition(Class<? extends Condition> cond, String... patterns){
-        Skript.registerCondition(cond, patterns);
-        Registration registration = new Registration(cond, patterns);
-        conditions.add(registration);
-        return registration;
-    }
-    public Registration registerEvent(String name, Class type, Class clazz, String... patterns){
-        Skript.registerEvent(name, type, clazz, patterns);
-        Registration registration = new Registration(clazz, patterns);
-        events.add(registration);
-        return registration;
-    }
-    public Registration registerEffect(Class<? extends Effect> eff, String... patterns){
-        Skript.registerEffect(eff, patterns);
-        Registration reg = new Registration(eff, patterns);
-        effects.add(reg);
-        return reg;
-    }
-    public Registration registerExpression(Class<? extends Expression> expr, Class<?> returntype, ExpressionType exprtype, String... patterns){
-        Skript.registerExpression(expr, returntype, exprtype, patterns);
-        Registration registration = new Registration(expr, patterns);
-        expressions.add(registration);
-        return registration;
-    }
     private static void setup(){
         Classes.registerClass(new ClassInfo<>(Message.class, "message").user("message").defaultExpression(new EventValueExpression<>(Message.class)).name("message").parser(new Parser<Message>() {
             @Override
-            public Message parse(String s, ParseContext context) {return null;}
+            public Message parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Message msg, int flags) {return msg.getId();}
+            public String toString(Message msg, int flags) {
+                return msg.getId();
+            }
             @Override
-            public String toVariableNameString(Message msg) {return msg.getId();}
+            public String toVariableNameString(Message msg) {
+                return msg.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(TextChannel.class)).name("channel").parser(new Parser<TextChannel>() {
             @Override
             public TextChannel parse(String s, ParseContext context) {
@@ -184,31 +142,58 @@ public class Vixio extends JavaPlugin {
         }));
         Classes.registerClass(new ClassInfo<>(Guild.class, "guild").user("guild").defaultExpression(new EventValueExpression<>(Guild.class)).name("user").parser(new Parser<Guild>() {
             @Override
-            public Guild parse(String s, ParseContext context) {return null;}
+            public Guild parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(Guild gui, int flags) {return gui.getId();}
+            public String toString(Guild gui, int flags) {
+                return gui.getId();
+            }
             @Override
-            public String toVariableNameString(Guild gui) {return gui.getId();}
+            public String toVariableNameString(Guild gui) {
+                return gui.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(VoiceChannel.class, "voice").user("voice").defaultExpression(new EventValueExpression<>(VoiceChannel.class)).name("voice").parser(new Parser<VoiceChannel>() {
             @Override
-            public VoiceChannel parse(String s, ParseContext context) {return null;}
+            public VoiceChannel parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(VoiceChannel gui, int flags) {return gui.getId();}
+            public String toString(VoiceChannel gui, int flags) {
+                return gui.getId();
+            }
             @Override
-            public String toVariableNameString(VoiceChannel gui) {return gui.getId();}
+            public String toVariableNameString(VoiceChannel gui) {
+                return gui.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
         Classes.registerClass(new ClassInfo<>(SelfUser.class, "bot").user("bot").defaultExpression(new EventValueExpression<>(SelfUser.class)).name("bot").parser(new Parser<SelfUser>() {
             @Override
-            public SelfUser parse(String s, ParseContext context) {return null;}
+            public SelfUser parse(String s, ParseContext context) {
+                return null;
+            }
             @Override
-            public String toString(SelfUser gui, int flags) {return gui.getId();}
+            public String toString(SelfUser gui, int flags) {
+                return gui.getId();
+            }
             @Override
-            public String toVariableNameString(SelfUser gui) {return gui.getId();}
+            public String toVariableNameString(SelfUser gui) {
+                return gui.getId();
+            }
             @Override
-            public String getVariableNamePattern() {return ".+";}}));
+            public String getVariableNamePattern() {
+                return ".+";
+            }
+        }));
 
         new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ? builders?") {
             public EmbedBuilder parse(String s, ParseContext pc) {
@@ -433,15 +418,74 @@ public class Vixio extends JavaPlugin {
 
     }
 
+    public static Vixio getInstance() {
+        if (instance == null) {
+            return null;
+        }
+        return instance;
+    }
+
+    public static SkriptAddon getAddonInstance() {
+        if (addonInstance == null) {
+            addonInstance = Skript.registerAddon(getInstance());
+        }
+        return addonInstance;
+    }
+
+    public static String getPattern(Class<?> clazz) {
+        return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
+    }
+
+    public Registration registerCondition(Class<? extends Condition> cond, String... patterns) {
+        Skript.registerCondition(cond, patterns);
+        Registration registration = new Registration(cond, patterns);
+        conditions.add(registration);
+        return registration;
+    }
+
+    public Registration registerEvent(String name, Class type, Class clazz, String... patterns) {
+        Skript.registerEvent(name, type, clazz, patterns);
+        Registration registration = new Registration(clazz, patterns);
+        events.add(registration);
+        return registration;
+    }
+
+    public Registration registerEffect(Class<? extends Effect> eff, String... patterns) {
+        Skript.registerEffect(eff, patterns);
+        Registration reg = new Registration(eff, patterns);
+        effects.add(reg);
+        return reg;
+    }
+
+    public Registration registerExpression(Class<? extends Expression> expr, Class<?> returntype, ExpressionType exprtype, String... patterns) {
+        Skript.registerExpression(expr, returntype, exprtype, patterns);
+        Registration registration = new Registration(expr, patterns);
+        expressions.add(registration);
+        return registration;
+    }
+
+    @Override
+    public void onEnable() {
+
+        Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
+        try {
+            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "expressions", "scopes");
+            Vixio.setup();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (!this.getDataFolder().exists()) {
+            this.getDataFolder().mkdir();
+        }
+        Metrics mertrics = new Metrics(this);
+        Documentation.setupSyntaxFile();
+    }
+
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> type, final String property, final String fromType) {
         Skript.registerExpression(c, type, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         expressions.add(registration);
         return registration;
-    }
-
-    public static String getPattern(Class<?> clazz){
-        return clazz.getSimpleName().replaceAll("(?<!^)(?=[A-Z])", " ").toLowerCase().replaceFirst("event", "");
     }
 
 }

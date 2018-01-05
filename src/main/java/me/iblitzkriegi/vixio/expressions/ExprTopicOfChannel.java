@@ -21,18 +21,18 @@ import org.bukkit.event.Event;
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
         Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channel% [(with|as) %-bot%]")
-        .setName("Topic of Channel")
-        .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
-        .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
-}
+                .setName("Topic of Channel")
+                .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
+                .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
+    }
     private Expression<TextChannel> channel;
     private Expression<SelfUser> bot;
 
     @Override
     protected String[] get(Event event) {
-        if(channel.getSingle(event).getTopic()!=null) {
+        if (channel.getSingle(event).getTopic() != null) {
             return new String[]{channel.getSingle(event).getTopic()};
-        }else{
+        } else {
             return null;
         }
     }
@@ -55,9 +55,9 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         channel = (Expression<TextChannel>) expressions[0];
-        if(expressions[1]!=null) {
+        if (expressions[1] != null) {
             bot = (Expression<SelfUser>) expressions[1];
-        }else{
+        } else {
             bot = null;
         }
         return true;
@@ -65,13 +65,13 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.DELETE || mode == Changer.ChangeMode.RESET)
-            return new Class[] {String.class};
+            return new Class[]{String.class};
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if(bot!=null) {
+        if (bot != null) {
             if (Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
                 JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));
                 TextChannel channel = jda.getTextChannelById(this.channel.getSingle(e).getId());
@@ -94,13 +94,13 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
                             channel.getManager().setTopic(null).queue();
                             break;
                     }
-                }catch (PermissionException x){
+                } catch (PermissionException x) {
                     Skript.error("Provided bot does not have enough permission to modify the topic of the provided channel");
                 }
             }else{
                 Skript.error("Could not find stored bot");
             }
-        }else{
+        } else {
             Skript.error("You must include a bot in order to modify the topic!");
 
         }

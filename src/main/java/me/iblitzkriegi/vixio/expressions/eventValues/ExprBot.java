@@ -19,6 +19,7 @@ public class ExprBot extends SimpleExpression<SelfUser> {
                 .setDesc("The bot that sees a event occur.")
                 .setExample("set {var} to event-bot");
     }
+
     @Override
     protected SelfUser[] get(Event e) {
         return new SelfUser[]{getBot(e)};
@@ -41,17 +42,18 @@ public class ExprBot extends SimpleExpression<SelfUser> {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntMessageReceived.class)){
+        if (ScriptLoader.isCurrentEvent(EvntMessageReceived.class)) {
             return true;
         }
         Skript.error("This may not be used in events that do not have a bot.");
         return false;
     }
-    public SelfUser getBot(Event e){
-        if(e == null){
+
+    public SelfUser getBot(Event e) {
+        if (e == null) {
             return null;
         }
-        if(e instanceof EvntMessageReceived){
+        if (e instanceof EvntMessageReceived) {
             return ((EvntMessageReceived) e).getJDA().getSelfUser();
         }
         return null;

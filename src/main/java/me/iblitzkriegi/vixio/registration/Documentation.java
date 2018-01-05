@@ -75,7 +75,7 @@ public class Documentation {
                 if(multipleSyntax){
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
-                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
                         builder.append(reg.getSyntaxes()[i] + "\",");
                     }
                     builder.append("}");
