@@ -73,14 +73,19 @@ public class Documentation {
             for(Registration reg : Vixio.getInstance().expressions){
                 boolean multipleSyntax = reg.getSyntaxes().length == 2;
                 if(multipleSyntax){
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("\tsyntax: {\"");
-                    for(int i = 0; i < reg.getSyntaxes().length; i++){
-                        builder.append(reg.getSyntaxes()[i] + "\",");
+                    if(reg.getUserFacing()==null) {
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("\tsyntax: {\"");
+                        for (int i = 0; i < reg.getSyntaxes().length; i++) {
+                            builder.append(reg.getSyntaxes()[i] + "\",");
+                        }
+                        builder.append("}");
+                        bw.write(builder.toString());
+                        bw.newLine();
+                    }else{
+                        bw.write("\tsyntax: " + reg.getUserFacing());
+                        bw.newLine();
                     }
-                    builder.append("}");
-                    bw.write(builder.toString());
-                    bw.newLine();
                 }else{
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                     bw.newLine();
