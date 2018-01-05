@@ -2,8 +2,8 @@ package me.iblitzkriegi.vixio.util;
 
 public class Title {
 
-    private String text = null;
-    private String url = null;
+    private String text;
+    private String url;
 
     public Title(String text, String url) {
         this.text = text;
