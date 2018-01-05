@@ -1,7 +1,6 @@
 package me.iblitzkriegi.vixio.jda;
 
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
-import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.events.Event;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;

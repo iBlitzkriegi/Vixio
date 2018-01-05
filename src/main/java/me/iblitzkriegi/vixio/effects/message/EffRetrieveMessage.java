@@ -7,7 +7,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
-import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
@@ -22,7 +21,7 @@ public class EffRetrieveMessage extends Effect{
             .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
     }
     Expression<String> id;
-    Expression<MessageChannel> channel;
+    Expression<TextChannel> channel;
     @Override
     protected void execute(Event event) {
         if(id.getSingle(event)!=null) {
@@ -44,7 +43,7 @@ public class EffRetrieveMessage extends Effect{
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
-        channel = (Expression<MessageChannel>) expressions[1];
+        channel = (Expression<TextChannel>) expressions[1];
         return true;
     }
 }

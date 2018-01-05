@@ -2,7 +2,7 @@ package me.iblitzkriegi.vixio.util;
 
 import ch.njol.skript.Skript;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Locale;
 
 public class Util {
