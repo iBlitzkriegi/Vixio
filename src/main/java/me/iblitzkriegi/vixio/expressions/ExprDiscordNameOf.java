@@ -30,7 +30,6 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
         if(o instanceof User){
             return ((User) o).getName();
         }else if(o instanceof Guild){
-            System.out.println("Now im in the name of");
             return ((Guild) o).getName();
         }else if(o instanceof Channel){
             return ((Channel) o).getName();
