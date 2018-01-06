@@ -55,7 +55,7 @@ public class EffLogin extends Effect {
             } catch (RateLimitedException e1) {
                 Skript.error("You're logging in too fast! Chill m9");
             }
-            if(name.getSingle(e)!=null) {
+            if (name.getSingle(e) != null) {
                 Vixio.getInstance().bots.put(name.getSingle(e), api);
             }
             Vixio.getInstance().jdaUsers.put(api.getSelfUser(), api);

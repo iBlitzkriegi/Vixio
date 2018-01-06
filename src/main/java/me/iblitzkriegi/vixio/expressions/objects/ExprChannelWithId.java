@@ -48,8 +48,8 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         return true;
     }
     private Channel getChannel(Event e){
-        if(id.getSingle(e)!=null) {
-            if(guild.getSingle(e)==null) {
+        if (id.getSingle(e) != null) {
+            if (guild.getSingle(e) == null) {
                 if (Vixio.getInstance().jdaInstances != null) {
                     for (JDA jda : Vixio.getInstance().jdaInstances) {
                         if (jda.getTextChannelById(id.getSingle(e)) == null) {

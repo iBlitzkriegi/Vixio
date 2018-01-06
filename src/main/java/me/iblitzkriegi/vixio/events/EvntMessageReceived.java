@@ -5,7 +5,11 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 

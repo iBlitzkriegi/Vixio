@@ -10,7 +10,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.event.Event;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Field;
 
 public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Color> {
@@ -55,9 +55,7 @@ public class ExprColorOfEmbed extends SimplePropertyExpression<EmbedBuilder, Col
     @Override
     public Class<?>[] acceptChange(final ChangeMode mode) {
         if ((mode == ChangeMode.SET || mode == ChangeMode.RESET || mode == ChangeMode.DELETE) && getExpr().isSingle()) {
-            return new Class[]{
-                    Color.class
-            };
+            return new Class[]{Color.class};
         }
         return super.acceptChange(mode);
     }

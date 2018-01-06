@@ -55,8 +55,8 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if(bot!=null||Vixio.getInstance().jdaUsers.get(bot.getSingle(e))!=null){
-            if(message != null){
+        if (bot != null || Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
+            if (message != null) {
                 switch (mode){
                     case SET:
                         JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));

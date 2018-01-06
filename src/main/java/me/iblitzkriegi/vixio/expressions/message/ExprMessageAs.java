@@ -67,7 +67,7 @@ public class ExprMessageAs extends SimpleExpression<Message> {
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
         if(bot!=null){
             if(message!=null){
-                if(Vixio.getInstance().jdaUsers.get(bot.getSingle(e))!=null){
+                if (Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
                     try{
                         switch (mode){
                             case DELETE:
