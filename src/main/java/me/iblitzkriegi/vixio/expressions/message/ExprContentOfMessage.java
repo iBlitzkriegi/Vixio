@@ -8,7 +8,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.SelfUser;
@@ -26,7 +25,7 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
             .setExample("content of event-message");
     }
     Expression<Message> message;
-    Expression<Bot> bot;
+    Expression<SelfUser> bot;
     @Override
     protected String[] get(Event event) {
         if(message.getSingle(event)!=null) {
@@ -56,11 +55,11 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if(bot!=null||Vixio.getInstance().botHashMap.containsKey(bot)){
-            if(message.getSingle(e) != null){
+        if (bot != null || Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
+            if (message != null) {
                 switch (mode){
                     case SET:
-                        JDA jda = bot.getSingle(e).getJDA();
+                        JDA jda = Vixio.getInstance().jdaUsers.get(bot.getSingle(e));
                         TextChannel textChannel = jda.getTextChannelById(message.getSingle(e).getTextChannel().getId());
                         try{
                             String edit;
@@ -86,13 +85,13 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
 
     @Override
     public String toString(Event event, boolean b) {
-        return "content of message " + message.toString(event, b);
+        return "content of message " + message.getSingle(event);
     }
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) expressions[0];
-        bot = (Expression<Bot>) expressions[1];
+        bot = (Expression<SelfUser>) expressions[1];
         return true;
     }
 }

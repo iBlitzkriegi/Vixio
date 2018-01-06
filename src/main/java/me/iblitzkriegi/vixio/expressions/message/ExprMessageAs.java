@@ -8,7 +8,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Bot;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -26,7 +25,7 @@ public class ExprMessageAs extends SimpleExpression<Message> {
 
     }
     private Expression<Message> message;
-    private Expression<Bot> bot;
+    private Expression<SelfUser> bot;
     @Override
     protected Message[] get(Event event) {
         if(message.getSingle(event)!=null) {
@@ -54,7 +53,7 @@ public class ExprMessageAs extends SimpleExpression<Message> {
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) expressions[0];
-        bot = (Expression<Bot>) expressions[1];
+        bot = (Expression<SelfUser>) expressions[1];
         return true;
     }
     @Override
@@ -68,7 +67,7 @@ public class ExprMessageAs extends SimpleExpression<Message> {
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
         if(bot!=null){
             if(message!=null){
-                if(Vixio.getInstance().botHashMap.get(bot.getSingle(e))!=null){
+                if (Vixio.getInstance().jdaUsers.get(bot.getSingle(e)) != null) {
                     try{
                         switch (mode){
                             case DELETE:
