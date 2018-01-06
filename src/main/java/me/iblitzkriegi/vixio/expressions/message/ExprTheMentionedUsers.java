@@ -20,7 +20,7 @@ public class ExprTheMentionedUsers extends SimplePropertyExpression<Object, List
     @Override
     protected String getPropertyName() {
         return "mentioned users";
-    } 
+    }
 
     @Override
     public List convert(Object o) {
