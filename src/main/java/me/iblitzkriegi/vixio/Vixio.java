@@ -13,6 +13,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.registrations.Converters;
+import ch.njol.skript.util.Color;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.*;
@@ -457,12 +458,9 @@ public class Vixio extends JavaPlugin {
 
         };
 
-        Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, new Converter<ch.njol.skript.util.Color, java.awt.Color>() {
-            @Override
-            public java.awt.Color convert(ch.njol.skript.util.Color color) {
-                org.bukkit.Color bukkitColor = color.getBukkitColor();
-                return new java.awt.Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
-            }
+        Converters.registerConverter(ch.njol.skript.util.Color.class, java.awt.Color.class, (Converter<Color, java.awt.Color>) color -> {
+            org.bukkit.Color bukkitColor = color.getBukkitColor();
+            return new java.awt.Color(bukkitColor.getRed(), bukkitColor.getGreen(), bukkitColor.getBlue());
         });
 
         Converters.registerConverter(EmbedBuilder.class, MessageEmbed.class,
@@ -470,6 +468,7 @@ public class Vixio extends JavaPlugin {
         );
         Converters.registerConverter(MessageBuilder.class, Message.class, (Converter<MessageBuilder, Message>) builder -> builder.isEmpty() ? null : builder.build());
         Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
+        Converters.registerConverter(Bot.class, String.class, (Converter<Bot, String>) u -> u.getSelfUser().getId());
     }
 
 

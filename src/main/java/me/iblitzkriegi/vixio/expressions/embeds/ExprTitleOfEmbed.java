@@ -40,9 +40,7 @@ public class ExprTitleOfEmbed extends SimplePropertyExpression<EmbedBuilder, Tit
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.DELETE) && getExpr().isSingle()) {
-            return new Class[]{
-                    Title.class
-            };
+            return new Class[]{Title.class};
         }
         return super.acceptChange(mode);
     }

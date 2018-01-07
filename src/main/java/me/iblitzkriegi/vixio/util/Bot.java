@@ -18,7 +18,6 @@ public class Bot {
         this.jda = jda;
         this.selfUser = jda.getSelfUser();
         this.name = null;
-
     }
 
     // Getters \\

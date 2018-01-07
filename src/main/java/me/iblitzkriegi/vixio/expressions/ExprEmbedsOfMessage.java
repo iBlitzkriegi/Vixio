@@ -16,9 +16,11 @@ import java.util.ArrayList;
 public class ExprEmbedsOfMessage extends PropertyExpression<Message, EmbedBuilder> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprEmbedsOfMessage.class, EmbedBuilder.class, ExpressionType.PROPERTY,
-                "[the] embed[s] of %messages%", "%messages%'[s] embed[s]"
-        );
+        Vixio.getInstance().registerExpression(ExprEmbedsOfMessage.class, EmbedBuilder.class, ExpressionType.PROPERTY, "[the] embed of %messages%", "%messages%'[s] embed[s]")
+                .setName("Embed of Message")
+                .setDesc("Get the Embed of a Message")
+                .setExample("broadcast \"%embed of event-message%\"");
+
     }
 
     @Override
@@ -45,7 +47,7 @@ public class ExprEmbedsOfMessage extends PropertyExpression<Message, EmbedBuilde
 
     @Override
     public String toString(final Event e, final boolean debug) {
-        return "the embeds of " + getExpr().toString(e, debug);
+        return "the embed of " + getExpr().toString(e, debug);
     }
 
 }

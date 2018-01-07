@@ -28,8 +28,9 @@ public class EffSendMessage extends Effect{
     protected void execute(Event e) {
         try {
             Bot bot = this.bot.getSingle(e);
+            System.out.println(bot.getName());
             if (bot != null) {
-                if(bot.getJDA()!=null) {
+                if(bot.getJDA() != null) {
                     for (MessageChannel channel : channel.getAll(e)) {
                         for (Message msg : message.getAll(e)) {
                             bot.getJDA().getTextChannelById(channel.getId()).sendMessage(msg).queue();
