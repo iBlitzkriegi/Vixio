@@ -14,11 +14,11 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages% to %textchannels% with %bot%")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "penis %messages% to %textchannels% [with %-bot%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
                 .setExample("COMING BACK 2 DIS")
-                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %textchannels% with %bot%");
+                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %textchannels% [with %bot%]");
     }
     private Expression<Message> message;
     private Expression<MessageChannel> channel;
@@ -28,9 +28,8 @@ public class EffSendMessage extends Effect{
     protected void execute(Event e) {
         try {
             Bot bot = this.bot.getSingle(e);
-            System.out.println(bot.getName());
             if (bot != null) {
-                if(bot.getJDA() != null) {
+                if (bot.getJDA() != null) {
                     for (MessageChannel channel : channel.getAll(e)) {
                         for (Message msg : message.getAll(e)) {
                             bot.getJDA().getTextChannelById(channel.getId()).sendMessage(msg).queue();
