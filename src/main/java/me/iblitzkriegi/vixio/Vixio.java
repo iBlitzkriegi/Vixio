@@ -19,6 +19,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class Vixio extends JavaPlugin {
     public List<Registration> expressions = new ArrayList<>();
     // JDA Related \\
     public HashMap<JDA, Bot> botHashMap = new HashMap<>();
-    public static HashMap<String, Bot> botNameHashMap = new HashMap<>();
+    public HashMap<String, Bot> botNameHashMap = new HashMap<>();
 
 
     public Vixio() {
@@ -97,24 +98,6 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(Channel.class, "channel").user("channel").defaultExpression(new EventValueExpression<>(Channel.class)).name("channel").parser(new Parser<Channel>() {
-            @Override
-            public Channel parse(String s, ParseContext context) {
-                return null;
-            }
-            @Override
-            public String toString(Channel msg, int flags) {
-                return msg.getId();
-            }
-            @Override
-            public String toVariableNameString(Channel msg) {
-                return msg.getId();
-            }
-            @Override
-            public String getVariableNamePattern() {
-                return ".+";
-            }
-        }));
         Classes.registerClass(new ClassInfo<>(User.class, "user").user("user").defaultExpression(new EventValueExpression<>(User.class)).name("user").parser(new Parser<User>() {
             @Override
             public User parse(String s, ParseContext context) {
@@ -133,7 +116,7 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("textchannels?").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
+        Classes.registerClass(new ClassInfo<>(MessageChannel.class, "textchannel").user("(text)? ?channels?").defaultExpression(new EventValueExpression<>(MessageChannel.class)).name("textchannel").parser(new Parser<MessageChannel>() {
             @Override
             public MessageChannel parse(String s, ParseContext context) {
                 return null;
@@ -223,24 +206,46 @@ public class Vixio extends JavaPlugin {
                 return ".+";
             }
         }));
-        Classes.registerClass(new ClassInfo<>(MessageBuilder.class, "messagebuilder").user("messagebuilders?").defaultExpression(new EventValueExpression<>(MessageBuilder.class)).name("messagebuilder").parser(new Parser<MessageBuilder>() {
-            @Override
-            public MessageBuilder parse(String s, ParseContext context) {
+//        Classes.registerClass(new ClassInfo<>(MessageBuilder.class, "messagebuilder").user("messagebuilders?").defaultExpression(new EventValueExpression<>(MessageBuilder.class)).name("messagebuilder").parser(new Parser<MessageBuilder>() {
+//            @Override
+//            public MessageBuilder parse(String s, ParseContext context) {
+//                return null;
+//            }
+//            @Override
+//            public String toString(MessageBuilder builder, int flags) {
+//                return builder.isEmpty() ? null : builder.build().getContentRaw();
+//            }
+//            @Override
+//            public String toVariableNameString(MessageBuilder builder) {
+//                return builder.isEmpty() ? null : builder.build().getContentRaw();
+//            }
+//            @Override
+//            public String getVariableNamePattern() {
+//                return ".+";
+//            }
+//        }));
+
+        new SimpleType<MessageBuilder>(MessageBuilder.class, "messagebuilder", "message ? builders?") {
+            public MessageBuilder parse(String s, ParseContext pc) {
                 return null;
             }
+
             @Override
-            public String toString(MessageBuilder builder, int flags) {
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(MessageBuilder builder, int arg1) {
                 return builder.isEmpty() ? null : builder.build().getContentRaw();
             }
+
             @Override
             public String toVariableNameString(MessageBuilder builder) {
                 return builder.isEmpty() ? null : builder.build().getContentRaw();
+
             }
-            @Override
-            public String getVariableNamePattern() {
-                return ".+";
-            }
-        }));
+        };
 
         new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ? builders?") {
             public EmbedBuilder parse(String s, ParseContext pc) {
@@ -470,16 +475,16 @@ public class Vixio extends JavaPlugin {
 //                        .build();
 //            }
 //        });
-        Converters.registerConverter(String.class, Bot.class, new Converter<String, Bot>() {
-            @Override
-            public Bot convert(String bot) {
-                if(botNameHashMap.get(bot)!=null){
-                    return botNameHashMap.get(bot);
-                }else{
-                    return null;
-                }
-            }
-        });
+//        Converters.registerConverter(String.class, Bot.class, new Converter<String, Bot>() {
+//            @Override
+//            public Bot convert(String bot) {
+//                if(botNameHashMap.get(bot)!=null){
+//                    return botNameHashMap.get(bot);
+//                }else{
+//                    return null;
+//                }
+//            }
+//        });
 
     }
 
