@@ -10,6 +10,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -34,8 +35,13 @@ public class EffSendMessage extends Effect{
                     if (bot.getJDA() != null) {
                         for (Channel channel : channel.getAll(e)) {
                             if (channel.getType().equals(ChannelType.TEXT)) {
+                                TextChannel textChannel = (TextChannel) channel;
                                 for (Object m : message.getAll(e)) {
-                                    bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+                                    if(Util.botIsConnected(bot, channel.getJDA())) {
+                                        textChannel.sendMessage(Util.messageFrom(m)).queue();
+                                    }else{
+                                        bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+                                    }
                                 }
                             } else {
                                 Skript.error("The inputted channel is not a text channel! I can't send things to voice channels!");

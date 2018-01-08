@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.registration;
 
-import ch.njol.skript.lang.Effect;
 import ch.njol.util.StringUtils;
 
 import java.util.ArrayList;

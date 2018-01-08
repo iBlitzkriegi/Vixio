@@ -9,8 +9,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;

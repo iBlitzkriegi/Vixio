@@ -8,7 +8,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
 
 public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, String> {

@@ -4,7 +4,6 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ISnowflake;
 
 /**
@@ -19,7 +18,7 @@ public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     }
     @Override
     protected String getPropertyName() {
-        return "id of";
+        return "id of channel/guild/user/message/bot";
     }
 
     @Override

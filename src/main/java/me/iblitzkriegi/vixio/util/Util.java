@@ -3,10 +3,11 @@ package me.iblitzkriegi.vixio.util;
 import ch.njol.skript.Skript;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Locale;
 
 public class Util {
@@ -53,6 +54,10 @@ public class Util {
         }
         Skript.error("You must input either a %message/messagebuilder/embedbuilder% or a %string%");
         return null;
+    }
+
+    public static boolean botIsConnected(Bot bot, JDA jda){
+        return bot.getJDA().getSelfUser().getId().equalsIgnoreCase(jda.getSelfUser().getId());
     }
 
 }

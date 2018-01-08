@@ -2,7 +2,6 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.registrations.EventValues;
 import me.iblitzkriegi.vixio.Vixio;
-import org.bukkit.Effect;
 import org.bukkit.event.Event;
 
 import java.io.BufferedWriter;
@@ -11,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

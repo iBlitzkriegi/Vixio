@@ -2,27 +2,23 @@ package me.iblitzkriegi.vixio;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import ch.njol.skript.classes.Converter;
-import ch.njol.skript.lang.*;
-import ch.njol.skript.registrations.Converters;
-import ch.njol.skript.util.Color;
+import ch.njol.skript.lang.Condition;
+import ch.njol.skript.lang.Effect;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.registration.VixioConverters;
 import me.iblitzkriegi.vixio.registration.VixioTypes;
-import me.iblitzkriegi.vixio.util.*;
+import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 /**
  * Created by Blitz on 7/22/2017.
  */

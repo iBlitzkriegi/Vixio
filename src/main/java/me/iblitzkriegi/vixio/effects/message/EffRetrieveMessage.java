@@ -8,7 +8,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
 /**
