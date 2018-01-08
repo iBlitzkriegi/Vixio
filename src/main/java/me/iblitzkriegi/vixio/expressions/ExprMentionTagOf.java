@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
  */
 public class ExprMentionTagOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/textchannel/member/bot")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/channel/member/bot")
                 .setName("Discord Name of")
                 .setDesc("Get the name of something/someone")
                 .setExample("discord name of event-user");

@@ -9,6 +9,9 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -30,9 +33,11 @@ public class EffReplyWith extends Effect {
     protected void execute(Event e) {
         if (message != null) {
             if(e instanceof EvntMessageReceived){
-                try{
-                    for(Object s : message.getAll(e)){
-                        ((EvntMessageReceived) e).getChannel().sendMessage(Util.messageFrom(s)).queue();
+                TextChannel channel = (TextChannel) ((EvntMessageReceived) e).getChannel();
+                try {
+                    for (Object s : message.getAll(e)) {
+                        channel.sendMessage(Util.messageFrom(s)).queue();
+
                     }
                 }catch (PermissionException x){
                     Skript.error("Bot does not have permission to send messages in channel, needed permission: MESSAGE_WRITE");

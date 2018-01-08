@@ -16,9 +16,9 @@ public class EvntMessageReceived extends Event{
                 .setName("Guild Message Received")
                 .setDesc("Fired when a message is sent in a Text Channel that the bot can read.")
                 .setExample("on server message received");
-        EventValues.registerEventValue(EvntMessageReceived.class, MessageChannel.class, new Getter<MessageChannel, EvntMessageReceived>() {
+        EventValues.registerEventValue(EvntMessageReceived.class, Channel.class, new Getter<Channel, EvntMessageReceived>() {
             @Override
-            public MessageChannel get(EvntMessageReceived event) {
+            public Channel get(EvntMessageReceived event) {
                 return event.getChannel();
             }},0);
         EventValues.registerEventValue(EvntMessageReceived.class, User.class, new Getter<User, EvntMessageReceived>() {
@@ -51,7 +51,7 @@ public class EvntMessageReceived extends Event{
     private Guild guild;
     private Member member;
     private Message message;
-    private MessageChannel channel;
+    private Channel channel;
     private JDA jda;
     private Bot bot;
     private static final HandlerList hls = new HandlerList();
@@ -63,7 +63,7 @@ public class EvntMessageReceived extends Event{
     public static HandlerList getHandlerList() {
         return hls;
     }
-    public EvntMessageReceived(Member member, MessageChannel channel, Message message, JDA jda, Guild guild){
+    public EvntMessageReceived(Member member, Channel channel, Message message, JDA jda, Guild guild){
         this.user = member.getUser();
         this.guild = guild;
         this.member = member;
@@ -96,7 +96,7 @@ public class EvntMessageReceived extends Event{
     public Bot getBot() {
         return bot;
     }
-    public MessageChannel getChannel() {
+    public Channel getChannel() {
         return channel;
     }
 }
