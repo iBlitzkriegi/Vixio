@@ -90,9 +90,11 @@ youtube-dl
 .idea/artifacts/Genji_jar.xml
 *.exe
 pfp.jpg
-*.xml
 *.dat
 testserver/plugins/Skript/features.sk
 *.json
 testserver/logs/2016-12-08-1.log.gz
 *.gz
+.idea/compiler.xml
+.idea/misc.xml
+.idea/modules.xml
