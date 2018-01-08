@@ -4,7 +4,7 @@ import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import org.bukkit.event.Event;

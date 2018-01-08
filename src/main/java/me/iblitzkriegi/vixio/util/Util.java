@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.util;
 
 import ch.njol.skript.Skript;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 

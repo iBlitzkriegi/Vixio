@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.objects;
+package me.iblitzkriegi.vixio.expressions.retrieve;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
+
+import java.util.Set;
 
 /**
  * Created by Blitz on 7/26/2017.
@@ -50,8 +52,9 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
     private Channel getChannel(Event e){
         if(id != null) {
             if(guild == null) {
-                if (Vixio.getInstance().botHashMap.keySet() != null) {
-                    for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+                Set<JDA> bot = Vixio.getInstance().botHashMap.keySet();
+                if (bot != null) {
+                    for (JDA jda : bot) {
                         if (jda.getTextChannelById(id.getSingle(e)) == null) {
                             if(jda.getVoiceChannelById(id.getSingle(e))==null){
                                 Skript.error("Could not find TextChannel or VoiceChannel with the provided ID, check your ID and try again.");

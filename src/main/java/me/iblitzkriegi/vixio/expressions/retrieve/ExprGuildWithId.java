@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.objects;
+package me.iblitzkriegi.vixio.expressions.retrieve;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;

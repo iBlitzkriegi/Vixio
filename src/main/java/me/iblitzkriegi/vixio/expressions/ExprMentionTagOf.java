@@ -2,16 +2,22 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.*;
+import org.bukkit.event.Event;
 
 /**
  * Created by Blitz on 7/25/2017.
  */
-public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
+public class ExprMentionTagOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,"discord name", "textchannel/guild/user/member/bot")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/textchannel/member/bot")
                 .setName("Discord Name of")
                 .setDesc("Get the name of something/someone")
                 .setExample("discord name of event-user");
@@ -19,21 +25,21 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
 
     @Override
     protected String getPropertyName() {
-        return "discord name of";
+        return "mention tag of";
     }
 
     @Override
     public String convert(Object o) {
         if(o instanceof User){
-            return ((User) o).getName();
-        }else if(o instanceof Guild){
-            return ((Guild) o).getName();
-        }else if(o instanceof MessageChannel){
-            return ((MessageChannel) o).getName();
+            return ((User) o).getAsMention();
+        }else if(o instanceof TextChannel){
+            return ((TextChannel) o).getAsMention();
         }else if(o instanceof Member){
-            return ((Member) o).getUser().getName();
+            return ((Member) o).getAsMention();
+        }else if(o instanceof User){
+            ((User) o).getAsMention();
         }else if(o instanceof Bot){
-            return ((Bot) o).getSelfUser().getName();
+            return ((Bot) o).getSelfUser().getAsMention();
         }
         Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;

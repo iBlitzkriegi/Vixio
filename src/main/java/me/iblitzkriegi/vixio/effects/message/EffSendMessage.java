@@ -6,11 +6,9 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -30,7 +28,7 @@ public class EffSendMessage extends Effect{
     protected void execute(Event e) {
         try {
             Bot bot = Util.botFrom(this.bot.getSingle(e));
-            if(bot!=null) {
+            if(bot != null) {
                 if (bot.getJDA() != null) {
                     for (MessageChannel channel : channel.getAll(e)) {
                         for(Object m : message.getAll(e)){

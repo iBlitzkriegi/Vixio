@@ -9,7 +9,7 @@ import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.jda.JDAEventListener;
-import me.iblitzkriegi.vixio.util.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -20,6 +20,7 @@ import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
 import java.lang.reflect.Field;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -36,41 +37,54 @@ public class EffLogin extends Effect {
     private Expression<String> name;
     @Override
     protected void execute(Event e) {
-        Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
-            JDA api = null;
-            JDABuilder prebuild;
+        if(Vixio.getInstance().botNameHashMap.get(name.getSingle(e))==null) {
+            String token = this.token.getSingle(e);
+            String name = this.name.getSingle(e);
+            if(token != null) {
+                if(name != null) {
+                    Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
+                        JDA api = null;
+                        JDABuilder prebuild;
+                        try {
+                            prebuild = new JDABuilder(AccountType.BOT).setToken(token);
+                        } catch (AccountTypeException x) {
+                            prebuild = new JDABuilder(AccountType.CLIENT).setToken(token);
+                        }
+                        try {
+                            api = prebuild
+                                    .addEventListener(new JDAEventListener())
+                                    .buildBlocking();
+                        } catch (LoginException e1) {
+                            Skript.error("Error when logging in, token could be invalid?");
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        } catch (RateLimitedException e1) {
+                            Skript.error("You're logging in too fast! Chill m9");
+                        }
+                        if(api != null);
+                        Bot bot = new Bot(name, Objects.requireNonNull(api));
+                        Vixio.getInstance().botHashMap.put(api, bot);
+                        Vixio.getInstance().botNameHashMap.put(name, bot);
 
-            try {
-                prebuild = new JDABuilder(AccountType.BOT).setToken(token.getSingle(e));
-            } catch (AccountTypeException x) {
-                prebuild = new JDABuilder(AccountType.CLIENT).setToken(token.getSingle(e));
+                        if (getNext() != null) {
+                            TriggerItem.walk(getNext(), e);
+                        }
+                    });
+                }else{
+                    Skript.error("You must input a name to reference the bot as throughout Vixio.");
+                }
+            }else{
+                Skript.error("You must include a token to login to! This can be found on the Discord developers page.");
             }
-            try {
-                api = prebuild
-                        .addEventListener(new JDAEventListener())
-                        .buildBlocking();
-            } catch (LoginException e1) {
-                Skript.error("Error when logging in, token could be invalid?");
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            } catch (RateLimitedException e1) {
-                Skript.error("You're logging in too fast! Chill m9");
-            }
-            Bot bot = new Bot(name.getSingle(e), api);
-            Vixio.getInstance().botHashMap.put(api, bot);
-            Vixio.getInstance().botNameHashMap.put(name.getSingle(e), bot);
-
-            if (getNext() != null) {
-                TriggerItem.walk(getNext(), e);
-            }
-
-        });
+        }else{
+            Skript.error("You may not login to two bots with the same name!");
+        }
 
     }
 
     @Override
     public String toString(Event event, boolean b) {
-        return "login to discord account with token " + token.toString(event, b) + (name != null ? " named " + name.toString(event, b) : "login to discord account with token " + token.toString(event, b));
+        return "login to discord account with token " + token.toString(event, b) + " named " + name.toString(event, b);
     }
 
     @Override

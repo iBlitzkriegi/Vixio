@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.util;
+package me.iblitzkriegi.vixio.util.wrapper;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.SelfUser;
