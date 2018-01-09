@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 public class EffCreateTextchannel extends Effect{
     static {
         Vixio.getInstance().registerEffect(EffCreateTextchannel.class,
-                "create text[(-| )]channel named %string% [in %guild%] [as %bot/string%] ", "create voice[(-| )]channel named %string% [in %guild%] [as %bot/string%]")
+                "create text[(-| )]channel named %string% [in %guild%] [(as|with) %bot/string%] ", "create voice[(-| )]channel named %string% [in %guild%] [(as|with) %bot/string%]")
                 .setName("Create channel")
                 .setDesc("Create ")
                 .setExample("Coming Soon!");

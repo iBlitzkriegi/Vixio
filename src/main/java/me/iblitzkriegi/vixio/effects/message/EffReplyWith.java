@@ -37,7 +37,12 @@ public class EffReplyWith extends Effect {
                 return;
             }
             TextChannel channel = (TextChannel) ((EvntMessageReceived) e).getChannel();
-            Message message = Util.messageFrom(object);
+            Message message = null;
+            try {
+                message = Util.messageFrom(object);
+            }catch (IllegalArgumentException | IllegalStateException x){
+                Skript.error("Whatever was inputted into the syntax was null! Can't send null things!");
+            }
             try{
                 channel.sendMessage(message).queue();
             }catch (PermissionException x){
