@@ -57,6 +57,7 @@ public class Vixio extends JavaPlugin {
         }
         Metrics mertrics = new Metrics(this);
         Documentation.setupSyntaxFile();
+
     }
 
     public static Vixio getInstance() {

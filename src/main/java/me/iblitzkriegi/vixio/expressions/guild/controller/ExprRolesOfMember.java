@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.guild;
+package me.iblitzkriegi.vixio.expressions.guild.controller;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
