@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.Guild;
 
 public class ExprRegionOfGuild extends SimplePropertyExpression<Guild, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, String.class, "region", "guild")
+        Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, String.class, "region", "guilds")
                 .setName("Region of Guild")
                 .setDesc("Get the current region of a Guild.")
                 .setExample("broadcast \"%region of event-guild%\"");

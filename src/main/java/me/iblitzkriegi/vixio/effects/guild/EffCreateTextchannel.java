@@ -8,15 +8,11 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.managers.GuildController;
 import org.bukkit.event.Event;
 
 public class EffCreateTextchannel extends Effect{
-    GuildController c;
     static {
         Vixio.getInstance().registerEffect(EffCreateTextchannel.class,
                 "create text[(-| )]channel named %string% [in %guild%] [as %bot/string%] ", "create voice[(-| )]channel named %string% [in %guild%] [as %bot/string%]")
@@ -76,7 +72,7 @@ public class EffCreateTextchannel extends Effect{
 
     @Override
     public String toString(Event e, boolean debug) {
-        return null;
+        return "create channel named " + name.toString(e, debug) + " in " + guild.toString(e, debug) + " as " + bot.toString(e,debug);
     }
 
     @Override
