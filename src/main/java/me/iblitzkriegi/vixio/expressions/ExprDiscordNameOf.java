@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
  */
 public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,"name", "channel/guild/user/member/bot/voicechannel")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,"name", "channel/guild/user/member/bot/role")
                 .setName("Name of")
                 .setDesc("Get the name of something/someone. There is a SET changer for channel,guild, and bot.")
                 .setExample("name of event-user");
@@ -31,7 +31,7 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
 
     @Override
     protected String getPropertyName() {
-        return "name of channel/guild/user/member/bots";
+        return "name of";
     }
 
     @Override
@@ -46,8 +46,8 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
             return ((Member) o).getUser().getName();
         }else if(o instanceof Bot){
             return ((Bot) o).getName();
-        }else if(o instanceof VoiceChannel){
-            return ((VoiceChannel) o).getName();
+        }else if(o instanceof Role){
+            return ((Role) o).getName();
         }
         Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;

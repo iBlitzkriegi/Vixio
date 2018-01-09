@@ -7,7 +7,9 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
 /**
@@ -15,35 +17,43 @@ import org.bukkit.event.Event;
  */
 public class EffRetrieveMessage extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from [text[-]]channel %channel%")
+        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from %channel%")
             .setName("Retrieve message with id")
             .setDesc("Get a Message via it's ID from a Guild/TextChannel")
             .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
     }
     Expression<String> id;
-    Expression<MessageChannel> channel;
+    Expression<TextChannel> channel;
     @Override
-    protected void execute(Event event) {
-        if(id.getSingle(event)!=null) {
-            if (channel.getSingle(event) != null) {
-                channel.getSingle(event).getMessageById(id.getSingle(event)).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
-            } else {
-                Skript.error("You must include a TextChannel in order to retrieve the Message from it");
-            }
-        }else{
-            Skript.error("You must include a id in order to retrieve a Message");
+    protected void execute(Event e) {
+        if (id.getSingle(e) == null){
+            Skript.error("You must include a ID in order to retrieve a Message");
+            return;
+        }
+        String id = this.id.getSingle(e);
+        if (channel.getSingle(e) == null){
+           Skript.error("You must include a Text Channel in order to retrieve the Message from it.");
+           return;
+        }
+        Channel channel = this.channel.getSingle(e);
+        if (channel.getType().equals(ChannelType.TEXT)) {
+            TextChannel textChannel = (TextChannel) channel;
+            textChannel.getMessageById(id).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
+            return;
+        }else {
+            Skript.error("Provided channel was not a text channel.");
         }
     }
 
     @Override
     public String toString(Event event, boolean b) {
-        return "retrieve message with id " + id.getSingle(event) + " from channel " + channel.getSingle(event);
+        return "retrieve message with id " + id.toString(event, b) + " from channel " + channel.toString(event, b);
     }
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
-        channel = (Expression<MessageChannel>) expressions[1];
+        channel = (Expression<TextChannel>) expressions[1];
         return true;
     }
 }

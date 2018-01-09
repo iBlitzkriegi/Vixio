@@ -53,7 +53,7 @@ public class ExprArgumentsOfMessage extends SimpleExpression<String> {
         if(message.getSingle(e)!=null){
             List<String> content = new ArrayList<>();
             int i = 0;
-            for(String s : message.getSingle(e).getContent().split(" ")){
+            for(String s : message.getSingle(e).getContentDisplay().split(" ")){
                 if(i!=0) {
                     content.add(s);
                 }

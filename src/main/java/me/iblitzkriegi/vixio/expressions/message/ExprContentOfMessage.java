@@ -29,7 +29,7 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
     @Override
     protected String[] get(Event event) {
         if(message.getSingle(event)!=null) {
-            return new String[]{message.getSingle(event).getContent()};
+            return new String[]{message.getSingle(event).getContentDisplay()};
         }else{
             Skript.error("You must provided a message, refer to the syntax");
             return null;
@@ -63,7 +63,7 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
                         TextChannel textChannel = jda.getTextChannelById(message.getSingle(e).getTextChannel().getId());
                         try{
                             String edit;
-                            if(delta[0]!=null){
+                            if(delta[0] != null){
                                 edit = String.valueOf(delta[0]);
                             }else{
                                 Skript.error("You must include something to edit the message to");

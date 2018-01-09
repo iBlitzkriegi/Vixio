@@ -11,22 +11,20 @@ import net.dv8tion.jda.core.entities.ISnowflake;
  */
 public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "id", "channel/guild/user/message/bot")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "id", "channel/guild/user/message/bot/role")
             .setName("Discord ID of")
             .setDesc("Get the ID of a discord object")
             .setExample("discord id of event-user");
     }
     @Override
     protected String getPropertyName() {
-        return "id of channel/guild/user/message/bot";
+        return "id of";
     }
 
     @Override
     public String convert(Object o) {
-        if(o instanceof ISnowflake){
+        if(o instanceof ISnowflake) {
             return ((ISnowflake) o).getId();
-        }else if(o instanceof Bot){
-            return ((Bot) o).getSelfUser().getId();
         }
         Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;

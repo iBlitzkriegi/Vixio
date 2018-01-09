@@ -10,8 +10,11 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
+import javax.xml.soap.Text;
 import java.util.Set;
 
 /**
@@ -19,7 +22,11 @@ import java.util.Set;
  */
 public class ExprChannelWithId extends SimpleExpression<Channel> {
     static {
-        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE, "[(voice|text)][(-| )]channel with id %string% [in guild %-string%]");
+        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE,
+                "[(voice|text)][(-| )]channel with id %string% [in %-guild%]")
+                .setName("Channel with ID")
+                .setDesc("Get a Text or Voice channel via it's ID.")
+                .setExample("");
     }
     private Expression<String> id;
     private Expression<Guild> guild;
@@ -49,46 +56,42 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         guild = (Expression<Guild>) expressions[1];
         return true;
     }
-    private Channel getChannel(Event e){
-        if(id != null) {
-            if(guild == null) {
-                Set<JDA> bot = Vixio.getInstance().botHashMap.keySet();
-                if (bot != null) {
-                    for (JDA jda : bot) {
-                        if (jda.getTextChannelById(id.getSingle(e)) == null) {
-                            if(jda.getVoiceChannelById(id.getSingle(e))==null){
-                                Skript.error("Could not find TextChannel or VoiceChannel with the provided ID, check your ID and try again.");
-                                return null;
-                            }else{
-                                return jda.getVoiceChannelById(id.getSingle(e));
-                            }
-                        }else{
-                            return jda.getTextChannelById(id.getSingle(e));
-                        }
-                    }
-                } else {
-                    Skript.error("You must login to a bot via the connect effect before you may attempt to use this expression.");
-                    return null;
-                }
-            }else{
-                Guild g = guild.getSingle(e);
-                if(g.getTextChannelById(id.getSingle(e))==null){
-                    if(g.getVoiceChannelById(id.getSingle(e))==null){
-                        Skript.error("Could not find TextChannel via the provided ID");
-                        return null;
-                    }else{
-                        return g.getVoiceChannelById(id.getSingle(e));
-                    }
-                }else{
-                    return g.getTextChannelById(id.getSingle(e));
-                }
-            }
-        }else{
-            Skript.error("You must provide a ID to use this expression! May not leave blank.");
+    private Channel getChannel(Event e) {
+        if (id == null) {
+            Skript.error("You must include a ID to use to find a channel!");
             return null;
         }
-        Skript.error("Could not find VoiceChannel or a TextChannel via the provided id.");
+        String id = this.id.getSingle(e);
+        if (guild == null) {
+            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+            if (jdaInstances == null) {
+                Skript.error("You must first login to a bot to use this syntax.");
+                return null;
+            }
+            for (JDA jda : jdaInstances) {
+                TextChannel textChannel = jda.getTextChannelById(id);
+                VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
+                if(textChannel != null){
+                    return textChannel;
+                }else if(voiceChannel != null){
+                    return voiceChannel;
+                }
+            }
+            Skript.error("Could not find channel via that ID");
+            return null;
+        }
+        Guild guild = this.guild.getSingle(e);
+        for(TextChannel channel : guild.getTextChannels()){
+            if(channel.getId().equalsIgnoreCase(id)){
+                return channel;
+            }
+        }
+        for (VoiceChannel channel : guild.getVoiceChannels()){
+            if(channel.getId().equalsIgnoreCase(id)){
+                return channel;
+            }
+        }
+        Skript.error("Could not find channel via that ID");
         return null;
-
     }
 }

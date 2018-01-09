@@ -1,9 +1,12 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.IMentionable;
+import net.dv8tion.jda.core.entities.ISnowflake;
 import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.core.managers.GuildController;
 
-public class Bot {
+public class Bot implements IMentionable, ISnowflake {
     private String name;
     private JDA jda;
     private SelfUser selfUser;
@@ -18,6 +21,7 @@ public class Bot {
         this.jda = jda;
         this.selfUser = jda.getSelfUser();
         this.name = null;
+
     }
 
     // Getters \\
@@ -30,5 +34,15 @@ public class Bot {
     }
     public String getName(){
         return this.name;
+    }
+
+    @Override
+    public String getAsMention() {
+        return selfUser.getAsMention();
+    }
+
+    @Override
+    public long getIdLong() {
+        return selfUser.getIdLong();
     }
 }

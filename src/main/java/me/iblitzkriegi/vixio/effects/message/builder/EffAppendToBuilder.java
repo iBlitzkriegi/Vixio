@@ -27,18 +27,17 @@ public class EffAppendToBuilder extends Effect {
     private Expression<String> toAppend;
     @Override
     protected void execute(Event e) {
-        String[] toAppend = this.toAppend.getAll(e);
         MessageBuilder builder = this.builder.getSingle(e);
-        if(builder != null) {
-            if(toAppend != null) {
-                for (String s : toAppend) {
-                    builder.append(s);
-                }
-            }else{
-                Skript.error("You must include text to be appended on to the Message Builder...!");
-            }
-        }else{
+        if (builder == null){
             Skript.error("You must input a %messagebuilder% for this effect! Please refer to the syntax.");
+            return;
+        }
+        String[] toAppend = this.toAppend.getAll(e);
+        if (toAppend == null){
+            Skript.error("You must include text to be appended on to the Message Builder...!");
+        }
+        for(String s : toAppend){
+            builder.append(s);
         }
     }
 

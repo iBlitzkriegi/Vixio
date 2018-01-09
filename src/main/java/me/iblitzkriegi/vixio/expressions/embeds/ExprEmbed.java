@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions;
+package me.iblitzkriegi.vixio.expressions.embeds;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;

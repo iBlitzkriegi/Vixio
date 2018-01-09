@@ -179,6 +179,30 @@ public class VixioTypes {
 
         };
 
+        new SimpleType<Role>(Role.class, "role", "roles?") {
+
+            @Override
+            public Role parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Role role, int arg1) {
+                return role.getId();
+            }
+
+            @Override
+            public String toVariableNameString(Role role) {
+                return role.getId();
+            }
+
+        };
+
         new SimpleType<Member>(Member.class, "member", "members?") {
 
             @Override

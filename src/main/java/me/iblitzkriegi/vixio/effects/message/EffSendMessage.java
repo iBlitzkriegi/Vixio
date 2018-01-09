@@ -16,7 +16,7 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% with %bot/string%")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% (with|as) %bot/string%")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
                 .setExample("COMING BACK 2 DIS")
@@ -29,28 +29,31 @@ public class EffSendMessage extends Effect{
     @Override
     protected void execute(Event e) {
         try {
-            if(this.bot.getSingle(e)!=null) {
-                Bot bot = Util.botFrom(this.bot.getSingle(e));
-                if (bot != null) {
-                    if (bot.getJDA() != null) {
-                        for (Channel channel : channel.getAll(e)) {
-                            if (channel.getType().equals(ChannelType.TEXT)) {
-                                TextChannel textChannel = (TextChannel) channel;
-                                for (Object m : message.getAll(e)) {
-                                    if(Util.botIsConnected(bot, channel.getJDA())) {
-                                        textChannel.sendMessage(Util.messageFrom(m)).queue();
-                                    }else{
-                                        bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
-                                    }
-                                }
-                            } else {
-                                Skript.error("The inputted channel is not a text channel! I can't send things to voice channels!");
-                            }
+            if (this.bot.getSingle(e) == null){
+                Skript.error("You must include either a %bot% or the name you gave it it with the login effect!");
+                return;
+            }
+            Object object = this.bot.getSingle(e);
+            Bot bot = Util.botFrom(object);
+            if (bot == null){
+                Skript.error("Could not parse provided bot.");
+                return;
+            }
+            if (bot.getJDA() != null){
+                for (Channel channel : channel.getAll(e)){
+                    if (!channel.getType().equals(ChannelType.TEXT)){
+                        Skript.error("Provided channel was not a TEXT channel, you may not send things to anything but Text channels.");
+                    }
+                    TextChannel textChannel = (TextChannel) channel;
+                    for (Object m : message.getAll(e)){
+                        if (Util.botIsConnected(bot, channel.getJDA())){
+                            textChannel.sendMessage(Util.messageFrom(m)).queue();
+                        }else{
+                            bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
                         }
                     }
+
                 }
-            }else{
-                Skript.error("You must include either a %bot% or the name you gave it it with the login effect!");
             }
             }catch(PermissionException x){
                 Skript.error("The requested bot does not have permissions to send messages in one of the requested channels.");

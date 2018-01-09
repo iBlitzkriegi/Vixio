@@ -46,6 +46,12 @@ public class EvntMessageReceived extends Event{
             public Bot get(EvntMessageReceived event) {
                 return event.getBot();
             }},0);
+        EventValues.registerEventValue(EvntMessageReceived.class, String.class, new Getter<String, EvntMessageReceived>() {
+            @Override
+            public String get(EvntMessageReceived event) {
+                return event.getMessage().getContentDisplay();
+            }},0);
+
     }
     private User user;
     private Guild guild;
@@ -63,8 +69,8 @@ public class EvntMessageReceived extends Event{
     public static HandlerList getHandlerList() {
         return hls;
     }
-    public EvntMessageReceived(Member member, Channel channel, Message message, JDA jda, Guild guild){
-        this.user = member.getUser();
+    public EvntMessageReceived(User user, Member member, Channel channel, Message message, JDA jda, Guild guild){
+        this.user = user;
         this.guild = guild;
         this.member = member;
         this.message = message;
