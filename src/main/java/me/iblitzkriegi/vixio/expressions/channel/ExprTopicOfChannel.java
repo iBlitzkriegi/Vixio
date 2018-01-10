@@ -10,7 +10,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -33,15 +32,18 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
                 .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
     }
 
-    private Expression<TextChannel> channel;
+    private Expression<Channel> channel;
     private Expression<Object> bot;
 
     @Override
     protected String[] get(Event event) {
-        return Arrays.stream(channel.getAll(event))
-                .filter(Objects::nonNull)
-                .map(TextChannel::getTopic)
-                .toArray(String[]::new);
+        ArrayList<String> channels = new ArrayList<>();
+        for (Channel channel : this.channel.getAll(event)){
+            if (channel.getType() == ChannelType.TEXT){
+                channels.add(((TextChannel) channel).getTopic());
+            }
+        }
+        return channels.toArray(new String[channels.size()]);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        channel = (Expression<TextChannel>) expressions[0];
+        channel = (Expression<Channel>) expressions[0];
         bot = (Expression<Object>) expressions[1];
         return true;
     }
@@ -92,7 +94,7 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
         }
         try {
             for (Channel channel : channel.getAll(e)) {
-                if(channel.getType() == ChannelType.TEXT) {
+                if (channel.getType() == ChannelType.TEXT) {
                     if (Util.botIsConnected(bot, channel.getJDA())) {
                         channel.getManager().setTopic(topic).queue();
                     } else {

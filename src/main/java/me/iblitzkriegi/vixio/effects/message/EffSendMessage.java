@@ -7,6 +7,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -28,7 +29,6 @@ public class EffSendMessage extends Effect{
 
     @Override
     protected void execute(Event e) {
-        try {
             if (this.bot.getSingle(e) == null){
                 Skript.error("You must include either a %bot% or the name you gave it it with the login effect!");
                 return;
@@ -39,6 +39,7 @@ public class EffSendMessage extends Effect{
                 Skript.error("Could not parse provided bot.");
                 return;
             }
+        try {
             if (bot.getJDA() != null){
                 for (Channel channel : channel.getAll(e)){
                     if (!channel.getType().equals(ChannelType.TEXT)){
@@ -56,7 +57,7 @@ public class EffSendMessage extends Effect{
                 }
             }
             }catch(PermissionException x){
-                Skript.error("The requested bot does not have permissions to send messages in one of the requested channels.");
+                Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, bot, x.getPermission().getName(), "send message");
             }
     }
 

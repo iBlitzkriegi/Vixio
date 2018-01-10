@@ -44,13 +44,17 @@ public class Util {
         return null;
     }
 
-    public static Message messageFrom(Object input){
-        if(input instanceof Message) {
+    public static Message messageFrom(Object input) {
+        if (input instanceof Message) {
             return (Message) input;
-        }else if(input instanceof String){
-            return new MessageBuilder()
-                    .setContent((String) input)
-                    .build();
+        } else if (input instanceof String) {
+            try {
+                return new MessageBuilder()
+                        .setContent((String) input)
+                        .build();
+            }catch (IllegalStateException | IllegalArgumentException x){
+                return null;
+            }
         }
         Skript.error("You must input either a %message/messagebuilder/embedbuilder% or a %string%");
         return null;

@@ -9,6 +9,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.enums.VixioError;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -31,22 +32,19 @@ public class EffReplyWith extends Effect {
     @Override
     protected void execute(Event e) {
         if (e instanceof EvntMessageReceived){
-            Object object = message.getSingle(e);
-            if (object == null){
+            Object[] objects = message.getAll(e);
+            if (objects == null){
                 Skript.error("You must provide a %string% or a %message% to be sent!");
                 return;
             }
             TextChannel channel = (TextChannel) ((EvntMessageReceived) e).getChannel();
-            Message message = null;
-            try {
-                message = Util.messageFrom(object);
-            }catch (IllegalArgumentException | IllegalStateException x){
-                Skript.error("Whatever was inputted into the syntax was null! Can't send null things!");
-            }
             try{
-                channel.sendMessage(message).queue();
+                for(Object s : objects){
+                    channel.sendMessage(Util.messageFrom(s)).queue();
+                }
+
             }catch (PermissionException x){
-                Skript.error("Bot does not have permission to send messages in the channel.");
+                Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, ((EvntMessageReceived) e).getBot(), x.getPermission().getName(), "send message");
             }
         }
     }
@@ -58,7 +56,7 @@ public class EffReplyWith extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if(ScriptLoader.isCurrentEvent(EvntMessageReceived.class)) {
+        if (ScriptLoader.isCurrentEvent(EvntMessageReceived.class)) {
             message = (Expression<Object>) expressions[0];
             return true;
         }

@@ -9,6 +9,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -76,6 +77,7 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        boolean isAdd = mode == Changer.ChangeMode.ADD ? true : false;
         Role role = (Role) delta[0];
         if(bot.getSingle(e) == null){
             Skript.error("You must input a bot to modify roles.");
@@ -88,36 +90,49 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
             return;
         }
         Guild guild = role.getGuild();
-        try {
-            switch (mode) {
-                case REMOVE:
-                case ADD:
-                    Bot bot = Util.botFrom(object);
-                    if(bot == null){
-                        Skript.error("Could not parse provided bot. Please input either a %bot% or the string name you gave to your bot with the login effect!");
+        Bot bot = Util.botFrom(object);
+        if(bot == null){
+            Skript.error("Could not parse provided bot. Please input either a %bot% or the string name you gave to your bot with the login effect!");
+            return;
+        }
+        try{
+            if(delta.length == 1){
+                if(Util.botIsConnected(bot, guild.getJDA())) {
+                    if(isAdd) {
+                        guild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
                         return;
                     }
-
-                    if(delta.length == 1){
-                        if(Util.botIsConnected(bot, guild.getJDA())) {
-                            guild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
-                            return;
-                        }
-                        bot.getJDA().getGuildById(guild.getId()).getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
-                        return;
-                    }
-                    ArrayList<Role> roles = new ArrayList<>();
-                    for(int i = 0; i < delta.length; i++){
-                        roles.add((Role) delta[i]);
-                    }
-                    if(Util.botIsConnected(bot, guild.getJDA())) {
-                        guild.getController().addRolesToMember(member, roles).queue();
-                        return;
-                    }
-                    bot.getJDA().getGuildById(guild.getId()).getController().addRolesToMember(member, roles).queue();
+                    guild.getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
+                    return;
+                }
+                if(isAdd) {
+                    bot.getJDA().getGuildById(guild.getId()).getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
+                    return;
+                }
+                bot.getJDA().getGuildById(guild.getId()).getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
+                return;
             }
+            ArrayList<Role> roles = new ArrayList<>();
+            for(int i = 0; i < delta.length; i++){
+                roles.add((Role) delta[i]);
+            }
+            if(Util.botIsConnected(bot, guild.getJDA())) {
+                if(isAdd) {
+                    guild.getController().addRolesToMember(member, roles).queue();
+                    return;
+                }
+                guild.getController().removeRolesFromMember(member, roles).queue();
+                return;
+            }
+            if(isAdd) {
+                bot.getJDA().getGuildById(guild.getId()).getController().addRolesToMember(member, roles).queue();
+                return;
+            }
+            bot.getJDA().getGuildById(guild.getId()).getController().removeRolesFromMember(member, roles).queue();
+            return;
+
         }catch (PermissionException x){
-            Skript.error("Provided bot does not have enough permission to execute the requested action.");
+            Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, bot, x.getPermission().getName(), "modify role");
         }
     }
 }

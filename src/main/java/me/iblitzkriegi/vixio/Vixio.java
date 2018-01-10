@@ -11,10 +11,12 @@ import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.registration.VixioConverters;
 import me.iblitzkriegi.vixio.registration.VixioTypes;
 import me.iblitzkriegi.vixio.util.Metrics;
+import me.iblitzkriegi.vixio.util.enums.VixioErrorHandler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class Vixio extends JavaPlugin {
             e.printStackTrace();
         }
         if (!this.getDataFolder().exists()) {
-            this.getDataFolder().mkdir();
+            this.getDataFolder().mkdirs();
         }
         Metrics mertrics = new Metrics(this);
         Documentation.setupSyntaxFile();
@@ -114,6 +116,10 @@ public class Vixio extends JavaPlugin {
         Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
         expressions.add(registration);
         return registration;
+    }
+
+    public static VixioErrorHandler getErrorHandler(){
+        return VixioErrorHandler.getInstance();
     }
 
 }

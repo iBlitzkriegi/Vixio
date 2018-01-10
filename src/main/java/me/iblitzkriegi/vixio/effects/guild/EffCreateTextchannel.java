@@ -7,6 +7,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -27,7 +28,6 @@ public class EffCreateTextchannel extends Effect{
     @Override
     protected void execute(Event e) {
         if (name.getSingle(e) == null){
-            Skript.error("You must input a name to call the text channel.");
             return;
         }
         String name = this.name.getSingle(e);
@@ -66,7 +66,7 @@ public class EffCreateTextchannel extends Effect{
             }
             bindingGuild.getController().createVoiceChannel(name).queue();
         }catch (PermissionException x){
-            Skript.error("Provided bot does not have enough permission to create a channel in this guild!");
+            Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION,  bot, x.getPermission().getName(), "create channel");
         }
     }
 
