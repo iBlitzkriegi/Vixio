@@ -77,7 +77,7 @@ public class EvntMessageReceived extends Event{
         this.channel = channel;
         this.jda = jda;
         Bot bot = Vixio.getInstance().botHashMap.get(jda);
-        if(bot!=null){
+        if (bot != null) {
             this.bot = bot;
         }else{
             this.bot = null;

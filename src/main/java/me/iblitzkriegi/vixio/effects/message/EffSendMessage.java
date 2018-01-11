@@ -1,13 +1,11 @@
 package me.iblitzkriegi.vixio.effects.message;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -29,36 +27,34 @@ public class EffSendMessage extends Effect{
 
     @Override
     protected void execute(Event e) {
-            if (this.bot.getSingle(e) == null){
-                Skript.error("You must include either a %bot% or the name you gave it it with the login effect!");
-                return;
-            }
-            Object object = this.bot.getSingle(e);
-            Bot bot = Util.botFrom(object);
-            if (bot == null){
-                Skript.error("Could not parse provided bot.");
-                return;
-            }
+        Object object = this.bot.getSingle(e);
+        if (object == null) {
+            return;
+        }
+        Bot bot = Util.botFrom(object);
+        if (bot == null) {
+            Vixio.getErrorHandler().cantFindBot(object.toString(), "send a message");
+            return;
+        }
         try {
-            if (bot.getJDA() != null){
-                for (Channel channel : channel.getAll(e)){
-                    if (!channel.getType().equals(ChannelType.TEXT)){
-                        Skript.error("Provided channel was not a TEXT channel, you may not send things to anything but Text channels.");
-                    }
-                    TextChannel textChannel = (TextChannel) channel;
-                    for (Object m : message.getAll(e)){
-                        if (Util.botIsConnected(bot, channel.getJDA())){
-                            textChannel.sendMessage(Util.messageFrom(m)).queue();
-                        }else{
-                            bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+            if (bot.getJDA() != null) {
+                for (Channel channel : channel.getAll(e)) {
+                    if (channel.getType().equals(ChannelType.TEXT)) {
+                        TextChannel textChannel = (TextChannel) channel;
+                        for (Object m : message.getAll(e)) {
+                            if (Util.botIsConnected(bot, channel.getJDA())) {
+                                textChannel.sendMessage(Util.messageFrom(m)).queue();
+                            } else {
+                                bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+                            }
                         }
-                    }
 
+                    }
                 }
             }
-            }catch(PermissionException x){
-                Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, bot, x.getPermission().getName(), "send message");
-            }
+        } catch (PermissionException x) {
+            Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "send message");
+        }
     }
 
     @Override

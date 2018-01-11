@@ -37,48 +37,45 @@ public class EffLogin extends Effect {
     private Expression<String> name;
     @Override
     protected void execute(Event e) {
-        if (Vixio.getInstance().botNameHashMap.get(name.getSingle(e)) == null) {
-            String token = this.token.getSingle(e);
-            if (token == null) {
-                Skript.error("You must include a token to login to! This can be found on the Discord developers page.");
-                return;
-            }
-            String name = this.name.getSingle(e);
-            if (name == null) {
-                Skript.error("You must input a name to reference the bot as throughout Vixio.");
-                return;
-            }
-            Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
-                JDA api = null;
-                JDABuilder prebuild;
-                try {
-                    prebuild = new JDABuilder(AccountType.BOT).setToken(token);
-                } catch (AccountTypeException x) {
-                    prebuild = new JDABuilder(AccountType.CLIENT).setToken(token);
-                }
-                try {
-                    api = prebuild
-                            .addEventListener(new JDAEventListener())
-                            .buildBlocking();
-                } catch (LoginException e1) {
-                    Skript.error("Error when logging in, token could be invalid?");
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                } catch (RateLimitedException e1) {
-                    Skript.error("You're logging in too fast! Chill m9");
-                }
-                Bot bot = new Bot(name, api);
-                Vixio.getInstance().botHashMap.put(api, bot);
-                Vixio.getInstance().botNameHashMap.put(name, bot);
-
-                if (getNext() != null) {
-                    TriggerItem.walk(getNext(), e);
-                }
-            });
-
-        }else{
-            Skript.error("You may not login to two bots with the same name!");
+        if (token == null) {
+            return;
         }
+        String token = this.token.getSingle(e);
+        if (name == null) {
+            return;
+        }
+        String name = this.name.getSingle(e);
+        if (Vixio.getInstance().botNameHashMap.get(name) != null) {
+            Vixio.getErrorHandler().warn("Vixio attempted to login to a bot with the name " + name + " but a bot already exists with that name.");
+            return;
+        }
+        Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
+            JDA api = null;
+            JDABuilder prebuild;
+            try {
+                prebuild = new JDABuilder(AccountType.BOT).setToken(token);
+            } catch (AccountTypeException x) {
+                prebuild = new JDABuilder(AccountType.CLIENT).setToken(token);
+            }
+            try {
+                api = prebuild
+                        .addEventListener(new JDAEventListener())
+                        .buildBlocking();
+            } catch (LoginException e1) {
+                Skript.error("Error when logging in, token could be invalid?");
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            } catch (RateLimitedException e1) {
+                Skript.error("You're logging in too fast! Chill m9");
+            }
+            Bot bot = new Bot(name, api);
+            Vixio.getInstance().botHashMap.put(api, bot);
+            Vixio.getInstance().botNameHashMap.put(name, bot);
+
+            if (getNext() != null) {
+                TriggerItem.walk(getNext(), e);
+            }
+        });
 
     }
 
@@ -118,6 +115,7 @@ public class EffLogin extends Effect {
             try {
                 ((Set<Event>) DELAYED.get(null)).add(e);
             } catch (IllegalAccessException ignored) {
+
             }
         }
     }

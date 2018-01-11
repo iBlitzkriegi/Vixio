@@ -1,13 +1,11 @@
 package me.iblitzkriegi.vixio.effects.guild;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -27,28 +25,25 @@ public class EffCreateTextchannel extends Effect{
     private boolean not;
     @Override
     protected void execute(Event e) {
-        if (name.getSingle(e) == null){
+        if (name.getSingle(e) == null) {
             return;
         }
         String name = this.name.getSingle(e);
-        if (guild.getSingle(e) == null){
-            Skript.error("You must input a Guild to create this new channel in!");
+        if (guild.getSingle(e) == null) {
             return;
         }
         Guild guild = this.guild.getSingle(e);
-        if (bot.getSingle(e) == null){
-            Skript.error("You must enter a %bot% or the name that you gave to the bot with the login effect. Please refer to the syntax.");
+        if (bot.getSingle(e) == null) {
             return;
         }
         Bot bot;
-        if (Util.botFrom(this.bot.getSingle(e)) == null){
-            Skript.error("Could not parse provided bot! You must either input a %bot% type or the name you gave the bot with the login effect!");
+        if (Util.botFrom(this.bot.getSingle(e)) == null) {
             return;
         }
         bot = Util.botFrom(this.bot.getSingle(e));
         try{
-            if (Util.botIsConnected(bot, guild.getJDA())){
-                if (not){
+            if (Util.botIsConnected(bot, guild.getJDA())) {
+                if (not) {
                     guild.getController().createTextChannel(name).queue();
                     return;
                 }
@@ -56,17 +51,17 @@ public class EffCreateTextchannel extends Effect{
                 return;
             }
             Guild bindingGuild = bot.getJDA().getGuildById(guild.getId());
-            if (bindingGuild == null){
-                Skript.error("Provided bot could not find provided Guild");
+            if (bindingGuild == null) {
+                Vixio.getErrorHandler().botCantFind(bot, "guild", guild.getId());
                 return;
             }
-            if (not){
+            if (not) {
                 bindingGuild.getController().createTextChannel(name).queue();
                 return;
             }
             bindingGuild.getController().createVoiceChannel(name).queue();
-        }catch (PermissionException x){
-            Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION,  bot, x.getPermission().getName(), "create channel");
+        }catch (PermissionException x) {
+            Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "create channel");
         }
     }
 

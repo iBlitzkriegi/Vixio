@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
  */
 public class EffRetrieveMessage extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from %channel%")
+        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% [from %channel%]")
             .setName("Retrieve message with id")
             .setDesc("Get a Message via it's ID from a Guild/TextChannel")
             .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
@@ -26,23 +26,20 @@ public class EffRetrieveMessage extends Effect{
     Expression<TextChannel> channel;
     @Override
     protected void execute(Event e) {
-        if (id.getSingle(e) == null){
-            Skript.error("You must include a ID in order to retrieve a Message");
+        if (id.getSingle(e) == null) {
             return;
         }
         String id = this.id.getSingle(e);
-        if (channel.getSingle(e) == null){
-           Skript.error("You must include a Text Channel in order to retrieve the Message from it.");
-           return;
+        if (channel.getSingle(e) == null) {
+            return;
         }
         Channel channel = this.channel.getSingle(e);
-        if (channel.getType().equals(ChannelType.TEXT)) {
-            TextChannel textChannel = (TextChannel) channel;
-            textChannel.getMessageById(id).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
+        if (!channel.getType().equals(ChannelType.TEXT)) {
             return;
-        }else {
-            Skript.error("Provided channel was not a text channel.");
         }
+        TextChannel textChannel = (TextChannel) channel;
+        textChannel.getMessageById(id).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
+        return;
     }
 
     @Override

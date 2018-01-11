@@ -29,14 +29,13 @@ public class EffAppendToBuilder extends Effect {
     protected void execute(Event e) {
         MessageBuilder builder = this.builder.getSingle(e);
         if (builder == null){
-            Skript.error("You must input a %messagebuilder% for this effect! Please refer to the syntax.");
             return;
         }
         String[] toAppend = this.toAppend.getAll(e);
-        if (toAppend == null){
-            Skript.error("You must include text to be appended on to the Message Builder...!");
+        if (toAppend == null) {
+            return;
         }
-        for(String s : toAppend){
+        for (String s : toAppend) {
             builder.append(s);
         }
     }

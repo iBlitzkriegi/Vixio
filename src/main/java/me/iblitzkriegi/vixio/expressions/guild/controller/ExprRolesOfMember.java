@@ -9,7 +9,6 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.enums.VixioError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -132,7 +131,7 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
             return;
 
         }catch (PermissionException x){
-            Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, bot, x.getPermission().getName(), "modify role");
+            Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "modify role");
         }
     }
 }

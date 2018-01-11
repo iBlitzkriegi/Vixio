@@ -5,15 +5,16 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.registrations.EventValues;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.enums.VixioError;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
+
+import java.util.Arrays;
 
 /**
  * Created by Blitz on 7/27/2017.
@@ -31,20 +32,18 @@ public class EffReplyWith extends Effect {
     private Expression<Object> message;
     @Override
     protected void execute(Event e) {
-        if (e instanceof EvntMessageReceived){
+        if (e instanceof EvntMessageReceived) {
             Object[] objects = message.getAll(e);
-            if (objects == null){
-                Skript.error("You must provide a %string% or a %message% to be sent!");
+            if (objects == null) {
                 return;
             }
             TextChannel channel = (TextChannel) ((EvntMessageReceived) e).getChannel();
             try{
-                for(Object s : objects){
+                for (Object s : objects) {
                     channel.sendMessage(Util.messageFrom(s)).queue();
                 }
-
-            }catch (PermissionException x){
-                Vixio.getErrorHandler().warn(VixioError.BOT_NO_PERMISSION, ((EvntMessageReceived) e).getBot(), x.getPermission().getName(), "send message");
+            }catch (PermissionException x) {
+                Vixio.getErrorHandler().needsPerm(((EvntMessageReceived) e).getBot(), x.getPermission().getName(), "send message");
             }
         }
     }
@@ -56,7 +55,8 @@ public class EffReplyWith extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (ScriptLoader.isCurrentEvent(EvntMessageReceived.class)) {
+        if (Arrays.stream(ScriptLoader.getCurrentEvents())
+                .anyMatch(event -> EventValues.getEventValueGetter(event, TextChannel.class, 0) != null)) {
             message = (Expression<Object>) expressions[0];
             return true;
         }
