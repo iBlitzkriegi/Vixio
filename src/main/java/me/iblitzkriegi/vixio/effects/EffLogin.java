@@ -37,14 +37,14 @@ public class EffLogin extends Effect {
     private Expression<String> name;
     @Override
     protected void execute(Event e) {
-        if (token == null) {
-            return;
-        }
         String token = this.token.getSingle(e);
-        if (name == null) {
+        if (token == null || token.isEmpty()) {
             return;
         }
         String name = this.name.getSingle(e);
+        if (name == null || token.isEmpty()) {
+            return;
+        }
         if (Vixio.getInstance().botNameHashMap.get(name) != null) {
             Vixio.getErrorHandler().warn("Vixio attempted to login to a bot with the name " + name + " but a bot already exists with that name.");
             return;

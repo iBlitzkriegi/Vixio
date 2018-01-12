@@ -8,36 +8,39 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
+
+import java.util.Arrays;
 
 /**
  * Created by Blitz on 8/16/2017.
  */
 public class ExprMessageAs extends SimpleExpression<Message> {
     static {
-        Vixio.getInstance().registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %message% (as|with) %bot%")
+        Vixio.getInstance().registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %messages% (as|with) %bot/string%")
                 .setName("Message as bot")
                 .setDesc("Used to delete messages")
                 .setExample("delete event-message as event-bot");
 
     }
     private Expression<Message> message;
-    private Expression<Bot> bot;
+    private Expression<Object> bot;
     @Override
     protected Message[] get(Event event) {
-        if(message.getSingle(event)!=null) {
-            return new Message[]{message.getSingle(event)};
+        Message[] messages = message.getAll(event);
+        if (messages == null) {
+            return null;
         }
-        Skript.error("You must include a message");
-        return null;
+        return messages;
     }
 
     @Override
     public boolean isSingle() {
-        return true;
+        return message.isSingle();
     }
 
     @Override
@@ -47,45 +50,47 @@ public class ExprMessageAs extends SimpleExpression<Message> {
 
     @Override
     public String toString(Event event, boolean b) {
-        return message.getSingle(event) + " as " + bot.getSingle(event);
+        return message.toString(event, b) + " as " + bot.toString(event, b);
     }
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) expressions[0];
-        bot = (Expression<Bot>) expressions[1];
+        bot = (Expression<Object>) expressions[1];
         return true;
     }
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.DELETE)
-            return new Class[] {String.class};
+            return new Class[] {Message[].class};
         return null;
     }
 
     @Override
-    public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if(bot!=null){
-            if(message!=null){
-                if(Vixio.getInstance().botHashMap.get(bot.getSingle(e))!=null){
-                    try{
-                        switch (mode){
-                            case DELETE:
-                                message.getSingle(e).delete().queue();
-                                break;
-                        }
-                    }catch (PermissionException x){
-                        Skript.error("Provided bot does not have enough permission to modify the topic of the provided channel");
-                    }
-                }else{
-                    Skript.error("Could not find stored bot");
+    public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        Object object = this.bot.getSingle(e);
+        if (object == null) {
+            return;
+        }
+        Bot bot = Util.botFrom(object);
+        if (bot == null) {
+            Vixio.getErrorHandler().cantFindBot(object.toString(), "delete messages");
+            return;
+        }
+        Message[] messages = message.getAll(e);
+        if (messages == null) {
+            return;
+        }
+        for (Message message : messages) {
+            try {
+                if (Util.botIsConnected(bot, message.getJDA())) {
+                    message.delete().queue();
+                } else {
+                    bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId()).queue(m -> m.delete());
                 }
-            }else{
-                Skript.error("You must include a message!");
+            } catch (PermissionException x) {
+                Vixio.getErrorHandler().needsPerm(bot, "delete message " + message.getId(), x.getPermission().getName());
             }
-        }else{
-            Skript.error("You must include a bot in order to modify the topic!");
-
         }
     }
 }

@@ -40,11 +40,11 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
     public String convert(MessageBuilder messageBuilder) {
         if(stripped){
             try {
-                return messageBuilder.build().getContentStripped();
+                return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentStripped();
             }catch (UnsupportedOperationException x){
                 Skript.error("You may not get the stripped content of a Message that was created with a Message Builder.");
             }
-        }else {
+        } else {
             return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentRaw();
         }
         return null;

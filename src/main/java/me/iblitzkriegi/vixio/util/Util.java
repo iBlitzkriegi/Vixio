@@ -13,11 +13,9 @@ import java.util.Locale;
 public class Util {
 
     public static Color getColorFromString(String str) {
-
         if (str == null) return null;
 
         Color color = null;
-
         try {
             color = (Color) Color.class.getField(str.toUpperCase(Locale.ENGLISH).replace(" ", "_")).get(null);
         } catch (NoSuchFieldException e) {
@@ -30,17 +28,17 @@ public class Util {
     }
 
     public static Bot botFrom(Object input){
-        if(input instanceof Bot){
+        if (input == null) {
+            return null;
+        } else if(input instanceof Bot) {
             return (Bot) input;
-        }else if(input instanceof String){
+        } else if(input instanceof String) {
             String string = (String) input;
             Bot bot = Vixio.getInstance().botNameHashMap.get(string);
-            if(bot != null){
+            if (bot != null) {
                 return bot;
             }
-            Skript.error("Could not find bot by that name!");
         }
-        Skript.error("Could not find bot by that name!");
         return null;
     }
 
@@ -52,11 +50,10 @@ public class Util {
                 return new MessageBuilder()
                         .setContent((String) input)
                         .build();
-            }catch (IllegalStateException | IllegalArgumentException x){
+            } catch (IllegalStateException | IllegalArgumentException x) {
                 return null;
             }
         }
-        Skript.error("You must input either a %message/messagebuilder/embedbuilder% or a %string%");
         return null;
     }
 

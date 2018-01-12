@@ -25,22 +25,22 @@ public class EffCreateTextchannel extends Effect{
     private boolean not;
     @Override
     protected void execute(Event e) {
-        if (name.getSingle(e) == null) {
-            return;
-        }
         String name = this.name.getSingle(e);
-        if (guild.getSingle(e) == null) {
+        if (name == null || name.isEmpty()) {
             return;
         }
         Guild guild = this.guild.getSingle(e);
-        if (bot.getSingle(e) == null) {
+        if (guild == null) {
             return;
         }
-        Bot bot;
-        if (Util.botFrom(this.bot.getSingle(e)) == null) {
+        Object object = this.bot.getSingle(e);
+        if (object == null) {
             return;
         }
-        bot = Util.botFrom(this.bot.getSingle(e));
+        Bot bot = Util.botFrom(object);
+        if (bot == null) {
+            return;
+        }
         try{
             if (Util.botIsConnected(bot, guild.getJDA())) {
                 if (not) {

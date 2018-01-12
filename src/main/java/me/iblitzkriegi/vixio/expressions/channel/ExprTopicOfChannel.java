@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channels% [(with|as) %-bot/string%]")
+        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channels% [(with|as) %bot/string%]")
                 .setName("Topic of Channel")
                 .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
                 .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
@@ -38,8 +38,8 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
     @Override
     protected String[] get(Event event) {
         ArrayList<String> channels = new ArrayList<>();
-        for (Channel channel : this.channel.getAll(event)){
-            if (channel.getType() == ChannelType.TEXT){
+        for (Channel channel : this.channel.getAll(event)) {
+            if (channel.getType() == ChannelType.TEXT) {
                 channels.add(((TextChannel) channel).getTopic());
             }
         }
@@ -101,7 +101,7 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
                         try {
                             bot.getJDA().getTextChannelById(channel.getId()).getManager().setTopic(topic).queue();
                         } catch (NullPointerException x) {
-                            Skript.error("Provided bot could not find one of the provided channels.");
+
                         }
                     }
                 }

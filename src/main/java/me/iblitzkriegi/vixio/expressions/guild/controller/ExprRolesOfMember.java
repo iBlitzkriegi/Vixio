@@ -33,15 +33,14 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
     Expression<Object> bot;
     @Override
     protected Role[] get(Event e) {
-        if(member.getAll(e) == null){
-            Skript.error("You, must input a Member, to get the roles of..");
+        if (member.getAll(e) == null) {
             return null;
         }
         List<Role> roles = new ArrayList<>();
         Arrays.stream(member.getAll(e))
                 .filter(Objects::nonNull)
                 .forEach(member -> roles.addAll(member.getRoles()));
-        return roles.toArray(new Role[0]);
+        return roles.toArray(new Role[roles.size()]);
     }
 
     @Override
@@ -78,33 +77,32 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
         boolean isAdd = mode == Changer.ChangeMode.ADD ? true : false;
         Role role = (Role) delta[0];
-        if(bot.getSingle(e) == null){
-            Skript.error("You must input a bot to modify roles.");
+        Object object = this.bot.getSingle(e);
+        if (object == null) {
             return;
         }
-        Object object = this.bot.getSingle(e);
         Member member = this.member.getSingle(e);
-        if(member == null){
+        if (member == null) {
             Skript.error("You must input a Member to modify their roles.");
             return;
         }
         Guild guild = role.getGuild();
         Bot bot = Util.botFrom(object);
-        if(bot == null){
-            Skript.error("Could not parse provided bot. Please input either a %bot% or the string name you gave to your bot with the login effect!");
+        if (bot == null) {
+            Vixio.getErrorHandler().cantFindBot(this.bot.toString(), "add role");
             return;
         }
-        try{
-            if(delta.length == 1){
-                if(Util.botIsConnected(bot, guild.getJDA())) {
-                    if(isAdd) {
+        try {
+            if (delta.length == 1) {
+                if (Util.botIsConnected(bot, guild.getJDA())) {
+                    if (isAdd) {
                         guild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
                         return;
                     }
                     guild.getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
                     return;
                 }
-                if(isAdd) {
+                if (isAdd) {
                     bot.getJDA().getGuildById(guild.getId()).getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
                     return;
                 }
@@ -112,25 +110,25 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
                 return;
             }
             ArrayList<Role> roles = new ArrayList<>();
-            for(int i = 0; i < delta.length; i++){
+            for (int i = 0; i < delta.length; i++) {
                 roles.add((Role) delta[i]);
             }
-            if(Util.botIsConnected(bot, guild.getJDA())) {
-                if(isAdd) {
+            if (Util.botIsConnected(bot, guild.getJDA())) {
+                if (isAdd) {
                     guild.getController().addRolesToMember(member, roles).queue();
                     return;
                 }
                 guild.getController().removeRolesFromMember(member, roles).queue();
                 return;
             }
-            if(isAdd) {
+            if (isAdd) {
                 bot.getJDA().getGuildById(guild.getId()).getController().addRolesToMember(member, roles).queue();
                 return;
             }
             bot.getJDA().getGuildById(guild.getId()).getController().removeRolesFromMember(member, roles).queue();
             return;
 
-        }catch (PermissionException x){
+        }catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "modify role");
         }
     }

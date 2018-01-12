@@ -23,26 +23,19 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
     private Expression<Guild> guild;
     @Override
     protected Member[] get(Event e) {
-        if(guild.getSingle(e) == null){
-            Skript.error("You must include a guild to get the member from!");
-            return null;
-        }
         Guild guild = this.guild.getSingle(e);
-        if(id.getSingle(e) == null){
-            Skript.error("You must include a ID to find the member by!");
+        if (guild == null) {
             return null;
         }
         String id = this.id.getSingle(e);
-        if(guild.getMemberById(id) == null){
-            Skript.error("Could not find member with that ID in the provided Guild");
+        if (id == null || id.isEmpty()) {
             return null;
         }
-        try {
-            return new Member[]{guild.getMemberById(id)};
-        }catch (IllegalArgumentException x){
-            Skript.error("You must include a ID to find the member by!");
+        Member member = guild.getMemberById(id);
+        if (member == null) {
+            return null;
         }
-        return null;
+        return new Member[]{member};
     }
 
     @Override

@@ -23,10 +23,10 @@ public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
     }
     @Override
     protected Message[] get(Event event) {
-        if(lastRetrievedMessage!=null) {
+        if (lastRetrievedMessage!=null) {
             return new Message[]{lastRetrievedMessage};
-        }else{
-            Skript.error("You must use the retrieve message effect at least once first!");
+        } else {
+            Vixio.getErrorHandler().warn("Vixio tried to access the last retrieved message but none had been retrieved yet.");
             return null;
         }
     }

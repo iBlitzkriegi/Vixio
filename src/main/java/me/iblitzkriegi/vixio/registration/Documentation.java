@@ -44,7 +44,7 @@ public class Documentation {
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
-                }else{
+                } else {
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                     bw.newLine();
                 }
@@ -62,7 +62,7 @@ public class Documentation {
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
-                }else{
+                } else {
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                     bw.newLine();
                 }
@@ -81,11 +81,11 @@ public class Documentation {
                         builder.append("}");
                         bw.write(builder.toString());
                         bw.newLine();
-                    }else{
+                    } else {
                         bw.write("\tsyntax: " + reg.getUserFacing());
                         bw.newLine();
                     }
-                }else{
+                } else {
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                     bw.newLine();
                 }
@@ -103,7 +103,7 @@ public class Documentation {
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
-                }else{
+                } else {
                     bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                     bw.newLine();
                 }

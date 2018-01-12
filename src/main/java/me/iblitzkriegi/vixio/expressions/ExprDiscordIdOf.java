@@ -26,7 +26,6 @@ public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
         if(o instanceof ISnowflake) {
             return ((ISnowflake) o).getId();
         }
-        Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;
     }
 

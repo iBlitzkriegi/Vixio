@@ -28,11 +28,10 @@ public class ExprMentionedUsers extends SimpleExpression<User> {
     private Expression<Message> message;
     @Override
     protected User[] get(Event e) {
-        if(message.getSingle(e) == null){
-            Skript.error("You must, ya know, input a message to get the mentioned users of!");
+        Message message = this.message.getSingle(e);
+        if (message == null) {
             return null;
         }
-        Message message = this.message.getSingle(e);
         return message.getMentionedUsers().toArray(new User[0]);
     }
 

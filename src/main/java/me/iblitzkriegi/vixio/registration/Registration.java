@@ -17,7 +17,7 @@ public class Registration {
     private String[] syntaxes;
     private String userFacing;
 
-    public Registration(Class<?> cls, String... syntaxes){
+    public Registration(Class<?> cls, String... syntaxes) {
         clazz = cls;
         this.syntaxes = syntaxes;
     }
@@ -27,15 +27,15 @@ public class Registration {
         this.syntaxes = patterns.toArray(new String[0]);
     }
 
-    public Registration setName(String s){
+    public Registration setName(String s) {
         this.name = s;
         return this;
     }
-    public Registration setDesc(String s){
+    public Registration setDesc(String s) {
         this.desc = s;
         return this;
     }
-    public Registration setExample(String s){
+    public Registration setExample(String s) {
         this.example = s;
         return this;
     }
@@ -44,26 +44,28 @@ public class Registration {
         return setExample(StringUtils.join(s, "\n"));
     }
 
-    public Registration setUserFacing(String s){
+    public Registration setUserFacing(String s) {
         this.userFacing = s;
         return this;
     }
-    public String getName(){
+    public String getName() {
         return this.name;
     }
-    public String getDesc(){
+    public String getDesc() {
         return this.desc;
     }
     public Class<?> getClazz(){
         return clazz;
     }
-    public String[] getSyntaxes(){
+    public String[] getSyntaxes() {
         return this.syntaxes;
     }
-    public String getExample(){
+    public String getExample() {
         return this.example;
     }
-    public String getUserFacing(){return this.userFacing;}
+    public String getUserFacing() {
+        return this.userFacing;
+    }
 
 
 }

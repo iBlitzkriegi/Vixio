@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
@@ -8,7 +7,11 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -36,20 +39,19 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
 
     @Override
     public String convert(Object o) {
-        if(o instanceof User){
+        if (o instanceof User) {
             return ((User) o).getName();
-        }else if(o instanceof Guild){
+        } else if(o instanceof Guild) {
             return ((Guild) o).getName();
-        }else if(o instanceof Channel){
+        } else if(o instanceof Channel) {
             return ((Channel) o).getName();
-        }else if(o instanceof Member){
+        } else if(o instanceof Member) {
             return ((Member) o).getUser().getName();
-        }else if(o instanceof Bot){
+        } else if(o instanceof Bot) {
             return ((Bot) o).getName();
-        }else if(o instanceof Role){
+        } else if(o instanceof Role) {
             return ((Role) o).getName();
         }
-        Skript.error("Could not parse provided argument, please refer to the syntax.");
         return null;
     }
 
@@ -67,23 +69,22 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
         if(object instanceof Member || object instanceof User) return;
         switch (mode) {
             case SET:
-                if(object instanceof Bot){
+                if (object instanceof Bot) {
                     Bot bot = (Bot) object;
                     bot.getSelfUser().getManager().setName((String) delta[0]).queue();
-                }else if(object instanceof Channel) {
+                } else if(object instanceof Channel) {
                     Channel channel = (Channel) object;
                     try {
                         channel.getManager().setName((String) delta[0]).queue();
                     } catch (PermissionException x) {
-                        Skript.error("Bot does not have proper permission to change the name of the provided text channel.");
+
                     }
 
-                }else if(object instanceof Guild){
+                } else if(object instanceof Guild){
                     Guild guild = (Guild) object;
                     try{
                         guild.getManager().setName((String) delta[0]).queue();
                     }catch (PermissionException x){
-                        Skript.error("Bot does not have proper permission to change the name of the provided guild.");
 
                     }
                 }

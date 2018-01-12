@@ -59,7 +59,8 @@ public class ExprEmbedOfBuilder extends SimplePropertyExpression<MessageBuilder,
                 if (!messageEmbed.isEmpty()) {
                     builder.setEmbed(messageEmbed);
                 } else {
-                    Skript.error("You cannot access a empty Embed!");
+                    Vixio.getErrorHandler().warn("Vixio tried to access a empty Embed to set its title! This is not possible.");
+
                 }
 
 

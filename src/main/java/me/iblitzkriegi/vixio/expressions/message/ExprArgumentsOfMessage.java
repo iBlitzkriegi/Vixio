@@ -41,7 +41,7 @@ public class ExprArgumentsOfMessage extends SimpleExpression<String> {
 
     @Override
     public String toString(Event event, boolean b) {
-        return message.getAll(event)[0] + "'s arguments";
+        return message.toString(event, b) + "'s arguments";
     }
 
     @Override
@@ -50,17 +50,17 @@ public class ExprArgumentsOfMessage extends SimpleExpression<String> {
         return true;
     }
     private List<String> getArguments(Event e){
-        if(message.getSingle(e)!=null){
+        if (message.getSingle(e) != null) {
             List<String> content = new ArrayList<>();
             int i = 0;
-            for(String s : message.getSingle(e).getContentDisplay().split(" ")){
-                if(i!=0) {
+            for (String s : message.getSingle(e).getContentDisplay().split(" ")){
+                if(i != 0) {
                     content.add(s);
                 }
                 i++;
             }
             return content;
-        }else{
+        } else {
             Skript.error("You must provided a %message%! Refer to the syntax.");
             return null;
         }

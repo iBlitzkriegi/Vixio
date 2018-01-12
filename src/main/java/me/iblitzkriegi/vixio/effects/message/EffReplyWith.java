@@ -40,7 +40,9 @@ public class EffReplyWith extends Effect {
             TextChannel channel = (TextChannel) ((EvntMessageReceived) e).getChannel();
             try{
                 for (Object s : objects) {
-                    channel.sendMessage(Util.messageFrom(s)).queue();
+                    if (Util.messageFrom(s) != null) {
+                        channel.sendMessage(Util.messageFrom(s)).queue();
+                    }
                 }
             }catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(((EvntMessageReceived) e).getBot(), x.getPermission().getName(), "send message");

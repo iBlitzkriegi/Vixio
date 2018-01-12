@@ -14,7 +14,7 @@ import net.dv8tion.jda.core.entities.User;
  */
 public class ExprMentionTagOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/channel/member/bot/role")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/textchannel/member/bot/role")
                 .setName("Discord Name of")
                 .setDesc("Get the name of something/someone")
                 .setExample("discord name of event-user");

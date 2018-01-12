@@ -30,7 +30,6 @@ public class ExprNewEmbedAuthor extends SimpleExpression<MessageEmbed.AuthorInfo
         try {
             builder = new EmbedBuilder().setAuthor(text.getSingle(e), (url == null ? null : url.getSingle(e)), (icon == null ? null : icon.getSingle(e)));
         } catch (IllegalArgumentException e1) {
-            Skript.error("Vixio encountered the error \"" + e1.getMessage() + "\" while trying to make " + this.toString(e, false) + "with url \"" + url.getSingle(e) + "\" and icon " + icon.getSingle(e) + "\"");
             return null;
         }
         return new MessageEmbed.AuthorInfo[]{

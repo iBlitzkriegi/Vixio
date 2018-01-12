@@ -42,10 +42,12 @@ public class EffSendMessage extends Effect{
                     if (channel.getType().equals(ChannelType.TEXT)) {
                         TextChannel textChannel = (TextChannel) channel;
                         for (Object m : message.getAll(e)) {
-                            if (Util.botIsConnected(bot, channel.getJDA())) {
-                                textChannel.sendMessage(Util.messageFrom(m)).queue();
-                            } else {
-                                bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+                            if (Util.messageFrom(m) != null) {
+                                if (Util.botIsConnected(bot, channel.getJDA())) {
+                                    textChannel.sendMessage(Util.messageFrom(m)).queue();
+                                } else {
+                                    bot.getJDA().getTextChannelById(channel.getId()).sendMessage(Util.messageFrom(m)).queue();
+                                }
                             }
                         }
 

@@ -23,27 +23,19 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
     private Expression<Guild> guild;
     @Override
     protected Role[] get(Event e) {
-        if(guild.getSingle(e) == null){
-            Skript.error("You must include a guild to get the role from!");
-            return null;
-        }
         Guild guild = this.guild.getSingle(e);
-        if(id.getSingle(e) == null){
-            Skript.error("You must include a ID to find the Role by!");
+        if (guild == null) {
             return null;
         }
         String id = this.id.getSingle(e);
-        if(guild.getRoleById(id) == null){
-            Skript.error("Could not find role with that ID in the provided Guild");
+        if (id == null || id.isEmpty()) {
             return null;
         }
-        try {
-            return new Role[]{guild.getRoleById(id)};
-        }catch (IllegalArgumentException x){
-            Skript.error("You must include a ID to find the Role by!");
-
+        Role role = guild.getRoleById(id);
+        if(role == null){
+            return null;
         }
-        return null;
+        return new Role[]{role};
     }
 
     @Override

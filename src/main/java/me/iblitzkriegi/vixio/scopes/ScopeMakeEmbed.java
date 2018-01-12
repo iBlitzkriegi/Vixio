@@ -44,18 +44,14 @@ public class ScopeMakeEmbed extends EffectSection {
 
     @Override
     public boolean init(Expression<?>[] exprs, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-
         if (checkIfCondition())
             return false;
         if (!hasSection()) {
-            Skript.error("You can't make an embed without a section!");
+            Vixio.getErrorHandler().warn("Vixio attempted to create a embed but no section was found.");
             return false;
         }
-
         builder = (Expression<EmbedBuilder>) exprs[0];
-
         loadSection(true);
-
         return true;
     }
 }

@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.retrieve;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,6 +9,8 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
+
+import java.util.Set;
 
 /**
  * Created by Blitz on 7/26/2017.
@@ -41,7 +42,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
 
     @Override
     public String toString(Event event, boolean b) {
-        return "guild with id " + id.getSingle(event);
+        return "guild with id " + id.toString(event, b);
     }
 
     @Override
@@ -51,26 +52,21 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
     }
 
     private Guild getGuild(Event e) {
-        if (id.getSingle(e) != null) {
-            if (Vixio.getInstance().botHashMap.keySet() != null) {
-                for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
-                    try {
-                        if (jda.getGuildById(id.getSingle(e)) != null) {
-                            return jda.getGuildById(id.getSingle(e));
-                        }
-                    }catch (IllegalArgumentException x){
-                        Skript.error("You must provide a ID to use this expression! May not leave blank.");
-                        return null;
-                    }
-                }
-                return null;
-            } else {
-                Skript.error("You must login to a bot via the connect effect before you may attempt to use this expression.");
-                return null;
-            }
-        } else {
+        String id = this.id.getSingle(e);
+        if (id == null || id.isEmpty()) {
             return null;
         }
+        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        if (jdaInstances != null && !jdaInstances.isEmpty()) {
+            for (JDA jda : jdaInstances){
+                Guild guild = jda.getGuildById(id);
+                if (guild != null) {
+                    return guild;
+                }
+                return null;
+            }
+        }
+        return null;
     }
 
 }
