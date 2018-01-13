@@ -5,6 +5,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.Color;
@@ -59,6 +60,10 @@ public class Util {
 
     public static boolean botIsConnected(Bot bot, JDA jda){
         return bot.getJDA().getSelfUser().getId().equalsIgnoreCase(jda.getSelfUser().getId());
+    }
+
+    public static Guild bindGuild(Bot bot, Guild guild) {
+        return bot.getJDA().getGuildById(guild.getId());
     }
 
 }

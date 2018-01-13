@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.guild;
+package me.iblitzkriegi.vixio.expressions.guild.controller;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.event.Event;
 
