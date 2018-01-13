@@ -4,6 +4,7 @@ import ch.njol.skript.lang.ParseContext;
 import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -66,6 +67,32 @@ public class VixioTypes {
             }
 
         };
+
+        new SimpleType<Avatar>(Avatar.class, "avatar", "avatars?") {
+
+            @Override
+            public Avatar parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Avatar avatar, int arg1) {
+                return avatar.getAvatar();
+            }
+
+            @Override
+            public String toVariableNameString(Avatar avatar) {
+                return avatar.getAvatar();
+            }
+
+        };
+
+
 
         new SimpleType<TextChannel>(TextChannel.class, "textchannel", "textchannels?") {
 
