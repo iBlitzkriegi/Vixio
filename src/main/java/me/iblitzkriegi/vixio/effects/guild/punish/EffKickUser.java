@@ -12,21 +12,20 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class EffBanUser extends Effect {
+public class EffKickUser extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffBanUser.class, "ban %users/strings% from %guild% [(due to|with reason|because of) %-string%] [and delete %-number% days [worth] of messages] [(with|as)] [%bot/string%]")
-                .setName("Ban user")
-                .setDesc("Ban either a user, a member, or a user by their ID")
+        Vixio.getInstance().registerEffect(EffKickUser.class, "kick %users/strings% from %guild% [(due to|with reason|because of) %-string%] [(with|as)] [%bot/string%]")
+                .setName("Kick user")
+                .setDesc("Kick either a user, a member, or a user by their ID")
                 .setExample(
-                        "command /ban <text>:",
+                        "command /kick <text>:",
                         "\ttrigger:",
-                        "\t\tban arg-1 from guild with id \"622156151\" due to \"Not following discord rules\" as \"Jewel\""
+                        "\t\tkick arg-1 from guild with id \"622156151\" due to \"Not following discord rules\" as \"Jewel\""
                 );
     }
     private Expression<Object> users;
     private Expression<Guild> guild;
     private Expression<Object> bot;
-    private Expression<Number> days;
     private Expression<String> reason;
     @Override
     protected void execute(Event e) {
@@ -43,17 +42,16 @@ public class EffBanUser extends Effect {
         if (bot == null) {
             return;
         }
-        Number days = this.days == null ? 0 : this.days.getSingle(e);
         String reason = this.reason == null ? null : this.reason.getSingle(e);
         isConnected = Util.botIsConnected(bot, guild.getJDA());
         if (isConnected) {
             for (Object object : users) {
                 String user = object instanceof User ? ((User) object).getId() : (String) object;
                 try {
-                    guild.getController().ban(user, days.intValue(), reason).queue();
+                    guild.getController().kick(user, reason).queue();
                 } catch (PermissionException x) {
-                    Vixio.getErrorHandler().needsPerm(bot, "ban user", x.getPermission().getName());
-                } catch (IllegalArgumentException x){
+                    Vixio.getErrorHandler().needsPerm(bot, "kick user", x.getPermission().getName());
+                } catch (IllegalArgumentException x) {
 
                 }
             }
@@ -67,9 +65,9 @@ public class EffBanUser extends Effect {
         for (Object object : users) {
             String user = object instanceof User ? ((User) object).getId() : (String) object;
             try {
-                guild.getController().ban(user, days.intValue(), reason).queue();
+                guild.getController().kick(user, reason).queue();
             } catch (PermissionException x) {
-                Vixio.getErrorHandler().needsPerm(bot, "ban user", x.getPermission().getName());
+                Vixio.getErrorHandler().needsPerm(bot, "kick user", x.getPermission().getName());
             }
         }
 
@@ -78,7 +76,7 @@ public class EffBanUser extends Effect {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "ban " + users.toString(e, debug) + " from " + guild.toString(e, debug) + " " + (reason == null ? "" : "due to " + reason.toString(e, debug)) + (days == null ? "" : "and delete " + days.toString(e, debug) + " worth of messages ") + "as " + bot.toString(e, debug);
+        return "kick " + users.toString(e, debug) + " from " + guild.toString(e, debug) + (reason == null ? "" : " due to" + reason.toString(e, debug)) + " as " + bot.toString(e, debug);
     }
 
     @Override
@@ -86,8 +84,7 @@ public class EffBanUser extends Effect {
         users = (Expression<Object>) exprs[0];
         guild = (Expression<Guild>) exprs[1];
         reason = (Expression<String>) exprs[2];
-        days = (Expression<Number>) exprs[3];
-        bot = (Expression<Object>) exprs[4];
+        bot = (Expression<Object>) exprs[3];
         return true;
     }
 }

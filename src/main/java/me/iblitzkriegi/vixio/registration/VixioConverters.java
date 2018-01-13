@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.ISnowflake;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.User;
 
 public class VixioConverters {
     public static void register(){
@@ -24,5 +25,6 @@ public class VixioConverters {
         Converters.registerConverter(ISnowflake.class, String.class, (Converter<ISnowflake, String>) u -> u.getId());
         Converters.registerConverter(Bot.class, String.class, (Converter<Bot, String>) u -> u.getSelfUser().getId());
         Converters.registerConverter(Member.class, String.class, (Converter<Member, String>) u -> u.getUser().getId());
+        Converters.registerConverter(Member.class, User.class, (Converter<Member, User>) u -> u.getUser());
     }
 }
