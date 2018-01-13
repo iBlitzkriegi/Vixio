@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.retrieve;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -14,7 +13,6 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
-import javax.xml.soap.Text;
 import java.util.Set;
 
 /**

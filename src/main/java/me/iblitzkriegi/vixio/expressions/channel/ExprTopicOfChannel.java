@@ -17,8 +17,6 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 
 /**

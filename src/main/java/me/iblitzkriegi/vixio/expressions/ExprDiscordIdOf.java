@@ -1,9 +1,7 @@
 package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.ISnowflake;
 
 /**

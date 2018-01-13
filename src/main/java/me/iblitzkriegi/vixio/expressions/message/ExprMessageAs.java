@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.message;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -13,8 +12,6 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
-
-import java.util.Arrays;
 
 /**
  * Created by Blitz on 8/16/2017.

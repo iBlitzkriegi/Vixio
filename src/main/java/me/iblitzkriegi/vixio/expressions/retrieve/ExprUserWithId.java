@@ -8,20 +8,21 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
-public class ExprMemberWithId extends SimpleExpression<Member> {
+public class ExprUserWithId extends SimpleExpression<User> {
     static {
-        Vixio.getInstance().registerExpression(ExprMemberWithId.class, Member.class, ExpressionType.SIMPLE,
-                "member with id %string% [in %guild%]")
-                .setName("Member with ID")
-                .setDesc("Get a Member via their ID, plain and simple.")
+        Vixio.getInstance().registerExpression(ExprUserWithId.class, User.class, ExpressionType.SIMPLE,
+                "user with id %string% [in %guild%]")
+                .setName("User with ID")
+                .setDesc("Get a User via their ID. ")
                 .setExample("Coming Soon!");
     }
     private Expression<String> id;
     private Expression<Guild> guild;
     @Override
-    protected Member[] get(Event e) {
+    protected User[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
         if (guild == null) {
             return null;
@@ -34,7 +35,7 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
         if (member == null) {
             return null;
         }
-        return new Member[]{member};
+        return new User[]{member.getUser()};
     }
 
     @Override
@@ -43,13 +44,13 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
     }
 
     @Override
-    public Class<? extends Member> getReturnType() {
-        return Member.class;
+    public Class<? extends User> getReturnType() {
+        return User.class;
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "member with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "user with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
     @Override

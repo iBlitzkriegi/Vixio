@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.message;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;

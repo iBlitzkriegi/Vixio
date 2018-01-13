@@ -14,13 +14,11 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.exceptions.AccountTypeException;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
 import java.lang.reflect.Field;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -65,8 +63,6 @@ public class EffLogin extends Effect {
                 Skript.error("Error when logging in, token could be invalid?");
             } catch (InterruptedException e1) {
                 e1.printStackTrace();
-            } catch (RateLimitedException e1) {
-                Skript.error("You're logging in too fast! Chill m9");
             }
             Bot bot = new Bot(name, api);
             Vixio.getInstance().botHashMap.put(api, bot);

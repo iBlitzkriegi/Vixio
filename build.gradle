@@ -69,7 +69,7 @@ dependencies {
     shadow group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
 
     // JDA
-    compile 'net.dv8tion:JDA:3.4.0_318'
+    compile 'net.dv8tion:JDA:3.5.0_327'
 
     // LavaPlayer
     compile 'com.sedmelluq:lavaplayer:1.2.45'

@@ -1,7 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.message;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -11,8 +9,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
-
-import java.util.List;
 
 /**
  * Created by Blitz on 7/27/2017.

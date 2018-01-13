@@ -8,7 +8,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import org.bukkit.event.Event;
 
-import java.awt.*;
+import java.awt.Color;
 
 
 public class ExprColorFromRGB extends SimpleExpression<Color> {

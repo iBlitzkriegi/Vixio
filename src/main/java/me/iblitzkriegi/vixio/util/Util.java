@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.Locale;
 
 public class Util {
