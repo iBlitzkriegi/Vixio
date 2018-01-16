@@ -121,6 +121,8 @@ public class Util {
     }
 
     public static void setList(String name, Object[] objects, Event e, boolean local) {
+        if (objects == null) return;
+
         for (int i = 0; i < objects.length; i++)
             Variables.setVariable(name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR + (i + 1), objects[i], e, local);
     }
