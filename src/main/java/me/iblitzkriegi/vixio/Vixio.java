@@ -111,8 +111,12 @@ public class Vixio extends JavaPlugin {
 
 
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> returnType, final String property, final String fromType) {
-        Skript.registerExpression(c, returnType, ExpressionType.PROPERTY, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
-        Registration registration = new Registration(c, "[the] " + property + " of %" + fromType + "%", "%" + fromType + "%'[s] " + property);
+        String[] patterns = {
+                "[the] " + property + "[s] of %" + fromType + "%",
+                "%" + fromType + "%'[s] " + property + "[s]"
+        };
+        Skript.registerExpression(c, returnType, ExpressionType.PROPERTY, patterns);
+        Registration registration = new Registration(c, patterns);
         expressions.add(registration);
         return registration;
     }
