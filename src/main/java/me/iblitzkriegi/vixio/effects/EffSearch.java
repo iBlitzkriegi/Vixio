@@ -31,6 +31,7 @@ public class EffSearch extends AsyncEffect {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         queries = (Expression<String>) exprs[0];
+
         if (exprs[1] instanceof Variable) {
             Variable<?> varExpr = (Variable<?>) exprs[1];
             variable = Util.getVariableName(varExpr);
