@@ -13,7 +13,14 @@ import org.bukkit.event.Event;
 public class ExprSearchResults extends SimpleExpression<AudioTrack> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprSearchResults.class, AudioTrack.class, ExpressionType.SIMPLE, "[the] [last] search results");
+        Vixio.getInstance().registerExpression(ExprSearchResults.class, AudioTrack.class, ExpressionType.SIMPLE, "[the] [last] search results")
+                .setName("Search Results")
+                .setDesc("Represents the search results from the last usage of the search effect.")
+                .setExample("on join:",
+                        "\tsearch youtube for \"%player%\" and store the results in {_results::*}",
+                        "\tif search results are set:",
+                        "\t\tmessage \"Did you know there are %size of search results% videos about you on YouTube?\" to player"
+                );
     }
 
     @Override

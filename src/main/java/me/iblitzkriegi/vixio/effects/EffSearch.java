@@ -20,7 +20,14 @@ public class EffSearch extends AsyncEffect {
     public static AudioTrack[] lastResults;
 
     static {
-        Vixio.getInstance().registerEffect(EffSearch.class, "search <youtube|soundcloud> for %strings% [and store the results in %-objects%]");
+        Vixio.getInstance().registerEffect(EffSearch.class, "search <youtube|soundcloud> for %strings% [and store the results in %-objects%]")
+                .setName("Search Audio")
+                .setDesc("Lets you search various music sites for a query. You can either access the results via the search results expression, or store them in a variable.")
+                .setExample("on join:",
+                        "\tsearch youtube for \"%player%\" and store the results in {_results::*}",
+                        "\tif {_results::*} is set:",
+                        "\t\tmessage \"Did you know there are %size of {_results::*}% videos about you on YouTube?\" to player"
+                );
     }
 
     private SearchSite site;
