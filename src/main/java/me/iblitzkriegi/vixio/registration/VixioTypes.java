@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.lang.ParseContext;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
@@ -492,5 +493,30 @@ public class VixioTypes {
             }
 
         };
+
+        new SimpleType<AudioTrack>(AudioTrack.class, "audiotrack", "audio ?tracks?") {
+
+            @Override
+            public AudioTrack parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(AudioTrack track, int arg1) {
+                return track.getInfo().title;
+            }
+
+            @Override
+            public String toVariableNameString(AudioTrack track) {
+                return track.getInfo().title;
+            }
+
+        };
+
     }
 }
