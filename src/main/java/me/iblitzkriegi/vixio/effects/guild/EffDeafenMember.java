@@ -44,7 +44,6 @@ public class EffDeafenMember extends Effect {
             try {
                 Guild guild = member.getGuild();
                 if (Util.botIsConnected(bot, guild.getJDA())) {
-                    System.out.println(deafen);
                     guild.getController().setDeafen(member, deafen).queue();
                 } else {
                     Guild bindingGuild = bot.getJDA().getGuildById(guild.getId());

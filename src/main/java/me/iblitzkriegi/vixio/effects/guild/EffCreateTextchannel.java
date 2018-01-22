@@ -41,7 +41,7 @@ public class EffCreateTextchannel extends Effect{
         if (bot == null) {
             return;
         }
-        try{
+        try {
             if (Util.botIsConnected(bot, guild.getJDA())) {
                 if (not) {
                     guild.getController().createTextChannel(name).queue();

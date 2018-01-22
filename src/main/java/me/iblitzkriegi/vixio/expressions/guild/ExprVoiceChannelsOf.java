@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.guild;
+package me.iblitzkriegi.vixio.expressions.object;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -6,15 +6,16 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
-public class ExprVoiceChannelsOfGuild extends SimpleExpression<VoiceChannel> {
+public class ExprVoiceChannelsOf extends SimpleExpression<VoiceChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprVoiceChannelsOfGuild.class, VoiceChannel.class, ExpressionType.SIMPLE, "voice[(-| )]channel[s] of %guild%")
-                .setName("Voice Channels of Guild")
-                .setDesc("Get all of the voices channels in a guild.")
+        Vixio.getInstance().registerExpression(ExprVoiceChannelsOf.class, VoiceChannel.class, ExpressionType.SIMPLE, "voice[(-| )]channel[s] of %object%/category")
+                .setName("Voice Channels of Object")
+                .setDesc("Get all of the voices channels of a object.")
                 .setExample(
                         "on guild message receive:",
                         "\tset {channels::*} to voice channels of event-guild",
@@ -22,15 +23,19 @@ public class ExprVoiceChannelsOfGuild extends SimpleExpression<VoiceChannel> {
                         "\t\tbroadcast \"%name of loop-value%\""
                 );
     }
-    private Expression<Guild> guild;
+    private Expression<Object> object;
     @Override
     protected VoiceChannel[] get(Event e) {
-        Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
+        Object object = this.object.getSingle(e);
+        if (object == null) {
             return null;
         }
-
-        return guild.getVoiceChannels().toArray(new VoiceChannel[guild.getVoiceChannels().size()]);
+        if (object instanceof Guild) {
+            return ((Guild) object).getVoiceChannels().toArray(new VoiceChannel[((Guild) object).getVoiceChannels().size()]);
+        } else if (object instanceof Category) {
+            return ((Category) object).getVoiceChannels().toArray(new VoiceChannel[((Category) object).getVoiceChannels().size()]);
+        }
+        return null;
     }
 
     @Override
@@ -45,12 +50,12 @@ public class ExprVoiceChannelsOfGuild extends SimpleExpression<VoiceChannel> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "voice channels of " + guild.toString(e, debug);
+        return "voice channels of " + object.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        guild = (Expression<Guild>) exprs[0];
+        object = (Expression<Object>) exprs[0];
         return true;
     }
 }

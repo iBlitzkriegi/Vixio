@@ -63,8 +63,8 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
                 if (guild != null) {
                     return guild;
                 }
-                return null;
             }
+            return null;
         }
         return null;
     }

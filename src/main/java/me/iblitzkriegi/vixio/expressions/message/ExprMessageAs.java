@@ -18,7 +18,7 @@ import org.bukkit.event.Event;
  */
 public class ExprMessageAs extends SimpleExpression<Message> {
     static {
-        Vixio.getInstance().registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %messages% (as|with) %bot/string%")
+        Vixio.getInstance().registerExpression(ExprMessageAs.class, Message.class, ExpressionType.SIMPLE, "[message] %messages% with %bot/string%")
                 .setName("Message as bot")
                 .setDesc("Used to delete messages")
                 .setExample("delete event-message as event-bot");

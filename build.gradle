@@ -77,6 +77,8 @@ dependencies {
     // Skript API
     shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'com.vdurmont:emoji-java:3.3.0'
+
 
 }
 

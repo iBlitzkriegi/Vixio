@@ -83,7 +83,6 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
         }
         Member member = this.member.getSingle(e);
         if (member == null) {
-            Skript.error("You must input a Member to modify their roles.");
             return;
         }
         Guild guild = role.getGuild();

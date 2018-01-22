@@ -9,7 +9,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -20,7 +19,8 @@ import java.util.Objects;
 
 public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprGuildAfkChannel.class, VoiceChannel.class, ExpressionType.SIMPLE, "afk channel[s] of %guilds% [(as|with)] [%bot/string%]")
+        Vixio.getInstance().registerExpression(ExprGuildAfkChannel.class, VoiceChannel.class, ExpressionType.SIMPLE,
+                "afk channel[s] of %guilds% [(as|with)] [%bot/string%]")
                 .setName("Afk channel of Guild")
                 .setDesc("Get the afk voice channel of a Guild, has a Set changer.")
                 .setExample("coming soon");
@@ -34,6 +34,7 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
             return null;
         }
         return Arrays.stream(guilds)
+                .filter(Objects::nonNull)
                 .map(guild -> guild.getAfkChannel())
                 .toArray(VoiceChannel[]::new);
     }
@@ -50,7 +51,7 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
 
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
-        if ((mode == Changer.ChangeMode.SET)) {
+        if (mode == Changer.ChangeMode.SET) {
             return new Class[]{VoiceChannel.class};
         }
         return super.acceptChange(mode);

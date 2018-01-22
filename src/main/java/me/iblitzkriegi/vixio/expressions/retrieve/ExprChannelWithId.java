@@ -21,7 +21,7 @@ import java.util.Set;
 public class ExprChannelWithId extends SimpleExpression<Channel> {
     static {
         Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE,
-                "[(voice|text)][(-| )]channel with id %string% [in %guild%]")
+                "[(voice|text)][(-| )]channel with id %string% [in %-guild%]")
                 .setName("Channel with ID")
                 .setDesc("Get a Text or Voice channel via it's ID.")
                 .setExample("");
@@ -59,7 +59,6 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        Guild guild = this.guild.getSingle(e);
         if (guild == null) {
             Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             if (jdaInstances == null) {
@@ -77,6 +76,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
             }
             return null;
         }
+        Guild guild = this.guild.getSingle(e);
         TextChannel textChannel = guild.getTextChannelById(id);
         VoiceChannel voiceChannel = guild.getVoiceChannelById(id);
         if(textChannel != null){

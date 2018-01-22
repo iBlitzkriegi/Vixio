@@ -5,6 +5,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
@@ -20,9 +21,9 @@ import org.bukkit.event.Event;
  */
 public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,"name", "channel/guild/user/member/bot/role")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class, "name", "channel/guild/user/member/bot/role/audiotrack")
                 .setName("Name of")
-                .setDesc("Get the name of something/someone. There is a SET changer for channel,guild, and bot.")
+                .setDesc("Get the name of something/someone. There is a set changer for channel, guild, and bot.")
                 .setExample("name of event-user");
     }
     @Override
@@ -51,6 +52,8 @@ public class ExprDiscordNameOf extends SimplePropertyExpression<Object, String>{
             return ((Bot) o).getName();
         } else if(o instanceof Role) {
             return ((Role) o).getName();
+        } else if (o instanceof AudioTrack) {
+            return ((AudioTrack) o).getInfo().title;
         }
         return null;
     }

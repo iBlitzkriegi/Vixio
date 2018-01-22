@@ -5,8 +5,10 @@ import ch.njol.skript.registrations.Converters;
 import ch.njol.skript.util.Color;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.ISnowflake;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -28,5 +30,7 @@ public class VixioConverters {
         Converters.registerConverter(Member.class, String.class, (Converter<Member, String>) u -> u.getUser().getId());
         Converters.registerConverter(Member.class, User.class, (Converter<Member, User>) u -> u.getUser());
         Converters.registerConverter(Avatar.class, String.class, (Converter<Avatar, String>) u -> u.getAvatar());
+        Converters.registerConverter(Emoji.class, String.class, (Converter<Emoji, String>) u -> u.isEmote() ? u.getEmote().getAsMention() : u.getName());
+        Converters.registerConverter(Category.class, String.class, (Converter<Category, String>) u -> u.getName());
     }
 }

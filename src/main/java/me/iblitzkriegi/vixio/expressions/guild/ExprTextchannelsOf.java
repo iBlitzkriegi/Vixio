@@ -6,14 +6,15 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
-public class ExprTextChannelsOfGuild extends SimpleExpression<TextChannel> {
+public class ExprTextchannelsOf extends SimpleExpression<TextChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprTextChannelsOfGuild.class, TextChannel.class, ExpressionType.SIMPLE, "text[(-| )]channel[s] of %guild%")
-                .setName("Text Channels of Guild")
+        Vixio.getInstance().registerExpression(ExprTextchannelsOf.class, TextChannel.class, ExpressionType.SIMPLE, "text[(-| )]channel[s] of %guild/category%")
+                .setName("Text Channels of Object")
                 .setDesc("Get all of the text channels in a guild.")
                 .setExample(
                         "on guild message receive:",
@@ -22,15 +23,19 @@ public class ExprTextChannelsOfGuild extends SimpleExpression<TextChannel> {
                         "\t\tbroadcast \"%name of loop-value%\""
                 );
     }
-    private Expression<Guild> guild;
+    private Expression<Object> object;
     @Override
     protected TextChannel[] get(Event e) {
-        Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
+        Object object = this.object.getSingle(e);
+        if (object == null) {
             return null;
         }
-
-        return guild.getTextChannels().toArray(new TextChannel[guild.getTextChannels().size()]);
+        if (object instanceof Category) {
+            return ((Category) object).getTextChannels().toArray(new TextChannel[((Category) object).getTextChannels().size()]);
+        } else if (object instanceof Guild) {
+            return ((Guild) object).getTextChannels().toArray(new TextChannel[((Guild) object).getTextChannels().size()]);
+        }
+        return null;
     }
 
     @Override
@@ -45,12 +50,12 @@ public class ExprTextChannelsOfGuild extends SimpleExpression<TextChannel> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "text channels of " + guild.toString(e, debug);
+        return "text channels of " + object.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        guild = (Expression<Guild>) exprs[0];
+        object = (Expression<Object>) exprs[0];
         return true;
     }
 }

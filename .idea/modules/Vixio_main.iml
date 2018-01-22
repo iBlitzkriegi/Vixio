@@ -73,5 +73,6 @@
     <orderEntry type="library" name="Gradle: net.sf.opencsv:opencsv:2.0" level="project" />
     <orderEntry type="library" name="Gradle: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.10" level="project" />
+    <orderEntry type="library" name="Gradle: com.vdurmont:emoji-java:3.3.0" level="project" />
   </component>
 </module>
