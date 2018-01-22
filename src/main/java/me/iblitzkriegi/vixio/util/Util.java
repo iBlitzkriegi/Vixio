@@ -1,6 +1,9 @@
 package me.iblitzkriegi.vixio.util;
 
+import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Trigger;
+import ch.njol.skript.lang.TriggerSection;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
@@ -51,6 +54,13 @@ public class Util {
         }
         VARIABLE_NAME = _VARIABLE_NAME;
 
+    }
+
+    public static Trigger getCurrentTrigger() {
+        List<TriggerSection> sections = ScriptLoader.currentSections;
+        if (sections == null) return null;
+
+        return  sections.get(sections.size() - 1).getTrigger();
     }
 
     // Variable name related code credit btk5h (https://github.com/btk5h)
