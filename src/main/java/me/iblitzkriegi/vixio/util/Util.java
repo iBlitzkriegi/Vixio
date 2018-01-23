@@ -2,6 +2,8 @@ package me.iblitzkriegi.vixio.util;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
+import ch.njol.skript.config.Node;
+import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerSection;
 import ch.njol.skript.lang.Variable;
@@ -27,6 +29,7 @@ import org.bukkit.event.Event;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,13 +59,6 @@ public class Util {
 
     }
 
-    public static Trigger getCurrentTrigger() {
-        List<TriggerSection> sections = ScriptLoader.currentSections;
-        if (sections == null) return null;
-
-        return  sections.get(sections.size() - 1).getTrigger();
-    }
-
     // Variable name related code credit btk5h (https://github.com/btk5h)
     public static VariableString getVariableName(Variable<?> var) {
         try {
@@ -72,6 +68,16 @@ public class Util {
         }
         return null;
     }
+
+
+    public static void nukeSectionNode(SectionNode sectionNode) {
+        List<Node> nodes = new ArrayList<>();
+        for (Iterator<Node> iterator = sectionNode.iterator(); iterator.hasNext();)
+            nodes.add(iterator.next());
+        for (Node n : nodes)
+            sectionNode.remove(n);
+    }
+
 
     public static AudioTrack[] search(SearchSite site, String[] queries) {
         List<AudioTrack> results = new ArrayList<>();

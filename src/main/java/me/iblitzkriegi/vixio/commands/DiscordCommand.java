@@ -31,8 +31,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.command.Argument;
+import ch.njol.skript.config.SectionNode;
+import ch.njol.skript.config.validate.SectionValidator;
 import org.eclipse.jdt.annotation.Nullable;
 
 import ch.njol.skript.Skript;
@@ -63,22 +68,39 @@ public class DiscordCommand {
 
     final Trigger trigger;
 
-    private final String pattern;
     private final List<Argument<?>> arguments;
 
-    /**
-     * Creates a new SkriptCommand.
-     *
-     * @param name /name
-     * @param pattern
-     * @param arguments the list of Arguments this command takes
-     * @param description description to display in /help
-     * @param usage message to display if the command was used incorrectly
-     * @param aliases /alias1, /alias2, ...
-     * @param permission permission or null if none
-     * @param permissionMessage message to display if the player doesn't have the given permission
-     * @param items trigger to execute
-     */
+    private final static SectionValidator commandStructure = new SectionValidator()
+            .addEntry("usage", true)
+            .addEntry("description", true)
+            .addEntry("roles", true)
+            .addEntry("aliases", true)
+            .addEntry("prefix", false)
+            .addEntry("executable in", true)
+            .addSection("trigger", false);
+
+    private static final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
+    private static final Pattern argumentPattern = Pattern.compile("");
+
+    public static DiscordCommand add(SectionNode node) {
+        String command = node.getKey();
+        if (command == null) return null;
+
+        command = ScriptLoader.replaceOptions(command);
+        Matcher matcher = commandPattern.matcher(command);
+        if (!matcher.matches()) return null;
+
+        command = matcher.group(2);
+        String stringArgs = matcher.group(4);
+
+        if (stringArgs != null) {
+            for (String stringArg : stringArgs.split("")) {
+                System.out.println("Arg is " + stringArg);
+            }
+        }
+        return null;
+    }
+
     public DiscordCommand(final File script, final String name, final String pattern, final List<Argument<?>> arguments, final String description, final String usage, final ArrayList<String> aliases, final String permission, final String permissionMessage, final int executableBy, final List<TriggerItem> items) {
         Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
         this.name = name;
@@ -95,8 +117,6 @@ public class DiscordCommand {
         this.description = Utils.replaceEnglishChatStyles(description);
         this.usage = Utils.replaceEnglishChatStyles(usage);
 
-
-        this.pattern = pattern;
         this.arguments = arguments;
 
         trigger = new Trigger(script, "command /" + name, new SimpleEvent(), items);
@@ -108,17 +128,8 @@ public class DiscordCommand {
     }
 
 
-    /**
-     * Gets the arguments this command takes.
-     *
-     * @return The internal list of arguments. Do not modify it!
-     */
     public List<Argument<?>> getArguments() {
         return arguments;
-    }
-
-    public String getPattern() {
-        return pattern;
     }
 
 
