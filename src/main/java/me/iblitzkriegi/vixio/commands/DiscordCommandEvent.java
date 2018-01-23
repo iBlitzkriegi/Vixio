@@ -1,58 +1,54 @@
 package me.iblitzkriegi.vixio.commands;
 
-import ch.njol.skript.config.Config;
-import ch.njol.skript.config.Node;
-import ch.njol.skript.config.SectionNode;
-import ch.njol.skript.log.RetainingLogHandler;
-import ch.njol.skript.log.SkriptLogger;
-import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Util;
+import ch.njol.skript.command.ScriptCommand;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.bukkit.event.HandlerList;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.events.bukkit.ScriptEvent;
-import ch.njol.skript.lang.Literal;
-import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
-import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.lang.Trigger;
+public class DiscordCommandEvent extends Event {
 
-/**
- * @author Peter Güttinger
- */
-public class DiscordCommandEvent extends SelfRegisteringSkriptEvent {
+    private DiscordCommand command;
+    private Guild guild;
+    private Message message;
+    private User user;
+    private Member member;
 
-    private SectionNode sectionNode;
-    private String command;
-
-    static {
-        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandEvent.class, null, "discord command <.+>");
+    public DiscordCommandEvent(DiscordCommand command, Guild guild, Message message, User user) {
+        this.command = command;
+        this.guild = guild;
+        this.user = user;
+        this.message = message;
+        this.member = guild.getMember(user);
     }
 
-    @Override
-    public boolean init(final Literal<?>[] args, final int matchedPattern, final ParseResult parser) {
-        command = parser.regexes.get(0).group();
-        SectionNode originalSectionNode = (SectionNode) SkriptLogger.getNode();
-        sectionNode = new SectionNode(originalSectionNode.getKey(), "", originalSectionNode.getParent(), originalSectionNode.getLine());
-        Util.nukeSectionNode(originalSectionNode);
-        return DiscordCommand.add(sectionNode) != null;
+    public DiscordCommand getCommand() {
+        return command;
     }
 
-    @Override
-    public void afterParse(Config config) {}
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    private final static HandlerList handlers = new HandlerList();
 
     @Override
-    public void register(final Trigger t) {}
-
-    @Override
-    public void unregister(final Trigger t) {}
-
-    @Override
-    public void unregisterAll() {}
-
-    @Override
-    public String toString(final Event e, final boolean debug) {
-        return "discord command " + command;
+    public HandlerList getHandlers() {
+        return handlers;
     }
 
 }

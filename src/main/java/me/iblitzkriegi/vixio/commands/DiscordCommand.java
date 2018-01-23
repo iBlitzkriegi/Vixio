@@ -1,28 +1,10 @@
-/**
- *   This file is part of Skript.
- *
- *  Skript is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  Skript is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with Skript.  If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * Copyright 2011-2017 Peter Güttinger and contributors
- */
 package me.iblitzkriegi.vixio.commands;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,6 +26,7 @@ import ch.njol.skript.config.validate.SectionValidator;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.util.NonNullPair;
+import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -66,37 +49,55 @@ import ch.njol.util.Validate;
 
 public class DiscordCommand {
 
-    public static Map<String, DiscordCommand> commandMap = new HashMap<>();
+    private String name;
+    private List<String> aliases;
+    private List<String> roles;
+    private List<ChannelType> executeableIn;
+    private String description;
+    private String usage;
+    private String pattern;
 
-    final String name;
-    private final String label;
-    private final List<String> aliases;
-    private List<String> activeAliases;
-    private final String description;
-    final String usage;
+    private Trigger trigger;
 
-    final Trigger trigger;
+    private List<Argument<?>> arguments;
 
-    private final List<Argument<?>> arguments;
 
     private final static SectionValidator commandStructure = new SectionValidator()
             .addEntry("usage", true)
             .addEntry("description", true)
             .addEntry("roles", true)
             .addEntry("aliases", true)
-            .addEntry("prefix", false)
+            .addEntry("prefixes", false)
             .addEntry("executable in", true)
             .addSection("trigger", false);
 
     private static final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
     private static final Pattern argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*(" + SkriptParser.wildcard + "))?\\s*>");
     private final static Pattern escape = Pattern.compile("[" + Pattern.quote("(|)<>%\\") + "]");
+    private static final String listPattern = "\\s*,\\s*|\\s+(and|or|, )\\s+";
 
-    private final static String escape(final String s) {
-        return "" + escape.matcher(s).replaceAll("\\\\$0");
+    public DiscordCommand(File script, String name, String pattern, List<Argument<?>> arguments, String[] prefixes,
+                          List<String> aliases, String description, String usage, List<String> roles,
+                          List<ChannelType> executableIn, List<TriggerItem> items) {
+        Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
+        this.name = name;
+        aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
+        this.aliases = aliases;
+        this.roles = roles;
+        this.executeableIn = executableIn;
+        this.description = Utils.replaceEnglishChatStyles(description);
+        this.usage = Utils.replaceEnglishChatStyles(usage);
+        this.pattern = pattern;
+        this.arguments = arguments;
+
+        trigger = new Trigger(script, "discord command " + name, new SimpleEvent(), items);
+
     }
 
     public static DiscordCommand add(SectionNode node) {
+        if (!node.validate(commandStructure))
+            return null;
+
         String command = node.getKey();
         if (command == null) return null;
 
@@ -105,7 +106,7 @@ public class DiscordCommand {
         if (!matcher.matches()) return null;
 
         command = matcher.group(2);
-        DiscordCommand existingCommand = commandMap.get(command);
+        DiscordCommand existingCommand = DiscordCommands.commandMap.get(command);
         if (existingCommand != null) {
             File script = existingCommand.getScript();
             Skript.error("A command with the name /" + existingCommand.getName() + " is already defined" + (script == null ? "" : " in " + script.getName()));
@@ -159,65 +160,61 @@ public class DiscordCommand {
         for (int i = 0; i < optionals; i++)
             pattern.append(']');
 
+        if (!(node.get("trigger") instanceof SectionNode))
+            return null;
 
+        SectionNode trigger = (SectionNode) node.get("trigger");
+        String usage = ScriptLoader.replaceOptions(node.get("usage", ""));
+        String description = ScriptLoader.replaceOptions(node.get("description", ""));
+        String[] aliases = ScriptLoader.replaceOptions(node.get("aliases", "")).split(listPattern);
+        String[] prefixes = ScriptLoader.replaceOptions(node.get("prefixes", "")).split(listPattern);
+        String[] roles = ScriptLoader.replaceOptions(node.get("roles", "")).split(listPattern);
+        String[] places = ScriptLoader.replaceOptions(node.get("executable in", "")).split(listPattern);
+        List<ChannelType> channelTypes = new ArrayList<>();
+        for (String place : places) {
+            if (Util.equalsAnyIgnoreCase(place, "dm", "pm", "direct message", "private message")) {
+                channelTypes.add(ChannelType.PRIVATE);
+            } else if (Util.equalsAnyIgnoreCase(place, "guild", "server")) {
+                channelTypes.add(ChannelType.TEXT);
+            }
+        }
 
-        return new DiscordCommand(
-                node.getConfig().getFile(), command, pattern, currentArguments,
-                prefixes, aliases, description, usage, roles
+        DiscordCommand discordCommand = new DiscordCommand(
+                node.getConfig().getFile(), command, pattern.toString(), currentArguments,
+                prefixes, Arrays.asList(aliases), description, usage, Arrays.asList(roles), channelTypes, ScriptLoader.loadItems(trigger)
         );
-    }
 
-    public DiscordCommand(final File script, final String name, final String pattern, List<Argument<?>> arguments, ArrayList<String> prefixes,
-                          ArrayList<String> aliases, String description, String usage, List<String> roles,
-                              ChannelType executableIn, List<TriggerItem> items) {
-            Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
-            this.name = name;
-            label = "" + name.toLowerCase();
+        DiscordCommands.commandMap.put(command, discordCommand);
 
-            aliases.removeIf(alias -> alias.equalsIgnoreCase(label));
-            this.aliases = aliases;
-            activeAliases = new ArrayList<String>(aliases);
-
-            this.description = Utils.replaceEnglishChatStyles(description);
-            this.usage = Utils.replaceEnglishChatStyles(usage);
-
-            this.arguments = arguments;
-
-            trigger = new Trigger(script, "discord command " + name, new SimpleEvent(), items);
+        return discordCommand;
 
     }
 
     public boolean execute(final String commandLabel, final String rest) {
+        //trigger.execute(new DiscordCommandEvent());
         return true;
     }
 
+    private static String escape(final String s) {
+        return "" + escape.matcher(s).replaceAll("\\\\$0");
+    }
 
     public List<Argument<?>> getArguments() {
         return arguments;
-    }
-
-
-    public void register() {
-
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLabel() {
-        return label;
+    public String getPattern() {
+        return pattern;
     }
 
     public List<String> getAliases() {
         return aliases;
     }
 
-    public List<String> getActiveAliases() {
-        return activeAliases;
-    }
-
-    @Nullable
     public File getScript() {
         return trigger.getScript();
     }

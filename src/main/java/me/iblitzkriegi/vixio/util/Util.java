@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 public class Util {
 
@@ -69,6 +70,10 @@ public class Util {
         return null;
     }
 
+    public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
+        return Stream.of(potentialMatches)
+                .anyMatch(toMatch::equalsIgnoreCase);
+    }
 
     public static void nukeSectionNode(SectionNode sectionNode) {
         List<Node> nodes = new ArrayList<>();
