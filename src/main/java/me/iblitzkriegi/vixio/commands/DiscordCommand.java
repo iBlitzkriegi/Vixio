@@ -35,9 +35,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ch.njol.skript.ScriptLoader;
+import ch.njol.skript.classes.ClassInfo;
+import ch.njol.skript.classes.Parser;
 import ch.njol.skript.command.Argument;
+import ch.njol.skript.command.Commands;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.config.validate.SectionValidator;
+import ch.njol.skript.lang.ParseContext;
+import ch.njol.skript.registrations.Classes;
+import ch.njol.util.NonNullPair;
+import net.dv8tion.jda.core.entities.ChannelType;
 import org.eclipse.jdt.annotation.Nullable;
 
 import ch.njol.skript.Skript;
@@ -58,6 +65,8 @@ import ch.njol.util.StringUtils;
 import ch.njol.util.Validate;
 
 public class DiscordCommand {
+
+    public static Map<String, DiscordCommand> commandMap = new HashMap<>();
 
     final String name;
     private final String label;
@@ -80,7 +89,12 @@ public class DiscordCommand {
             .addSection("trigger", false);
 
     private static final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
-    private static final Pattern argumentPattern = Pattern.compile("");
+    private static final Pattern argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*(" + SkriptParser.wildcard + "))?\\s*>");
+    private final static Pattern escape = Pattern.compile("[" + Pattern.quote("(|)<>%\\") + "]");
+
+    private final static String escape(final String s) {
+        return "" + escape.matcher(s).replaceAll("\\\\$0");
+    }
 
     public static DiscordCommand add(SectionNode node) {
         String command = node.getKey();
@@ -91,35 +105,85 @@ public class DiscordCommand {
         if (!matcher.matches()) return null;
 
         command = matcher.group(2);
-        String stringArgs = matcher.group(4);
-
-        if (stringArgs != null) {
-            for (String stringArg : stringArgs.split("")) {
-                System.out.println("Arg is " + stringArg);
-            }
+        DiscordCommand existingCommand = commandMap.get(command);
+        if (existingCommand != null) {
+            File script = existingCommand.getScript();
+            Skript.error("A command with the name /" + existingCommand.getName() + " is already defined" + (script == null ? "" : " in " + script.getName()));
         }
-        return null;
+
+        String arguments = matcher.group(4);
+        final StringBuilder pattern = new StringBuilder();
+
+        List<Argument<?>> currentArguments = Commands.currentArguments = new ArrayList<>();
+        Matcher m = argumentPattern.matcher(arguments);
+        int lastEnd = 0;
+        int optionals = 0;
+
+        for (int i = 0; m.find(); i++) {
+            pattern.append(escape("" + arguments.substring(lastEnd, m.start())));
+            optionals += StringUtils.count(arguments, '[', lastEnd, m.start());
+            optionals -= StringUtils.count(arguments, ']', lastEnd, m.start());
+
+            lastEnd = m.end();
+
+            ClassInfo<?> c;
+            c = Classes.getClassInfoFromUserInput("" + m.group(2));
+            final NonNullPair<String, Boolean> p = Utils.getEnglishPlural("" + m.group(2));
+            if (c == null)
+                c = Classes.getClassInfoFromUserInput(p.getFirst());
+            if (c == null) {
+                Skript.error("Unknown type '" + m.group(2) + "'");
+                return null;
+            }
+            final Parser<?> parser = c.getParser();
+            if (parser == null || !parser.canParse(ParseContext.COMMAND)) {
+                Skript.error("Can't use " + c + " as argument of a command");
+                return null;
+            }
+
+            final Argument<?> arg = Argument.newInstance(m.group(1), c, m.group(3), i, !p.getSecond(), optionals > 0);
+            if (arg == null)
+                return null;
+            currentArguments.add(arg);
+
+            if (arg.isOptional() && optionals == 0) {
+                pattern.append('[');
+                optionals++;
+            }
+            pattern.append("%" + (arg.isOptional() ? "-" : "") + Utils.toEnglishPlural(c.getCodeName(), p.getSecond()) + "%");
+        }
+
+        pattern.append(escape("" + arguments.substring(lastEnd)));
+        optionals += StringUtils.count(arguments, '[', lastEnd);
+        optionals -= StringUtils.count(arguments, ']', lastEnd);
+        for (int i = 0; i < optionals; i++)
+            pattern.append(']');
+
+
+
+        return new DiscordCommand(
+                node.getConfig().getFile(), command, pattern, currentArguments,
+                prefixes, aliases, description, usage, roles
+        );
     }
 
-    public DiscordCommand(final File script, final String name, final String pattern, final List<Argument<?>> arguments, final String description, final String usage, final ArrayList<String> aliases, final String permission, final String permissionMessage, final int executableBy, final List<TriggerItem> items) {
-        Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
-        this.name = name;
-        label = "" + name.toLowerCase();
+    public DiscordCommand(final File script, final String name, final String pattern, List<Argument<?>> arguments, ArrayList<String> prefixes,
+                          ArrayList<String> aliases, String description, String usage, List<String> roles,
+                              ChannelType executableIn, List<TriggerItem> items) {
+            Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
+            this.name = name;
+            label = "" + name.toLowerCase();
 
-        final Iterator<String> as = aliases.iterator();
-        while (as.hasNext()) { // remove aliases that are the same as the command
-            if (as.next().equalsIgnoreCase(label))
-                as.remove();
-        }
-        this.aliases = aliases;
-        activeAliases = new ArrayList<String>(aliases);
+            aliases.removeIf(alias -> alias.equalsIgnoreCase(label));
+            this.aliases = aliases;
+            activeAliases = new ArrayList<String>(aliases);
 
-        this.description = Utils.replaceEnglishChatStyles(description);
-        this.usage = Utils.replaceEnglishChatStyles(usage);
+            this.description = Utils.replaceEnglishChatStyles(description);
+            this.usage = Utils.replaceEnglishChatStyles(usage);
 
-        this.arguments = arguments;
+            this.arguments = arguments;
 
-        trigger = new Trigger(script, "command /" + name, new SimpleEvent(), items);
+            trigger = new Trigger(script, "discord command " + name, new SimpleEvent(), items);
 
     }
 

@@ -23,6 +23,7 @@ import ch.njol.skript.lang.Trigger;
 public class DiscordCommandEvent extends SelfRegisteringSkriptEvent {
 
     private SectionNode sectionNode;
+    private String command;
 
     static {
         Vixio.getInstance().registerEvent("Discord Command", DiscordCommandEvent.class, null, "discord command <.+>");
@@ -30,10 +31,11 @@ public class DiscordCommandEvent extends SelfRegisteringSkriptEvent {
 
     @Override
     public boolean init(final Literal<?>[] args, final int matchedPattern, final ParseResult parser) {
-        SectionNode sectionNode = (SectionNode) SkriptLogger.getNode();
-        DiscordCommand.add(sectionNode);
-        Util.nukeSectionNode(sectionNode);
-        return true;
+        command = parser.regexes.get(0).group();
+        SectionNode originalSectionNode = (SectionNode) SkriptLogger.getNode();
+        sectionNode = new SectionNode(originalSectionNode.getKey(), "", originalSectionNode.getParent(), originalSectionNode.getLine());
+        Util.nukeSectionNode(originalSectionNode);
+        return DiscordCommand.add(sectionNode) != null;
     }
 
     @Override
@@ -49,8 +51,8 @@ public class DiscordCommandEvent extends SelfRegisteringSkriptEvent {
     public void unregisterAll() {}
 
     @Override
-    public String toString(final @Nullable Event e, final boolean debug) {
-        return "discord command";
+    public String toString(final Event e, final boolean debug) {
+        return "discord command " + command;
     }
 
 }

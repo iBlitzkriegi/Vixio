@@ -78,6 +78,9 @@ public class Util {
             sectionNode.remove(n);
     }
 
+    public static void error(String error) {
+
+    }
 
     public static AudioTrack[] search(SearchSite site, String[] queries) {
         List<AudioTrack> results = new ArrayList<>();
