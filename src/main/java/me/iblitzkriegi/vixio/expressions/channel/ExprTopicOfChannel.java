@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.channel;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;

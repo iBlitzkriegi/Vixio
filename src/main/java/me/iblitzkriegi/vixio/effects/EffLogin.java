@@ -36,11 +36,8 @@ public class EffLogin extends Effect {
     @Override
     protected void execute(Event e) {
         String token = this.token.getSingle(e);
-        if (token == null || token.isEmpty()) {
-            return;
-        }
         String name = this.name.getSingle(e);
-        if (name == null || token.isEmpty()) {
+        if (name == null || token == null || token.isEmpty()) {
             return;
         }
         if (Vixio.getInstance().botNameHashMap.get(name) != null) {
@@ -49,25 +46,28 @@ public class EffLogin extends Effect {
         }
         Bukkit.getScheduler().runTaskAsynchronously(Vixio.getAddonInstance().plugin, () -> {
             JDA api = null;
-            JDABuilder prebuild;
             try {
-                prebuild = new JDABuilder(AccountType.BOT).setToken(token);
-            } catch (AccountTypeException x) {
-                prebuild = new JDABuilder(AccountType.CLIENT).setToken(token);
-            }
-            try {
-                api = prebuild
+                api = new JDABuilder(AccountType.BOT).setToken(token)
                         .addEventListener(new JDAEventListener())
                         .buildBlocking();
-            } catch (LoginException e1) {
-                Skript.error("Error when logging in, token could be invalid?");
-            } catch (InterruptedException e1) {
+            } catch (LoginException | InterruptedException e1) {
                 e1.printStackTrace();
+            } catch (AccountTypeException x) {
+                try {
+                    api = new JDABuilder(AccountType.CLIENT).setToken(token)
+                            .addEventListener(new JDAEventListener())
+                            .buildBlocking();
+                } catch (LoginException | InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             }
-            Bot bot = new Bot(name, api);
-            Vixio.getInstance().botHashMap.put(api, bot);
-            Vixio.getInstance().botNameHashMap.put(name, bot);
+            try {
+                Bot bot = new Bot(name, api);
+                Vixio.getInstance().botHashMap.put(api, bot);
+                Vixio.getInstance().botNameHashMap.put(name, bot);
+            } catch (NullPointerException x) {
 
+            }
             if (getNext() != null) {
                 TriggerItem.walk(getNext(), e);
             }

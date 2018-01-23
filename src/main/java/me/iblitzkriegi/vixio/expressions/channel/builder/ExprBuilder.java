@@ -9,7 +9,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.scopes.ScopeMakeChannel;
 import me.iblitzkriegi.vixio.util.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-
 import org.bukkit.event.Event;
 
 public class ExprBuilder extends SimpleExpression<ChannelBuilder> {

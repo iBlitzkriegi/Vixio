@@ -10,7 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SkAddons-Vixio_main" />
-    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.5.0_327" level="project" />
+    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.5.0_329" level="project" />
     <orderEntry type="library" name="Gradle: com.sedmelluq:lavaplayer:1.2.45" level="project" />
     <orderEntry type="library" name="Gradle: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" name="Gradle: com.vdurmont:emoji-java:3.3.0" level="project" />

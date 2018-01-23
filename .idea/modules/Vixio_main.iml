@@ -10,7 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.4.0_318" level="project" />
     <orderEntry type="library" name="Gradle: com.sedmelluq:lavaplayer:1.2.45" level="project" />
     <orderEntry type="library" name="Gradle: ch.njol:skript:2.2-dev32" level="project" />
     <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
@@ -74,5 +73,6 @@
     <orderEntry type="library" name="Gradle: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.10" level="project" />
     <orderEntry type="library" name="Gradle: com.vdurmont:emoji-java:3.3.0" level="project" />
+    <orderEntry type="library" name="Gradle: net.dv8tion:JDA:3.5.0_329" level="project" />
   </component>
 </module>

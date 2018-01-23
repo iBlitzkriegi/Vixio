@@ -33,6 +33,7 @@ public class EffAddReaction extends Effect {
         if (bot == null || message == null || emojis == null) {
             return;
         }
+
         if (Util.botIsConnected(bot, message.getJDA())) {
             for (Emoji emoji : emojis) {
                 if (emoji.isEmote()) {
@@ -43,6 +44,7 @@ public class EffAddReaction extends Effect {
             }
             return;
         }
+
         TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
         for (Emoji emoji : emojis) {
             if (emoji.isEmote()) {

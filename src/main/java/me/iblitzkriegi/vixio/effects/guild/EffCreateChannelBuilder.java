@@ -16,10 +16,18 @@ import org.bukkit.event.Event;
 public class EffCreateChannelBuilder extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffCreateChannelBuilder.class,
-                "create %channelbuilder% in %guild% [(with|as)] [%bot/string%]")
+                "create %channelbuilder% in %guild% [(with|as) %bot/string%]")
                 .setName("Create channel builder")
                 .setDesc("Create a channel created with the create channel scope")
-                .setExample("Coming Soon!");
+                .setExample("command /channel:" +
+                        "\ttrigger:" +
+                        "\t\tcreate text channel:" +
+                        "\t\t\tset name of the channel to \"Testingxdxd\"" +
+                        "\t\t\tset {guild} to guild with id \"219967335266648065\"" +
+                        "\t\t\tset nsfw state of the channel as \"Jewel\" to true" +
+                        "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"" +
+                        "\t\t\tset parent of the channel to category named \"xd\" in {guild}" +
+                        "\t\t\tcreate the channel in {guild} as \"Jewel\"");
     }
     private Expression<ChannelBuilder> channelBuilder;
     private Expression<Guild> guild;
@@ -28,17 +36,12 @@ public class EffCreateChannelBuilder extends Effect {
     protected void execute(Event e) {
         ChannelBuilder channelBuilder = this.channelBuilder.getSingle(e);
         Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
-            return;
-        }
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (bot == null) {
-            return;
-        }
         Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (channelBuilder == null || bindedGuild == null) {
+        if (bot == null || guild == null || channelBuilder == null || bindedGuild == null) {
             return;
         }
+
         try {
             if (channelBuilder.getType() == ChannelType.TEXT) {
                 bindedGuild.getController().createTextChannel(channelBuilder.getName())
