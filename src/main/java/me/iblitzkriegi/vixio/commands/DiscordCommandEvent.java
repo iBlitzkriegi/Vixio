@@ -21,7 +21,8 @@ public class DiscordCommandEvent extends Event {
         this.guild = guild;
         this.user = user;
         this.message = message;
-        this.member = guild.getMember(user);
+        if (guild != null && user != null)
+            this.member = guild.getMember(user);
     }
 
     public DiscordCommand getCommand() {

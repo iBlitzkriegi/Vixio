@@ -32,20 +32,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.WeakHashMap;
 import java.util.stream.Stream;
 
 public class Util {
 
     private static final Field VARIABLE_NAME;
-
-    private static YoutubeSearchProvider youtubeSearchProvider =
-            new YoutubeSearchProvider(
-                    new YoutubeAudioSourceManager(false)
-            );
-
-    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
-    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
-
     static {
 
         Field _VARIABLE_NAME = null;
@@ -59,6 +51,14 @@ public class Util {
         VARIABLE_NAME = _VARIABLE_NAME;
 
     }
+
+    private static YoutubeSearchProvider youtubeSearchProvider =
+            new YoutubeSearchProvider(
+                    new YoutubeAudioSourceManager(false)
+            );
+
+    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
+    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
     // Variable name related code credit btk5h (https://github.com/btk5h)
     public static VariableString getVariableName(Variable<?> var) {
@@ -81,10 +81,6 @@ public class Util {
             nodes.add(iterator.next());
         for (Node n : nodes)
             sectionNode.remove(n);
-    }
-
-    public static void error(String error) {
-
     }
 
     public static AudioTrack[] search(SearchSite site, String[] queries) {
