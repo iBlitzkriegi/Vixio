@@ -60,7 +60,7 @@ public class DiscordCommand {
 
         try {
 
-            boolean ok = DiscordCommands.parseArguments(args, this, event);
+            boolean ok = DiscordCommands.getInstance().parseArguments(args, this, event);
             if (!ok)
                 return false;
 

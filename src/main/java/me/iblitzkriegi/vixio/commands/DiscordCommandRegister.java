@@ -16,9 +16,10 @@ public class DiscordCommandRegister extends SelfRegisteringSkriptEvent {
 
     private String arguments;
     private String command;
+    public static boolean commandParsing = false;
 
     static {
-        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandRegister.class, null, "discord command <([^\\s]+)( .+)?$>");
+        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandRegister.class, DiscordCommandEvent.class, "discord command <([^\\s]+)( .+)?$>");
     }
 
     @Override
@@ -26,20 +27,24 @@ public class DiscordCommandRegister extends SelfRegisteringSkriptEvent {
         command = parser.regexes.get(0).group(1);
         arguments = parser.regexes.get(0).group(2);
         SectionNode sectionNode = (SectionNode) SkriptLogger.getNode();
-        DiscordCommand cmd = DiscordCommands.add(sectionNode);
+        commandParsing = true;
+        DiscordCommand cmd = DiscordCommands.getInstance().add(sectionNode);
+        commandParsing = false;
         Util.nukeSectionNode(sectionNode);
         return cmd != null;
     }
 
     @Override
-    public void afterParse(Config config) {}
+    public void afterParse(Config config) {
+        commandParsing = false;
+    }
 
     @Override
     public void register(final Trigger t) {}
 
     @Override
     public void unregister(final Trigger t) {
-        DiscordCommands.remove(command);
+        DiscordCommands.getInstance().remove(command);
     }
 
     @Override

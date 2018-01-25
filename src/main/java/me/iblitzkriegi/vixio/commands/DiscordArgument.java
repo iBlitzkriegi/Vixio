@@ -18,6 +18,10 @@ import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
 import ch.njol.skript.variables.Variables;
 
+/**
+ * @author Peter Güttinger
+ * edited minorly for Vixio
+ */
 public class DiscordArgument<T> {
 
     @Nullable

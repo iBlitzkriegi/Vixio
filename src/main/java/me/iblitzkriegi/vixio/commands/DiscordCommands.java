@@ -15,14 +15,21 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.Variable;
+import ch.njol.skript.log.LogHandler;
+import ch.njol.skript.log.RetainingLogHandler;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
 import ch.njol.skript.variables.Variables;
 import ch.njol.util.NonNullPair;
 import ch.njol.util.StringUtils;
+import me.iblitzkriegi.vixio.util.EffectSection;
+import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import me.iblitzkriegi.vixio.util.Util;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -31,6 +38,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -38,10 +46,9 @@ import java.util.regex.Pattern;
 
 public class DiscordCommands {
 
-    public static Map<String, DiscordCommand> commandMap = new HashMap<>();
-    private static final Method PARSE_I;
+    private static final DiscordCommands INSTANCE = new DiscordCommands();
 
-    static {
+    private DiscordCommands() {
 
         Method _PARSE_I = null;
         try {
@@ -55,12 +62,19 @@ public class DiscordCommands {
 
     }
 
-    private static final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
-    private static final Pattern argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*(" + SkriptParser.wildcard + "))?\\s*>");
-    private final static Pattern escape = Pattern.compile("[" + Pattern.quote("(|)<>%\\") + "]");
-    private static final String listPattern = "\\s*,\\s*|\\s+(and|or|, )\\s+";
+    public static DiscordCommands getInstance() {
+        return INSTANCE;
+    }
 
-    private final static SectionValidator commandStructure = new SectionValidator()
+    private HashMap<String, DiscordCommand> commandMap = new HashMap<>();
+    private final Method PARSE_I;
+    public List<DiscordArgument<?>> currentArguments;
+    private final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
+    private final Pattern argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*(" + SkriptParser.wildcard + "))?\\s*>");
+    private final Pattern escape = Pattern.compile("[" + Pattern.quote("(|)<>%\\") + "]");
+    private final String listPattern = "\\s*,\\s*|\\s+(and|or|, )\\s+";
+
+    private final SectionValidator commandStructure = new SectionValidator()
             .addEntry("usage", true)
             .addEntry("description", true)
             .addEntry("roles", true)
@@ -69,11 +83,11 @@ public class DiscordCommands {
             .addEntry("executable in", true)
             .addSection("trigger", false);
 
-    private static String escape(final String s) {
+    private String escape(final String s) {
         return "" + escape.matcher(s).replaceAll("\\\\$0");
     }
 
-    public static boolean parseArguments(String args, DiscordCommand command, Event event) {
+    public boolean parseArguments(String args, DiscordCommand command, Event event) {
         SkriptParser parser = new SkriptParser(args, SkriptParser.PARSE_LITERALS, ParseContext.COMMAND);
         SkriptParser.ParseResult res = null;
         try {
@@ -95,17 +109,46 @@ public class DiscordCommands {
         return true;
     }
 
-    public static DiscordCommand add(SectionNode node) {
+    public ArrayList<ChannelType> parsePlaces(String[] places) {
+        ArrayList<ChannelType> types = new ArrayList<ChannelType>();
+        for (String place : places) {
+            if (Util.equalsAnyIgnoreCase(place, "server", "guild"))
+                types.add(ChannelType.TEXT);
+            else if (Util.equalsAnyIgnoreCase(place, "dm", "pm", "direct message", "private message"))
+                types.add(ChannelType.PRIVATE);
+            else {
+                Skript.error("'executable in' should be either 'guild', 'dm', or both, but found '" + place + "'");
+                return null;
+            }
+        }
+        return types;
+    }
+
+    public DiscordCommand add(SectionNode node) {
 
         String command = node.getKey();
         if (command == null) return null;
 
         command = ScriptLoader.replaceOptions(command);
         Matcher matcher = commandPattern.matcher(command);
-        if (!matcher.matches()) return null;
+        if (!matcher.matches())
+            return null;
+
+        int level = 0;
+        for (int i = 0; i < command.length(); i++) {
+            if (command.charAt(i) == '[') {
+                level++;
+            } else if (command.charAt(i) == ']') {
+                if (level == 0) {
+                    Skript.error("Invalid placement of [optional brackets]");
+                    return null;
+                }
+                level--;
+            }
+        }
 
         command = matcher.group(2);
-        DiscordCommand existingCommand = DiscordCommands.commandMap.get(command);
+        DiscordCommand existingCommand = this.commandMap.get(command);
         if (existingCommand != null) {
             File script = existingCommand.getScript();
             Skript.error("A discord command with the name \"" + existingCommand.getName() + "\" is already defined" + (script == null ? "" : " in " + script.getName()));
@@ -114,7 +157,7 @@ public class DiscordCommands {
         String arguments = matcher.group(4);
         final StringBuilder pattern = new StringBuilder();
 
-        List<DiscordArgument<?>> currentArguments = new ArrayList<>();
+        List<DiscordArgument<?>> currentArguments = this.currentArguments = new ArrayList<>();
         Matcher m = argumentPattern.matcher(arguments);
         int lastEnd = 0;
         int optionals = 0;
@@ -167,37 +210,36 @@ public class DiscordCommands {
             return null;
 
         SectionNode trigger = (SectionNode) node.get("trigger");
-        ArrayList<TriggerItem> loadedTrigger = ScriptLoader.loadItems(trigger);
-        if (loadedTrigger.isEmpty())
-            return null;
         String usage = ScriptLoader.replaceOptions(node.get("usage", ""));
         String description = ScriptLoader.replaceOptions(node.get("description", ""));
         String[] aliases = ScriptLoader.replaceOptions(node.get("aliases", "")).split(listPattern);
         String[] prefixes = ScriptLoader.replaceOptions(node.get("prefixes", "")).split(listPattern);
-        for (String s : prefixes) System.out.println(s);
         String[] roles = ScriptLoader.replaceOptions(node.get("roles", "")).split(listPattern);
-        String[] places = ScriptLoader.replaceOptions(node.get("executable in", "")).split(listPattern);
-        List<ChannelType> channelTypes = new ArrayList<>();
-        for (String place : places) {
-            if (Util.equalsAnyIgnoreCase(place, "dm", "pm", "direct message", "private message")) {
-                channelTypes.add(ChannelType.PRIVATE);
-            } else if (Util.equalsAnyIgnoreCase(place, "guild", "server")) {
-                channelTypes.add(ChannelType.TEXT);
-            }
+        ArrayList<ChannelType> places = parsePlaces(ScriptLoader.replaceOptions(node.get("executable in", "guild, dm")).split(listPattern));
+        if (places == null)
+            return null;
+
+        RetainingLogHandler errors = SkriptLogger.startRetainingLog();
+        DiscordCommand discordCommand;
+        this.currentArguments = currentArguments;
+        try {
+            discordCommand = new DiscordCommand(
+                    node.getConfig().getFile(), command, pattern.toString(), currentArguments,
+                    prefixes, Arrays.asList(aliases), description, usage, Arrays.asList(roles), places, ScriptLoader.loadItems(trigger)
+            );
+        } finally {
+            this.currentArguments = null;
+            EffectSection.stopLog(errors);
         }
 
-        DiscordCommand discordCommand = new DiscordCommand(
-                node.getConfig().getFile(), command, pattern.toString(), currentArguments,
-                prefixes, Arrays.asList(aliases), description, usage, Arrays.asList(roles), channelTypes, ScriptLoader.loadItems(trigger)
-        );
+        this.commandMap.put(command, discordCommand);
 
-        DiscordCommands.commandMap.put(command, discordCommand);
-
+        currentArguments = null;
         return discordCommand;
 
     }
 
-    public static boolean remove(String name) {
+    public boolean remove(String name) {
         return commandMap.remove(name) != null;
     }
 
