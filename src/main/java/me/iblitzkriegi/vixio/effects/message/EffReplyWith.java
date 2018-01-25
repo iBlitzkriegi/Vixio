@@ -57,7 +57,7 @@ public class EffReplyWith extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (Arrays.stream(ScriptLoader.getCurrentEvents())
+        if (ScriptLoader.getCurrentEvents() != null && Arrays.stream(ScriptLoader.getCurrentEvents())
                 .anyMatch(event -> EventValues.getEventValueGetter(event, TextChannel.class, 0) != null)) {
             message = (Expression<Object>) expressions[0];
             return true;

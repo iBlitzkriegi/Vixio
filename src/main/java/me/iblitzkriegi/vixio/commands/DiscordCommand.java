@@ -1,25 +1,22 @@
 package me.iblitzkriegi.vixio.commands;
 
-import java.io.File;
-
-import java.util.List;
-
-import ch.njol.skript.command.Argument;
-
-import ch.njol.skript.command.ScriptCommandEvent;
-import ch.njol.skript.log.ParseLogHandler;
-import ch.njol.skript.log.SkriptLogger;
-import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.ChannelType;
-
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.util.SimpleEvent;
+import ch.njol.skript.log.ParseLogHandler;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Validate;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiscordCommand {
 
@@ -27,6 +24,7 @@ public class DiscordCommand {
     private List<String> aliases;
     private List<String> roles;
     private List<ChannelType> executeableIn;
+    private List<String> prefixes;
     private String description;
     private String usage;
     private String pattern;
@@ -35,7 +33,7 @@ public class DiscordCommand {
 
     private List<DiscordArgument<?>> arguments;
 
-    public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, String[] prefixes,
+    public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<String> prefixes,
                           List<String> aliases, String description, String usage, List<String> roles,
                           List<ChannelType> executableIn, List<TriggerItem> items) {
         Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
@@ -47,14 +45,19 @@ public class DiscordCommand {
         this.description = Utils.replaceEnglishChatStyles(description);
         this.usage = Utils.replaceEnglishChatStyles(usage);
         this.pattern = pattern;
+        this.prefixes = prefixes;
         this.arguments = arguments;
 
         trigger = new Trigger(script, "discord command " + name, new SimpleEvent(), items);
 
     }
 
-    public boolean execute(String command, String args, Guild guild, Message message, User user, ChannelType channelType) {
-        DiscordCommandEvent event = new DiscordCommandEvent(this, guild, message, user);
+    public boolean execute(String command, String prefix, String args, Guild guild, TextChannel channel, Message message, User user,
+                           Member member) {
+        DiscordCommandEvent event = new DiscordCommandEvent(prefix, this, guild, channel, message, user, member);
+        if (args == null)
+            args = "";
+
 
         ParseLogHandler log = SkriptLogger.startParseLogHandler();
 
@@ -87,6 +90,36 @@ public class DiscordCommand {
 
     public List<String> getAliases() {
         return aliases;
+    }
+
+    public List<String> getPrefixes() {
+        return prefixes;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUsage() {
+        return usage;
+    }
+
+    public List<String> getUsableAliases() {
+        List<String> usableAliases = new ArrayList<String>(getAliases());
+        usableAliases.add(getName());
+        return usableAliases;
+    }
+
+    public Trigger getTrigger() {
+        return trigger;
+    }
+
+    public List<ChannelType> getExecuteableIn() {
+        return executeableIn;
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 
     public File getScript() {

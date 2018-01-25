@@ -4,43 +4,29 @@ import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
-import ch.njol.skript.command.Argument;
-import ch.njol.skript.command.Commands;
-import ch.njol.skript.command.ScriptCommand;
-import ch.njol.skript.command.ScriptCommandEvent;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.config.validate.SectionValidator;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.Trigger;
-import ch.njol.skript.lang.TriggerItem;
-import ch.njol.skript.lang.Variable;
-import ch.njol.skript.log.LogHandler;
 import ch.njol.skript.log.RetainingLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
-import ch.njol.skript.variables.Variables;
 import ch.njol.util.NonNullPair;
 import ch.njol.util.StringUtils;
 import me.iblitzkriegi.vixio.util.EffectSection;
-import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +52,7 @@ public class DiscordCommands {
         return INSTANCE;
     }
 
-    private HashMap<String, DiscordCommand> commandMap = new HashMap<>();
+    public HashMap<String, DiscordCommand> commandMap = new HashMap<>();
     private final Method PARSE_I;
     public List<DiscordArgument<?>> currentArguments;
     private final Pattern commandPattern = Pattern.compile("(?i)^(on )?discord command (\\S+)(\\s+(.+))?$");
@@ -225,7 +211,7 @@ public class DiscordCommands {
         try {
             discordCommand = new DiscordCommand(
                     node.getConfig().getFile(), command, pattern.toString(), currentArguments,
-                    prefixes, Arrays.asList(aliases), description, usage, Arrays.asList(roles), places, ScriptLoader.loadItems(trigger)
+                    Arrays.asList(prefixes), Arrays.asList(aliases), description, usage, Arrays.asList(roles), places, ScriptLoader.loadItems(trigger)
             );
         } finally {
             this.currentArguments = null;
@@ -243,4 +229,7 @@ public class DiscordCommands {
         return commandMap.remove(name) != null;
     }
 
+    public Collection<DiscordCommand> getCommands() {
+        return commandMap.values();
+    }
 }

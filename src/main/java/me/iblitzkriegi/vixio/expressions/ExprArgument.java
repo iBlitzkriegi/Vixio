@@ -1,16 +1,6 @@
 package me.iblitzkriegi.vixio.expressions;
 
-import java.util.List;
-
 import ch.njol.skript.ScriptLoader;
-import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordArgument;
-import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
-import me.iblitzkriegi.vixio.commands.DiscordCommandRegister;
-import me.iblitzkriegi.vixio.commands.DiscordCommands;
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.lang.Expression;
@@ -23,6 +13,14 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import ch.njol.util.StringUtils;
+import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.commands.DiscordArgument;
+import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.commands.DiscordCommands;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.List;
 
 /**
  * @author Peter Güttinger
@@ -43,7 +41,7 @@ public class ExprArgument extends SimpleExpression<Object> {
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parser) {
-        if (!DiscordCommandRegister.commandParsing)
+        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class))
             return false;
 
         final List<DiscordArgument<?>> currentArguments = DiscordCommands.getInstance().currentArguments;

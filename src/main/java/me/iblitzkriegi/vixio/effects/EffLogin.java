@@ -8,6 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.jda.JDAEventListener;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.AccountType;
@@ -58,6 +59,7 @@ public class EffLogin extends Effect {
             try {
                 api = prebuild
                         .addEventListener(new JDAEventListener())
+                        .addEventListener(new CommandListener())
                         .buildBlocking();
             } catch (LoginException e1) {
                 Skript.error("Error when logging in, token could be invalid?");
