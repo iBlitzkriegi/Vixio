@@ -20,7 +20,7 @@ public class CommandListener extends ListenerAdapter {
         String commandLabel = m.group(1);
         String args = m.group(3);
 
-        for (DiscordCommand command : DiscordCommands.getInstance().getCommands()) {
+        for (DiscordCommand command : DiscordCommandFactory.getInstance().getCommands()) {
 
             for (String prefix : command.getPrefixes()) {
 
@@ -28,8 +28,8 @@ public class CommandListener extends ListenerAdapter {
 
                     if (commandLabel.equals(prefix + alias)) {
 
-                        command.execute(alias, prefix, args, e.getGuild(), e.getTextChannel(), e.getMessage(),
-                                e.getMember().getUser(), e.getMember());
+                        command.execute(prefix, alias, args, e.getGuild(), e.getChannel(), e.getMessage(),
+                                e.getAuthor(), e.getMember());
                         return;
 
                     }

@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
 import java.io.File;
@@ -52,9 +52,9 @@ public class DiscordCommand {
 
     }
 
-    public boolean execute(String command, String prefix, String args, Guild guild, TextChannel channel, Message message, User user,
+    public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel channel, Message message, User user,
                            Member member) {
-        DiscordCommandEvent event = new DiscordCommandEvent(prefix, this, guild, channel, message, user, member);
+        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member);
         if (args == null)
             args = "";
 
@@ -63,7 +63,7 @@ public class DiscordCommand {
 
         try {
 
-            boolean ok = DiscordCommands.getInstance().parseArguments(args, this, event);
+            boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
             if (!ok)
                 return false;
 
@@ -105,7 +105,7 @@ public class DiscordCommand {
     }
 
     public List<String> getUsableAliases() {
-        List<String> usableAliases = new ArrayList<String>(getAliases());
+        List<String> usableAliases = new ArrayList<>(getAliases());
         usableAliases.add(getName());
         return usableAliases;
     }

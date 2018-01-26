@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -18,11 +17,13 @@ public class DiscordCommandEvent extends Event {
     private Member member;
     private MessageChannel channel;
     private String prefix;
+    private String usedAlias;
 
-    public DiscordCommandEvent(String prefix, DiscordCommand command, Guild guild, TextChannel channel, Message message, User user, Member member) {
+    public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, Guild guild, MessageChannel channel, Message message, User user, Member member) {
         this.command = command;
         this.guild = guild;
         this.user = user;
+        this.usedAlias = usedAlias;
         this.message = message;
         this.member = member;
         this.channel = channel;
@@ -55,6 +56,10 @@ public class DiscordCommandEvent extends Event {
 
     public String getPrefix() {
         return prefix;
+    }
+
+    public String getUsedAlias() {
+        return usedAlias;
     }
 
     private final static HandlerList handlers = new HandlerList();

@@ -2,6 +2,8 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.iblitzkriegi.vixio.commands.DiscordCommand;
+import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
@@ -13,6 +15,7 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -514,6 +517,50 @@ public class VixioTypes {
             @Override
             public String toVariableNameString(AudioTrack track) {
                 return track.getInfo().title;
+            }
+
+        };
+
+        new SimpleType<DiscordCommand>(DiscordCommand.class, "discordcommand", "discord ?commands?") {
+
+            @Override
+            public DiscordCommand parse(String s, ParseContext pc) {
+                return DiscordCommandFactory.getInstance().commandMap.get(s);
+            }
+
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            public String toString(DiscordCommand cmd, int arg1) {
+                return cmd.getName();
+            }
+
+            @Override
+            public String toVariableNameString(DiscordCommand cmd) {
+                return cmd.getName();
+            }
+
+        };
+
+        new SimpleType<MessageChannel>(MessageChannel.class, "messagechannel", "message ?channels?") {
+
+            @Override
+            public MessageChannel parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            public String toString(MessageChannel channel, int arg1) {
+                return channel.getName();
+            }
+
+            @Override
+            public String toVariableNameString(MessageChannel channel) {
+                return channel.getName();
             }
 
         };
