@@ -12,13 +12,14 @@ import net.dv8tion.jda.core.entities.ISnowflake;
 public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "id", "channel/guild/user/message/bot/role/avatar/category")
-            .setName("Discord ID of")
-            .setDesc("Get the ID of a discord object")
-            .setExample("id of event-user");
+                .setName("Discord ID of")
+                .setDesc("Get the ID of a Discord")
+                .setExample("id of event-user");
     }
+
     @Override
     protected String getPropertyName() {
-        return "id of";
+        return "id";
     }
 
     @Override

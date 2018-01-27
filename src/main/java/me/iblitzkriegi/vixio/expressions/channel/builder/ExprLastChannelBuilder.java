@@ -14,15 +14,16 @@ public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
     static {
         Vixio.getInstance().registerExpression(ExprLastChannelBuilder.class, ChannelBuilder.class, ExpressionType.SIMPLE,
                 "[the] last[ly] [(made|created)] channel[[ ]builder]")
-                .setName("Last created Channel Builder")
+                .setName("Last Created Channel Builder")
                 .setDesc("Get the last made Channel Builder created via the Channel Builder scope.")
                 .setExample(
                         "command /lastMade:",
                         "\ttrigger:",
-                        "\t\tcreate the last made channel in guild with id \"41561890890\" as \"Jewel\""
+                        "\t\tcreate the last made channel in guild with id \"415615161890890\" as \"Jewel\""
 
                 );
     }
+
     @Override
     protected ChannelBuilder[] get(Event e) {
         ChannelBuilder channelBuilder = ScopeMakeChannel.channelBuilder;

@@ -24,6 +24,7 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
 
     private Expression<? extends Number> red, green, blue;
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         red = (Expression<Number>) exprs[0];

@@ -10,8 +10,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -25,9 +23,11 @@ import java.util.List;
  */
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channels/channelbuilders% [(with|as) %bot/string%]")
+        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE,
+                "topic of %textchannels/channelbuilders% [(with|as) %-bot/string%]")
                 .setName("Topic of Channel")
-                .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
+                .setDesc("Get the topic of a Text Channel. Must include a bot to modify the topic! Changers: SET, DELETE, RESET")
+                .setUserFacing("topic of %textchannel/channelbuilders% [(with|as) %bot/string%]")
                 .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
     }
 
@@ -40,11 +40,12 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
         if (channels == null) {
             return null;
         }
+
         List<String> topics = new ArrayList<>();
         for (Object object : channels) {
             if (object instanceof ChannelBuilder) {
                 topics.add(((ChannelBuilder) object).getTopic());
-            } else if (object instanceof Channel && ((Channel) object).getType() == ChannelType.TEXT) {
+            } else if (object instanceof TextChannel) {
                 TextChannel channel = (TextChannel) object;
                 topics.add(channel.getTopic());
             }
@@ -67,6 +68,7 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
         return "topic of " + channel.toString(event, b) + (bot == null ? "" : " as " + bot.toString(event, b));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         channel = (Expression<Object>) expressions[0];
@@ -83,33 +85,30 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("set topic of channel");
+            return;
+        }
+
         String topic = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (bot == null) {
-            return;
-        }
         Object[] channels = this.channel.getAll(e);
-        if (channels == null) {
+        if (bot == null || channels == null) {
             return;
         }
+
         for (Object object : channels) {
             if (object instanceof ChannelBuilder) {
                 ((ChannelBuilder) object).setTopic(topic);
-            } else if (object instanceof Channel) {
-                if (((Channel) object).getType().equals(ChannelType.TEXT)) {
-                    try {
-                        TextChannel textChannel = (TextChannel) object;
-                        if (Util.botIsConnected(bot, textChannel.getJDA())) {
-                            textChannel.getManager().setTopic(topic).queue();
-                        } else {
-                            TextChannel bindingChannel = bot.getJDA().getTextChannelById(textChannel.getId());
-                            if (bindingChannel != null) {
-                                bindingChannel.getManager().setTopic(topic).queue();
-                            }
-                        }
-                    } catch (PermissionException x) {
-                        Vixio.getErrorHandler().needsPerm(bot, "set topic", x.getPermission().getName());
+            } else if (object instanceof TextChannel) {
+                try {
+                    TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) object);
+                    if (bindedChannel == null) {
+                        return;
                     }
+                    bindedChannel.getManager().setTopic(topic).queue();
+                } catch (PermissionException x) {
+                    Vixio.getErrorHandler().needsPerm(bot, "set topic", x.getPermission().getName());
                 }
             }
         }

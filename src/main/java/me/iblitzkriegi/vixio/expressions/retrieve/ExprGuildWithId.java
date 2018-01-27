@@ -17,17 +17,33 @@ import java.util.Set;
  */
 public class ExprGuildWithId extends SimpleExpression<Guild> {
     static {
-        Vixio.getInstance().registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE, "(server|guild) with id %string%")
-            .setName("Guild with id")
-            .setDesc("Get a server/guild via it's ID")
-            .setExample("guild with id \"16165198461\"");
+        Vixio.getInstance().registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE,
+                "(server|guild) with id %string%")
+                .setName("Guild with id")
+                .setDesc("Get a Guild via it's ID")
+                .setExample("guild with id \"16165192162168461\"");
     }
 
     private Expression<String> id;
 
     @Override
-    protected Guild[] get(Event event) {
-        return new Guild[]{getGuild(event)};
+    protected Guild[] get(Event e) {
+        String id = this.id.getSingle(e);
+        if (id == null || id.isEmpty()) {
+            return null;
+        }
+
+        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        if (!jdaInstances.isEmpty()) {
+            for (JDA jda : jdaInstances) {
+                Guild guild = jda.getGuildById(id);
+                if (guild != null) {
+                    return new Guild[]{guild};
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -45,28 +61,10 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
         return "guild with id " + id.toString(event, b);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
         return true;
     }
-
-    private Guild getGuild(Event e) {
-        String id = this.id.getSingle(e);
-        if (id == null || id.isEmpty()) {
-            return null;
-        }
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        if (jdaInstances != null && !jdaInstances.isEmpty()) {
-            for (JDA jda : jdaInstances){
-                Guild guild = jda.getGuildById(id);
-                if (guild != null) {
-                    return guild;
-                }
-            }
-            return null;
-        }
-        return null;
-    }
-
 }

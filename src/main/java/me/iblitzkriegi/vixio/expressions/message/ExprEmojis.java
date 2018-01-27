@@ -23,7 +23,7 @@ import java.util.List;
 public class ExprEmojis extends SimpleExpression<Emoji> {
     static {
         Vixio.getInstance().registerExpression(ExprEmojis.class, Emoji.class, ExpressionType.SIMPLE,
-                "[the] (emoji|emote|reaction)[s] of %message% [(with|as) %bot/string%]")
+                "[the] (emoji|emote|reaction)[s] of %message% [(with|as) %-bot/string%]")
                 .setName("Reactions of message")
                 .setDesc("Get the emojis of a message. Changers: DELETE, RESET, REMOVE ALL, REMOVE, ADD")
                 .setExample(
@@ -53,6 +53,7 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
                 emojis.add(new Emoji(messageReaction.getReactionEmote().getEmote()));
             }
         }
+
         return emojis.toArray(new Emoji[emojis.size()]);
     }
 
@@ -72,6 +73,7 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) exprs[0];
@@ -89,17 +91,24 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
                         && message.isSingle())) {
             return new Class[]{Emoji[].class};
         }
+
         return super.acceptChange(mode);
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("modify reactions of message");
+            return;
+        }
+
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         Message message = this.message.getSingle(e);
         TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
         if (message == null || bot == null || channel == null) {
             return;
         }
+
         switch (mode) {
             case ADD:
                 try {

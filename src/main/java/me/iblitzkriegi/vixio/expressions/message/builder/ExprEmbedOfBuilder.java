@@ -12,12 +12,30 @@ import org.bukkit.event.Event;
 
 public class ExprEmbedOfBuilder extends SimplePropertyExpression<MessageBuilder, MessageEmbed> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprEmbedOfBuilder.class, MessageEmbed.class, "embed", "messagebuilders")
+        Vixio.getInstance().registerPropertyExpression(ExprEmbedOfBuilder.class, MessageEmbed.class,
+                "embed", "messagebuilders")
                 .setName("Embed of Message Builder")
-                .setDesc("Get the Embed of a Message Builder")
-                .setExample("Coming Soon!");
+                .setDesc("Get the Embed of a Message Builder. Changers: SET, DELETE, RESET")
+                .setExample("on guild message received:" +
+                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
+                        "\t\tif {_cmd::1} is \"##build\": " +
+                        "\t\t\tmake embed:" +
+                        "\t\t\t\tadd field with value \"to remove\" to fields of the embed" +
+                        "\t\t\t\tadd field with value \"to remove\" to fields of the embed # this one shoudl stay because im only removing not removing all" +
+                        "\t\t\t\tadd field with value \"to stay\" to fields of the embed" +
+                        "\t\t\t\tset color of the embed to red" +
+                        "\t\t\tset {e} to a new message builder" +
+                        "\t\t\tset text of {e} to \"Hey there \"" +
+                        "\t\t\tappend \"Current text: %text of {e}%\" to {e}" +
+                        "\t\t\tappend \"World!\" to {e}" +
+                        "\t\t\tappend \"Appended form: %text of {e}%\" to {e}" +
+                        "\t\t\tset embed of {e} to last embed" +
+                        "\t\t\tappend \"Info for embed attached to this builder: %color of embed of {e}%\" to {e}" +
+                        "\t\t\tsend {e} to event-channel with event-bot");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
@@ -40,6 +58,7 @@ public class ExprEmbedOfBuilder extends SimplePropertyExpression<MessageBuilder,
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.DELETE) && getExpr().isSingle()) {
             return new Class[]{MessageEmbed.class};
         }
+
         return super.acceptChange(mode);
     }
 
@@ -59,10 +78,7 @@ public class ExprEmbedOfBuilder extends SimplePropertyExpression<MessageBuilder,
                     builder.setEmbed(messageEmbed);
                 } else {
                     Vixio.getErrorHandler().warn("Vixio tried to access a empty Embed to set its title! This is not possible.");
-
                 }
-
-
         }
     }
 

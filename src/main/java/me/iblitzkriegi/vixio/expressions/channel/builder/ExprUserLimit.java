@@ -10,8 +10,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -22,9 +20,9 @@ import java.util.List;
 public class ExprUserLimit extends SimpleExpression<Integer> {
     static {
         Vixio.getInstance().registerExpression(ExprUserLimit.class, Integer.class, ExpressionType.SIMPLE,
-                "[the] user[ ]limit of %channels/channelbuilders% [(with|as) %bot/string%]")
-                .setName("User limit of voice channel")
-                .setDesc("Get the user limit of a voice channel or channel builder.")
+                "[the] user[ ]limit of %voicechannels/channelbuilders% [(with|as) %-bot/string%]")
+                .setName("User limit of Voice Channel")
+                .setDesc("Get the user limit of a Voice Channel or Channel Builder.")
                 .setExample(
                         "command /channel:",
                         "\ttrigger:",
@@ -35,6 +33,7 @@ public class ExprUserLimit extends SimpleExpression<Integer> {
                         "\t\tcreate the channel in {guild} as \"Jewel\""
                 );
     }
+
     private Expression<Object> bot;
     private Expression<Object> channels;
 
@@ -44,15 +43,17 @@ public class ExprUserLimit extends SimpleExpression<Integer> {
         if (channels == null) {
             return null;
         }
+
         List<Integer> userLimits = new ArrayList<>();
-        for(Object object : channels) {
-            if (object instanceof Channel && ((Channel) object).getType() == ChannelType.VOICE) {
+        for (Object object : channels) {
+            if (object instanceof VoiceChannel) {
                 VoiceChannel channel = (VoiceChannel) object;
                 userLimits.add(channel.getUserLimit());
             } else if (object instanceof ChannelBuilder) {
                 userLimits.add(((ChannelBuilder) object).getUserLimit());
             }
         }
+
         return userLimits.toArray(new Integer[userLimits.size()]);
     }
 
@@ -71,6 +72,7 @@ public class ExprUserLimit extends SimpleExpression<Integer> {
         return "user limit of " + channels.toString(e, debug) + (bot != null ? " as " + bot.toString() : "");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channels = (Expression<Object>) exprs[0];
@@ -81,30 +83,32 @@ public class ExprUserLimit extends SimpleExpression<Integer> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)
-            return new Class[] {Number.class};
+            return new Class[]{Number.class};
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("set user limit of channel");
+            return;
+        }
+
         Number userLimit = mode == Changer.ChangeMode.SET ? (Number) delta[0] : 0;
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         Object[] channels = this.channels.getAll(e);
-        if (bot == null || channels == null) {
+        if (bot == null || channels == null || userLimit == null) {
             return;
         }
-        for(Object object : channels) {
-            if (object instanceof Channel && ((Channel) object).getType() == ChannelType.VOICE) {
-                VoiceChannel channel = (VoiceChannel) object;
+
+        for (Object object : channels) {
+            if (object instanceof VoiceChannel) {
+                VoiceChannel bindedChannel = Util.bindVoiceChannel(bot, (VoiceChannel) object);
+                if (bindedChannel == null) {
+                    return;
+                }
                 try {
-                    if (Util.botIsConnected(bot, channel.getJDA())) {
-                        channel.getManager().setUserLimit(userLimit.intValue()).queue();
-                    } else {
-                        VoiceChannel bindingChannel = bot.getJDA().getVoiceChannelById(channel.getId());
-                        if (bindingChannel != null) {
-                            bindingChannel.getManager().setBitrate(userLimit.intValue()).queue();
-                        }
-                    }
+                    bindedChannel.getManager().setUserLimit(userLimit.intValue()).queue();
                 } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "set user limit", x.getPermission().getName());
                 } catch (IllegalArgumentException x) {

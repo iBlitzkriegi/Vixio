@@ -11,27 +11,45 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.event.Event;
 
+import java.util.List;
+
 public class ExprMembersOf extends SimpleExpression<Member> {
     static {
-        Vixio.getInstance().registerExpression(ExprMembersOf.class, Member.class, ExpressionType.SIMPLE, "members of %guild/category%")
-                .setName("Members of Object")
-                .setDesc("Get all of the members of a object.")
-                .setExample("Coming Soon!");
+        Vixio.getInstance().registerExpression(ExprMembersOf.class, Member.class, ExpressionType.SIMPLE,
+                "members of %guild/category%")
+                .setName("Members of")
+                .setDesc("Get all of the Member from a variety of different types.")
+                .setExample("on guild message received:" +
+                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
+                        "\t\tif {_cmd::*} is \"##members\":" +
+                        "\t\t\tset {_num} to 0" +
+                        "\t\t\tloop members of event-guild:" +
+                        "\t\t\t\tadd 1 to {_num}" +
+                        "\t\t\treply with \"The guild has %{_num}% members.\"");
     }
+
     private Expression<Object> object;
+
     @Override
     protected Member[] get(Event e) {
         Object object = this.object.getSingle(e);
         if (object == null) {
             return null;
         }
+
         if (object instanceof Category) {
-            return ((Category) object).getMembers().toArray(new Member[((Category) object).getMembers().size()]);
+            List<Member> members = ((Category) object).getMembers();
+
+            return members.toArray(new Member[members.size()]);
         } else if (object instanceof Guild) {
-            return ((Guild) object).getMembers().toArray(new Member[((Guild) object).getMembers().size()]);
+            List<Member> members = ((Guild) object).getMembers();
+
+            return members.toArray(new Member[members.size()]);
         }
+
         return null;
-        
+
     }
 
     @Override
@@ -49,6 +67,7 @@ public class ExprMembersOf extends SimpleExpression<Member> {
         return "members of " + object.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         object = (Expression<Object>) exprs[0];

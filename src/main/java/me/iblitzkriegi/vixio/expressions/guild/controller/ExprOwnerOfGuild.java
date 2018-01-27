@@ -18,24 +18,31 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class ExprGuildTransferOwnership extends SimpleExpression<Member> {
+public class ExprOwnerOfGuild extends SimpleExpression<Member> {
     static {
-        Vixio.getInstance().registerExpression(ExprGuildTransferOwnership.class, Member.class, ExpressionType.SIMPLE, "owner of %guilds% [(with|as)] [%bot/string%]")
-                .setName("Nickname of member")
-                .setDesc("Get the nickname of a Member, if they have no this returns their username")
-                .setExample("Coming soon.");
+        Vixio.getInstance().registerExpression(ExprOwnerOfGuild.class, Member.class, ExpressionType.SIMPLE,
+                "owner of %guilds% [(with|as) %-bot/string%]")
+                .setName("Owner of Guild")
+                .setDesc("Get the current Owner of a Guild. Must include bot to set the owner! Changers: SET, RESET")
+                .setExample("command /transfer <text>:" +
+                        "\ttrigger:" +
+                        "\t\tset {guild} to guild with id \"5611840019819\"" +
+                        "\t\tset owner of {guild} as \"Jewel\" to member with id \"16518918911891\" in {guild}");
     }
+
     private Expression<Object> bot;
     private Expression<Guild> guilds;
+
     @Override
     protected Member[] get(Event e) {
         Guild[] guilds = this.guilds.getAll(e);
         if (guilds == null) {
             return null;
         }
+
         return Arrays.stream(guilds)
                 .filter(Objects::nonNull)
-                .map(guild -> guild.getOwner())
+                .map(Guild::getOwner)
                 .toArray(Member[]::new);
     }
 
@@ -52,33 +59,28 @@ public class ExprGuildTransferOwnership extends SimpleExpression<Member> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)
-            return new Class[] {Member.class};
+            return new Class[]{Member.class};
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
+        if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("set owner of guild");
+            return;
+        }
+
         Member member = (Member) delta[0];
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (bot == null) {
-            Vixio.getErrorHandler().cantFindBot((String) this.bot.getSingle(e), "set owner of guild");
-            return;
-        }
         Guild[] guilds = this.guilds.getAll(e);
-        if (guilds == null) {
+        if (bot == null || guilds == null) {
             return;
         }
+
         for (Guild guild : guilds) {
             try {
-                if (Util.botIsConnected(bot, guild.getJDA())) {
-                    guild.getController().transferOwnership(member).queue();
-                } else {
-                    Guild bindingGuiling = Util.bindGuild(bot, guild);
-                    if (bindingGuiling == null) {
-                        return;
-                    }
-                    bindingGuiling.getController().transferOwnership(member).queue();
-                }
+                Guild bindedGuild = Util.bindGuild(bot, guild);
+                bindedGuild.getController().transferOwnership(member).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "set owner of guild", x.getPermission().getName());
             }
@@ -90,6 +92,7 @@ public class ExprGuildTransferOwnership extends SimpleExpression<Member> {
         return "owner of " + guilds.toString() + (bot == null ? "" : " as " + bot.toString(e, debug));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guilds = (Expression<Guild>) exprs[0];

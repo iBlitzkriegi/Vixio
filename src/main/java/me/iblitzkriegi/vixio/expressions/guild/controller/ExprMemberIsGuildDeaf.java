@@ -11,20 +11,25 @@ import org.bukkit.event.Event;
 
 public class ExprMemberIsGuildDeaf extends SimpleExpression<Boolean> {
     static {
-        Vixio.getInstance().registerExpression(ExprMemberIsGuildDeaf.class, Boolean.class, ExpressionType.SIMPLE, "guild deafened state of %member%")
-                .setName("Deafened state of member in guild")
-                .setDesc("Get the deafened state of a member in a guild. If they are deafened by someone then this returns true. This will not be updated unless a user is in a voice channel when they are deafened.")
+        Vixio.getInstance().registerExpression(ExprMemberIsGuildDeaf.class, Boolean.class, ExpressionType.SIMPLE,
+                "guild deafened state of %member%")
+                .setName("Guild Deafened State of Member")
+                .setDesc("Get the deafened state of a Member in a Guild. If they are deafened by someone then this returns true. This will not be updated unless a User is in a Voice Channel when they are deafened.")
                 .setExample(
                         "on guild message receive:",
                         "\tset {e} to member of event-user in event-guild",
                         "\treply with \"%guild deafen state of {e} in event-guild%\""
                 );
     }
+
     private Expression<Member> member;
+
     @Override
     protected Boolean[] get(Event e) {
         Member member = this.member.getSingle(e);
-        if (member == null) return null;
+        if (member == null) {
+            return null;
+        }
 
         return new Boolean[]{member.getVoiceState().isGuildDeafened()};
     }
@@ -44,6 +49,7 @@ public class ExprMemberIsGuildDeaf extends SimpleExpression<Boolean> {
         return "guild deafened state of " + member.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         member = (Expression<Member>) exprs[0];

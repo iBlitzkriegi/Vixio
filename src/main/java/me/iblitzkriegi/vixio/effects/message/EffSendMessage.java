@@ -18,7 +18,7 @@ public class EffSendMessage extends Effect{
         Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [(with|as) %bot/string%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
-                .setExample("COMING BACK 2 DIS")
+                .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"")
                 .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string%");
     }
     private Expression<Object> message;

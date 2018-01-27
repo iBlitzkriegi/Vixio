@@ -23,22 +23,26 @@ import java.util.Objects;
 public class ExprRolesOfMember extends SimpleExpression<Role> {
     static {
         Vixio.getInstance().registerExpression(ExprRolesOfMember.class, Role.class, ExpressionType.SIMPLE,
-                "role[s] of %members% [as %bot/string%]")
+                "role[s] of %members% [(with|as) %-bot/string%]")
                 .setName("Roles of Member")
-                .setDesc("Get the roles that a Member has in a Guild")
-                .setExample("Coming Soon!");
+                .setDesc("Get the roles that a Member has in a Guild. Changers: REMOVE, ADD")
+                .setExample("remove role with id \"6110981981981\" from roles of event-member");
     }
-    Expression<Member> member;
-    Expression<Object> bot;
+
+    private Expression<Member> member;
+    private Expression<Object> bot;
+
     @Override
     protected Role[] get(Event e) {
         if (member.getAll(e) == null) {
             return null;
         }
+
         List<Role> roles = new ArrayList<>();
         Arrays.stream(member.getAll(e))
                 .filter(Objects::nonNull)
                 .forEach(member -> roles.addAll(member.getRoles()));
+
         return roles.toArray(new Role[roles.size()]);
     }
 
@@ -57,6 +61,7 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
         return "roles of " + member.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         member = (Expression<Member>) exprs[0];
@@ -74,59 +79,40 @@ public class ExprRolesOfMember extends SimpleExpression<Role> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        boolean isAdd = mode == Changer.ChangeMode.ADD ? true : false;
-        Role role = (Role) delta[0];
-        Object object = this.bot.getSingle(e);
-        if (object == null) {
-            return;
-        }
-        Member member = this.member.getSingle(e);
-        if (member == null) {
-            return;
-        }
-        Guild guild = role.getGuild();
-        Bot bot = Util.botFrom(object);
         if (bot == null) {
-            Vixio.getErrorHandler().cantFindBot(this.bot.toString(), "add role");
+            Vixio.getErrorHandler().noBotProvided("modify roles of member");
             return;
         }
+        boolean isAdd = mode == Changer.ChangeMode.ADD;
+        Role role = (Role) delta[0];
+        Member member = this.member.getSingle(e);
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
+        Guild bindedGuild = Util.bindGuild(bot, role.getGuild());
+        if (member == null || bot == null || bindedGuild == null) {
+            return;
+        }
+
         try {
             if (delta.length == 1) {
-                if (Util.botIsConnected(bot, guild.getJDA())) {
-                    if (isAdd) {
-                        guild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
-                        return;
-                    }
-                    guild.getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
-                    return;
-                }
                 if (isAdd) {
-                    bot.getJDA().getGuildById(guild.getId()).getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
+                    bindedGuild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
                     return;
                 }
-                bot.getJDA().getGuildById(guild.getId()).getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
+                bindedGuild.getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
                 return;
             }
+
             ArrayList<Role> roles = new ArrayList<>();
-            for (int i = 0; i < delta.length; i++) {
-                roles.add((Role) delta[i]);
-            }
-            if (Util.botIsConnected(bot, guild.getJDA())) {
-                if (isAdd) {
-                    guild.getController().addRolesToMember(member, roles).queue();
-                    return;
-                }
-                guild.getController().removeRolesFromMember(member, roles).queue();
-                return;
+            for (Object rolez : delta) {
+                roles.add((Role) rolez);
             }
             if (isAdd) {
-                bot.getJDA().getGuildById(guild.getId()).getController().addRolesToMember(member, roles).queue();
+                bindedGuild.getController().addRolesToMember(member, roles).queue();
                 return;
             }
-            bot.getJDA().getGuildById(guild.getId()).getController().removeRolesFromMember(member, roles).queue();
-            return;
+            bindedGuild.getController().removeRolesFromMember(member, roles).queue();
 
-        }catch (PermissionException x) {
+        } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "modify role");
         }
     }

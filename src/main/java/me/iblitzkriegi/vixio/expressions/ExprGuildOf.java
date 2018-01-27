@@ -11,11 +11,12 @@ public class ExprGuildOf extends SimplePropertyExpression<Object, Guild> {
         Vixio.getInstance().registerPropertyExpression(ExprGuildOf.class, Guild.class, "guild", "category/message")
                 .setName("Guild of")
                 .setDesc("Get the guild of one of the types in the syntax.")
-                .setExample("Coming Soon");
+                .setExample("reply with \"%name of guild of event-message%\"");
     }
+
     @Override
     protected String getPropertyName() {
-        return "guild of";
+        return "guild";
     }
 
     @Override

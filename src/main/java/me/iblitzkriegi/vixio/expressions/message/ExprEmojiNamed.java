@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprEmojiNamed extends SimpleExpression<Emoji>{
+public class ExprEmojiNamed extends SimpleExpression<Emoji> {
     static {
         Vixio.getInstance().registerExpression(ExprEmojiNamed.class, Emoji.class, ExpressionType.SIMPLE,
                 "(emoji|emote|reaction)[s] %strings% [(from|in) %guild%]")
@@ -25,19 +25,23 @@ public class ExprEmojiNamed extends SimpleExpression<Emoji>{
                         "\tadd reaction \"smile\" to event-message"
                 );
     }
+
     private Expression<String> name;
     private Expression<Guild> guild;
+
     @Override
     protected Emoji[] get(Event e) {
         String[] emoteName = name.getAll(e);
         if (emoteName == null) {
             return null;
         }
+
         List<Emoji> emojis = new ArrayList<>();
         for (String name : emoteName) {
             Guild emojiGuild = this.guild.getSingle(e);
             emojis.add(Util.unicodeFrom(name, emojiGuild));
         }
+
         return emojis.toArray(new Emoji[emojis.size()]);
     }
 
@@ -56,6 +60,7 @@ public class ExprEmojiNamed extends SimpleExpression<Emoji>{
         return "emoji named " + name.toString(e, debug) + (guild == null ? "" : " from " + guild.toString(e, debug));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         name = (Expression<String>) exprs[0];

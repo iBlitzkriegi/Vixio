@@ -20,10 +20,12 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
 import java.awt.Color;
@@ -174,6 +176,32 @@ public class Util {
         } else {
             if (textChannel != null) {
                 return textChannel;
+            }
+            return null;
+        }
+    }
+
+
+    public static VoiceChannel bindVoiceChannel(Bot bot, VoiceChannel voiceChannel) {
+        if (!(voiceChannel.getJDA() == bot.getJDA())) {
+            return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
+        } else {
+            if (voiceChannel != null) {
+                return voiceChannel;
+            }
+            return null;
+        }
+    }
+
+    public static Channel bindChannel(Bot bot, Channel channel) {
+        if (!(channel.getJDA() == bot.getJDA())) {
+            TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
+            VoiceChannel voiceChannel = bot.getJDA().getVoiceChannelById(channel.getId());
+
+            return voiceChannel == null ? textChannel : voiceChannel;
+        } else {
+            if (channel != null) {
+                return channel;
             }
             return null;
         }

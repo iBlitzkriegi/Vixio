@@ -13,7 +13,8 @@ import org.bukkit.event.Event;
 
 public class ExprUserInGuild extends SimpleExpression<Member> {
     static {
-        Vixio.getInstance().registerExpression(ExprUserInGuild.class, Member.class, ExpressionType.SIMPLE, "[member of] %user% in %guild%")
+        Vixio.getInstance().registerExpression(ExprUserInGuild.class, Member.class, ExpressionType.SIMPLE,
+                "[member of] %user% in %guild%")
                 .setName("Member of User in Guild")
                 .setDesc("Get the Member of a User in a Guild")
                 .setExample(
@@ -22,16 +23,15 @@ public class ExprUserInGuild extends SimpleExpression<Member> {
                         "\treply with \"%name of {member}%\""
                 );
     }
+
     private Expression<User> user;
     private Expression<Guild> guild;
+
     @Override
     protected Member[] get(Event e) {
         User user = this.user.getSingle(e);
-        if (user == null) {
-            return null;
-        }
         Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
+        if (user == null || guild == null) {
             return null;
         }
         return new Member[]{guild.getMemberById(user.getId())};

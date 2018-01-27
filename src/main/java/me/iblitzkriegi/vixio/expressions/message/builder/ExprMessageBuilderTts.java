@@ -9,11 +9,11 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.MessageBuilder;
 import org.bukkit.event.Event;
 
-public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuilder, Boolean>{
+public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuilder, Boolean> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMessageBuilderTts.class, Boolean.class, "tts state", "messagebuilders")
                 .setName("TTS of Message Builder")
-                .setDesc("Get the TTS state of a Message Builder. Changers: set")
+                .setDesc("Get the TTS state of a Message Builder. Changers: SET")
                 .setExample(
                         "command /build",
                         "\ttrigger:",
@@ -22,15 +22,18 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
                         "\t\tbroadcast \"%tts of {e}%\""
                 );
     }
+
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<MessageBuilder>) exprs[0]);
         return true;
     }
+
     @Override
     protected String getPropertyName() {
-        return "tts state of messagebuilders";
+        return "tts state";
     }
 
     @Override
@@ -50,7 +53,8 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
         MessageBuilder builder = getExpr().getSingle(e);
         if (builder == null) return;
-        switch(mode){
+
+        switch (mode) {
             case RESET:
                 builder.setTTS(false);
                 break;

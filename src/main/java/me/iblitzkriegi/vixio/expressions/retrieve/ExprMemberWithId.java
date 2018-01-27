@@ -16,24 +16,21 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
                 "member with id %string% [in %guild%]")
                 .setName("Member with ID")
                 .setDesc("Get a Member via their ID, plain and simple.")
-                .setExample("Coming Soon!");
+                .setExample("name of member with id \"1561515615610515\"");
     }
+
     private Expression<String> id;
     private Expression<Guild> guild;
+
     @Override
     protected Member[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
-            return null;
-        }
         String id = this.id.getSingle(e);
-        if (id == null || id.isEmpty()) {
-            return null;
-        }
         Member member = guild.getMemberById(id);
-        if (member == null) {
+        if (guild == null || id == null || id.isEmpty() || member == null) {
             return null;
         }
+
         return new Member[]{member};
     }
 
@@ -52,6 +49,7 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
         return "member with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];

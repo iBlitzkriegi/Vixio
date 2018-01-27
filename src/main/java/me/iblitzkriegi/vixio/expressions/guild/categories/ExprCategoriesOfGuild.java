@@ -21,17 +21,29 @@ public class ExprCategoriesOfGuild extends SimpleExpression<Category> {
         Vixio.getInstance().registerExpression(ExprCategoriesOfGuild.class, Category.class, ExpressionType.SIMPLE,
                 "[the] categories of %guild% [(with|as) %-bot/string%]")
                 .setName("Categories of guild")
-                .setDesc("Get all of the categories in a guild. They are converted to their names.")
-                .setExample("Coming Soon");
+                .setDesc("Get all of the categories in a guild. They are converted to their names. Must include a bot to modify the categories. Changers: ADD, REMOVE, DELETE")
+                .setExample("on guild message received:" +
+                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
+                        "\t\tif {_cmd::*} is \"##categories\":" +
+                        "\t\t\tset {_m} to a message builder" +
+                        "\t\t\tappend \"-= Here are the current categories -=%nl%\" to {_m}" +
+                        "\t\t\tappend \"```%nl%\" to {_m}" +
+                        "\t\t\tloop categories of event-guild:" +
+                        "\t\t\t\tappend \"%name of loop-value% %nl%\" to {_m}" +
+                        "\t\t\tappend \"```\" to {_m}");
     }
+
     private Expression<Guild> guild;
     private Expression<Object> bot;
+
     @Override
     protected Category[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
         if (guild == null) {
             return null;
         }
+
         return guild.getCategories().toArray(new Category[guild.getCategories().size()]);
     }
 
@@ -50,6 +62,7 @@ public class ExprCategoriesOfGuild extends SimpleExpression<Category> {
         return "categories of " + guild.toString(e, debug) + (bot == null ? "" : " as " + bot.toString(e, debug));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guild = (Expression<Guild>) exprs[0];
@@ -68,27 +81,21 @@ public class ExprCategoriesOfGuild extends SimpleExpression<Category> {
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
         if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("modify categories of guild");
             return;
         }
+
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Guild guild = this.guild.getSingle(e);
+        Guild bindedGuild = Util.bindGuild(bot, this.guild.getSingle(e));
         String name = (String) delta[0];
-        if (bot == null || guild == null) {
+        if (bot == null || bindedGuild == null) {
             return;
         }
+
         switch (mode) {
             case ADD:
                 try {
-                    if (Util.botIsConnected(bot, guild.getJDA())) {
-                        guild.getController().createCategory(name).queue();
-                        return;
-                    }
-                    Guild bindingGuild = Util.bindGuild(bot, guild);
-                    if (bindingGuild != null) {
-                        bindingGuild.getController().createCategory(name).queue();
-                        return;
-                    }
-
+                    bindedGuild.getController().createCategory(name).queue();
                 } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "create category", x.getPermission().getName());
                 }
@@ -96,10 +103,6 @@ public class ExprCategoriesOfGuild extends SimpleExpression<Category> {
             case DELETE:
             case REMOVE:
                 try {
-                    Guild bindedGuild = Util.bindGuild(bot, guild);
-                    if (bindedGuild == null) {
-                        return;
-                    }
                     List<Category> category = bindedGuild.getCategoriesByName(name, false);
                     if (category.size() > 1) {
                         Vixio.getErrorHandler().warn("Vixio attempted to get a Category with the name " + name + " but more than one category exists with that name.");
@@ -107,7 +110,6 @@ public class ExprCategoriesOfGuild extends SimpleExpression<Category> {
                     }
 
                     category.get(0).delete().queue();
-                    return;
 
                 } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "delete category", x.getPermission().getName());

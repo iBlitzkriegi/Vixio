@@ -13,7 +13,7 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprTextOfBuilder.class, String.class, "[<stripped>] text", "messagebuilders")
                 .setName("Text of Message Builder")
-                .setDesc("Get the text inside of a Message Builder")
+                .setDesc("Get the text inside of a Message Builder. Changers: SET, RESET, DELETE")
                 .setExample(
                         "command /build:",
                         "\ttrigger:",
@@ -22,7 +22,10 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
                         "\t\tbroadcast \"%text of {e}%\""
                 );
     }
+
     private boolean stripped;
+
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
@@ -30,17 +33,18 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
         stripped = parseResult.regexes.size() == 1;
         return true;
     }
+
     @Override
     protected String getPropertyName() {
-        return "[<stripped>] text of messagebuilders";
+        return "[<stripped>] text";
     }
 
     @Override
     public String convert(MessageBuilder messageBuilder) {
-        if(stripped){
+        if (stripped) {
             try {
                 return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentStripped();
-            }catch (UnsupportedOperationException x){
+            } catch (UnsupportedOperationException x) {
 
             }
         } else {
@@ -60,9 +64,9 @@ public class ExprTextOfBuilder extends SimplePropertyExpression<MessageBuilder, 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
         MessageBuilder builder = getExpr().getSingle(e);
-        if(builder == null) return;
+        if (builder == null) return;
 
-        switch(mode){
+        switch (mode) {
             case RESET:
             case DELETE:
                 builder.setContent(null);

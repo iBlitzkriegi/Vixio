@@ -10,8 +10,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -22,9 +20,10 @@ import java.util.List;
 public class ExprNsfwState extends SimpleExpression<Boolean> {
     static {
         Vixio.getInstance().registerExpression(ExprNsfwState.class, Boolean.class, ExpressionType.SIMPLE,
-                "[the] nsfw state of %channels/channelbuilders% [(with|as) %bot/string%]")
+                "[the] nsfw state of %textchannels/channels/channelbuilders% [(with|as) %-bot/string%]")
                 .setName("NSFW State")
-                .setDesc("Get the Not Safe For Work state of a text channel, this is set to false by default. Has SET and RESET changers")
+                .setDesc("Get the Not Safe For Work state of a text channel, this is set to false by default. Changers: SET, RESET")
+                .setUserFacing("[the] nsfw state of %textchannels/channelbuilders% [(with|as) %bot/string%]")
                 .setExample(
                         "command /channel:",
                         "\ttrigger:",
@@ -35,6 +34,7 @@ public class ExprNsfwState extends SimpleExpression<Boolean> {
                         "\t\tcreate the channel in {guild} as \"Jewel\""
                 );
     }
+
     private Expression<Object> bot;
     private Expression<Object> channels;
 
@@ -45,8 +45,8 @@ public class ExprNsfwState extends SimpleExpression<Boolean> {
             return null;
         }
         List<Boolean> nsfwStates = new ArrayList<>();
-        for(Object object : channels) {
-            if (object instanceof Channel && ((Channel) object).getType() == ChannelType.TEXT) {
+        for (Object object : channels) {
+            if (object instanceof TextChannel) {
                 TextChannel channel = (TextChannel) object;
                 nsfwStates.add(channel.isNSFW());
             } else if (object instanceof ChannelBuilder) {
@@ -71,6 +71,8 @@ public class ExprNsfwState extends SimpleExpression<Boolean> {
         return "nsfw state of " + channels.toString(e, debug) + (bot != null ? " as " + bot.toString() : "");
     }
 
+
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channels = (Expression<Object>) exprs[0];
@@ -81,31 +83,31 @@ public class ExprNsfwState extends SimpleExpression<Boolean> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)
-            return new Class[] {Boolean.class};
+            return new Class[]{Boolean.class};
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        Boolean isNsfw = mode == Changer.ChangeMode.SET ? (Boolean) delta[0] : false;
+        if (bot == null) {
+            return;
+        }
+
+        boolean isNsfw = mode == Changer.ChangeMode.SET ? (Boolean) delta[0] : false;
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         Object[] channels = this.channels.getAll(e);
         if (bot == null || channels == null) {
             return;
         }
-        for(Object object : channels) {
-            if (object instanceof Channel && ((Channel) object).getType() == ChannelType.TEXT) {
-                TextChannel channel = (TextChannel) object;
+        for (Object object : channels) {
+            if (object instanceof TextChannel) {
+                TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) object);
+                if (bindedChannel == null) {
+                    return;
+                }
                 try {
-                    if (Util.botIsConnected(bot, channel.getJDA())) {
-                        channel.getManager().setNSFW(isNsfw).queue();
-                    } else {
-                        TextChannel bindingChannel = bot.getJDA().getTextChannelById(channel.getId());
-                        if (bindingChannel != null) {
-                            bindingChannel.getManager().setNSFW(isNsfw).queue();
-                        }
-                    }
-                }catch (PermissionException x) {
+                    bindedChannel.getManager().setNSFW(isNsfw).queue();
+                } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "set nsfw state", x.getPermission().getName());
                 }
             } else if (object instanceof ChannelBuilder) {

@@ -17,11 +17,21 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
         Vixio.getInstance().registerExpression(ExprCategoryNamed.class, Category.class, ExpressionType.SIMPLE,
                 "category named %string% [in %guild%]")
                 .setName("Category named")
-                .setDesc("Get a category by its name in a guild.")
-                .setExample("Coming soon");
+                .setDesc("Get a Category by its name in a Guild.")
+                .setExample("command /channel:" +
+                        "\ttrigger:" +
+                        "\t\tcreate text channel:" +
+                        "\t\t\tset name of the channel to \"Testingxdxd\"" +
+                        "\t\t\tset {guild} to guild with id \"219967335266648065\"" +
+                        "\t\t\tset nsfw state of the channel as \"Jewel\" to true" +
+                        "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"" +
+                        "\t\t\tset parent of the channel to category named \"xd\" in {guild}" +
+                        "\t\t\tcreate the channel in {guild} as \"Jewel\"");
     }
+
     private Expression<Guild> guild;
     private Expression<String> category;
+
     @Override
     protected Category[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
@@ -35,7 +45,14 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
             Vixio.getErrorHandler().warn("Vixio attempted to get a Category with the name " + category + " but more than one category exists with that name.");
             return null;
         }
-        return new Category[]{categories.get(0)};
+
+        try {
+            return new Category[]{categories.get(0)};
+        } catch (IndexOutOfBoundsException x) {
+
+        }
+
+        return null;
     }
 
     @Override
@@ -53,6 +70,7 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
         return "category named " + category.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         category = (Expression<String>) exprs[0];

@@ -11,11 +11,14 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
+import java.util.List;
+
 public class ExprTextchannelsOf extends SimpleExpression<TextChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprTextchannelsOf.class, TextChannel.class, ExpressionType.SIMPLE, "text[(-| )]channel[s] of %guild/category%")
-                .setName("Text Channels of Object")
-                .setDesc("Get all of the text channels in a guild.")
+        Vixio.getInstance().registerExpression(ExprTextchannelsOf.class, TextChannel.class, ExpressionType.SIMPLE,
+                "text[(-| )]channel[s] of %guild/category%")
+                .setName("Text Channels of")
+                .setDesc("Get all of the Text Channels in a Guild/Category.")
                 .setExample(
                         "on guild message receive:",
                         "\tset {channels::*} to text channels of event-guild",
@@ -23,7 +26,9 @@ public class ExprTextchannelsOf extends SimpleExpression<TextChannel> {
                         "\t\tbroadcast \"%name of loop-value%\""
                 );
     }
+
     private Expression<Object> object;
+
     @Override
     protected TextChannel[] get(Event e) {
         Object object = this.object.getSingle(e);
@@ -31,9 +36,11 @@ public class ExprTextchannelsOf extends SimpleExpression<TextChannel> {
             return null;
         }
         if (object instanceof Category) {
-            return ((Category) object).getTextChannels().toArray(new TextChannel[((Category) object).getTextChannels().size()]);
+            List<TextChannel> channels = ((Category) object).getTextChannels();
+            return channels.toArray(new TextChannel[channels.size()]);
         } else if (object instanceof Guild) {
-            return ((Guild) object).getTextChannels().toArray(new TextChannel[((Guild) object).getTextChannels().size()]);
+            List<TextChannel> channels = ((Guild) object).getTextChannels();
+            return channels.toArray(new TextChannel[channels.size()]);
         }
         return null;
     }

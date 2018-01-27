@@ -15,7 +15,7 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
     static {
         Vixio.getInstance().registerExpression(ExprBuilder.class, ChannelBuilder.class, ExpressionType.SIMPLE,
                 "[(the|an|[a] new)] channel[(-| ) builder]")
-                .setName("The channel builder")
+                .setName("The Channel")
                 .setDesc("Get the channel in a create channel scope")
                 .setExample(
                         "command /channel:",
@@ -27,7 +27,9 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
                 );
 
     }
+
     private boolean scope = false;
+
     @Override
     protected ChannelBuilder[] get(Event e) {
         return new ChannelBuilder[]{
@@ -50,6 +52,7 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
         return "the channel builder";
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         scope = EffectSection.isCurrentSection(ScopeMakeChannel.class);

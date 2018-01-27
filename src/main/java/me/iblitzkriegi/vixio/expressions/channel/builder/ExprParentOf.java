@@ -22,7 +22,7 @@ public class ExprParentOf extends SimpleExpression<Category> {
         Vixio.getInstance().registerExpression(ExprParentOf.class, Category.class, ExpressionType.SIMPLE,
                 "(category|parent) of %channel/channelbuilder% [(with|as) %-bot/string%]")
                 .setName("Category of channel")
-                .setDesc("Get the category of a channel or a channel you intend to build, aka a chanell builder")
+                .setDesc("Get the Category of a Channel or a Channel you intend to build, aka a Channel Builder. You also must include a bot to set the parent! Changers: SET")
                 .setExample("command /channel:" +
                         "\ttrigger:" +
                         "\t\tcreate text channel:" +
@@ -33,14 +33,17 @@ public class ExprParentOf extends SimpleExpression<Category> {
                         "\t\t\tset parent of the channel to category named \"xd\" in {guild}" +
                         "\t\t\tcreate the channel in {guild} as \"Jewel\"");
     }
+
     private Expression<Object> channel;
     private Expression<Object> bot;
+
     @Override
     protected Category[] get(Event e) {
         Object channel = this.channel.getSingle(e);
         if (channel == null) {
             return null;
         }
+
         if (channel instanceof ChannelBuilder) {
             if (((ChannelBuilder) channel).getParent() != null) {
                 return new Category[]{((ChannelBuilder) channel).getParent()};
@@ -70,6 +73,7 @@ public class ExprParentOf extends SimpleExpression<Category> {
         return "category of " + channel.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channel = (Expression<Object>) exprs[0];
@@ -80,32 +84,32 @@ public class ExprParentOf extends SimpleExpression<Category> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET)
-            return new Class[] {Category.class};
+            return new Class[]{Category.class};
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
+        if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("set parent of channel");
+            return;
+        }
+
         Object channel = this.channel.getSingle(e);
         Category category = (Category) delta[0];
         if (channel == null) {
             return;
         }
+
         if (channel instanceof ChannelBuilder) {
             ((ChannelBuilder) channel).setParent(category);
         } else if (channel instanceof Channel) {
-            if (!(((Channel) channel).getType() == ChannelType.TEXT)) {
-                return;
-            }
-            if (this.bot.getSingle(e) == null) {
-                Vixio.getErrorHandler().warn("Vixio attempted to set the parent of a channel but no bot was provided.");
-                return;
-            }
             Bot bot = Util.botFrom(this.bot.getSingle(e));
-            if (bot == null) {
+            Channel bindedChannel = Util.bindChannel(bot, (Channel) channel);
+            if (bot == null || bindedChannel == null) {
                 return;
             }
-            TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) channel);
+
             try {
                 bindedChannel.getManager().setParent(category).queue();
             } catch (PermissionException x) {
