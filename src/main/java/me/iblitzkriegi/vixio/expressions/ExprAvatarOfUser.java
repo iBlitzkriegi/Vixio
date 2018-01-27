@@ -18,23 +18,27 @@ public class ExprAvatarOfUser extends SimpleExpression<Avatar> {
         Vixio.getInstance().registerExpression(ExprAvatarOfUser.class, Avatar.class, ExpressionType.SIMPLE,
                 "[the] avatar [url[s]] of %users%", "[the] default avatar [url[s]] of %users%")
                 .setName("Avatar url of User")
-                .setDesc("Get either the user's custom avatar or their default one that discord gave them.")
-                .setExample("Coming Soon.");
+                .setDesc("Get either the user's custom avatar or their default one that discord gave them. Can get the ID of the avatar by using the id of expression.")
+                .setExample("broadcast \"avatar url of user with id \"44950981891\"");
     }
+
     private Expression<User> users;
     private boolean custom;
+
     @Override
     protected Avatar[] get(Event e) {
         User[] users = this.users.getAll(e);
         if (users == null) {
             return null;
         }
+
         if (custom) {
             return Arrays.stream(users)
                     .filter(Objects::nonNull)
                     .map(user -> new Avatar(user, user.getAvatarUrl(), false))
                     .toArray(Avatar[]::new);
         }
+
         return Arrays.stream(users)
                 .filter(Objects::nonNull)
                 .map(user -> new Avatar(user, user.getDefaultAvatarUrl(), true))

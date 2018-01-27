@@ -9,8 +9,11 @@ import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
+import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
@@ -97,6 +100,30 @@ public class VixioTypes {
 
         };
 
+        new SimpleType<Emoji>(Emoji.class, "emoji", "emojis?") {
+
+            @Override
+            public Emoji parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Emoji emoji, int arg1) {
+                return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
+            }
+
+            @Override
+            public String toVariableNameString(Emoji emoji) {
+                return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
+            }
+
+        };
+
 
 
         new SimpleType<TextChannel>(TextChannel.class, "textchannel", "textchannels?") {
@@ -171,6 +198,30 @@ public class VixioTypes {
 
         };
 
+        new SimpleType<ChannelBuilder>(ChannelBuilder.class, "channelbuilder", "channelbuilder") {
+
+            @Override
+            public ChannelBuilder parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(ChannelBuilder channelBuilder, int arg1) {
+                return channelBuilder.getName();
+            }
+
+            @Override
+            public String toVariableNameString(ChannelBuilder channelBuilder) {
+                return channelBuilder.getName();
+            }
+
+        };
+
         new SimpleType<Bot>(Bot.class, "bot", "bot?") {
 
             @Override
@@ -215,6 +266,30 @@ public class VixioTypes {
             @Override
             public String toVariableNameString(User user) {
                 return user.getId();
+            }
+
+        };
+
+        new SimpleType<Category>(Category.class, "category", "categories?") {
+
+            @Override
+            public Category parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Category category, int arg1) {
+                return category.getName();
+            }
+
+            @Override
+            public String toVariableNameString(Category category) {
+                return category.getName();
             }
 
         };

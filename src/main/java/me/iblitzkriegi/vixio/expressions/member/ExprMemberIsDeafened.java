@@ -8,8 +8,8 @@ import net.dv8tion.jda.core.entities.Member;
 public class ExprMemberIsDeafened extends SimplePropertyExpression<Member, Boolean> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMemberIsDeafened.class, Boolean.class, "deafened state", "members")
-                .setName("Is deafened")
-                .setDesc("Check if a user is deafened, and set them to be deafened with SET")
+                .setName("Deafened State of Member")
+                .setDesc("Get the Deafened state of a Member in the shape of a Boolean.")
                 .setExample(
                         "command /isDeaf <text> <text>:",
                         "\ttrigger:",

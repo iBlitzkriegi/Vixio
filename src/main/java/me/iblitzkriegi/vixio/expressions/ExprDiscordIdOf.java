@@ -3,6 +3,7 @@ package me.iblitzkriegi.vixio.expressions;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
+import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.ISnowflake;
 
 /**
@@ -10,14 +11,15 @@ import net.dv8tion.jda.core.entities.ISnowflake;
  */
 public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "id", "channel/guild/user/message/bot/role/avatar")
-            .setName("Discord ID of")
-            .setDesc("Get the ID of a discord object")
-            .setExample("discord id of event-user");
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordIdOf.class, String.class, "id", "channel/guild/user/message/bot/role/avatar/category")
+                .setName("Discord ID of")
+                .setDesc("Get the ID of a Discord")
+                .setExample("id of event-user");
     }
+
     @Override
     protected String getPropertyName() {
-        return "id of";
+        return "id";
     }
 
     @Override
@@ -29,6 +31,8 @@ public class ExprDiscordIdOf extends SimplePropertyExpression<Object, String> {
                 return ((Avatar) o).getUser().getDefaultAvatarId();
             }
             return ((Avatar) o).getUser().getAvatarId();
+        } else if (o instanceof Category) {
+            return ((Category) o).getId();
         }
         return null;
     }

@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.channel;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -10,13 +9,13 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
+import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,24 +23,34 @@ import java.util.ArrayList;
  */
 public class ExprTopicOfChannel extends SimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE, "topic of %channels% [(with|as) %bot/string%]")
+        Vixio.getInstance().registerExpression(ExprTopicOfChannel.class, String.class, ExpressionType.SIMPLE,
+                "topic of %textchannels/channelbuilders% [(with|as) %-bot/string%]")
                 .setName("Topic of Channel")
-                .setDesc("Get/Reset/Set the topic of a channel. Must include a bot to modify the topic!")
+                .setDesc("Get the topic of a Text Channel. Must include a bot to modify the topic! Changers: SET, DELETE, RESET")
+                .setUserFacing("topic of %textchannel/channelbuilders% [(with|as) %bot/string%]")
                 .setExample("set topic of event-channel as event-bot to \"Hi Pika\"");
     }
 
-    private Expression<Channel> channel;
+    private Expression<Object> channel;
     private Expression<Object> bot;
 
     @Override
     protected String[] get(Event event) {
-        ArrayList<String> channels = new ArrayList<>();
-        for (Channel channel : this.channel.getAll(event)) {
-            if (channel.getType() == ChannelType.TEXT) {
-                channels.add(((TextChannel) channel).getTopic());
+        Object[] channels = this.channel.getAll(event);
+        if (channels == null) {
+            return null;
+        }
+
+        List<String> topics = new ArrayList<>();
+        for (Object object : channels) {
+            if (object instanceof ChannelBuilder) {
+                topics.add(((ChannelBuilder) object).getTopic());
+            } else if (object instanceof TextChannel) {
+                TextChannel channel = (TextChannel) object;
+                topics.add(channel.getTopic());
             }
         }
-        return channels.toArray(new String[channels.size()]);
+        return topics.toArray(new String[topics.size()]);
     }
 
     @Override
@@ -59,9 +68,10 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
         return "topic of " + channel.toString(event, b) + (bot == null ? "" : " as " + bot.toString(event, b));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        channel = (Expression<Channel>) expressions[0];
+        channel = (Expression<Object>) expressions[0];
         bot = (Expression<Object>) expressions[1];
         return true;
     }
@@ -75,37 +85,32 @@ public class ExprTopicOfChannel extends SimpleExpression<String> {
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        String topic = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
-        Object object = bot.getSingle(e);
-        if (object == null) {
-            Skript.error("You must include a bot in order to modify the topic!");
-            return;
-        }
-        Bot bot = Util.botFrom(object);
         if (bot == null) {
-            Skript.error("Could not parse provided bot! Either input a %bot% type or the name you give to your bot on login.");
+            Vixio.getErrorHandler().noBotProvided("set topic of channel");
             return;
         }
-        if (channel.getAll(e) == null) {
-            Skript.error("You must input at least one channel to get the topic of!");
-            return;
-        }
-        try {
-            for (Channel channel : channel.getAll(e)) {
-                if (channel.getType() == ChannelType.TEXT) {
-                    if (Util.botIsConnected(bot, channel.getJDA())) {
-                        channel.getManager().setTopic(topic).queue();
-                    } else {
-                        try {
-                            bot.getJDA().getTextChannelById(channel.getId()).getManager().setTopic(topic).queue();
-                        } catch (NullPointerException x) {
 
-                        }
+        String topic = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
+        Object[] channels = this.channel.getAll(e);
+        if (bot == null || channels == null) {
+            return;
+        }
+
+        for (Object object : channels) {
+            if (object instanceof ChannelBuilder) {
+                ((ChannelBuilder) object).setTopic(topic);
+            } else if (object instanceof TextChannel) {
+                try {
+                    TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) object);
+                    if (bindedChannel == null) {
+                        return;
                     }
+                    bindedChannel.getManager().setTopic(topic).queue();
+                } catch (PermissionException x) {
+                    Vixio.getErrorHandler().needsPerm(bot, "set topic", x.getPermission().getName());
                 }
             }
-        } catch (PermissionException x) {
-            Skript.error("Provided bot could not find one of the provided channels.");
         }
     }
 

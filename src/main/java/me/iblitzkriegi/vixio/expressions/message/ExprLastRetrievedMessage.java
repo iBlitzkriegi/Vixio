@@ -14,15 +14,18 @@ import org.bukkit.event.Event;
  */
 public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
     public static Message lastRetrievedMessage;
+
     static {
-        Vixio.getInstance().registerExpression(ExprLastRetrievedMessage.class, Message.class, ExpressionType.SIMPLE, "last retrieved [discord] message")
-            .setName("Last retrieved message")
-            .setDesc("Get the last retrieved message called from the retrieve message effect")
-            .setExample("set {_} to last retrieved message");
+        Vixio.getInstance().registerExpression(ExprLastRetrievedMessage.class, Message.class, ExpressionType.SIMPLE,
+                "last retrieved [discord] message")
+                .setName("Last retrieved Message")
+                .setDesc("Get the last retrieved message called from the retrieve message effect")
+                .setExample("set {_} to last retrieved message");
     }
+
     @Override
     protected Message[] get(Event event) {
-        if (lastRetrievedMessage!=null) {
+        if (lastRetrievedMessage != null) {
             return new Message[]{lastRetrievedMessage};
         } else {
             Vixio.getErrorHandler().warn("Vixio tried to access the last retrieved message but none had been retrieved yet.");

@@ -27,13 +27,12 @@ public class EffAppendToBuilder extends Effect {
     @Override
     protected void execute(Event e) {
         MessageBuilder builder = this.builder.getSingle(e);
-        if (builder == null){
-            return;
-        }
+
         String[] toAppend = this.toAppend.getAll(e);
-        if (toAppend == null) {
+        if (toAppend == null || builder == null) {
             return;
         }
+
         for (String s : toAppend) {
             builder.append(s);
         }

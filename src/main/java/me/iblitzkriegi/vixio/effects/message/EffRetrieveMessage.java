@@ -26,12 +26,9 @@ public class EffRetrieveMessage extends Effect{
     @Override
     protected void execute(Event e) {
         String id = this.id.getSingle(e);
-        if (id == null || id.isEmpty()) {
-            return;
-        }
         Channel channel = this.channel.getSingle(e);
 
-        if (channel == null) {
+        if (id == null || id.isEmpty() || channel == null) {
             return;
         }
         if (!channel.getType().equals(ChannelType.TEXT)) {

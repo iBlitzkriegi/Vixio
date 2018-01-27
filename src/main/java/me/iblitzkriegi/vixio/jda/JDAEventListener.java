@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 public class JDAEventListener extends ListenerAdapter{
     @Override
     public void onGenericEvent(Event e){
-        if(e instanceof GuildMessageReceivedEvent){
+        if (e instanceof GuildMessageReceivedEvent) {
             EvntMessageReceived efc = new EvntMessageReceived(((GuildMessageReceivedEvent) e).getAuthor(), ((GuildMessageReceivedEvent) e).getMember(), ((GuildMessageReceivedEvent) e).getChannel(), ((GuildMessageReceivedEvent) e).getMessage(), e.getJDA(), ((GuildMessageReceivedEvent) e).getGuild());
             Bukkit.getServer().getPluginManager().callEvent(efc);
         }

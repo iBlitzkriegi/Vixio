@@ -53,12 +53,13 @@ public class Documentation {
             bw.newLine();
             for(Registration reg : Vixio.getInstance().effects){
                 boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
-                if(multipleSyntax){
+                if (multipleSyntax) {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
-                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
                         builder.append(reg.getSyntaxes()[i] + "\",");
                     }
+
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
@@ -69,10 +70,14 @@ public class Documentation {
             }
             bw.write("-=Expressions=-");
             bw.newLine();
-            for(Registration reg : Vixio.getInstance().expressions){
+
+            for (Registration reg : Vixio.getInstance().expressions) {
                 boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
-                if(multipleSyntax){
-                    if(reg.getUserFacing()==null) {
+                if (reg.getUserFacing() != null) {
+                    bw.write("\tsyntax: " + reg.getUserFacing());
+                    bw.newLine();
+                } else {
+                    if (multipleSyntax) {
                         StringBuilder builder = new StringBuilder();
                         builder.append("\tsyntax: {\"");
                         for (int i = 0; i < reg.getSyntaxes().length; i++) {
@@ -81,20 +86,18 @@ public class Documentation {
                         builder.append("}");
                         bw.write(builder.toString());
                         bw.newLine();
+
                     } else {
-                        bw.write("\tsyntax: " + reg.getUserFacing());
+                        bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
                         bw.newLine();
                     }
-                } else {
-                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
-                    bw.newLine();
                 }
             }
             bw.write("-=Events=-");
             bw.newLine();
-            for(Registration reg : Vixio.getInstance().events){
+            for (Registration reg : Vixio.getInstance().events) {
                 boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
-                if(multipleSyntax){
+                if (multipleSyntax){
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
                     for(int i = 0; i < reg.getSyntaxes().length; i++){

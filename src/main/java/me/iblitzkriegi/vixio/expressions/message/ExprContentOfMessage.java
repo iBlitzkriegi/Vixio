@@ -10,7 +10,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -22,13 +22,16 @@ import java.util.Objects;
  */
 public class ExprContentOfMessage extends SimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprContentOfMessage.class, String.class, ExpressionType.SIMPLE, "content of %messages% [(with|as) %-bot/string%]")
-            .setName("Content of message")
-            .setDesc("Get the content of a message")
-            .setExample("content of event-message");
+        Vixio.getInstance().registerExpression(ExprContentOfMessage.class, String.class, ExpressionType.SIMPLE,
+                "content of %messages% [(with|as) %-bot/string%]")
+                .setName("Content of Message")
+                .setDesc("Get the content of a Message. Must include a bot to modify the content. Changers: SET, DELETE")
+                .setExample("content of event-message");
     }
-    Expression<Message> message;
-    Expression<Object> bot;
+
+    private Expression<Message> message;
+    private Expression<Object> bot;
+
     @Override
     protected String[] get(Event event) {
         Message[] messages = this.message.getAll(event);
@@ -38,6 +41,7 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
                     .map(Message::getContentDisplay)
                     .toArray(String[]::new);
         }
+
         return null;
     }
 
@@ -54,62 +58,63 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.DELETE || message.isSingle())
-            return new Class[] {
-                String.class,
-                Message.class
-        };
+            return new Class[]{
+                    String.class,
+                    Message.class
+            };
+
         return null;
     }
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        String content = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
-        Object object = bot.getSingle(e);
-        if (object == null) {
-            return;
-        }
-        Bot bot = Util.botFrom(object);
         if (bot == null) {
+            Vixio.getErrorHandler().noBotProvided("set content of message");
             return;
         }
+
+        String content = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
         Message message = this.message.getSingle(e);
-        if (message == null) {
+        if (bot == null || message == null) {
             return;
         }
+
         if (Util.botIsConnected(bot, message.getJDA())) {
             if (content == null) {
                 try {
                     message.delete().queue();
                     return;
-                }catch (PermissionException x) {
+                } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "delete message", x.getPermission().getName());
                 }
             }
             try {
                 message.editMessage(content).queue();
                 return;
-            }catch (PermissionException x) {
+            } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "edit message", x.getPermission().getName());
             }
 
         }
-        MessageChannel channel = bot.getJDA().getTextChannelById(message.getChannel().getId());
-        if (channel == null) {
-            Vixio.getErrorHandler().botCantFind(bot, "text channel", message.getChannel().getId());
+
+        TextChannel bindedChannel = Util.bindChannel(bot, message.getTextChannel());
+        if (bindedChannel == null) {
             return;
         }
+
         if (content == null) {
             try {
-                channel.getMessageById(message.getId()).queue(message1 -> message1.delete().queue());
+                bindedChannel.getMessageById(message.getId()).queue(message1 -> message1.delete().queue());
                 return;
-            }catch (PermissionException x) {
+            } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "delete message", x.getPermission().getName());
             }
         }
+
         try {
-            channel.getMessageById(message.getId()).queue(message1 -> message1.editMessage(content));
-            return;
-        }catch (PermissionException x){
+            bindedChannel.getMessageById(message.getId()).queue(message1 -> message1.editMessage(content));
+        } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, "edit message", x.getPermission().getName());
         }
     }
@@ -119,6 +124,7 @@ public class ExprContentOfMessage extends SimpleExpression<String> {
         return "content of message " + message.toString(event, b);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) expressions[0];
