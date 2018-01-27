@@ -40,10 +40,13 @@ public class ExprAliases extends SimpleExpression<String> {
 
         List<String> aliases = new ArrayList<>();
         for (DiscordCommand cmd : cmds) {
-            if (usable)
-                aliases.addAll(cmd.getUsableAliases());
-            else
-                aliases.addAll(cmd.getAliases());
+            if (usable) {
+                if (cmd.getUsableAliases() != null)
+                    aliases.addAll(cmd.getUsableAliases());
+            } else {
+                if (cmd.getAliases() != null)
+                    aliases.addAll(cmd.getAliases());
+            }
         }
 
         return aliases.isEmpty() ? null : aliases.toArray(new String[aliases.size()]);

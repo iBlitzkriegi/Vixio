@@ -8,10 +8,12 @@ import java.util.regex.Pattern;
 
 public class CommandListener extends ListenerAdapter {
 
-    private final Pattern commandPattern = Pattern.compile("(\\S+)(\\s+(.+))");
+    private final Pattern commandPattern = Pattern.compile("(\\S+)(\\s+(.+))?");
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
+        if (e.getAuthor().isBot()) return;
+
         String content = e.getMessage().getContentRaw();
         Matcher m = commandPattern.matcher(content);
         if (!m.matches())
@@ -29,7 +31,7 @@ public class CommandListener extends ListenerAdapter {
                     if (commandLabel.equals(prefix + alias)) {
 
                         command.execute(prefix, alias, args, e.getGuild(), e.getChannel(), e.getMessage(),
-                                e.getAuthor(), e.getMember());
+                                e.getAuthor(), e.getMember(), e.getJDA());
                         return;
 
                     }

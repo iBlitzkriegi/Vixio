@@ -38,14 +38,17 @@ public class DiscordCommandFactory {
     private final Pattern argumentPattern = Pattern.compile("<\\s*(?:(.+?)\\s*:\\s*)?(.+?)\\s*(?:=\\s*(" + SkriptParser.wildcard + "))?\\s*>");
     private final Pattern escape = Pattern.compile("[" + Pattern.quote("(|)<>%\\") + "]");
     private final String listPattern = "\\s*,\\s*|\\s+(and|or|, )\\s+";
+
     private final SectionValidator commandStructure = new SectionValidator()
             .addEntry("usage", true)
             .addEntry("description", true)
             .addEntry("roles", true)
             .addEntry("aliases", true)
             .addEntry("prefixes", false)
+            .addEntry("bots", true)
             .addEntry("executable in", true)
             .addSection("trigger", false);
+
     public HashMap<String, DiscordCommand> commandMap = new HashMap<>();
     public List<DiscordArgument<?>> currentArguments;
 
@@ -130,6 +133,10 @@ public class DiscordCommandFactory {
                 level--;
             }
         }
+        if (level > 0) {
+            Skript.error("Invalid amount of [optional brackets]");
+            return null;
+        }
 
         command = matcher.group(2);
         DiscordCommand existingCommand = this.commandMap.get(command);
@@ -139,6 +146,9 @@ public class DiscordCommandFactory {
         }
 
         String arguments = matcher.group(4);
+        if (arguments == null)
+            arguments = "";
+
         final StringBuilder pattern = new StringBuilder();
 
         List<DiscordArgument<?>> currentArguments = this.currentArguments = new ArrayList<>();
@@ -194,12 +204,24 @@ public class DiscordCommandFactory {
             return null;
 
         SectionNode trigger = (SectionNode) node.get("trigger");
+
         String usage = ScriptLoader.replaceOptions(node.get("usage", ""));
+
         String description = ScriptLoader.replaceOptions(node.get("description", ""));
-        String[] aliases = ScriptLoader.replaceOptions(node.get("aliases", "")).split(listPattern);
+
+        String aliasesString = ScriptLoader.replaceOptions(node.get("aliases", ""));
+        List<String> aliases = aliasesString.isEmpty() ? null : Arrays.asList(aliasesString.split(listPattern));
+
         String[] prefixes = ScriptLoader.replaceOptions(node.get("prefixes", "")).split(listPattern);
-        String[] roles = ScriptLoader.replaceOptions(node.get("roles", "")).split(listPattern);
-        ArrayList<ChannelType> places = parsePlaces(ScriptLoader.replaceOptions(node.get("executable in", "guild, dm")).split(listPattern));
+
+        String roleString = ScriptLoader.replaceOptions(node.get("roles", ""));
+        List<String> roles = roleString.isEmpty() ? null : Arrays.asList(roleString.split(listPattern));
+
+        String botString = ScriptLoader.replaceOptions(node.get("bots", ""));
+        List<String> bots = botString.isEmpty() ? null : Arrays.asList(botString.split(listPattern));
+
+        List<ChannelType> places = parsePlaces(ScriptLoader.replaceOptions(node.get("executable in", "guild, dm")).split(listPattern));
+
         if (places == null)
             return null;
 
@@ -209,7 +231,7 @@ public class DiscordCommandFactory {
         try {
             discordCommand = new DiscordCommand(
                     node.getConfig().getFile(), command, pattern.toString(), currentArguments,
-                    Arrays.asList(prefixes), Arrays.asList(aliases), description, usage, Arrays.asList(roles), places, ScriptLoader.loadItems(trigger)
+                    Arrays.asList(prefixes), aliases, description, usage, roles, places, bots, ScriptLoader.loadItems(trigger)
             );
         } finally {
             this.currentArguments = null;

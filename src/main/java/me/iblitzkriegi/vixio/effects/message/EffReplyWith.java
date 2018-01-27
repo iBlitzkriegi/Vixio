@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class EffReplyWith extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %strings/messages%")
+        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %message/strings%")
                 .setName("Reply with")
                 .setDesc("Reply with a message in a event")
                 .setUserFacing("reply with \"%messages%\"")

@@ -1,11 +1,6 @@
 package me.iblitzkriegi.vixio.util;
 
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
-import ch.njol.skript.config.Node;
-import ch.njol.skript.config.SectionNode;
-import ch.njol.skript.lang.Trigger;
-import ch.njol.skript.lang.TriggerSection;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
@@ -29,11 +24,9 @@ import org.bukkit.event.Event;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.WeakHashMap;
-import java.util.stream.Stream;
 
 public class Util {
 
@@ -71,16 +64,7 @@ public class Util {
     }
 
     public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
-        return Stream.of(potentialMatches)
-                .anyMatch(toMatch::equalsIgnoreCase);
-    }
-
-    public static void nukeSectionNode(SectionNode sectionNode) {
-        List<Node> nodes = new ArrayList<>();
-        for (Iterator<Node> iterator = sectionNode.iterator(); iterator.hasNext();)
-            nodes.add(iterator.next());
-        for (Node n : nodes)
-            sectionNode.remove(n);
+        return Arrays.asList(potentialMatches).contains(toMatch);
     }
 
     public static AudioTrack[] search(SearchSite site, String[] queries) {

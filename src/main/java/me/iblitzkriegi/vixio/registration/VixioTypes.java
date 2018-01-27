@@ -12,6 +12,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -528,10 +529,12 @@ public class VixioTypes {
                 return DiscordCommandFactory.getInstance().commandMap.get(s);
             }
 
+            @Override
             public boolean canParse(ParseContext pc) {
                 return true;
             }
 
+            @Override
             public String toString(DiscordCommand cmd, int arg1) {
                 return cmd.getName();
             }
@@ -550,10 +553,12 @@ public class VixioTypes {
                 return null;
             }
 
+            @Override
             public boolean canParse(ParseContext pc) {
                 return false;
             }
 
+            @Override
             public String toString(MessageChannel channel, int arg1) {
                 return channel.getName();
             }
@@ -561,6 +566,30 @@ public class VixioTypes {
             @Override
             public String toVariableNameString(MessageChannel channel) {
                 return channel.getName();
+            }
+
+        };
+
+        new SimpleType<ChannelType>(ChannelType.class, "channeltype", "channel ? types?") {
+
+            @Override
+            public ChannelType parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(ChannelType type, int arg1) {
+                return type.name();
+            }
+
+            @Override
+            public String toVariableNameString(ChannelType type) {
+                return type.name();
             }
 
         };

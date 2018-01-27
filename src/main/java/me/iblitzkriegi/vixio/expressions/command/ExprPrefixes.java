@@ -15,7 +15,7 @@ import java.util.List;
 public class ExprPrefixes extends SimpleExpression<String> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprAliases.class, String.class, ExpressionType.PROPERTY,
+        Vixio.getInstance().registerExpression(ExprPrefixes.class, String.class, ExpressionType.PROPERTY,
                 "prefixes of %discordcommands%", "%discordcommands%'[s] prefixes")
                 .setName("Prefixes of command")
                 .setDesc("Returns the prefixes of a command")
@@ -38,7 +38,8 @@ public class ExprPrefixes extends SimpleExpression<String> {
 
         List<String> prefixes = new ArrayList<>();
         for (DiscordCommand cmd : cmds)
-            prefixes.addAll(cmd.getPrefixes());
+            if (cmd.getPrefixes() != null)
+                prefixes.addAll(cmd.getPrefixes());
 
         return prefixes.isEmpty() ? null : prefixes.toArray(new String[prefixes.size()]);
     }

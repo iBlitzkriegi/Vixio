@@ -6,7 +6,9 @@ import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
-import ch.njol.util.Validate;
+import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -28,6 +30,7 @@ public class DiscordCommand {
     private String description;
     private String usage;
     private String pattern;
+    private List<String> bots;
 
     private Trigger trigger;
 
@@ -35,10 +38,10 @@ public class DiscordCommand {
 
     public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<String> prefixes,
                           List<String> aliases, String description, String usage, List<String> roles,
-                          List<ChannelType> executableIn, List<TriggerItem> items) {
-        Validate.notNull(name, pattern, arguments, description, usage, aliases, items);
+                          List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
         this.name = name;
-        aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
+        if (aliases != null)
+            aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
         this.aliases = aliases;
         this.roles = roles;
         this.executeableIn = executableIn;
@@ -46,6 +49,7 @@ public class DiscordCommand {
         this.usage = Utils.replaceEnglishChatStyles(usage);
         this.pattern = pattern;
         this.prefixes = prefixes;
+        this.bots = bots;
         this.arguments = arguments;
 
         trigger = new Trigger(script, "discord command " + name, new SimpleEvent(), items);
@@ -53,7 +57,7 @@ public class DiscordCommand {
     }
 
     public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel channel, Message message, User user,
-                           Member member) {
+                           Member member, JDA jda) {
         DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member);
         if (args == null)
             args = "";
@@ -63,9 +67,18 @@ public class DiscordCommand {
 
         try {
 
+            Bot bot = Vixio.getInstance().botHashMap.get(jda);
             boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
+
             if (!ok)
                 return false;
+            else if (!this.getExecutableIn().contains(channel.getType()))
+                return false;
+            else if (this.getRoles() != null && member != null)
+                if (member.getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName())))
+                    return false;
+                else if (bots != null && !bots.contains(bot.getName()))
+                    return false;
 
             trigger.execute(event);
 
@@ -105,8 +118,10 @@ public class DiscordCommand {
     }
 
     public List<String> getUsableAliases() {
-        List<String> usableAliases = new ArrayList<>(getAliases());
+        List<String> usableAliases = new ArrayList<>();
         usableAliases.add(getName());
+        if (getAliases() != null)
+            usableAliases.addAll(getAliases());
         return usableAliases;
     }
 
@@ -114,7 +129,7 @@ public class DiscordCommand {
         return trigger;
     }
 
-    public List<ChannelType> getExecuteableIn() {
+    public List<ChannelType> getExecutableIn() {
         return executeableIn;
     }
 

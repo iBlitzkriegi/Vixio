@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.commands;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.config.Config;
+import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
@@ -12,13 +13,16 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
 
@@ -95,7 +99,7 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
         ScriptLoader.setCurrentEvent(originalName, originalEvents);
         ScriptLoader.hasDelayBefore = originalDelay;
 
-        Util.nukeSectionNode(sectionNode);
+        nukeSectionNode(sectionNode);
 
         return cmd != null;
     }
@@ -120,6 +124,14 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
     @Override
     public String toString(final Event e, final boolean debug) {
         return "discord command " + command + (arguments == null ? "" : arguments);
+    }
+
+    public void nukeSectionNode(SectionNode sectionNode) {
+        List<Node> nodes = new ArrayList<>();
+        for (Iterator<Node> iterator = sectionNode.iterator(); iterator.hasNext(); )
+            nodes.add(iterator.next());
+        for (Node n : nodes)
+            sectionNode.remove(n);
     }
 
 }
