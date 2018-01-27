@@ -25,7 +25,7 @@ public class DiscordCommand {
     private String name;
     private List<String> aliases;
     private List<String> roles;
-    private List<ChannelType> executeableIn;
+    private List<ChannelType> executableIn;
     private List<String> prefixes;
     private String description;
     private String usage;
@@ -44,7 +44,7 @@ public class DiscordCommand {
             aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
         this.aliases = aliases;
         this.roles = roles;
-        this.executeableIn = executableIn;
+        this.executableIn = executableIn;
         this.description = Utils.replaceEnglishChatStyles(description);
         this.usage = Utils.replaceEnglishChatStyles(usage);
         this.pattern = pattern;
@@ -130,7 +130,7 @@ public class DiscordCommand {
     }
 
     public List<ChannelType> getExecutableIn() {
-        return executeableIn;
+        return executableIn;
     }
 
     public List<String> getRoles() {
