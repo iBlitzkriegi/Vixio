@@ -16,24 +16,21 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
                 "role with id %string% [in %guild%]")
                 .setName("Role with ID")
                 .setDesc("Get a Role via it's ID, plain and simple.")
-                .setExample("Coming Soon!");
+                .setExample("add role with id \"5151561851\" to roles of event-member");
     }
+
     private Expression<String> id;
     private Expression<Guild> guild;
+
     @Override
     protected Role[] get(Event e) {
-        Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
-            return null;
-        }
         String id = this.id.getSingle(e);
-        if (id == null || id.isEmpty()) {
-            return null;
-        }
+        Guild guild = this.guild.getSingle(e);
         Role role = guild.getRoleById(id);
-        if(role == null){
+        if (guild == null || role == null || id == null || id.isEmpty()) {
             return null;
         }
+
         return new Role[]{role};
     }
 
@@ -52,6 +49,7 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
         return "role with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];

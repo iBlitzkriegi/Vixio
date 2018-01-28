@@ -40,4 +40,8 @@ public class VixioErrorHandler {
     public void cantFindBot(String bot, String action) {
         logger.info("Vixio tried to find a bot by " + bot + " to " + action + " but could not find the bot.");
     }
+
+    public void noBotProvided(String action) {
+        Vixio.getErrorHandler().warn("Vixio attempted to " + action + " but no bot was provided!");
+    }
 }

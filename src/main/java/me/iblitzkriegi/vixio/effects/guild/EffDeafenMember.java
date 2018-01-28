@@ -36,21 +36,17 @@ public class EffDeafenMember extends Effect {
             Vixio.getErrorHandler().cantFindBot((String) this.bot.getSingle(e), "deafen member");
             return;
         }
+
         Member[] members = this.member.getAll(e);
         if (member == null) {
             return;
         }
+
         for (Member member : members) {
             try {
-                Guild guild = member.getGuild();
-                if (Util.botIsConnected(bot, guild.getJDA())) {
-                    System.out.println(deafen);
-                    guild.getController().setDeafen(member, deafen).queue();
-                } else {
-                    Guild bindingGuild = bot.getJDA().getGuildById(guild.getId());
-                    if (bindingGuild != null) {
-                        bindingGuild.getController().setDeafen(member, deafen).queue();
-                    }
+                Guild bindedGuild = Util.bindGuild(bot, member.getGuild());
+                if (bindedGuild != null) {
+                    bindedGuild.getController().setDeafen(member, deafen).queue();
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "deafen member", x.getPermission().getName());

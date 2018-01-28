@@ -17,17 +17,20 @@ public class ExprMentionedUsers extends SimpleExpression<User> {
     static {
         Vixio.getInstance().registerExpression(ExprMentionedUsers.class, User.class, ExpressionType.SIMPLE,
                 "mentioned user[s] of %message%")
-            .setName("Mentioned users")
-            .setDesc("Get the mentioned users in a message")
-            .setExample("set {_var::*} to the mentioned users in event-channel");
+                .setName("Mentioned users")
+                .setDesc("Get the mentioned Users in a Message")
+                .setExample("set {_var::*} to the mentioned users in event-channel");
     }
+
     private Expression<Message> message;
+
     @Override
     protected User[] get(Event e) {
         Message message = this.message.getSingle(e);
         if (message == null) {
             return null;
         }
+
         return message.getMentionedUsers().toArray(new User[0]);
     }
 
@@ -46,6 +49,7 @@ public class ExprMentionedUsers extends SimpleExpression<User> {
         return "mention users of " + message.toString(e, debug);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) exprs[0];

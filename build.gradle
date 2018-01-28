@@ -69,7 +69,8 @@ dependencies {
     shadow group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
 
     // JDA
-    compile 'net.dv8tion:JDA:3.5.0_327'
+
+    compile 'net.dv8tion:JDA:3.5.0_329'
 
     // LavaPlayer
     compile 'com.sedmelluq:lavaplayer:1.2.45'
@@ -77,6 +78,8 @@ dependencies {
     // Skript API
     shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'com.vdurmont:emoji-java:3.3.0'
+
 
 }
 

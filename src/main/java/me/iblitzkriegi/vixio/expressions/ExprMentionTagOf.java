@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.entities.IMentionable;
 /**
  * Created by Blitz on 7/25/2017.
  */
-public class ExprMentionTagOf extends SimplePropertyExpression<Object, String>{
+public class ExprMentionTagOf extends SimplePropertyExpression<Object, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMentionTagOf.class, String.class, "mention tag", "user/textchannel/member/bot/role")
                 .setName("Discord Name of")
@@ -17,12 +17,12 @@ public class ExprMentionTagOf extends SimplePropertyExpression<Object, String>{
 
     @Override
     protected String getPropertyName() {
-        return "mention tag of";
+        return "mention tag";
     }
 
     @Override
     public String convert(Object o) {
-        return ((IMentionable)o).getAsMention();
+        return ((IMentionable) o).getAsMention();
     }
 
     @Override

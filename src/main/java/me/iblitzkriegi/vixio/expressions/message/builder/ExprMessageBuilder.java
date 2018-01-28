@@ -9,13 +9,15 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.MessageBuilder;
 import org.bukkit.event.Event;
 
-public class ExprMessageBuilder extends SimpleExpression<MessageBuilder>{
+public class ExprMessageBuilder extends SimpleExpression<MessageBuilder> {
     static {
-        Vixio.getInstance().registerExpression(ExprMessageBuilder.class, MessageBuilder.class, ExpressionType.SIMPLE , "a [new] message builder")
+        Vixio.getInstance().registerExpression(ExprMessageBuilder.class, MessageBuilder.class, ExpressionType.SIMPLE,
+                "a [new] message builder")
                 .setName("Message Builder")
                 .setDesc("Create a new MessageBuilder")
                 .setExample("set {e} to a new message builder");
     }
+
     @Override
     protected MessageBuilder[] get(Event e) {
         return new MessageBuilder[]{new MessageBuilder()};

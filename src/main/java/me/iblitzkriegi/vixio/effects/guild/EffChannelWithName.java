@@ -11,13 +11,21 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class EffCreateTextchannel extends Effect{
+public class EffChannelWithName extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffCreateTextchannel.class,
-                "create text[(-| )]channel named %string% [in %guild%] [(as|with) %bot/string%] ", "create voice[(-| )]channel named %string% [in %guild%] [(as|with) %bot/string%]")
+        Vixio.getInstance().registerEffect(EffChannelWithName.class,
+                "create text[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%] ", "create voice[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]")
                 .setName("Create channel")
-                .setDesc("Create ")
-                .setExample("Coming Soon!");
+                .setDesc("Create either a voice channel or a text channel as requested.")
+                .setExample("on guild message received:" +
+                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
+                        "\t\tif {_cmd::1} is \"create\":" +
+                        "\t\t\tif id of event-user is \"98208218022428672\":" +
+                        "\t\t\t\tif {_cmd::2} is \"text\":" +
+                        "\t\t\t\t\tcreate text channel named \"%{_cmd::3}%\"" +
+                        "\t\t\t\telse if {_cmd::2} is \"voice\":" +
+                        "\t\t\t\t\tcreate voice channel named \"%{_cmd::3}%\"");
     }
     private Expression<String> name;
     private Expression<Guild> guild;
@@ -26,41 +34,20 @@ public class EffCreateTextchannel extends Effect{
     @Override
     protected void execute(Event e) {
         String name = this.name.getSingle(e);
-        if (name == null || name.isEmpty()) {
-            return;
-        }
         Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
+        Guild bindedGuild = Util.bindGuild(bot, guild);
+        if (bot == null || guild == null || name == null || name.isEmpty() || bindedGuild == null) {
             return;
         }
-        Object object = this.bot.getSingle(e);
-        if (object == null) {
-            return;
-        }
-        Bot bot = Util.botFrom(object);
-        if (bot == null) {
-            return;
-        }
-        try{
-            if (Util.botIsConnected(bot, guild.getJDA())) {
-                if (not) {
-                    guild.getController().createTextChannel(name).queue();
-                    return;
-                }
-                guild.getController().createVoiceChannel(name).queue();
-                return;
-            }
-            Guild bindingGuild = bot.getJDA().getGuildById(guild.getId());
-            if (bindingGuild == null) {
-                Vixio.getErrorHandler().botCantFind(bot, "guild", guild.getId());
-                return;
-            }
+        try {
             if (not) {
-                bindingGuild.getController().createTextChannel(name).queue();
+                bindedGuild.getController().createTextChannel(name).queue();
                 return;
             }
-            bindingGuild.getController().createVoiceChannel(name).queue();
-        }catch (PermissionException x) {
+            bindedGuild.getController().createVoiceChannel(name).queue();
+            return;
+        } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "create channel");
         }
     }

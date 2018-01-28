@@ -15,10 +15,10 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% (with|as) %bot/string%")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [(with|as) %bot/string%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
-                .setExample("COMING BACK 2 DIS")
+                .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"")
                 .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string%");
     }
     private Expression<Object> message;
@@ -27,13 +27,8 @@ public class EffSendMessage extends Effect{
 
     @Override
     protected void execute(Event e) {
-        Object object = this.bot.getSingle(e);
-        if (object == null) {
-            return;
-        }
-        Bot bot = Util.botFrom(object);
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (bot == null) {
-            Vixio.getErrorHandler().cantFindBot(object.toString(), "send a message");
             return;
         }
         try {

@@ -9,7 +9,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -20,13 +19,20 @@ import java.util.Objects;
 
 public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprGuildAfkChannel.class, VoiceChannel.class, ExpressionType.SIMPLE, "afk channel[s] of %guilds% [(as|with)] [%bot/string%]")
+        Vixio.getInstance().registerExpression(ExprGuildAfkChannel.class, VoiceChannel.class, ExpressionType.SIMPLE,
+                "afk channel[s] of %guilds% [(as|with)] [%bot/string%]")
                 .setName("Afk channel of Guild")
-                .setDesc("Get the afk voice channel of a Guild, has a Set changer.")
-                .setExample("coming soon");
+                .setDesc("Get the afk Voice Channel of a Guild. Changers: SET")
+                .setExample("on guild message received:" +
+                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
+                        "\t\tif {_cmd::*} is \"##afk\":" +
+                        "\t\t\treply with afk channel of event-guild");
     }
+
     private Expression<Guild> guilds;
     private Expression<Object> bot;
+
     @Override
     protected VoiceChannel[] get(Event e) {
         Guild[] guilds = this.guilds.getAll(e);
@@ -34,7 +40,8 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
             return null;
         }
         return Arrays.stream(guilds)
-                .map(guild -> guild.getAfkChannel())
+                .filter(Objects::nonNull)
+                .map(Guild::getAfkChannel)
                 .toArray(VoiceChannel[]::new);
     }
 
@@ -50,7 +57,7 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
 
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
-        if ((mode == Changer.ChangeMode.SET)) {
+        if (mode == Changer.ChangeMode.SET) {
             return new Class[]{VoiceChannel.class};
         }
         return super.acceptChange(mode);
@@ -65,14 +72,10 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
         }
         VoiceChannel channel = (VoiceChannel) delta[0];
         for (Guild guild : guilds) {
+            Guild bindedGuild = Util.bindGuild(bot, guild);
             try {
-                if (Util.botIsConnected(bot, guild.getJDA())) {
-                    guild.getManager().setAfkChannel(channel).queue();
-                } else {
-                    Guild bindingGuild = Util.bindGuild(bot, guild);
-                    if (bindingGuild != null) {
-                        bindingGuild.getManager().setAfkChannel(channel).queue();
-                    }
+                if (bindedGuild != null) {
+                    bindedGuild.getManager().setAfkChannel(channel).queue();
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "set afk channel", x.getPermission().getName());

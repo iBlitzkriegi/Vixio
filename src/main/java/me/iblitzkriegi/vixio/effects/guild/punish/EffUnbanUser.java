@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 
 public class EffUnbanUser extends Effect{
     static {
-        Vixio.getInstance().registerEffect(EffUnbanUser.class, "unban %users/strings% from %guild% [(with|as)] [%bot/string%]")
+        Vixio.getInstance().registerEffect(EffUnbanUser.class, "unban %users/strings% from %guild% [(with|as) %bot/string%]")
                 .setName("Unban user from Guild")
                 .setDesc("Un-ban a user from a guild as a bot.")
                 .setExample(
@@ -28,40 +28,17 @@ public class EffUnbanUser extends Effect{
     @Override
     protected void execute(Event e) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (bot == null) {
-            return;
-        }
         Guild guild = this.guild.getSingle(e);
-        if (guild == null) {
-            return;
-        }
         Object[] users = this.users.getAll(e);
-        if (users == null) {
+        Guild bindedGuild = Util.bindGuild(bot, guild);
+        if (users == null || guild == null || bot == null || bindedGuild == null) {
             return;
         }
-        boolean isConnected = Util.botIsConnected(bot, guild.getJDA());
-        if (isConnected) {
-            for (Object object : users) {
-                try {
-                    String user = object instanceof User ? ((User) object).getId() : (String) object;
-                    guild.getController().unban(user).queue();
-                } catch (PermissionException x) {
-                    Vixio.getErrorHandler().needsPerm(bot, "unban user", x.getPermission().getName());
-                } catch (IllegalArgumentException x) {
 
-                }
-            }
-            return;
-        }
-        Guild bindingGuild = bot.getJDA().getGuildById(guild.getId());
-        if (bindingGuild == null) {
-            Vixio.getErrorHandler().botCantFind(bot, "guild", guild.getId());
-            return;
-        }
         for (Object object : users) {
             try {
                 String user = object instanceof User ? ((User) object).getId() : (String) object;
-                guild.getController().unban(user).queue();
+                bindedGuild.getController().unban(user).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "unban user", x.getPermission().getName());
             } catch (IllegalArgumentException x) {

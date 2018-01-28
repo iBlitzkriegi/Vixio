@@ -12,21 +12,30 @@ import com.sedmelluq.discord.lavaplayer.track.AudioItem;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioReference;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.vdurmont.emoji.EmojiManager;
+import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.enums.SearchSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 public class Util {
 
@@ -151,11 +160,74 @@ public class Util {
     }
 
     public static boolean botIsConnected(Bot bot, JDA jda){
-        return bot.getJDA().getSelfUser().getId().equalsIgnoreCase(jda.getSelfUser().getId());
+        return bot.getJDA() == jda;
     }
 
     public static Guild bindGuild(Bot bot, Guild guild) {
-        return bot.getJDA().getGuildById(guild.getId());
+        if (!(guild.getJDA() == bot.getJDA())) {
+            return bot.getJDA().getGuildById(guild.getId());
+        } else {
+            if (guild != null) {
+                return guild;
+            }
+            return null;
+        }
+    }
+
+    public static TextChannel bindChannel(Bot bot, TextChannel textChannel) {
+        if (!(textChannel.getJDA() == bot.getJDA())) {
+            return bot.getJDA().getTextChannelById(textChannel.getId());
+        } else {
+            if (textChannel != null) {
+                return textChannel;
+            }
+            return null;
+        }
+    }
+
+
+    public static VoiceChannel bindVoiceChannel(Bot bot, VoiceChannel voiceChannel) {
+        if (!(voiceChannel.getJDA() == bot.getJDA())) {
+            return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
+        } else {
+            if (voiceChannel != null) {
+                return voiceChannel;
+            }
+            return null;
+        }
+    }
+
+    public static Channel bindChannel(Bot bot, Channel channel) {
+        if (!(channel.getJDA() == bot.getJDA())) {
+            TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
+            VoiceChannel voiceChannel = bot.getJDA().getVoiceChannelById(channel.getId());
+
+            return voiceChannel == null ? textChannel : voiceChannel;
+        } else {
+            if (channel != null) {
+                return channel;
+            }
+            return null;
+        }
+    }
+
+    public static Emoji unicodeFrom(String emote, Guild guild) {
+        try {
+            if (EmojiManager.isEmoji(emote)) {
+                return new Emoji(emote);
+            }
+            Collection<Emote> emotes = guild.getEmotesByName(emote, false);
+            return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
+        }catch (UnsupportedOperationException | NoSuchElementException x) {
+            return null;
+        }
+    }
+    public static Emoji unicodeFrom(String emote) {
+        if (EmojiManager.isEmoji(emote)) {
+            return new Emoji(emote);
+        } else {
+            return new Emoji(EmojiParser.parseToUnicode(emote));
+        }
     }
 
 }
