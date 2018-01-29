@@ -6,7 +6,6 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
-import ch.njol.skript.util.EnumUtils;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.registration.VixioConverters;
@@ -15,7 +14,6 @@ import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.enums.VixioErrorHandler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -53,7 +51,7 @@ public class Vixio extends JavaPlugin {
             getAddonInstance()
                     .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes", "expressions", "commands")
                     .setLanguageFileDirectory("lang");
-            EnumUtils<ChannelType> recipients = new EnumUtils<>(ChannelType.class, "channel types");
+
             Vixio.setup();
         } catch (IOException e) {
             e.printStackTrace();
