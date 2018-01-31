@@ -72,15 +72,17 @@ public class DiscordCommand {
             Bot bot = Vixio.getInstance().botHashMap.get(jda);
             boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
 
-            if (!ok)
+            if (!ok) {
                 return false;
-            else if (!this.getExecutableIn().contains(channel.getType()))
+            } else if (!this.getExecutableIn().contains(channel.getType())) {
                 return false;
-            else if (this.getRoles() != null && member != null)
-                if (member.getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName())))
+            } else if (this.getRoles() != null && member != null) {
+                if (member.getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
                     return false;
-                else if (bots != null && !bots.contains(bot.getName()))
-                    return false;
+                }
+            } else if (bots != null && !bots.contains(bot.getName())) {
+                return false;
+            }
 
             trigger.execute(event);
 
