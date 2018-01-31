@@ -80,7 +80,7 @@ public class EffSendMessage extends AsyncEffect {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "send " + message.toString(e, debug) + " to " + channel.toString(e, debug) + " with " + bot.toString(e, debug) + ("and store it in " + varExpr.toString(e, debug));
+        return "send " + message.toString(e, debug) + " to " + channel.toString(e, debug) + " with " + bot.toString(e, debug) + (varExpr == null ? "" : ("and store it in " + varExpr.toString(e, debug)));
     }
 
     @Override
