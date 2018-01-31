@@ -23,15 +23,15 @@ public class EffSendMessage extends AsyncEffect {
         Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [(with|as) %bot/string%] [and store (it|the message) in %-objects%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
-                .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"")
-                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string%");
+                .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"", "send \"hey\" to channel with id \"156156165165156\" as \"Jewel\" and store it in {_message}")
+                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string% [and store (it|the message) in %-objects%]");
     }
 
     private Expression<Object> message;
     private Expression<Channel> channel;
     private Expression<Object> bot;
-    private VariableString variable;
-    private boolean local;
+    private Variable<?> varExpr;
+    private VariableString varName;
 
     @Override
     protected void execute(Event e) {
@@ -50,15 +50,17 @@ public class EffSendMessage extends AsyncEffect {
                             Message message = Util.messageFrom(m);
                             if (message != null) {
 
-                                if (variable == null) {
+                                if (varExpr == null) {
                                     textChannel.sendMessage(message).queue();
                                 } else {
 
                                     try {
-                                        Variables.setVariable(variable.toString(e),
-                                                textChannel.sendMessage(message).complete(true),
-                                                e, local
-                                        );
+                                        Message resultingMessage = textChannel.sendMessage(message).complete(true);
+                                        if (varExpr.isList()) {
+                                            Util.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
+                                        } else {
+                                            Variables.setVariable(varName.toString(e), resultingMessage, e, varExpr.isLocal());
+                                        }
                                     } catch (RateLimitedException e1) {
                                         Vixio.getErrorHandler().warn("Vixio tried to send and store a message but was rate limited");
                                     }
@@ -78,7 +80,7 @@ public class EffSendMessage extends AsyncEffect {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "send " + message.toString(e, debug) + " to " + channel.toString(e, debug) + " with " + bot.toString(e, debug);
+        return "send " + message.toString(e, debug) + " to " + channel.toString(e, debug) + " with " + bot.toString(e, debug) + ("and store it in " + varExpr.toString(e, debug));
     }
 
     @Override
@@ -88,9 +90,8 @@ public class EffSendMessage extends AsyncEffect {
         bot = (Expression<Object>) exprs[2];
 
         if (exprs[3] instanceof Variable) {
-            Variable<?> varExpr = (Variable<?>) exprs[3];
-            variable = Util.getVariableName(varExpr);
-            local = varExpr.isLocal();
+            varExpr = (Variable<?>) exprs[3];
+            varName = Util.getVariableName(varExpr);
         }
 
         return true;

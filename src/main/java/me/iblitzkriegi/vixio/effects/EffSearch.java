@@ -43,7 +43,7 @@ public class EffSearch extends AsyncEffect {
             Variable<?> varExpr = (Variable<?>) exprs[1];
             variable = Util.getVariableName(varExpr);
             if (!varExpr.isList()) {
-                Skript.error(variable + " is not a list variable");
+                Skript.error(varExpr.toString() + " is not a list variable");
                 return false;
             }
             local = varExpr.isLocal();
@@ -62,10 +62,7 @@ public class EffSearch extends AsyncEffect {
         AudioTrack[] results = Util.search(site, queries.getAll(e));
         lastResults = results;
         if (variable != null) {
-            String variable = this.variable.toString(e);
-            int separatorLength = Variable.SEPARATOR.length() + 1;
-            variable = variable.substring(0, (variable.length() - separatorLength));
-            Util.setList(variable, results, e, local);
+            Util.setList(variable.toString(e), e, local, results);
         }
 
     }

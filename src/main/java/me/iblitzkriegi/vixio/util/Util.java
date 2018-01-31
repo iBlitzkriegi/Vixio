@@ -107,11 +107,15 @@ public class Util {
 
     }
 
-    public static void setList(String name, Object[] objects, Event e, boolean local) {
-        if (objects == null || name == null || e == null) return;
+    public static void setList(String name, Event e, boolean local, Object... objects) {
+        if (objects == null || name == null) return;
 
+        int separatorLength = Variable.SEPARATOR.length() + 1;
+        name = name.substring(0, (name.length() - separatorLength));
+        name = name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR;
+        Variables.setVariable(name + "*", null, e, local);
         for (int i = 0; i < objects.length; i++)
-            Variables.setVariable(name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR + (i + 1), objects[i], e, local);
+            Variables.setVariable(name + (i + 1), objects[i], e, local);
     }
 
     public static Color getColorFromString(String str) {
