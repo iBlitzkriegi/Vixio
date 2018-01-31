@@ -10,6 +10,7 @@ import org.bukkit.event.HandlerList;
 
 public class DiscordCommandEvent extends Event {
 
+    private final static HandlerList handlers = new HandlerList();
     private DiscordCommand command;
     private Guild guild;
     private Message message;
@@ -61,8 +62,6 @@ public class DiscordCommandEvent extends Event {
     public String getUsedAlias() {
         return usedAlias;
     }
-
-    private final static HandlerList handlers = new HandlerList();
 
     @Override
     public HandlerList getHandlers() {
