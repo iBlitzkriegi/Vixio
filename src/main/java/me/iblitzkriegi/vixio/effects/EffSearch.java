@@ -38,22 +38,24 @@ public class EffSearch extends AsyncEffect {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         queries = (Expression<String>) exprs[0];
-
-        if (exprs[1] instanceof Variable) {
-            Variable<?> varExpr = (Variable<?>) exprs[1];
-            variable = Util.getVariableName(varExpr);
-            if (!varExpr.isList()) {
-                Skript.error(varExpr.toString() + " is not a list variable");
-                return false;
-            }
-            local = varExpr.isLocal();
-        }
-
         try {
-            site = SearchSite.valueOf(parseResult.regexes.get(0).group(0).toUpperCase(Locale.ENGLISH));
+            site = SearchSite.valueOf(parseResult.regexes.get(0).group().toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
         }
 
+        if (exprs[1] != null) {
+            Expression<?> expr = exprs[1];
+            if (expr instanceof Variable) {
+                Variable<?> varExpr = (Variable<?>) expr;
+                if (varExpr.isList()) {
+                    variable = Util.getVariableName(varExpr);
+                    local = varExpr.isLocal();
+                    return true;
+                }
+            }
+            Skript.error(expr + " is not a list variable");
+            return false;
+        }
         return true;
     }
 
