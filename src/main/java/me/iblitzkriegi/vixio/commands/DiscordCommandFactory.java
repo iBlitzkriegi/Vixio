@@ -82,16 +82,18 @@ public class DiscordCommandFactory {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        if (res == null)
+        if (res == null) {
             return false;
+        }
 
         List<DiscordArgument<?>> as = command.getArguments();
         assert as.size() == res.exprs.length;
         for (int i = 0; i < res.exprs.length; i++) {
-            if (res.exprs[i] == null)
+            if (res.exprs[i] == null) {
                 as.get(i).setToDefault(event);
-            else
+            } else {
                 as.get(i).set(event, res.exprs[i].getArray(event));
+            }
         }
         return true;
     }
@@ -99,11 +101,11 @@ public class DiscordCommandFactory {
     public ArrayList<ChannelType> parsePlaces(String[] places) {
         ArrayList<ChannelType> types = new ArrayList<ChannelType>();
         for (String place : places) {
-            if (Util.equalsAnyIgnoreCase(place, "server", "guild"))
+            if (Util.equalsAnyIgnoreCase(place, "server", "guild")) {
                 types.add(ChannelType.TEXT);
-            else if (Util.equalsAnyIgnoreCase(place, "dm", "pm", "direct message", "private message"))
+            } else if (Util.equalsAnyIgnoreCase(place, "dm", "pm", "direct message", "private message")) {
                 types.add(ChannelType.PRIVATE);
-            else {
+            } else {
                 Skript.error("'executable in' should be either 'guild', 'dm', or both, but found '" + place + "'");
                 return null;
             }
@@ -114,12 +116,15 @@ public class DiscordCommandFactory {
     public DiscordCommand add(SectionNode node) {
 
         String command = node.getKey();
-        if (command == null) return null;
+        if (command == null) {
+            return null;
+        }
 
         command = ScriptLoader.replaceOptions(command);
         Matcher matcher = commandPattern.matcher(command);
-        if (!matcher.matches())
+        if (!matcher.matches()) {
             return null;
+        }
 
         int level = 0;
         for (int i = 0; i < command.length(); i++) {
@@ -146,8 +151,9 @@ public class DiscordCommandFactory {
         }
 
         String arguments = matcher.group(4);
-        if (arguments == null)
+        if (arguments == null) {
             arguments = "";
+        }
 
         final StringBuilder pattern = new StringBuilder();
 
@@ -222,8 +228,9 @@ public class DiscordCommandFactory {
 
         List<ChannelType> places = parsePlaces(ScriptLoader.replaceOptions(node.get("executable in", "guild, dm")).split(listPattern));
 
-        if (places == null)
+        if (places == null) {
             return null;
+        }
 
         RetainingLogHandler errors = SkriptLogger.startRetainingLog();
         DiscordCommand discordCommand;

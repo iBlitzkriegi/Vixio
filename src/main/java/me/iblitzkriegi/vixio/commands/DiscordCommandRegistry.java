@@ -128,10 +128,12 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
 
     public void nukeSectionNode(SectionNode sectionNode) {
         List<Node> nodes = new ArrayList<>();
-        for (Iterator<Node> iterator = sectionNode.iterator(); iterator.hasNext(); )
+        for (Iterator<Node> iterator = sectionNode.iterator(); iterator.hasNext(); ) {
             nodes.add(iterator.next());
-        for (Node n : nodes)
+        }
+        for (Node n : nodes) {
             sectionNode.remove(n);
+        }
     }
 
 }

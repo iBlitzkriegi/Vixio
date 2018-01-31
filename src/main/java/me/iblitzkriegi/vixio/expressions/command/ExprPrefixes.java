@@ -33,13 +33,16 @@ public class ExprPrefixes extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         DiscordCommand[] cmds = this.cmds.getAll(e);
-        if (cmds == null)
+        if (cmds == null) {
             return null;
+        }
 
         List<String> prefixes = new ArrayList<>();
-        for (DiscordCommand cmd : cmds)
-            if (cmd.getPrefixes() != null)
+        for (DiscordCommand cmd : cmds) {
+            if (cmd.getPrefixes() != null) {
                 prefixes.addAll(cmd.getPrefixes());
+            }
+        }
 
         return prefixes.isEmpty() ? null : prefixes.toArray(new String[prefixes.size()]);
     }

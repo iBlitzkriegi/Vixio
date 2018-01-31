@@ -12,12 +12,15 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e) {
-        if (e.getAuthor().isBot()) return;
+        if (e.getAuthor().isBot()) {
+            return;
+        }
 
         String content = e.getMessage().getContentRaw();
         Matcher m = commandPattern.matcher(content);
-        if (!m.matches())
+        if (!m.matches()) {
             return;
+        }
 
         String commandLabel = m.group(1);
         String args = m.group(3);
@@ -28,7 +31,7 @@ public class CommandListener extends ListenerAdapter {
 
                 for (String alias : command.getUsableAliases()) {
 
-                    if (commandLabel.equals(prefix + alias)) {
+                    if (commandLabel.equalsIgnoreCase(prefix + alias)) {
 
                         command.execute(prefix, alias, args, e.getGuild(), e.getChannel(), e.getMessage(),
                                 e.getAuthor(), e.getMember(), e.getJDA());

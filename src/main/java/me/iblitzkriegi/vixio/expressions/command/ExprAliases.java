@@ -35,17 +35,20 @@ public class ExprAliases extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         DiscordCommand[] cmds = this.cmds.getAll(e);
-        if (cmds == null)
+        if (cmds == null) {
             return null;
+        }
 
         List<String> aliases = new ArrayList<>();
         for (DiscordCommand cmd : cmds) {
             if (usable) {
-                if (cmd.getUsableAliases() != null)
+                if (cmd.getUsableAliases() != null) {
                     aliases.addAll(cmd.getUsableAliases());
+                }
             } else {
-                if (cmd.getAliases() != null)
+                if (cmd.getAliases() != null) {
                     aliases.addAll(cmd.getAliases());
+                }
             }
         }
 

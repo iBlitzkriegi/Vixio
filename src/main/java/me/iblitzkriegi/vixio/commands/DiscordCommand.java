@@ -40,8 +40,9 @@ public class DiscordCommand {
                           List<String> aliases, String description, String usage, List<String> roles,
                           List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
         this.name = name;
-        if (aliases != null)
+        if (aliases != null) {
             aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
+        }
         this.aliases = aliases;
         this.roles = roles;
         this.executableIn = executableIn;
@@ -59,8 +60,9 @@ public class DiscordCommand {
     public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel channel, Message message, User user,
                            Member member, JDA jda) {
         DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member);
-        if (args == null)
+        if (args == null) {
             args = "";
+        }
 
 
         ParseLogHandler log = SkriptLogger.startParseLogHandler();
