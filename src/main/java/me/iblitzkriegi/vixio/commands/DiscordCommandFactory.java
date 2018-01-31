@@ -203,11 +203,13 @@ public class DiscordCommandFactory {
             pattern.append(']');
 
         node.convertToEntries(0);
-        if (!commandStructure.validate(node))
+        if (!commandStructure.validate(node)) {
             return null;
+        }
 
-        if (!(node.get("trigger") instanceof SectionNode))
+        if (!(node.get("trigger") instanceof SectionNode)) {
             return null;
+        }
 
         SectionNode trigger = (SectionNode) node.get("trigger");
 

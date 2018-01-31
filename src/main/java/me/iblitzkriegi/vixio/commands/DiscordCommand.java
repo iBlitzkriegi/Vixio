@@ -124,8 +124,9 @@ public class DiscordCommand {
     public List<String> getUsableAliases() {
         List<String> usableAliases = new ArrayList<>();
         usableAliases.add(getName());
-        if (getAliases() != null)
+        if (getAliases() != null) {
             usableAliases.addAll(getAliases());
+        }
         return usableAliases;
     }
 
