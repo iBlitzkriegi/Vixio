@@ -48,7 +48,10 @@ public class Vixio extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            getAddonInstance().loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes", "expressions");
+            getAddonInstance()
+                    .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes", "expressions", "commands")
+                    .setLanguageFileDirectory("lang");
+
             Vixio.setup();
         } catch (IOException e) {
             e.printStackTrace();

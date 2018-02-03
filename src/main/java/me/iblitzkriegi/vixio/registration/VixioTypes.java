@@ -2,6 +2,8 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.iblitzkriegi.vixio.commands.DiscordCommand;
+import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.SimpleType;
 import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
@@ -13,9 +15,11 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -589,6 +593,78 @@ public class VixioTypes {
             @Override
             public String toVariableNameString(AudioTrack track) {
                 return track.getInfo().title;
+            }
+
+        };
+
+        new SimpleType<DiscordCommand>(DiscordCommand.class, "discordcommand", "discord ?commands?") {
+
+            @Override
+            public DiscordCommand parse(String s, ParseContext pc) {
+                return DiscordCommandFactory.getInstance().commandMap.get(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(DiscordCommand cmd, int arg1) {
+                return cmd.getName();
+            }
+
+            @Override
+            public String toVariableNameString(DiscordCommand cmd) {
+                return cmd.getName();
+            }
+
+        };
+
+        new SimpleType<MessageChannel>(MessageChannel.class, "messagechannel", "message ?channels?") {
+
+            @Override
+            public MessageChannel parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(MessageChannel channel, int arg1) {
+                return channel.getName();
+            }
+
+            @Override
+            public String toVariableNameString(MessageChannel channel) {
+                return channel.getName();
+            }
+
+        };
+
+        new SimpleType<ChannelType>(ChannelType.class, "channeltype", "channel ? types?") {
+
+            @Override
+            public ChannelType parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(ChannelType type, int arg1) {
+                return type.name();
+            }
+
+            @Override
+            public String toVariableNameString(ChannelType type) {
+                return type.name();
             }
 
         };

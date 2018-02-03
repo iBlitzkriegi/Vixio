@@ -207,7 +207,7 @@ public abstract class EffectSection extends Condition {
     }
 
     /**
-     * A hacky method to fix wrong syntax inside of sections not beeing included in errors.
+     * A hacky method to fix wrong syntax inside of sections not being included in errors.
      * Why? Because before parsing the effect itself, Skript starts a ParseLogHandler, then,
      * in case the syntax returns true in {@link #init(Expression[], int, Kleenean, SkriptParser.ParseResult)},
      * The LogHander will ignore all errors that was sent in this method.
@@ -215,7 +215,7 @@ public abstract class EffectSection extends Condition {
      *
      * @param logger - RetainingLogHandler used to parse the section.
      */
-    private void stopLog(RetainingLogHandler logger) {
+    public static void stopLog(RetainingLogHandler logger) {
         //Stop the current one
         logger.stop();
         //Using reflection to access the iterator of handlers
@@ -223,7 +223,7 @@ public abstract class EffectSection extends Condition {
         if (handler == null)
             return;
         Iterator<LogHandler> it = handler.iterator();
-        //A list containing the last handlers that will be stoped
+        //A list containing the last handlers that will be stopped
         List<LogHandler> toStop = new ArrayList<>();
         while (it.hasNext()) {
             LogHandler l = it.next();

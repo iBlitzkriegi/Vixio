@@ -10,7 +10,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class EffReplyWith extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %strings/messages%")
+        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %messages/strings%")
                 .setName("Reply with")
                 .setDesc("Reply with a message in a event")
                 .setUserFacing("reply with \"%messages%\"")
@@ -33,7 +33,7 @@ public class EffReplyWith extends Effect {
 
     @Override
     protected void execute(Event e) {
-        TextChannel channel = EventValues.getEventValue(e, TextChannel.class, 0);
+        MessageChannel channel = EventValues.getEventValue(e, MessageChannel.class, 0);
         if (channel == null) {
             return;
         }
@@ -60,12 +60,12 @@ public class EffReplyWith extends Effect {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (Arrays.stream(ScriptLoader.getCurrentEvents())
-                .anyMatch(event -> EventValues.getEventValueGetter(event, TextChannel.class, 0) != null)) {
+        if (ScriptLoader.getCurrentEvents() != null && Arrays.stream(ScriptLoader.getCurrentEvents())
+                .anyMatch(event -> EventValues.getEventValueGetter(event, MessageChannel.class, 0) != null)) {
             message = (Expression<Object>) expressions[0];
             return true;
         }
-        Skript.error("You may not use `reply with` in events that do not have a text channel to reply in.");
+        Skript.error("You may not use `reply with` in events that do not have a message channel to reply in.");
         return false;
     }
 }

@@ -31,6 +31,7 @@ import org.bukkit.event.Event;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -39,15 +40,6 @@ import java.util.NoSuchElementException;
 public class Util {
 
     private static final Field VARIABLE_NAME;
-
-    private static YoutubeSearchProvider youtubeSearchProvider =
-            new YoutubeSearchProvider(
-                    new YoutubeAudioSourceManager(false)
-            );
-
-    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
-    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
-
     static {
 
         Field _VARIABLE_NAME = null;
@@ -62,6 +54,14 @@ public class Util {
 
     }
 
+    private static YoutubeSearchProvider youtubeSearchProvider =
+            new YoutubeSearchProvider(
+                    new YoutubeAudioSourceManager(false)
+            );
+
+    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
+    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
+
     // Variable name related code credit btk5h (https://github.com/btk5h)
     public static VariableString getVariableName(Variable<?> var) {
         try {
@@ -70,6 +70,10 @@ public class Util {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
+        return Arrays.asList(potentialMatches).contains(toMatch);
     }
 
     public static AudioTrack[] search(SearchSite site, String[] queries) {
@@ -103,11 +107,15 @@ public class Util {
 
     }
 
-    public static void setList(String name, Object[] objects, Event e, boolean local) {
-        if (objects == null || name == null || e == null) return;
+    public static void setList(String name, Event e, boolean local, Object... objects) {
+        if (objects == null || name == null) return;
 
+        int separatorLength = Variable.SEPARATOR.length() + 1;
+        name = name.substring(0, (name.length() - separatorLength));
+        name = name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR;
+        Variables.setVariable(name + "*", null, e, local);
         for (int i = 0; i < objects.length; i++)
-            Variables.setVariable(name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR + (i + 1), objects[i], e, local);
+            Variables.setVariable(name + (i + 1), objects[i], e, local);
     }
 
     public static Color getColorFromString(String str) {
