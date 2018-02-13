@@ -40,17 +40,24 @@ import java.util.NoSuchElementException;
 public class Util {
 
     private static final Field VARIABLE_NAME;
+    private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
     static {
 
-        Field _VARIABLE_NAME = null;
-        try {
-            _VARIABLE_NAME = Variable.class.getDeclaredField("name");
-            _VARIABLE_NAME.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            Skript.error("Skript's 'variable name' method could not be resolved.");
+        if (!variableNameGetterExists) {
+
+            Field _VARIABLE_NAME = null;
+            try {
+                _VARIABLE_NAME = Variable.class.getDeclaredField("name");
+                _VARIABLE_NAME.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+                Skript.error("Skript's 'variable name' method could not be resolved.");
+            }
+            VARIABLE_NAME = _VARIABLE_NAME;
+
+        } else {
+            VARIABLE_NAME = null;
         }
-        VARIABLE_NAME = _VARIABLE_NAME;
 
     }
 
@@ -64,10 +71,14 @@ public class Util {
 
     // Variable name related code credit btk5h (https://github.com/btk5h)
     public static VariableString getVariableName(Variable<?> var) {
-        try {
-            return (VariableString) VARIABLE_NAME.get(var);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (variableNameGetterExists) {
+            return var.getName();
+        } else {
+            try {
+                return (VariableString) VARIABLE_NAME.get(var);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
