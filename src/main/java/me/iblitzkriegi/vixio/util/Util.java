@@ -15,6 +15,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.util.enums.SearchSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
@@ -36,6 +37,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class Util {
 
@@ -108,8 +110,9 @@ public class Util {
 
             }
 
-            if (playlist instanceof AudioPlaylist)
+            if (playlist instanceof AudioPlaylist) {
                 results.addAll(((AudioPlaylist) playlist).getTracks());
+            }
 
         }
 
@@ -147,14 +150,10 @@ public class Util {
     public static Bot botFrom(Object input){
         if (input == null) {
             return null;
-        } else if(input instanceof Bot) {
+        } else if (input instanceof Bot) {
             return (Bot) input;
-        } else if(input instanceof String) {
-            String string = (String) input;
-            Bot bot = Vixio.getInstance().botNameHashMap.get(string);
-            if (bot != null) {
-                return bot;
-            }
+        } else if (input instanceof String) {
+            return Vixio.getInstance().botNameHashMap.get(input);
         }
         return null;
     }
@@ -182,10 +181,7 @@ public class Util {
         if (!(guild.getJDA() == bot.getJDA())) {
             return bot.getJDA().getGuildById(guild.getId());
         } else {
-            if (guild != null) {
-                return guild;
-            }
-            return null;
+            return guild;
         }
     }
 
@@ -193,10 +189,7 @@ public class Util {
         if (!(textChannel.getJDA() == bot.getJDA())) {
             return bot.getJDA().getTextChannelById(textChannel.getId());
         } else {
-            if (textChannel != null) {
-                return textChannel;
-            }
-            return null;
+            return textChannel;
         }
     }
 
@@ -205,10 +198,7 @@ public class Util {
         if (!(voiceChannel.getJDA() == bot.getJDA())) {
             return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
         } else {
-            if (voiceChannel != null) {
-                return voiceChannel;
-            }
-            return null;
+            return voiceChannel;
         }
     }
 
@@ -219,10 +209,7 @@ public class Util {
 
             return voiceChannel == null ? textChannel : voiceChannel;
         } else {
-            if (channel != null) {
-                return channel;
-            }
-            return null;
+            return channel;
         }
     }
 
@@ -237,12 +224,18 @@ public class Util {
             return null;
         }
     }
+
     public static Emoji unicodeFrom(String emote) {
         if (EmojiManager.isEmoji(emote)) {
             return new Emoji(emote);
         } else {
             return new Emoji(EmojiParser.parseToUnicode(emote));
         }
+    }
+
+    public static Bot randomBot() {
+        Collection<Bot> bots = Vixio.getInstance().botHashMap.values();
+        return bots.isEmpty() ? null : bots.toArray(new Bot[bots.size()])[new Random().nextInt(bots.size())];
     }
 
 }

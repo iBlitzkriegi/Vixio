@@ -8,30 +8,29 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
-public class ExprMemberWithId extends SimpleExpression<Member> {
+public class ExprMember extends SimpleExpression<Member> {
     static {
-        Vixio.getInstance().registerExpression(ExprMemberWithId.class, Member.class, ExpressionType.SIMPLE,
-                "member with id %string% [in %guild%]")
-                .setName("Member with ID")
-                .setDesc("Get a Member via their ID, plain and simple.")
-                .setExample("name of member with id \"1561515615610515\"");
+        Vixio.getInstance().registerExpression(ExprMember.class, Member.class, ExpressionType.SIMPLE,
+                "%user% in %guild%")
+                .setName("User in Guild")
+                .setDesc("Returns the member form of a user in the specified guild")
+                .setExample("broadcast nickname of user with id \"1561515615610515\" in event-guild");
     }
 
-    private Expression<String> id;
+    private Expression<User> user;
     private Expression<Guild> guild;
 
     @Override
     protected Member[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
-        String id = this.id.getSingle(e);
-        Member member = guild.getMemberById(id);
-        if (guild == null || id == null || id.isEmpty() || member == null) {
+        User user = this.user.getSingle(e);
+        if (guild == null || user == null) {
             return null;
         }
-
-        return new Member[]{member};
+        return new Member[]{guild.getMember(user)};
     }
 
     @Override
@@ -46,13 +45,13 @@ public class ExprMemberWithId extends SimpleExpression<Member> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "member with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
+        return user.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        id = (Expression<String>) exprs[0];
+        user = (Expression<User>) exprs[0];
         guild = (Expression<Guild>) exprs[1];
         return true;
     }

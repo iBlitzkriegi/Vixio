@@ -34,5 +34,11 @@ public class VixioConverters {
         Converters.registerConverter(DiscordCommand.class, String.class, (Converter<DiscordCommand, String>) c -> c.getName());
         Converters.registerConverter(Emoji.class, String.class, (Converter<Emoji, String>) u -> u.isEmote() ? u.getEmote().getAsMention() : u.getName());
         Converters.registerConverter(Category.class, String.class, (Converter<Category, String>) u -> u.getName());
+        Converters.registerConverter(EmbedBuilder.class, Message.class, new Converter<EmbedBuilder, Message>() {
+            @Override
+            public Message convert(EmbedBuilder embedBuilder) {
+                return embedBuilder.isEmpty() ? null : new MessageBuilder().setEmbed(embedBuilder.build()).build();
+            }
+        });
     }
 }

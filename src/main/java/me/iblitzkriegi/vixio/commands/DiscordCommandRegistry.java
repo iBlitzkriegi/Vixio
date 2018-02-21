@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.commands;
 
 import ch.njol.skript.ScriptLoader;
+import ch.njol.skript.classes.Converter;
 import ch.njol.skript.config.Config;
 import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;
@@ -13,6 +14,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -78,6 +80,12 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
                 }
                 , 0);
 
+        EventValues.registerEventValue(DiscordCommandEvent.class, Bot.class, new Getter<Bot, DiscordCommandEvent>() {
+            @Override
+            public Bot get(DiscordCommandEvent event) {
+                return event.getBot();
+            }
+        }, 0);
     }
 
     private String arguments;

@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.commands;
 
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -19,8 +20,9 @@ public class DiscordCommandEvent extends Event {
     private MessageChannel channel;
     private String prefix;
     private String usedAlias;
+    private Bot bot;
 
-    public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, Guild guild, MessageChannel channel, Message message, User user, Member member) {
+    public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, Guild guild, MessageChannel channel, Message message, User user, Member member, Bot bot) {
         this.command = command;
         this.guild = guild;
         this.user = user;
@@ -29,6 +31,7 @@ public class DiscordCommandEvent extends Event {
         this.member = member;
         this.channel = channel;
         this.prefix = prefix;
+        this.bot = bot;
     }
 
     public DiscordCommand getCommand() {
@@ -61,6 +64,10 @@ public class DiscordCommandEvent extends Event {
 
     public String getUsedAlias() {
         return usedAlias;
+    }
+
+    public Bot getBot() {
+        return bot;
     }
 
     @Override

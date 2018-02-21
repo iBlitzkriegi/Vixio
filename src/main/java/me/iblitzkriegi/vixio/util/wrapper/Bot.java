@@ -44,4 +44,10 @@ public class Bot implements IMentionable, ISnowflake {
     public long getIdLong() {
         return selfUser.getIdLong();
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

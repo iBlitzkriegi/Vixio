@@ -49,7 +49,8 @@ public class Vixio extends JavaPlugin {
     public void onEnable() {
         try {
             getAddonInstance()
-                    .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes", "expressions", "commands")
+                    .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes",
+                            "expressions", "commands", "changers")
                     .setLanguageFileDirectory("lang");
 
             Vixio.setup();

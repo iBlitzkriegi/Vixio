@@ -26,12 +26,11 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
     protected Role[] get(Event e) {
         String id = this.id.getSingle(e);
         Guild guild = this.guild.getSingle(e);
-        Role role = guild.getRoleById(id);
-        if (guild == null || role == null || id == null || id.isEmpty()) {
+        if (guild == null || id == null) {
             return null;
         }
 
-        return new Role[]{role};
+        return new Role[]{guild.getRoleById(id)};
     }
 
     @Override

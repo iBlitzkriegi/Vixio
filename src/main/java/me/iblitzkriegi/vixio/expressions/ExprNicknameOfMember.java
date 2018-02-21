@@ -7,6 +7,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.changers.ChangeablePropertyExpression;
+import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
+import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
+import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
@@ -18,34 +22,24 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class ExprNicknameOfMember extends SimpleExpression<String> {
+public class ExprNicknameOfMember extends ChangeableSimplePropertyExpression<Member, String> {
+
     static {
-        Vixio.getInstance().registerExpression(ExprNicknameOfMember.class, String.class, ExpressionType.SIMPLE,
-                "nickname of %members% [(with|as) %-bot/string%]")
+        Vixio.getInstance().registerPropertyExpression(ExprNicknameOfMember.class, String.class, "nickname",
+                "members")
                 .setName("Nickname of member")
                 .setDesc("Get the nickname of a Member, if they have no this returns their username. To modify their nickname you must include a bot. Moreover, if there is no nickname it returns their username. Changers: SET")
-                .setExample("set nickname of event-member as event-bot to \"XD\"");
-    }
-
-    private Expression<Member> members;
-    private Expression<Object> bot;
-
-    @Override
-    protected String[] get(Event e) {
-        Member[] members = this.members.getAll(e);
-        if (members == null) {
-            return null;
-        }
-
-        return Arrays.stream(members)
-                .filter(Objects::nonNull)
-                .map(Member::getEffectiveName)
-                .toArray(String[]::new);
+                .setExample("set nickname of event-member to \"new nickname\" with event-bot");
     }
 
     @Override
-    public boolean isSingle() {
-        return members.isSingle();
+    public String convert(Member member) {
+        return member.getNickname();
+    }
+
+    @Override
+    public String getPropertyName() {
+        return "nickname";
     }
 
     @Override
@@ -54,48 +48,44 @@ public class ExprNicknameOfMember extends SimpleExpression<String> {
     }
 
     @Override
-    public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
-        if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)
+    public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
+        if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.DELETE) {
             return new Class[]{String.class};
+        }
         return null;
     }
 
     @Override
-    public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) throws UnsupportedOperationException {
-        if (bot == null) {
-            Vixio.getErrorHandler().noBotProvided("set nickname of member");
-            return;
-        }
-        String nickname = mode == Changer.ChangeMode.SET ? (String) delta[0] : null;
-        Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Member[] members = this.members.getAll(e);
-        if (bot == null || members == null) {
+    public void change(final Event e, final Object[] delta, Bot bot, final Changer.ChangeMode mode) {
+        Member[] members = getExpr().getAll(e);
+        if (members == null || members.length == 0) {
             return;
         }
 
         for (Member member : members) {
             Guild bindedGuild = Util.bindGuild(bot, member.getGuild());
-            if (bindedGuild != null) {
-                try {
-                    bindedGuild.getController().setNickname(member, nickname).queue();
-                } catch (PermissionException x) {
-                    Vixio.getErrorHandler().needsPerm(bot, "set nickname", x.getPermission().getName());
+            if (bindedGuild == null) {
+                continue;
+            }
+
+            try {
+                if (mode == Changer.ChangeMode.SET) {
+                    if (delta[0] == null || ((String) delta[0]).isEmpty()) {
+                        return;
+                    }
+                    bindedGuild.getController().setNickname(member, (String) delta[0]).queue();
+                } else {
+                    bindedGuild.getController().setNickname(member, null).queue();
                 }
+            } catch (PermissionException x) {
+                Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "nickname of", getExpr(), bot), x.getPermission().getName());
             }
         }
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "nickname of " + members.toString(e, debug) + (bot == null ? "" : " as " + bot.toString(e, debug));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        members = (Expression<Member>) exprs[0];
-        bot = (Expression<Object>) exprs[1];
-        return true;
+        return "nickname of " + getExpr().toString(e, debug);
     }
 
 }

@@ -59,7 +59,8 @@ public class DiscordCommand {
 
     public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel channel, Message message, User user,
                            Member member, JDA jda) {
-        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member);
+        Bot bot = Vixio.getInstance().botHashMap.get(jda);
+        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member, bot);
         if (args == null) {
             args = "";
         }
@@ -69,7 +70,6 @@ public class DiscordCommand {
 
         try {
 
-            Bot bot = Vixio.getInstance().botHashMap.get(jda);
             boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
 
             if (!ok) {

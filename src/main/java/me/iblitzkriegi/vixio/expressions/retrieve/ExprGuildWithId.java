@@ -21,7 +21,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
                 "(server|guild) with id %string%")
                 .setName("Guild with id")
                 .setDesc("Get a Guild via it's ID")
-                .setExample("guild with id \"16165192162168461\"");
+                .setExample("broadcast name of guild with id \"16165192162168461\"");
     }
 
     private Expression<String> id;
@@ -33,13 +33,10 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
             return null;
         }
 
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        if (!jdaInstances.isEmpty()) {
-            for (JDA jda : jdaInstances) {
-                Guild guild = jda.getGuildById(id);
-                if (guild != null) {
-                    return new Guild[]{guild};
-                }
+        for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+            Guild guild = jda.getGuildById(id);
+            if (guild != null) {
+                return new Guild[]{guild};
             }
         }
 
