@@ -29,7 +29,7 @@ import java.util.Set;
 public class EffLogin extends AsyncEffect {
 
     static {
-        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% with [the] name %string%")
+        Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% (using|with) [the] name %string%")
                 .setName("Connect effect")
                 .setDesc("Login to a bot account with a token")
                 .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
@@ -59,6 +59,7 @@ public class EffLogin extends AsyncEffect {
             try {
                 api = new JDABuilder(AccountType.CLIENT).setToken(token)
                         .addEventListener(new JDAEventListener())
+                        .addEventListener(new CommandListener())
                         .buildBlocking();
             } catch (LoginException | InterruptedException e1) {
                 e1.printStackTrace();

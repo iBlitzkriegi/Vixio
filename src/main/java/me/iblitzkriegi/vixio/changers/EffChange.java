@@ -44,6 +44,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -59,6 +60,7 @@ import java.util.logging.Level;
 public class EffChange extends Effect {
 
     private static boolean parsing;
+    public static Bot currentBot;
 
     private static Patterns<ChangeMode> patterns = new Patterns<>(new Object[][]{
             {"(add|give) %objects% to (%~objects%) with %bot/string%", ChangeMode.ADD},
@@ -100,10 +102,10 @@ public class EffChange extends Effect {
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parser) {
         parsing = true;
         mode = patterns.getInfo(matchedPattern);
-        bot = (Expression<Bot>) exprs[2];
 
         switch (mode) {
             case ADD:
+                bot = (Expression<Bot>) exprs[2];
                 if (matchedPattern == 0) {
                     changer = exprs[0];
                     changed = exprs[1];
@@ -113,14 +115,17 @@ public class EffChange extends Effect {
                 }
                 break;
             case SET:
+                bot = (Expression<Bot>) exprs[2];
                 changer = exprs[1];
                 changed = exprs[0];
                 break;
             case REMOVE_ALL:
+                bot = (Expression<Bot>) exprs[2];
                 changer = exprs[0];
                 changed = exprs[1];
                 break;
             case REMOVE:
+                bot = (Expression<Bot>) exprs[2];
                 if (matchedPattern == 5) {
                     changer = exprs[0];
                     changed = exprs[1];
@@ -130,12 +135,18 @@ public class EffChange extends Effect {
                 }
                 break;
             case DELETE:
+                bot = (Expression<Bot>) exprs[1];
                 changed = exprs[0];
                 break;
             case RESET:
+                bot = (Expression<Bot>) exprs[1];
                 changed = exprs[0];
         }
-        if (!(changed instanceof ChangeablePropertyExpression || changed instanceof ChangeableSimpleExpression || changed instanceof ChangeableSimplePropertyExpression)) {
+
+        if (!(changed instanceof ChangeablePropertyExpression ||
+                changed instanceof ChangeableSimpleExpression ||
+                changed instanceof ChangeableSimplePropertyExpression ||
+                Classes.getSuperClassInfo(changed.getReturnType()).getChanger() instanceof VixioChanger)) {
             Skript.error(changed.toString(null, false) + " can't be changed with Vixio's changer effects");
             parsing = false;
             return false;
@@ -267,7 +278,7 @@ public class EffChange extends Effect {
         final Expression<?> changer = this.changer;
         final Object[] delta = changer == null ? null : changer.getArray(e);
         final Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (delta == null || delta.length == 0) {
+        if (delta != null && delta.length == 0) {
             return;
         }
         if (bot == null) {
@@ -275,16 +286,22 @@ public class EffChange extends Effect {
             return;
         }
 
-        if (changed instanceof ChangeableSimplePropertyExpression) {
-            ((ChangeableSimplePropertyExpression) changed).change(e, delta, bot, mode);
-        } else if (changed instanceof ChangeableSimpleExpression) {
-            ((ChangeableSimpleExpression) changed).change(e, delta, bot, mode);
-        } else if (changed instanceof ChangeablePropertyExpression) {
-            ((ChangeablePropertyExpression) changed).change(e, delta, bot, mode);
-        } else if (changed instanceof ChangeableExpression) {
-            ((ChangeableExpression) changed).change(e, delta, bot, mode);
+        try {
+            currentBot = bot;
+            if (changed instanceof ChangeableSimplePropertyExpression) {
+                ((ChangeableSimplePropertyExpression) changed).change(e, delta, bot, mode);
+            } else if (changed instanceof ChangeableSimpleExpression) {
+                ((ChangeableSimpleExpression) changed).change(e, delta, bot, mode);
+            } else if (changed instanceof ChangeablePropertyExpression) {
+                ((ChangeablePropertyExpression) changed).change(e, delta, bot, mode);
+            } else if (changed instanceof ChangeableExpression) {
+                ((ChangeableExpression) changed).change(e, delta, bot, mode);
+            } else {
+                changed.change(e, delta, mode);
+            }
+        } finally {
+            currentBot = null;
         }
-
 //		changed.change(e, new Changer2<Object>() {
 //			@Override
 //			public Object change(Object o) {
@@ -322,7 +339,7 @@ public class EffChange extends Effect {
         if (parsing) {
             return true;
         }
-        Skript.error(expression.toString(null, false) + " can only be changed using Vixio's changer effects");
+        Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
         // Handler editing to avoid Skript's changer errors
         HandlerList handlers = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
         if (handlers == null) {

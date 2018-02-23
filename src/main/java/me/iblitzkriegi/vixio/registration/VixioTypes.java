@@ -1,7 +1,9 @@
 package me.iblitzkriegi.vixio.registration;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.SimpleType;
@@ -25,6 +27,9 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import org.bukkit.event.Event;
+
+import java.util.function.Consumer;
 
 public class VixioTypes {
     public static void register(){
@@ -74,7 +79,24 @@ public class VixioTypes {
                 return message.getId();
             }
 
-        };
+        }.changer(new VixioChanger<Message>() {
+            @Override
+            public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
+                if (mode == ChangeMode.DELETE) {
+                    return new Class[] {Message.class};
+                }
+                return null;
+            }
+
+            @Override
+            public void change(Message[] messages, Object[] delta, Bot bot, ChangeMode mode) {
+                // TODO - support for generic message channels (mainly for dm usage)
+                for (Message message : messages) {
+                    TextChannel channel = Util.bindChannel(bot, (TextChannel) message.getChannel());
+                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                }
+            }
+        });
 
         new SimpleType<Avatar>(Avatar.class, "avatar", "avatars?") {
 
