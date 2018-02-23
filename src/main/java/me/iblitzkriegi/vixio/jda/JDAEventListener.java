@@ -6,7 +6,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 
-public class JDAEventListener extends ListenerAdapter{
+public class JDAEventListener extends ListenerAdapter {
+
     @Override
     public void onGenericEvent(Event e){
         if (e instanceof GuildMessageReceivedEvent) {

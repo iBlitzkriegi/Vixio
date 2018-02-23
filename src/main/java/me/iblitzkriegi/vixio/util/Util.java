@@ -3,6 +3,7 @@ package me.iblitzkriegi.vixio.util;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
+import ch.njol.skript.log.HandlerList;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
@@ -38,11 +40,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class Util {
 
     private static final Field VARIABLE_NAME;
+    private static final Field LOG_HANDLERS;
     private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
+
     static {
 
         if (!variableNameGetterExists) {
@@ -60,6 +65,20 @@ public class Util {
         } else {
             VARIABLE_NAME = null;
         }
+
+    }
+
+    static {
+
+        Field _LOG_HANDLERS = null;
+        try {
+            _LOG_HANDLERS = SkriptLogger.class.getDeclaredField("handlers");
+            _LOG_HANDLERS.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            Skript.error("Skript's 'log handler' field could not be resolved.");
+        }
+        LOG_HANDLERS = _LOG_HANDLERS;
 
     }
 
@@ -238,4 +257,27 @@ public class Util {
         return bots.isEmpty() ? null : bots.toArray(new Bot[bots.size()])[new Random().nextInt(bots.size())];
     }
 
+    public static HandlerList getLogHandlers() {
+        try {
+            return (HandlerList) LOG_HANDLERS.get(null);
+        } catch (IllegalAccessException e) {
+            return null;
+        }
+    }
+
+    public static void setLogHandlers(HandlerList logHandlers) {
+        try {
+            LOG_HANDLERS.set(null, logHandlers);
+        } catch (IllegalAccessException e) {
+        }
+    }
+
+    public static void forceError(String error) {
+        HandlerList originalHandlers = getLogHandlers();
+        setLogHandlers(new HandlerList());
+        Skript.error(error);
+        setLogHandlers(originalHandlers);
+    }
+
 }
+
