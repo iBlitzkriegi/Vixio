@@ -2,11 +2,10 @@ package me.iblitzkriegi.vixio.expressions.message;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
@@ -20,20 +19,19 @@ import org.bukkit.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprEmojis extends SimpleExpression<Emoji> {
+public class ExprEmojis extends ChangeableSimpleExpression<Emoji> {
     static {
-        Vixio.getInstance().registerExpression(ExprEmojis.class, Emoji.class, ExpressionType.SIMPLE,
-                "[the] (emoji|emote|reaction)[s] of %message% [(with|as) %-bot/string%]")
+        Vixio.getInstance().registerPropertyExpression(ExprEmojis.class, Emoji.class,
+                "reactions", "message")
                 .setName("Reactions of message")
-                .setDesc("Get the emojis of a message. Changers: DELETE, RESET, REMOVE ALL, REMOVE, ADD")
+                .setDesc("Get the emojis of a message. Can be deleted, reset, removed and added to.")
                 .setExample(
-                        "on guild message receive",
+                        "on guild message receive:",
                         "\tadd reactions \"smile\" and \"frowning\" to reactions of event-message"
                 );
     }
 
     private Expression<Message> message;
-    private Expression<Object> bot;
 
     @Override
     protected Emoji[] get(Event e) {
@@ -69,7 +67,7 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "the emojis of " + message.toString(e, debug) + (bot == null ? "" : " as " + bot.toString(e, debug));
+        return "the reactions of " + message.toString(e, debug);
 
     }
 
@@ -77,12 +75,11 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         message = (Expression<Message>) exprs[0];
-        bot = (Expression<Object>) exprs[1];
         return true;
     }
 
     @Override
-    public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
+    public Class<?>[] acceptChange(final Changer.ChangeMode mode, boolean vixioChanger) {
         if ((mode == Changer.ChangeMode.ADD ||
                 mode == Changer.ChangeMode.REMOVE ||
                 mode == Changer.ChangeMode.REMOVE_ALL ||
@@ -96,16 +93,10 @@ public class ExprEmojis extends SimpleExpression<Emoji> {
     }
 
     @Override
-    public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        if (bot == null) {
-            Vixio.getErrorHandler().noBotProvided("modify reactions of message");
-            return;
-        }
-
-        Bot bot = Util.botFrom(this.bot.getSingle(e));
+    public void change(final Event e, final Object[] delta, Bot bot, final Changer.ChangeMode mode) {
         Message message = this.message.getSingle(e);
-        TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
-        if (message == null || bot == null || channel == null) {
+        TextChannel channel = message == null ? null : Util.bindChannel(bot, message.getTextChannel());
+        if (message == null || channel == null) {
             return;
         }
 

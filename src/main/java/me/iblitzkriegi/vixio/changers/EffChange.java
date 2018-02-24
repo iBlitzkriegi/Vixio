@@ -32,8 +32,6 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.log.CountingLogHandler;
 import ch.njol.skript.log.ErrorQuality;
-import ch.njol.skript.log.HandlerList;
-import ch.njol.skript.log.LogHandler;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
@@ -41,14 +39,12 @@ import ch.njol.skript.util.Patterns;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 
@@ -100,17 +96,6 @@ public class EffChange extends Effect {
             return true;
         }
         Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
-        // Handler editing to avoid Skript's changer errors
-        HandlerList handlers = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
-        if (handlers == null) {
-            return false;
-        }
-        for (Iterator<LogHandler> iterator = handlers.iterator(); iterator.hasNext(); ) {
-            LogHandler handler = iterator.next();
-            if (handler instanceof CountingLogHandler) {
-                ReflectionUtils.setField(CountingLogHandler.class, handler, "count", -1);
-            }
-        }
         return false;
     }
 
@@ -296,6 +281,7 @@ public class EffChange extends Effect {
 
     @Override
     protected void execute(final Event e) {
+        System.out.println("executing effchange");
         final Expression<?> changer = this.changer;
         final Object[] delta = changer == null ? null : changer.getArray(e);
         final Bot bot = Util.botFrom(this.bot.getSingle(e));
