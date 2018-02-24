@@ -1,6 +1,9 @@
 package me.iblitzkriegi.vixio.events;
 
+import ch.njol.skript.ScriptLoader;
+import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
+import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleEvent;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
@@ -11,13 +14,8 @@ import org.bukkit.event.Event;
 public class EvtJoinVoice extends BaseEvent<GuildVoiceJoinEvent, EvtJoinVoice.JoinVoiceEvent> {
 
     static {
-        Vixio.getInstance().registerEvent("join voice", EvtJoinVoice.class, JoinVoiceEvent.class,
+        BaseEvent.register("join voice", EvtJoinVoice.class, JoinVoiceEvent.class,
                 "user join voice");
-    }
-
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "user join voice";
     }
 
     @Override
@@ -26,12 +24,16 @@ public class EvtJoinVoice extends BaseEvent<GuildVoiceJoinEvent, EvtJoinVoice.Jo
     }
 
     @Override
-    public Class<GuildVoiceJoinEvent> getEventClass() {
+    public Class<GuildVoiceJoinEvent> getJDAClass() {
         return GuildVoiceJoinEvent.class;
     }
 
+    @Override
+    public Class<JoinVoiceEvent> getBukkitClass() {
+        return JoinVoiceEvent.class;
+    }
 
-    public static class JoinVoiceEvent extends SimpleBukkitEvent {
+    public class JoinVoiceEvent extends SimpleBukkitEvent {
     }
 
 }

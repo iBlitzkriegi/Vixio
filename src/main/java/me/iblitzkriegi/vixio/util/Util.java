@@ -45,7 +45,6 @@ import java.util.logging.Level;
 public class Util {
 
     private static final Field VARIABLE_NAME;
-    private static final Field LOG_HANDLERS;
     private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
 
     static {
@@ -65,20 +64,6 @@ public class Util {
         } else {
             VARIABLE_NAME = null;
         }
-
-    }
-
-    static {
-
-        Field _LOG_HANDLERS = null;
-        try {
-            _LOG_HANDLERS = SkriptLogger.class.getDeclaredField("handlers");
-            _LOG_HANDLERS.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-            Skript.error("Skript's 'log handler' field could not be resolved.");
-        }
-        LOG_HANDLERS = _LOG_HANDLERS;
 
     }
 
@@ -255,28 +240,6 @@ public class Util {
     public static Bot randomBot() {
         Collection<Bot> bots = Vixio.getInstance().botHashMap.values();
         return bots.isEmpty() ? null : bots.toArray(new Bot[bots.size()])[new Random().nextInt(bots.size())];
-    }
-
-    public static HandlerList getLogHandlers() {
-        try {
-            return (HandlerList) LOG_HANDLERS.get(null);
-        } catch (IllegalAccessException e) {
-            return null;
-        }
-    }
-
-    public static void setLogHandlers(HandlerList logHandlers) {
-        try {
-            LOG_HANDLERS.set(null, logHandlers);
-        } catch (IllegalAccessException e) {
-        }
-    }
-
-    public static void forceError(String error) {
-        HandlerList originalHandlers = getLogHandlers();
-        setLogHandlers(new HandlerList());
-        Skript.error(error);
-        setLogHandlers(originalHandlers);
     }
 
 }

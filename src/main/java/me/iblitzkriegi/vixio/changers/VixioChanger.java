@@ -9,9 +9,7 @@ public abstract class VixioChanger<T> implements Changer<T> {
 
     @Override
     public final Class<?>[] acceptChange(ChangeMode mode) {
-        System.out.println("vanilla accept change called");
         if (!EffChange.isParsing(null)) {
-            System.out.println("vanilla returning null");
             return null;
         }
         return acceptChange(mode, true);

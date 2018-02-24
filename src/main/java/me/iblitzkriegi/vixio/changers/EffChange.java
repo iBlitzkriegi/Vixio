@@ -339,7 +339,6 @@ public class EffChange extends Effect {
         if (parsing) {
             return true;
         }
-        System.out.println("erroring... " + expression);
         Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
         // Handler editing to avoid Skript's changer errors
         HandlerList handlers = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
