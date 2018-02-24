@@ -158,6 +158,8 @@ public class Util {
             return (Bot) input;
         } else if (input instanceof String) {
             return Vixio.getInstance().botNameHashMap.get(input);
+        } else if (input instanceof JDA) {
+            return Vixio.getInstance().botHashMap.get(input);
         }
         return null;
     }

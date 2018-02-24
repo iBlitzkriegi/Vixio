@@ -3,9 +3,12 @@ package me.iblitzkriegi.vixio.events.base;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class EventListener<T> extends ListenerAdapter {
+
+    public static ArrayList<EventListener<?>> listeners = new ArrayList<>();
 
     private Class<T> clazz;
 
@@ -15,7 +18,17 @@ public class EventListener<T> extends ListenerAdapter {
     }
 
     private Consumer<T> consumer;
-    public boolean enabled = true;
+    private boolean enabled = true;
+
+    public void setEnabled(boolean enabled) {
+        if (enabled && !this.enabled) {
+            this.enabled = enabled;
+            listeners.add(this);
+        } else if (!enabled && this.enabled) {
+            this.enabled = enabled;
+            listeners.remove(this);
+        }
+    }
 
     @Override
     public void onGenericEvent(net.dv8tion.jda.core.events.Event event) {
