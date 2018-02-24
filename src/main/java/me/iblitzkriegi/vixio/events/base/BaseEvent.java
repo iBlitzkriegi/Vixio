@@ -3,29 +3,18 @@ package me.iblitzkriegi.vixio.events.base;
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.Config;
-import ch.njol.skript.config.Node;
-import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
 import ch.njol.skript.lang.SkriptEventInfo;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.log.SkriptLogger;
-import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordCommand;
-import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
-import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.JDA;
 import org.bukkit.event.Event;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B extends SimpleVixioEvent>
@@ -102,14 +91,13 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B e
                 }
             }
         });
-
-        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().addEventListener(listener));
+        EventListener.addListener(listener);
     }
 
     @Override
     public void unregister(final Trigger t) {
-        listener.setEnabled(false);
-        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().removeEventListener(listener));
+        listener.enabled = false;
+        EventListener.removeListener(listener);
         listener = null;
         trigger = null;
     }

@@ -1,23 +1,14 @@
 package me.iblitzkriegi.vixio.events;
 
-import ch.njol.skript.ScriptLoader;
-import ch.njol.skript.lang.Literal;
-import ch.njol.skript.lang.SelfRegisteringSkriptEvent;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
-import me.iblitzkriegi.vixio.events.base.SimpleBukkitEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
-import org.bukkit.event.Event;
 
 public class EvtJoinVoice extends BaseEvent<GuildVoiceJoinEvent, EvtJoinVoice.JoinVoiceEvent> {
 

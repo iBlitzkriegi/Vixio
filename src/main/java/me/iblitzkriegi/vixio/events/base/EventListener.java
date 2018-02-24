@@ -1,7 +1,7 @@
 package me.iblitzkriegi.vixio.events.base;
 
+import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.hooks.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -9,6 +9,14 @@ import java.util.function.Consumer;
 public class EventListener<T> extends ListenerAdapter {
 
     public static ArrayList<EventListener<?>> listeners = new ArrayList<>();
+
+    public boolean enabled = true;
+
+    public static void addListener(EventListener<?> listener) {
+        removeListener(listener);
+        listeners.add(listener);
+        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().addEventListener(listener));
+    }
 
     private Class<T> clazz;
 
@@ -18,16 +26,10 @@ public class EventListener<T> extends ListenerAdapter {
     }
 
     private Consumer<T> consumer;
-    private boolean enabled = true;
 
-    public void setEnabled(boolean enabled) {
-        if (enabled && !this.enabled) {
-            this.enabled = enabled;
-            listeners.add(this);
-        } else if (!enabled && this.enabled) {
-            this.enabled = enabled;
-            listeners.remove(this);
-        }
+    public static void removeListener(EventListener<?> listener) {
+        listeners.remove(listener);
+        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().removeEventListener(listener));
     }
 
     @Override
