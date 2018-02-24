@@ -21,8 +21,10 @@ public class CondMemberIsDeaf extends Condition {
                         "\t\t\tbroadcast \"%{member} is deafened%\""
                 );
     }
+
     private Expression<Member> member;
     private boolean not;
+
     @Override
     public boolean check(Event e) {
         Member member = this.member.getSingle(e);

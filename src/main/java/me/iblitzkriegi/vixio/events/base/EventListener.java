@@ -8,24 +8,23 @@ import java.util.function.Consumer;
 
 public class EventListener<T> extends ListenerAdapter {
 
+    // shouldn't be modified directly
     public static ArrayList<EventListener<?>> listeners = new ArrayList<>();
 
     public boolean enabled = true;
-
-    public static void addListener(EventListener<?> listener) {
-        removeListener(listener);
-        listeners.add(listener);
-        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().addEventListener(listener));
-    }
-
     private Class<T> clazz;
+    private Consumer<T> consumer;
 
     public EventListener(Class<T> paramClass, Consumer<T> consumer) {
         this.clazz = paramClass;
         this.consumer = consumer;
     }
 
-    private Consumer<T> consumer;
+    public static void addListener(EventListener<?> listener) {
+        removeListener(listener);
+        listeners.add(listener);
+        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().addEventListener(listener));
+    }
 
     public static void removeListener(EventListener<?> listener) {
         listeners.remove(listener);

@@ -73,6 +73,36 @@ public abstract class EffectSection extends Condition {
     }
 
     /**
+     * A hacky method to fix wrong syntax inside of sections not being included in errors.
+     * Why? Because before parsing the effect itself, Skript starts a ParseLogHandler, then,
+     * in case the syntax returns true in {@link #init(Expression[], int, Kleenean, SkriptParser.ParseResult)},
+     * The LogHander will ignore all errors that was sent in this method.
+     * So to fix that, it stops the lasts ParseLogHandlers to not conflict with.
+     *
+     * @param logger - RetainingLogHandler used to parse the section.
+     */
+    public static void stopLog(RetainingLogHandler logger) {
+        //Stop the current one
+        logger.stop();
+        //Using reflection to access the iterator of handlers
+        HandlerList handler = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
+        if (handler == null)
+            return;
+        Iterator<LogHandler> it = handler.iterator();
+        //A list containing the last handlers that will be stopped
+        List<LogHandler> toStop = new ArrayList<>();
+        while (it.hasNext()) {
+            LogHandler l = it.next();
+            if (l instanceof ParseLogHandler)
+                toStop.add(l);
+            else //We can only stop the lasts handler, this prevent in case the last is not what we want.
+                break;
+        }
+        toStop.forEach(LogHandler::stop); //Stopping them
+        SkriptLogger.logAll(logger.getLog()); //Sending the errors to Skript logger.
+    }
+
+    /**
      * It is to replicate {@link ch.njol.skript.lang.Effect#execute(Event)}
      *
      * @param e - The Event
@@ -204,35 +234,5 @@ public abstract class EffectSection extends Condition {
      */
     public SectionNode getSectionNode() {
         return section;
-    }
-
-    /**
-     * A hacky method to fix wrong syntax inside of sections not being included in errors.
-     * Why? Because before parsing the effect itself, Skript starts a ParseLogHandler, then,
-     * in case the syntax returns true in {@link #init(Expression[], int, Kleenean, SkriptParser.ParseResult)},
-     * The LogHander will ignore all errors that was sent in this method.
-     * So to fix that, it stops the lasts ParseLogHandlers to not conflict with.
-     *
-     * @param logger - RetainingLogHandler used to parse the section.
-     */
-    public static void stopLog(RetainingLogHandler logger) {
-        //Stop the current one
-        logger.stop();
-        //Using reflection to access the iterator of handlers
-        HandlerList handler = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
-        if (handler == null)
-            return;
-        Iterator<LogHandler> it = handler.iterator();
-        //A list containing the last handlers that will be stopped
-        List<LogHandler> toStop = new ArrayList<>();
-        while (it.hasNext()) {
-            LogHandler l = it.next();
-            if (l instanceof ParseLogHandler)
-                toStop.add(l);
-            else //We can only stop the lasts handler, this prevent in case the last is not what we want.
-                break;
-        }
-        toStop.forEach(LogHandler::stop); //Stopping them
-        SkriptLogger.logAll(logger.getLog()); //Sending the errors to Skript logger.
     }
 }

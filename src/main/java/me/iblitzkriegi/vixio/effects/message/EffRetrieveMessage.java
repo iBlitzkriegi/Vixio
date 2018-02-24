@@ -14,15 +14,17 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 8/19/2017.
  */
-public class EffRetrieveMessage extends Effect{
+public class EffRetrieveMessage extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% [from %channel%]")
-            .setName("Retrieve message with id")
-            .setDesc("Get a Message via it's ID from a Guild/TextChannel")
-            .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
+                .setName("Retrieve message with id")
+                .setDesc("Get a Message via it's ID from a Guild/TextChannel")
+                .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
     }
+
     Expression<String> id;
     Expression<TextChannel> channel;
+
     @Override
     protected void execute(Event e) {
         String id = this.id.getSingle(e);

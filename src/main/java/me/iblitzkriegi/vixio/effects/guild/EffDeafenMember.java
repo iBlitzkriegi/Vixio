@@ -25,9 +25,11 @@ public class EffDeafenMember extends Effect {
                         "\t\tdeafen {user} as \"Jewel\""
                 );
     }
+
     private Expression<Member> member;
     private Expression<Object> bot;
     private boolean toDeaf;
+
     @Override
     protected void execute(Event e) {
         boolean deafen = toDeaf;

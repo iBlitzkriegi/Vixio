@@ -10,13 +10,13 @@ public class Bot implements IMentionable, ISnowflake {
     private JDA jda;
     private SelfUser selfUser;
 
-    public Bot(String name, JDA jda){
+    public Bot(String name, JDA jda) {
         this.name = name;
         this.jda = jda;
         this.selfUser = jda.getSelfUser();
     }
 
-    public Bot(JDA jda){
+    public Bot(JDA jda) {
         this.jda = jda;
         this.selfUser = jda.getSelfUser();
         this.name = null;
@@ -24,14 +24,15 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     // Getters \\
-    public JDA getJDA(){
+    public JDA getJDA() {
         return this.jda;
     }
 
     public SelfUser getSelfUser() {
         return selfUser;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
 

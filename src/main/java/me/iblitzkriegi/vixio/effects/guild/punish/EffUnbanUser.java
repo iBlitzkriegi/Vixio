@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class EffUnbanUser extends Effect{
+public class EffUnbanUser extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffUnbanUser.class, "unban %users/strings% from %guild% [(with|as) %bot/string%]")
                 .setName("Unban user from Guild")
@@ -22,9 +22,11 @@ public class EffUnbanUser extends Effect{
                         "\ttrigger:",
                         "\t\tunban arg-1 from guild with id \"622156151\" due to \"Not following discord rules\" as \"Jewel\"");
     }
+
     private Expression<Object> users;
     private Expression<Guild> guild;
     private Expression<Object> bot;
+
     @Override
     protected void execute(Event e) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));

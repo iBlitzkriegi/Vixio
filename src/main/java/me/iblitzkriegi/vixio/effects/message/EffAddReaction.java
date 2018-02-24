@@ -22,9 +22,11 @@ public class EffAddReaction extends Effect {
                         "\tadd reaction \"smile\" to event-message"
                 );
     }
+
     private Expression<Emoji> emojis;
     private Expression<Message> message;
     private Expression<Object> bot;
+
     @Override
     protected void execute(Event e) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
@@ -53,7 +55,6 @@ public class EffAddReaction extends Effect {
                 channel.addReactionById(message.getId(), emoji.getName()).queue();
             }
         }
-
 
 
     }

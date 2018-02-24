@@ -10,8 +10,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
 
-import java.util.Set;
-
 /**
  * Created by Blitz on 7/26/2017.
  */

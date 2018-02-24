@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 /**
  * Created by Blitz on 7/22/2017.
  */
@@ -45,26 +46,6 @@ public class Vixio extends JavaPlugin {
         }
     }
 
-    @Override
-    public void onEnable() {
-        try {
-            getAddonInstance()
-                    .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes",
-                            "expressions", "commands", "changers")
-                    .setLanguageFileDirectory("lang");
-
-            Vixio.setup();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (!this.getDataFolder().exists()) {
-            this.getDataFolder().mkdirs();
-        }
-        Metrics mertrics = new Metrics(this);
-        Documentation.setupSyntaxFile();
-
-    }
-
     public static Vixio getInstance() {
         if (instance == null) {
             Vixio vixio = new Vixio();
@@ -85,6 +66,29 @@ public class Vixio extends JavaPlugin {
         VixioConverters.register();
     }
 
+    public static VixioErrorHandler getErrorHandler() {
+        return VixioErrorHandler.getInstance();
+    }
+
+    @Override
+    public void onEnable() {
+        try {
+            getAddonInstance()
+                    .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes",
+                            "expressions", "commands", "changers")
+                    .setLanguageFileDirectory("lang");
+
+            Vixio.setup();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (!this.getDataFolder().exists()) {
+            this.getDataFolder().mkdirs();
+        }
+        Metrics mertrics = new Metrics(this);
+        Documentation.setupSyntaxFile();
+
+    }
 
     public Registration registerCondition(Class<? extends Condition> cond, String... patterns) {
         Skript.registerCondition(cond, patterns);
@@ -114,7 +118,6 @@ public class Vixio extends JavaPlugin {
         return registration;
     }
 
-
     public Registration registerPropertyExpression(final Class<? extends Expression> c, final Class<?> returnType, final String property, final String fromType) {
         String[] patterns = {
                 "[the] " + property + "[s] of %" + fromType + "%",
@@ -124,10 +127,6 @@ public class Vixio extends JavaPlugin {
         Registration registration = new Registration(c, patterns);
         expressions.add(registration);
         return registration;
-    }
-
-    public static VixioErrorHandler getErrorHandler(){
-        return VixioErrorHandler.getInstance();
     }
 
 }

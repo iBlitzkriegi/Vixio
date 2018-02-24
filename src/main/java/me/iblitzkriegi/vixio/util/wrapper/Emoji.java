@@ -13,9 +13,11 @@ public class Emoji {
     private Channel channel;
     private Emote emote;
     private boolean isEmote = false;
+
     public Emoji(String name) {
         this.name = name;
     }
+
     public Emoji(Emote emote) {
         this.name = emote.getName();
         this.emote = emote;
@@ -29,7 +31,7 @@ public class Emoji {
     public Emote getEmote() {
         return emote;
     }
-    
+
     public List<Role> getRoles() {
         return isEmote ? emote.getRoles() : null;
     }
@@ -49,7 +51,7 @@ public class Emoji {
     public boolean isAnimated() {
         return isEmote ? emote.isAnimated() : null;
     }
-    
+
     public String getID() {
         return isEmote ? emote.getId() : null;
     }

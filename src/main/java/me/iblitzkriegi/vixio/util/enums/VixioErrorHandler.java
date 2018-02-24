@@ -6,8 +6,8 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import java.util.logging.Logger;
 
 public class VixioErrorHandler {
-    public Logger logger = Vixio.getInstance().getLogger();
     public static VixioErrorHandler instance;
+    public Logger logger = Vixio.getInstance().getLogger();
 
     public VixioErrorHandler() {
         if (instance == null) {
@@ -17,16 +17,16 @@ public class VixioErrorHandler {
         }
     }
 
-    public void warn(String error) {
-        logger.info(error);
-    }
-
     public static VixioErrorHandler getInstance() {
         if (instance == null) {
             instance = new VixioErrorHandler();
             return instance;
         }
         return instance;
+    }
+
+    public void warn(String error) {
+        logger.info(error);
     }
 
     public void needsPerm(Bot bot, String action, String permission) {

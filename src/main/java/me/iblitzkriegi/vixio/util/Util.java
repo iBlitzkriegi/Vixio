@@ -3,7 +3,6 @@ package me.iblitzkriegi.vixio.util;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
-import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
@@ -16,7 +15,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.effects.EffLogin;
 import me.iblitzkriegi.vixio.util.enums.SearchSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
@@ -29,7 +27,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
-import ch.njol.skript.log.HandlerList;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
@@ -40,12 +37,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Random;
-import java.util.logging.Level;
 
 public class Util {
 
     private static final Field VARIABLE_NAME;
+    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
+    private static YoutubeSearchProvider youtubeSearchProvider =
+            new YoutubeSearchProvider(
+                    new YoutubeAudioSourceManager(false)
+            );
+    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
     static {
 
@@ -66,14 +68,6 @@ public class Util {
         }
 
     }
-
-    private static YoutubeSearchProvider youtubeSearchProvider =
-            new YoutubeSearchProvider(
-                    new YoutubeAudioSourceManager(false)
-            );
-
-    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
-    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
     // Variable name related code credit btk5h (https://github.com/btk5h)
     public static VariableString getVariableName(Variable<?> var) {
@@ -151,7 +145,7 @@ public class Util {
 
     }
 
-    public static Bot botFrom(Object input){
+    public static Bot botFrom(Object input) {
         if (input == null) {
             return null;
         } else if (input instanceof Bot) {
@@ -179,7 +173,7 @@ public class Util {
         return null;
     }
 
-    public static boolean botIsConnected(Bot bot, JDA jda){
+    public static boolean botIsConnected(Bot bot, JDA jda) {
         return bot.getJDA() == jda;
     }
 
@@ -226,7 +220,7 @@ public class Util {
             }
             Collection<Emote> emotes = guild.getEmotesByName(emote, false);
             return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
-        }catch (UnsupportedOperationException | NoSuchElementException x) {
+        } catch (UnsupportedOperationException | NoSuchElementException x) {
             return null;
         }
     }

@@ -54,15 +54,15 @@ public class DiscordCommandFactory {
 
     private DiscordCommandFactory() {
 
-            Method _PARSE_I = null;
-            try {
-                _PARSE_I = SkriptParser.class.getDeclaredMethod("parse_i", String.class, int.class, int.class);
-                _PARSE_I.setAccessible(true);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                Skript.error("Skript's 'parse_i' method could not be resolved.");
-            }
-            PARSE_I = _PARSE_I;
+        Method _PARSE_I = null;
+        try {
+            _PARSE_I = SkriptParser.class.getDeclaredMethod("parse_i", String.class, int.class, int.class);
+            _PARSE_I.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            Skript.error("Skript's 'parse_i' method could not be resolved.");
+        }
+        PARSE_I = _PARSE_I;
 
     }
 

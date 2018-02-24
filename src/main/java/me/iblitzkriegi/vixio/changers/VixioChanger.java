@@ -1,9 +1,7 @@
 package me.iblitzkriegi.vixio.changers;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import org.bukkit.event.Event;
 
 public abstract class VixioChanger<T> implements Changer<T> {
 

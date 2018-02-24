@@ -1,7 +1,6 @@
 package me.iblitzkriegi.vixio.commands;
 
 import ch.njol.skript.ScriptLoader;
-import ch.njol.skript.classes.Converter;
 import ch.njol.skript.config.Config;
 import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;

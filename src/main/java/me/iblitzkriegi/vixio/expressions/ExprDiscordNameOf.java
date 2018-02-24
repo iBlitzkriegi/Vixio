@@ -4,7 +4,6 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
@@ -13,14 +12,11 @@ import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.managers.GuildController;
 import org.bukkit.event.Event;
 
 /**
@@ -115,7 +111,7 @@ public class ExprDiscordNameOf extends ChangeableSimpleExpression<String> {
                     try {
                         guild.getManager().setName(name).queue();
                     } catch (PermissionException x) {
-                        Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode,"name of", this.object, bot),
+                        Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "name of", this.object, bot),
                                 x.getPermission().getName());
                     }
                 } else if (object instanceof ChannelBuilder) {

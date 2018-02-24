@@ -7,9 +7,7 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
 public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent, EvtAddReaction.ReactionAddEvent> {

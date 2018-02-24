@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Blitz on 7/22/2017.
  */
 public class Documentation {
-    public static void setupSyntaxFile(){
+    public static void setupSyntaxFile() {
         File file = new File(Vixio.getInstance().getDataFolder(), "Syntaxes.txt");
         try {
             if (!file.exists()) {
@@ -24,7 +24,7 @@ public class Documentation {
             } else {
                 file.delete();
             }
-        }catch (IOException x){
+        } catch (IOException x) {
 
         }
         try {
@@ -33,12 +33,12 @@ public class Documentation {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write("-=Conditions=-");
             bw.newLine();
-            for(Registration reg : Vixio.getInstance().conditions){
-                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
-                if(multipleSyntax){
+            for (Registration reg : Vixio.getInstance().conditions) {
+                boolean multipleSyntax = reg.getSyntaxes().length == 2;
+                if (multipleSyntax) {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
-                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
                         builder.append(reg.getSyntaxes()[i] + "\",");
                     }
                     builder.append("}");
@@ -51,8 +51,8 @@ public class Documentation {
             }
             bw.write("-=Effects=-");
             bw.newLine();
-            for(Registration reg : Vixio.getInstance().effects){
-                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+            for (Registration reg : Vixio.getInstance().effects) {
+                boolean multipleSyntax = reg.getSyntaxes().length == 2;
                 if (multipleSyntax) {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
@@ -72,7 +72,7 @@ public class Documentation {
             bw.newLine();
 
             for (Registration reg : Vixio.getInstance().expressions) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
+                boolean multipleSyntax = reg.getSyntaxes().length == 2;
                 if (reg.getUserFacing() != null) {
                     bw.write("\tsyntax: " + reg.getUserFacing());
                     bw.newLine();
@@ -96,11 +96,11 @@ public class Documentation {
             bw.write("-=Events=-");
             bw.newLine();
             for (Registration reg : Vixio.getInstance().events) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2 ? true : false;
-                if (multipleSyntax){
+                boolean multipleSyntax = reg.getSyntaxes().length == 2;
+                if (multipleSyntax) {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
-                    for(int i = 0; i < reg.getSyntaxes().length; i++){
+                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
                         builder.append(reg.getSyntaxes()[i] + "\",");
                     }
                     builder.append("}");
@@ -144,16 +144,18 @@ public class Documentation {
         bw.flush();
         bw.close();
     }
-    public static Method getMethod(Class<?> clz, String method, Class<?>... parameters){
+
+    public static Method getMethod(Class<?> clz, String method, Class<?>... parameters) {
         try {
             return clz.getDeclaredMethod(method, parameters);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
     }
+
     @SuppressWarnings("unchecked")
-    public static <T> T invokeMethod(Class<?> clz, String method, Object instance, Object... parameters){
+    public static <T> T invokeMethod(Class<?> clz, String method, Object instance, Object... parameters) {
         try {
             Class<?>[] parameterTypes = new Class<?>[parameters.length];
             int x = 0;
@@ -162,28 +164,30 @@ public class Documentation {
             Method m = clz.getDeclaredMethod(method, parameterTypes);
             m.setAccessible(true);
             return (T) m.invoke(instance, parameters);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
     }
+
     @SuppressWarnings("unchecked")
-    public static <T> T invokeMethod(Method method, Object instance, Object... parameters){
+    public static <T> T invokeMethod(Method method, Object instance, Object... parameters) {
         try {
             method.setAccessible(true);
             return (T) method.invoke(instance, parameters);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
     }
+
     @SuppressWarnings("unchecked")
-    public static <T> T getField(Class<?> from, Object obj, String field){
-        try{
+    public static <T> T getField(Class<?> from, Object obj, String field) {
+        try {
             Field f = from.getDeclaredField(field);
             f.setAccessible(true);
             return (T) f.get(obj);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;

@@ -25,8 +25,10 @@ public class EffLogin extends AsyncEffect {
                 .setDesc("Login to a bot account with a token")
                 .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
+
     private Expression<String> token;
     private Expression<String> name;
+
     @Override
     protected void execute(Event e) {
         String token = this.token.getSingle(e);

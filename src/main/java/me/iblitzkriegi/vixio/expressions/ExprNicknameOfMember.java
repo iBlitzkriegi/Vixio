@@ -1,14 +1,7 @@
 package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.classes.Changer;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.changers.ChangeablePropertyExpression;
-import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
@@ -17,9 +10,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 
 public class ExprNicknameOfMember extends ChangeableSimplePropertyExpression<Member, String> {

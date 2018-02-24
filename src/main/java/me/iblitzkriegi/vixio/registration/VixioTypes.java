@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.registration;
 
-import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
@@ -27,12 +26,9 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import org.bukkit.event.Event;
-
-import java.util.function.Consumer;
 
 public class VixioTypes {
-    public static void register(){
+    public static void register() {
         new SimpleType<Channel>(Channel.class, "channel", "channels?") {
 
             @Override
@@ -83,7 +79,7 @@ public class VixioTypes {
             @Override
             public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
                 if (mode == ChangeMode.DELETE) {
-                    return new Class[] {Message.class};
+                    return new Class[]{Message.class};
                 }
                 return null;
             }
@@ -145,7 +141,6 @@ public class VixioTypes {
             }
 
         };
-
 
 
         new SimpleType<TextChannel>(TextChannel.class, "textchannel", "textchannels?") {

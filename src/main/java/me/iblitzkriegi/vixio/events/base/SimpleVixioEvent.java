@@ -6,13 +6,11 @@ import org.bukkit.event.HandlerList;
 public class SimpleVixioEvent<T extends net.dv8tion.jda.core.events.Event> extends Event {
 
     private HandlerList handlerList = new HandlerList();
+    private T JDAEvent;
 
     public HandlerList getHandlers() {
         return handlerList;
     }
-
-
-    private T JDAEvent;
 
     public T getJDAEvent() {
         return JDAEvent;

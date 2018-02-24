@@ -20,6 +20,14 @@ import java.util.function.Consumer;
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B extends SimpleVixioEvent>
         extends SelfRegisteringSkriptEvent {
 
+    public String stringRepresentation;
+    private Trigger trigger;
+    private EventListener<D> listener;
+    private String bot;
+    private String originalName;
+    private Class<? extends Event>[] originalEvents;
+    private Constructor<?> constructor;
+
     public static void register(String name, Class type, Class clazz, String... patterns) {
         register(name, "[seen by %-string%]", type, clazz, patterns);
     }
@@ -30,14 +38,6 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B e
         }
         Vixio.getInstance().registerEvent(name, type, clazz, patterns);
     }
-
-    private Trigger trigger;
-    private EventListener<D> listener;
-    private String bot;
-    private String originalName;
-    private Class<? extends Event>[] originalEvents;
-    public String stringRepresentation;
-    private Constructor<?> constructor;
 
     @Override
     public boolean init(Literal<?>[] exprs, int matchedPattern, SkriptParser.ParseResult parser) {
@@ -116,8 +116,16 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B e
         return trigger;
     }
 
+    /**
+     * Used to check the type of incoming generic JDA events
+     *
+     * @return The JDA event class of this event
+     */
     public abstract Class<D> getJDAClass();
 
+    /**
+     * @return The Bukkit event class of this event
+     */
     public abstract Class<B> getBukkitClass();
 
 }

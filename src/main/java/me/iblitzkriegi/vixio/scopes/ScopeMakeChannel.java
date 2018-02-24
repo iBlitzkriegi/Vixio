@@ -27,7 +27,9 @@ public class ScopeMakeChannel extends EffectSection {
                         "\t\tcreate the channel in {guild} as \"Jewel\""
                 );
     }
+
     private boolean channelType;
+
     @Override
     public void execute(Event e) {
         channelBuilder = new ChannelBuilder();

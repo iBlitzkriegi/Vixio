@@ -44,7 +44,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -59,9 +58,8 @@ import java.util.logging.Level;
  */
 public class EffChange extends Effect {
 
-    private static boolean parsing;
     public static Bot currentBot;
-
+    private static boolean parsing;
     private static Patterns<ChangeMode> patterns = new Patterns<>(new Object[][]{
             {"(add|give) %objects% to (%~objects%) with %bot/string%", ChangeMode.ADD},
             {"increase %~objects% by (%objects%) with %bot/string%", ChangeMode.ADD},
@@ -96,6 +94,29 @@ public class EffChange extends Effect {
     private boolean single;
 
 //	private Changer<?, ?> c = null;
+
+    public static boolean isParsing(Expression<?> expression) {
+        if (parsing) {
+            return true;
+        }
+        Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
+        // Handler editing to avoid Skript's changer errors
+        HandlerList handlers = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
+        if (handlers == null) {
+            return false;
+        }
+        for (Iterator<LogHandler> iterator = handlers.iterator(); iterator.hasNext(); ) {
+            LogHandler handler = iterator.next();
+            if (handler instanceof CountingLogHandler) {
+                ReflectionUtils.setField(CountingLogHandler.class, handler, "count", -1);
+            }
+        }
+        return false;
+    }
+
+    public static String format(ChangeMode mode, String prop, Expression<?> changed, Bot bot) {
+        return mode.name().toLowerCase(Locale.ENGLISH) + " " + prop + " " + changed.toString(null, false) + " with \"" + bot.toString() + "\"";
+    }
 
     @SuppressWarnings({"unchecked", "null"})
     @Override
@@ -333,29 +354,6 @@ public class EffChange extends Effect {
         }
         assert false;
         return "";
-    }
-
-    public static boolean isParsing(Expression<?> expression) {
-        if (parsing) {
-            return true;
-        }
-        Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
-        // Handler editing to avoid Skript's changer errors
-        HandlerList handlers = ReflectionUtils.getField(SkriptLogger.class, null, "handlers");
-        if (handlers == null) {
-            return false;
-        }
-        for (Iterator<LogHandler> iterator = handlers.iterator(); iterator.hasNext();) {
-            LogHandler handler = iterator.next();
-            if (handler instanceof CountingLogHandler) {
-                ReflectionUtils.setField(CountingLogHandler.class, handler, "count", -1);
-            }
-        }
-        return false;
-    }
-
-    public static String format(ChangeMode mode, String prop, Expression<?> changed, Bot bot) {
-        return mode.name().toLowerCase(Locale.ENGLISH) + " " + prop + " " + changed.toString(null, false) + " with \"" + bot.toString() + "\"";
     }
 
 }
