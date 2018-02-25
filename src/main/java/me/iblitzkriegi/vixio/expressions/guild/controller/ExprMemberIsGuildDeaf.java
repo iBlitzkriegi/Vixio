@@ -1,42 +1,33 @@
 package me.iblitzkriegi.vixio.expressions.guild.controller;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.event.Event;
 
-public class ExprMemberIsGuildDeaf extends SimpleExpression<Boolean> {
+public class ExprMemberIsGuildDeaf extends ChangeableSimplePropertyExpression<Member, Boolean> {
+
     static {
-        Vixio.getInstance().registerExpression(ExprMemberIsGuildDeaf.class, Boolean.class, ExpressionType.SIMPLE,
-                "guild deafened state of %member%")
-                .setName("Guild Deafened State of Member")
+        Vixio.getInstance().registerPropertyExpression(ExprMemberIsGuildDeaf.class, Boolean.class,
+                "[<guild>] deafen[ed] state", "members")
+                .setName("Guild State of Member")
                 .setDesc("Get the deafened state of a Member in a Guild. If they are deafened by someone then this returns true. This will not be updated unless a User is in a Voice Channel when they are deafened.")
                 .setExample(
                         "on guild message receive:",
-                        "\tset {e} to member of event-user in event-guild",
-                        "\treply with \"%guild deafen state of {e} in event-guild%\""
+                        "\treply with \"%deafen state of event-user in event-guild%\""
                 );
     }
 
-    private Expression<Member> member;
+    private boolean guild;
 
     @Override
-    protected Boolean[] get(Event e) {
-        Member member = this.member.getSingle(e);
-        if (member == null) {
-            return null;
-        }
-
-        return new Boolean[]{member.getVoiceState().isGuildDeafened()};
-    }
-
-    @Override
-    public boolean isSingle() {
-        return true;
+    public Boolean convert(Member member) {
+        return guild ? member.getVoiceState().isGuildDeafened() : member.getVoiceState().isDeafened();
     }
 
     @Override
@@ -45,14 +36,32 @@ public class ExprMemberIsGuildDeaf extends SimpleExpression<Boolean> {
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
-        return "guild deafened state of " + member.toString(e, debug);
+    public String getPropertyName() {
+        return (guild ? "guild " : "") + "deafened state";
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        member = (Expression<Member>) exprs[0];
+        super.init(exprs, matchedPattern, isDelayed, parseResult);
+        guild = parseResult.regexes.size() == 1;
         return true;
+    }
+
+    @Override
+    public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
+        System.out.println("mode: " + mode);
+        if (mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.SET) {
+            System.out.println("returning boolean");
+            return new Class[]{Boolean.class};
+        }
+        return null;
+    }
+
+    @Override
+    public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
+        for (Member member : getExpr().getAll(e)) {
+            boolean state = mode == Changer.ChangeMode.RESET ? false : (Boolean) delta[0];
+            member.getGuild().getController().setDeafen(member, state).queue();
+        }
     }
 }

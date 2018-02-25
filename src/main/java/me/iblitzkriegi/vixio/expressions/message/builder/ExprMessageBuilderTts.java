@@ -13,7 +13,7 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMessageBuilderTts.class, Boolean.class, "tts state", "messagebuilders")
                 .setName("TTS of Message Builder")
-                .setDesc("Get the TTS state of a Message Builder. Changers: SET")
+                .setDesc("Get the TTS state of a Message Builder. The state can be set to true or false.")
                 .setExample(
                         "command /build",
                         "\ttrigger:",
@@ -51,16 +51,8 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
 
     @Override
     public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        MessageBuilder builder = getExpr().getSingle(e);
-        if (builder == null) return;
-
-        switch (mode) {
-            case RESET:
-                builder.setTTS(false);
-                break;
-            case SET:
-                builder.setTTS((Boolean) delta[0]);
-
+        for (MessageBuilder builder : getExpr().getAll(e)) {
+            builder.setTTS(mode == Changer.ChangeMode.RESET ? false : (Boolean) delta[0]);
         }
     }
 
@@ -73,4 +65,5 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
     public String toString(final Event e, final boolean debug) {
         return "the tts state of " + getExpr().toString(e, debug);
     }
+
 }

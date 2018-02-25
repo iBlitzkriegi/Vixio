@@ -2,11 +2,10 @@ package me.iblitzkriegi.vixio.expressions.guild;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
@@ -17,17 +16,16 @@ import org.bukkit.event.Event;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
+public class ExprGuildAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprGuildAfkChannel.class, VoiceChannel.class, ExpressionType.SIMPLE,
-                "afk channel[s] of %guilds% [(as|with)] [%bot/string%]")
+        Vixio.getInstance().registerPropertyExpression(ExprGuildAfkChannel.class, VoiceChannel.class,
+                "afk channel[s]", "guilds")
                 .setName("Afk channel of Guild")
-                .setDesc("Get the afk Voice Channel of a Guild. Changers: SET")
-                .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t" +
-                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
-                        "\t\tif {_cmd::*} is \"##afk\":" +
-                        "\t\t\treply with afk channel of event-guild");
+                .setDesc("Get the AFK voice channel of a guild. You can set this to another channel.")
+                .setExample("discord command afk:",
+                        "\tprefixes: $",
+                        "\ttrigger:",
+                        "\t\treply with \"%afk channel of event-guild%\"");
     }
 
     private Expression<Guild> guilds;
@@ -56,18 +54,17 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
     }
 
     @Override
-    public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
+    public Class<?>[] acceptChange(final Changer.ChangeMode mode, boolean vixioChanger) {
         if (mode == Changer.ChangeMode.SET) {
             return new Class[]{VoiceChannel.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override
-    public void change(final Event e, final Object[] delta, final Changer.ChangeMode mode) {
-        Bot bot = Util.botFrom(this.bot.getSingle(e));
+    public void change(final Event e, final Object[] delta, Bot bot, final Changer.ChangeMode mode) {
         Guild[] guilds = this.guilds.getAll(e);
-        if (bot == null || guilds == null) {
+        if (guilds == null) {
             return;
         }
         VoiceChannel channel = (VoiceChannel) delta[0];
@@ -86,13 +83,12 @@ public class ExprGuildAfkChannel extends SimpleExpression<VoiceChannel> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "afk channel of " + guilds.toString(e, debug) + (bot == null ? "" : " as " + bot.toString(e, debug));
+        return "afk channel of " + guilds.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guilds = (Expression<Guild>) exprs[0];
-        bot = (Expression<Object>) exprs[1];
         return true;
     }
 }

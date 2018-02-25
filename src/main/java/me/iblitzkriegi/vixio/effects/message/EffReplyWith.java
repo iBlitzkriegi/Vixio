@@ -10,6 +10,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -34,7 +35,8 @@ public class EffReplyWith extends Effect {
     @Override
     protected void execute(Event e) {
         MessageChannel channel = EventValues.getEventValue(e, MessageChannel.class, 0);
-        if (channel == null) {
+        Bot bot = EventValues.getEventValue(e, Bot.class, 0);
+        if (channel == null || bot == null) {
             return;
         }
         Object[] objects = message.getAll(e);
@@ -61,11 +63,12 @@ public class EffReplyWith extends Effect {
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         if (ScriptLoader.getCurrentEvents() != null && Arrays.stream(ScriptLoader.getCurrentEvents())
-                .anyMatch(event -> EventValues.getEventValueGetter(event, MessageChannel.class, 0) != null)) {
+                .anyMatch(event -> EventValues.getEventValueGetter(event, MessageChannel.class, 0) != null) && Arrays.stream(ScriptLoader.getCurrentEvents())
+                .anyMatch(event -> EventValues.getEventValueGetter(event, Bot.class, 0) != null)) {
             message = (Expression<Object>) expressions[0];
             return true;
         }
-        Skript.error("You may not use `reply with` in events that do not have a message channel to reply in.");
+        Skript.error("You can't use reply with in events that do not have a channel and bot to reply with.");
         return false;
     }
 }

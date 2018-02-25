@@ -27,11 +27,30 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B e
     private String originalName;
     private Class<? extends Event>[] originalEvents;
     private Constructor<?> constructor;
+    /**
+     * The ending appended to patterns if no custom ending is specified
+     */
+    public static final String APPENDED_ENDING = "[seen by %-string%]";
 
+
+    /**
+     * @param name     The name of the event used for ScriptLoader#setCurrentEvents
+     * @param type     The class holding the event
+     * @param clazz    The class holding the Bukkit event
+     * @param patterns The patterns for the event
+     */
     public static void register(String name, Class type, Class clazz, String... patterns) {
-        register(name, "[seen by %-string%]", type, clazz, patterns);
+        register(name, APPENDED_ENDING, type, clazz, patterns);
     }
 
+    /**
+     /**
+     * @param name The name of the event used for ScriptLoader#setCurrentEvents
+     * @param ending The ending applied for checking the bot (which can be grabbed via BaseEvent.APPENDED_ENDING)
+     * @param type The class holding the event
+     * @param clazz The class holding the Bukkit event
+     * @param patterns The patterns for the event
+     */
     public static void register(String name, String ending, Class type, Class clazz, String... patterns) {
         for (int i = 0; i < patterns.length; i++) {
             patterns[i] += " " + ending;
@@ -74,11 +93,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event, B e
         listener = new EventListener<>(getJDAClass(), new Consumer<D>() {
             @Override
             public void accept(D JDAEvent) {
-                /*
-                I'm not sure if this method is any good, it certainly doesn't sit right with me.
-                Could have an abstract getNewEvent method to avoid this weirdness...
-                The actual performance difference is almost nothing, though.
-                 */
+                /* !? */
                 SimpleVixioEvent<D> event = null;
                 try {
                     event = (SimpleVixioEvent<D>) constructor.newInstance(BaseEvent.this);
