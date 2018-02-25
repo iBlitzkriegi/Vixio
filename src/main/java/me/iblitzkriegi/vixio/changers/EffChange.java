@@ -100,7 +100,7 @@ public class EffChange extends Effect {
     }
 
     public static String format(ChangeMode mode, String prop, Expression<?> changed, Bot bot) {
-        return mode.name().toLowerCase(Locale.ENGLISH) + " " + prop + " " + changed.toString(null, false) + " with \"" + bot.toString() + "\"";
+        return mode.name().toLowerCase(Locale.ENGLISH).replace("_", " ") + " " + prop + " " + changed.toString(null, false) + " with \"" + bot.toString() + "\"";
     }
 
     @SuppressWarnings({"unchecked", "null"})
@@ -281,7 +281,6 @@ public class EffChange extends Effect {
 
     @Override
     protected void execute(final Event e) {
-        System.out.println("executing effchange");
         final Expression<?> changer = this.changer;
         final Object[] delta = changer == null ? null : changer.getArray(e);
         final Bot bot = Util.botFrom(this.bot.getSingle(e));
