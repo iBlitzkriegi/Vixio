@@ -2,8 +2,6 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.util.StringUtils;
 
-import java.util.ArrayList;
-
 /**
  * Created by Blitz on 7/22/2017.
  */
@@ -20,11 +18,6 @@ public class Registration {
     public Registration(Class<?> cls, String... syntaxes) {
         clazz = cls;
         this.syntaxes = syntaxes;
-    }
-
-    public Registration(Class clazz, ArrayList<String> patterns) {
-        this.clazz = clazz;
-        this.syntaxes = patterns.toArray(new String[0]);
     }
 
     public Registration setExample(String s) {

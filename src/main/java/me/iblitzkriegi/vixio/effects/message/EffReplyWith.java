@@ -8,7 +8,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.events.EvntMessageReceived;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -44,13 +43,14 @@ public class EffReplyWith extends Effect {
             return;
         }
         try {
+            //TODO: this needs to have the bot binded (maybe, it should work out fine because in most cases the event values line up)
             for (Object s : objects) {
                 if (Util.messageFrom(s) != null) {
                     channel.sendMessage(Util.messageFrom(s)).queue();
                 }
             }
         } catch (PermissionException x) {
-            Vixio.getErrorHandler().needsPerm(((EvntMessageReceived) e).getBot(), x.getPermission().getName(), "send message");
+            Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "send message");
         }
     }
 

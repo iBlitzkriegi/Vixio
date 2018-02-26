@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.Message;
 public class ExprGuildOf extends SimplePropertyExpression<Object, Guild> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprGuildOf.class, Guild.class, "guild", "category/message")
-                .setName("Guild of")
+                .setName("Guild")
                 .setDesc("Get the guild of one of the types in the syntax.")
                 .setExample("reply with \"%name of guild of event-message%\"");
     }

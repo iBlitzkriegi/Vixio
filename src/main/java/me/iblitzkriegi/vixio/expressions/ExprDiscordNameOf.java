@@ -2,7 +2,6 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -24,10 +23,10 @@ import org.bukkit.event.Event;
  */
 public class ExprDiscordNameOf extends ChangeableSimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprDiscordNameOf.class, String.class, ExpressionType.SIMPLE,
-                "name of %channel/guild/user/bot/role/audiotrack/category/channelbuilder%")
-                .setName("Name of")
-                .setDesc("Get the name of something/someone. There is a set changer for channel, guild, and bot, category, channelbuilder.")
+        Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,
+                "name", "channel/guild/user/bot/role/audiotrack/category/channelbuilder")
+                .setName("Name")
+                .setDesc("Get the name of something/someone. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
     }
 
