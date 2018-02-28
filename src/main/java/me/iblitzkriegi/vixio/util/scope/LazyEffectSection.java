@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.util;
+package me.iblitzkriegi.vixio.util.scope;
 
 import ch.njol.skript.config.Node;
 import ch.njol.skript.config.SectionNode;

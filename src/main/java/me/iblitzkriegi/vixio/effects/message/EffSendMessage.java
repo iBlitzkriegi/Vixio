@@ -7,8 +7,9 @@ import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.AsyncEffect;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -57,7 +58,7 @@ public class EffSendMessage extends AsyncEffect {
                                     try {
                                         Message resultingMessage = textChannel.sendMessage(message).complete(true);
                                         if (varExpr.isList()) {
-                                            Util.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
+                                            SkriptUtil.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
                                         } else {
                                             Variables.setVariable(varName.toString(e), resultingMessage, e, varExpr.isLocal());
                                         }
@@ -91,7 +92,7 @@ public class EffSendMessage extends AsyncEffect {
 
         if (exprs[3] instanceof Variable) {
             varExpr = (Variable<?>) exprs[3];
-            varName = Util.getVariableName(varExpr);
+            varName = SkriptUtil.getVariableName(varExpr);
         }
 
         return true;

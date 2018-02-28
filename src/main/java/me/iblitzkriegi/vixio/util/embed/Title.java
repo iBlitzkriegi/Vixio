@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.util;
+package me.iblitzkriegi.vixio.util.embed;
 
 public class Title {
 

@@ -14,8 +14,8 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.NonNullPair;
 import ch.njol.util.StringUtils;
-import me.iblitzkriegi.vixio.util.EffectSection;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
 

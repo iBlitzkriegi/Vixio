@@ -7,7 +7,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.scopes.ScopeMakeChannel;
-import me.iblitzkriegi.vixio.util.EffectSection;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import org.bukkit.event.Event;
 

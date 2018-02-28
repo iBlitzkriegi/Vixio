@@ -5,9 +5,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
-import me.iblitzkriegi.vixio.util.SimpleType;
-import me.iblitzkriegi.vixio.util.Title;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.embed.Title;
+import me.iblitzkriegi.vixio.util.skript.SimpleType;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
@@ -27,7 +27,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
-public class VixioTypes {
+public class Types {
     public static void register() {
         new SimpleType<Channel>(Channel.class, "channel", "channels?") {
 

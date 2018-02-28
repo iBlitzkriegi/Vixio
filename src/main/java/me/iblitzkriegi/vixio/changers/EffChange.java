@@ -89,7 +89,7 @@ public class EffChange extends Effect {
 
     private boolean single;
 
-//	private Changer<?, ?> c = null;
+//	private EasyChanger<?, ?> c = null;
 
     public static boolean isParsing(Expression<?> expression) {
         if (parsing) {

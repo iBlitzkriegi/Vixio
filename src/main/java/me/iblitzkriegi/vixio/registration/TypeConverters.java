@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
-public class VixioConverters {
+public class TypeConverters {
     public static void register() {
         /*
         Generally a bad idea for the same reasons skript doesn't have a player -> name converter

@@ -7,7 +7,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.scopes.ScopeMakeEmbed;
-import me.iblitzkriegi.vixio.util.EffectSection;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.event.Event;
 

@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.EffectSection;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;

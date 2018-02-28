@@ -6,7 +6,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
-import me.iblitzkriegi.vixio.util.AsyncEffect;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;

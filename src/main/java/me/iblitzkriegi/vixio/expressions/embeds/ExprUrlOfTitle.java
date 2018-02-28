@@ -5,7 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Title;
+import me.iblitzkriegi.vixio.util.embed.Title;
 import org.bukkit.event.Event;
 
 public class ExprUrlOfTitle extends SimplePropertyExpression<Title, String> {

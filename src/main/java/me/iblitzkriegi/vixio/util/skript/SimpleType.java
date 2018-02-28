@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.util;
+package me.iblitzkriegi.vixio.util.skript;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;

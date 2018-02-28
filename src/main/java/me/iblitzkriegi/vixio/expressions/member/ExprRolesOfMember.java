@@ -6,13 +6,17 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeablePropertyExpression;
-import me.iblitzkriegi.vixio.util.Convertable;
+import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.managers.GuildController;
 import org.bukkit.event.Event;
 
-public class ExprRolesOfMember extends ChangeablePropertyExpression<Member, Role> implements Convertable<Member, Role> {
+public class ExprRolesOfMember extends ChangeablePropertyExpression<Member, Role> implements EasyMultiple<Member, Role> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprRolesOfMember.class, Role.class,
@@ -40,7 +44,9 @@ public class ExprRolesOfMember extends ChangeablePropertyExpression<Member, Role
 
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode, boolean vixioChanger) {
-        if ((mode == Changer.ChangeMode.REMOVE || mode == Changer.ChangeMode.ADD) && getExpr().isSingle()) {
+        if ((mode == Changer.ChangeMode.REMOVE || mode == Changer.ChangeMode.ADD || mode == Changer.ChangeMode.RESET
+                || mode == Changer.ChangeMode.DELETE || mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.REMOVE_ALL)
+                && getExpr().isSingle()) {
             return new Class[]{Role[].class};
         }
         return null;
@@ -54,43 +60,32 @@ public class ExprRolesOfMember extends ChangeablePropertyExpression<Member, Role
 
     @Override
     public void change(final Event e, final Object[] delta, Bot bot, final Changer.ChangeMode mode) {
-        if (bot == null) {
-            Vixio.getErrorHandler().noBotProvided("modify roles of member");
-            return;
-        }
-        boolean isAdd = mode == Changer.ChangeMode.ADD;
-        Role role = (Role) delta[0];
-
-/*        Member member = (e);
-        Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Guild bindedGuild = Util.bindGuild(bot, role.getGuild());
-        if (member == null || bot == null || bindedGuild == null) {
-            return;
-        }
-
-        try {
-            if (delta.length == 1) {
-                if (isAdd) {
-                    bindedGuild.getController().addSingleRoleToMember(member, (Role) delta[0]).queue();
-                    return;
+        change(getExpr().getAll(e), member -> {
+            Guild guild = Util.bindGuild(bot, member.getGuild());
+            if (guild == null) {
+                return;
+            }
+            GuildController controller = guild.getController();
+            try {
+                switch (mode) {
+                    case RESET:
+                    case DELETE:
+                    case SET:
+                        controller.removeRolesFromMember(member, member.getRoles()).queue();
+                        if (mode == Changer.ChangeMode.SET) {
+                            controller.addRolesToMember(member, Util.convertedArray(Role.class, delta)).queue();
+                        }
+                        break;
+                    case ADD:
+                        controller.addRolesToMember(member, Util.convertedArray(Role.class, delta)).queue();
+                        break;
+                    case REMOVE:
+                    case REMOVE_ALL:
+                        controller.removeRolesFromMember(member, Util.convertedArray(Role.class, delta)).queue();
                 }
-                bindedGuild.getController().removeSingleRoleFromMember(member, (Role) delta[0]).queue();
-                return;
+            } catch (PermissionException e1) {
+                Vixio.getErrorHandler().warn("Vixio encountered a permission exception while trying to change roles");
             }
-
-            ArrayList<Role> roles = new ArrayList<>();
-            for (Object rolez : delta) {
-                roles.add((Role) rolez);
-            }
-            if (isAdd) {
-                bindedGuild.getController().addRolesToMember(member, roles).queue();
-                return;
-            }
-            bindedGuild.getController().removeRolesFromMember(member, roles).queue();
-
-        } catch (PermissionException x) {
-            Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "modify role");
-        }*/
+        });
     }
-
 }

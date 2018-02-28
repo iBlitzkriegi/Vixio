@@ -8,10 +8,9 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
-import me.iblitzkriegi.vixio.registration.VixioConverters;
-import me.iblitzkriegi.vixio.registration.VixioTypes;
+import me.iblitzkriegi.vixio.registration.TypeConverters;
+import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
-import me.iblitzkriegi.vixio.util.enums.VixioErrorHandler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -62,12 +61,12 @@ public class Vixio extends JavaPlugin {
     }
 
     private static void setup() {
-        VixioTypes.register();
-        VixioConverters.register();
+        Types.register();
+        TypeConverters.register();
     }
 
-    public static VixioErrorHandler getErrorHandler() {
-        return VixioErrorHandler.getInstance();
+    public static ErrorHandler getErrorHandler() {
+        return ErrorHandler.getInstance();
     }
 
     @Override
@@ -85,6 +84,9 @@ public class Vixio extends JavaPlugin {
         if (!this.getDataFolder().exists()) {
             this.getDataFolder().mkdirs();
         }
+        getConfig().addDefault("enable warnings", true);
+        getConfig().options().copyDefaults(true);
+        saveConfig();
         Metrics mertrics = new Metrics(this);
         Documentation.setupSyntaxFile();
 

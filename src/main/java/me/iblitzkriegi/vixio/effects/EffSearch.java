@@ -8,9 +8,10 @@ import ch.njol.skript.lang.VariableString;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.AsyncEffect;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.enums.SearchSite;
+import me.iblitzkriegi.vixio.util.enums.SearchableSite;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import org.bukkit.event.Event;
 
 import java.util.Locale;
@@ -30,7 +31,7 @@ public class EffSearch extends AsyncEffect {
                 );
     }
 
-    private SearchSite site;
+    private SearchableSite site;
     private Expression<String> queries;
     private boolean local;
     private VariableString variable;
@@ -39,7 +40,7 @@ public class EffSearch extends AsyncEffect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         queries = (Expression<String>) exprs[0];
         try {
-            site = SearchSite.valueOf(parseResult.regexes.get(0).group().toUpperCase(Locale.ENGLISH));
+            site = SearchableSite.valueOf(parseResult.regexes.get(0).group().toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
         }
 
@@ -48,7 +49,7 @@ public class EffSearch extends AsyncEffect {
             if (expr instanceof Variable) {
                 Variable<?> varExpr = (Variable<?>) expr;
                 if (varExpr.isList()) {
-                    variable = Util.getVariableName(varExpr);
+                    variable = SkriptUtil.getVariableName(varExpr);
                     local = varExpr.isLocal();
                     return true;
                 }
@@ -64,7 +65,7 @@ public class EffSearch extends AsyncEffect {
         AudioTrack[] results = Util.search(site, queries.getAll(e));
         lastResults = results;
         if (variable != null) {
-            Util.setList(variable.toString(e), e, local, results);
+            SkriptUtil.setList(variable.toString(e), e, local, results);
         }
 
     }

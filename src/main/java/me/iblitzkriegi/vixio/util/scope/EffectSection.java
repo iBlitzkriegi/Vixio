@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.util;
+package me.iblitzkriegi.vixio.util.scope;
 
 
 import ch.njol.skript.ScriptLoader;
@@ -17,6 +17,7 @@ import ch.njol.skript.log.RetainingLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
 import ch.njol.util.StringUtils;
+import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;

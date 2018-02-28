@@ -49,9 +49,7 @@ public class ExprDeafened extends ChangeableSimplePropertyExpression<Member, Boo
 
     @Override
     public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
-        System.out.println("mode: " + mode);
         if (mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.SET) {
-            System.out.println("returning boolean");
             return new Class[]{Boolean.class};
         }
         return null;

@@ -1,9 +1,6 @@
 package me.iblitzkriegi.vixio.util;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Variable;
-import ch.njol.skript.lang.VariableString;
-import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
@@ -15,7 +12,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.enums.SearchSite;
+import me.iblitzkriegi.vixio.util.enums.SearchableSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.JDA;
@@ -26,10 +23,9 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import org.bukkit.event.Event;
 
 import java.awt.Color;
-import java.lang.reflect.Field;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,54 +36,18 @@ import java.util.Random;
 
 public class Util {
 
-    private static final Field VARIABLE_NAME;
     public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
-    private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
     private static YoutubeSearchProvider youtubeSearchProvider =
             new YoutubeSearchProvider(
                     new YoutubeAudioSourceManager(false)
             );
     private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
-    static {
-
-        if (!variableNameGetterExists) {
-
-            Field _VARIABLE_NAME = null;
-            try {
-                _VARIABLE_NAME = Variable.class.getDeclaredField("name");
-                _VARIABLE_NAME.setAccessible(true);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-                Skript.error("Skript's 'variable name' method could not be resolved.");
-            }
-            VARIABLE_NAME = _VARIABLE_NAME;
-
-        } else {
-            VARIABLE_NAME = null;
-        }
-
-    }
-
-    // Variable name related code credit btk5h (https://github.com/btk5h)
-    public static VariableString getVariableName(Variable<?> var) {
-        if (variableNameGetterExists) {
-            return var.getName();
-        } else {
-            try {
-                return (VariableString) VARIABLE_NAME.get(var);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
         return Arrays.asList(potentialMatches).contains(toMatch);
     }
 
-    public static AudioTrack[] search(SearchSite site, String[] queries) {
+    public static AudioTrack[] search(SearchableSite site, String[] queries) {
         List<AudioTrack> results = new ArrayList<>();
         AudioItem playlist = null;
 
@@ -117,17 +77,6 @@ public class Util {
         return results.isEmpty() ? null :
                 results.toArray(new AudioTrack[results.size()]);
 
-    }
-
-    public static void setList(String name, Event e, boolean local, Object... objects) {
-        if (objects == null || name == null) return;
-
-        int separatorLength = Variable.SEPARATOR.length() + 1;
-        name = name.substring(0, (name.length() - separatorLength));
-        name = name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR;
-        Variables.setVariable(name + "*", null, e, local);
-        for (int i = 0; i < objects.length; i++)
-            Variables.setVariable(name + (i + 1), objects[i], e, local);
     }
 
     public static Color getColorFromString(String str) {
@@ -238,5 +187,18 @@ public class Util {
         return bots.isEmpty() ? null : bots.toArray(new Bot[bots.size()])[new Random().nextInt(bots.size())];
     }
 
+    public static <T> T[] convertedArray(Class<T> convertTo, Object... objects) {
+        if (objects != null) {
+            T[] newArray = (T[]) Array.newInstance(convertTo, objects.length);
+            for (int i = 0; i < objects.length; i++) {
+                if (!convertTo.isInstance(objects[i])) {
+                    throw new RuntimeException("Tried to convert an array, but encountered an object that isn't an instance of the class to convert to");
+                }
+                newArray[i] = (T) objects[i];
+            }
+            return newArray;
+        }
+        return null;
+    }
 }
 
