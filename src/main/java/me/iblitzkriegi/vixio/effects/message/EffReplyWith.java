@@ -10,6 +10,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -45,8 +46,9 @@ public class EffReplyWith extends Effect {
         try {
             //TODO: this needs to have the bot binded (maybe, it should work out fine because in most cases the event values line up)
             for (Object s : objects) {
-                if (Util.messageFrom(s) != null) {
-                    channel.sendMessage(Util.messageFrom(s)).queue();
+                Message message = Util.messageFrom(s);
+                if (message != null) {
+                    channel.sendMessage(message).queue();
                 }
             }
         } catch (PermissionException x) {

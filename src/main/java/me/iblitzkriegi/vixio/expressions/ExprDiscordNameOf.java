@@ -24,7 +24,7 @@ import org.bukkit.event.Event;
 public class ExprDiscordNameOf extends ChangeableSimpleExpression<String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDiscordNameOf.class, String.class,
-                "name", "channel/guild/user/bot/role/audiotrack/category/channelbuilder")
+                "name", "channel/guild/bot/user/role/audiotrack/category/channelbuilder")
                 .setName("Name")
                 .setDesc("Get the name of something/someone. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");

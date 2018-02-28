@@ -253,12 +253,12 @@ public class VixioTypes {
 
             @Override
             public String toString(Bot bot, int arg1) {
-                return bot.getSelfUser().getId();
+                return bot.getName();
             }
 
             @Override
             public String toVariableNameString(Bot bot) {
-                return bot.getSelfUser().getId();
+                return bot.getName();
             }
 
         };
@@ -325,12 +325,12 @@ public class VixioTypes {
 
             @Override
             public String toString(Role role, int arg1) {
-                return role.getId();
+                return role.getName();
             }
 
             @Override
             public String toVariableNameString(Role role) {
-                return role.getId();
+                return role.getName();
             }
 
         };
@@ -349,12 +349,12 @@ public class VixioTypes {
 
             @Override
             public String toString(Member member, int arg1) {
-                return member.getUser().getId();
+                return member.getNickname();
             }
 
             @Override
             public String toVariableNameString(Member member) {
-                return member.getUser().getId();
+                return member.getNickname();
             }
 
         };

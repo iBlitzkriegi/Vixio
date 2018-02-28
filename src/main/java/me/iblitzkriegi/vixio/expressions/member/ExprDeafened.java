@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.guild.controller;
+package me.iblitzkriegi.vixio.expressions.member;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
@@ -10,10 +10,10 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.event.Event;
 
-public class ExprMemberIsGuildDeaf extends ChangeableSimplePropertyExpression<Member, Boolean> {
+public class ExprDeafened extends ChangeableSimplePropertyExpression<Member, Boolean> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMemberIsGuildDeaf.class, Boolean.class,
+        Vixio.getInstance().registerPropertyExpression(ExprDeafened.class, Boolean.class,
                 "[<guild>] deafen[ed] state", "members")
                 .setName("Guild State of Member")
                 .setDesc("Get the deafened state of a Member in a Guild. If they are deafened by someone then this returns true. This will not be updated unless a User is in a Voice Channel when they are deafened.")
