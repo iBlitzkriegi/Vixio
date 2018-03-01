@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.expressions;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -26,6 +27,19 @@ public class ExprSearchResults extends SimpleExpression<AudioTrack> {
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         return true;
+    }
+
+    @Override
+    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
+        if (mode == Changer.ChangeMode.DELETE) {
+            return new Class[]{Object.class};
+        }
+        return null;
+    }
+
+    @Override
+    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+        EffSearch.lastResults = null;
     }
 
     @Override
