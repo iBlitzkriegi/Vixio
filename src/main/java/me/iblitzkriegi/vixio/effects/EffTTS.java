@@ -17,7 +17,10 @@ public class EffTTS extends Effect implements EasyMultiple<MessageBuilder, Void>
 
     static {
         Vixio.getInstance().registerEffect(EffTTS.class,
-                "<enable|disable> t[ext ]t[o ]s[peech] for %messagebuilders%");
+                "<enable|disable> t[ext ]t[o ]s[peech] for %messagebuilders%")
+                .setName("Change TTS")
+                .setDesc("Lets you enable or disable text to speech for message builders")
+                .setExample("enable tts for {_message builder}");
     }
 
     private boolean tts;

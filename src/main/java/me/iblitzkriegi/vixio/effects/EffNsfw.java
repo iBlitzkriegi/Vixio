@@ -13,10 +13,11 @@ import org.bukkit.event.Event;
 public class EffNsfw extends Effect {
 
     static {
-
         Vixio.getInstance().registerEffect(EffNsfw.class,
-                "(make|mark) %textchannels% [as] [<n>]sfw (with|using) %bot/string%");
-
+                "(make|mark) %textchannels% [as] [<n>]sfw (with|using) %bot/string%")
+                .setName("Change NSFW")
+                .setDesc("Lets you mark a text channel as sfw/nsfw")
+                .setExample("mark event-textchannel as nsfw with event-bot");
     }
 
     private boolean newState;

@@ -41,7 +41,7 @@ public class EffSearch extends AsyncEffect {
         queries = (Expression<String>) exprs[0];
         try {
             site = SearchableSite.valueOf(parseResult.regexes.get(0).group().toUpperCase(Locale.ENGLISH));
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) { // should never happen
         }
 
         if (exprs[1] != null) {
