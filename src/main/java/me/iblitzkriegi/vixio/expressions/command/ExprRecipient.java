@@ -9,7 +9,6 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
-import me.iblitzkriegi.vixio.events.EvtDiscordCommand;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
 
@@ -24,7 +23,7 @@ public class ExprRecipient extends SimpleExpression<ChannelType> {
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
-        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class) && !ScriptLoader.isCurrentEvent(EvtDiscordCommand.VixioCommandEvent.class)) {
+        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class)) {
             Skript.error("You can only get the command recipient in a discord command");
             return false;
         }

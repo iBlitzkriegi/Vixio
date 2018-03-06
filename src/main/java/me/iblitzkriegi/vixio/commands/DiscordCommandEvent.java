@@ -8,8 +8,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
+import org.bukkit.event.Cancellable;
 
-public class DiscordCommandEvent extends SimpleBukkitEvent {
+public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellable {
 
     private DiscordCommand command;
     private Guild guild;
@@ -19,6 +20,7 @@ public class DiscordCommandEvent extends SimpleBukkitEvent {
     private MessageChannel messagechannel;
     private String prefix;
     private String usedAlias;
+    private boolean cancelled;
     private Channel channel;
     private Bot bot;
 
@@ -75,6 +77,16 @@ public class DiscordCommandEvent extends SimpleBukkitEvent {
 
     public Bot getBot() {
         return bot;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
 }

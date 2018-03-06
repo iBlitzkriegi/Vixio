@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.commands;
 
-import me.iblitzkriegi.vixio.events.EvtDiscordCommand;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -38,7 +37,7 @@ public class CommandListener extends ListenerAdapter {
 
                         // Because most of bukkit's apis are sync only, make sure to run this on bukkit's thread
                         Util.sync(() -> {
-                            EvtDiscordCommand.VixioCommandEvent event = new EvtDiscordCommand.VixioCommandEvent(prefix, alias, command,
+                            DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, command,
                                     e.getGuild(), e.getChannel(), e.getTextChannel(), e.getMessage(),
                                     e.getAuthor(), e.getMember(), Util.botFromID(e.getJDA().getSelfUser().getId()));
 
@@ -48,8 +47,9 @@ public class CommandListener extends ListenerAdapter {
                                         e.getAuthor(), e.getMember(), e.getJDA());
                             }
 
-                            return;
                         });
+
+                        return;
 
                     }
 

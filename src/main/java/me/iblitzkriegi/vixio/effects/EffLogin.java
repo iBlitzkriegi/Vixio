@@ -54,6 +54,7 @@ public class EffLogin extends AsyncEffect {
             }
         } catch (LoginException | InterruptedException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
+            Vixio.getErrorHandler().warn("Maybe your token is wrong?");
         }
 
         // Make the new bot listen to active events and commands
