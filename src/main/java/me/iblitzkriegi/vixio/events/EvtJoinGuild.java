@@ -11,12 +11,15 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 
-public class EvtJoinGuild extends BaseEvent<GuildMemberJoinEvent, EvtJoinGuild.JoinGuildEvent> {
+public class EvtJoinGuild extends BaseEvent<GuildMemberJoinEvent> {
 
     static {
 
         BaseEvent.register("user join guild", EvtJoinGuild.class, JoinGuildEvent.class,
-                "(guild|member) join guild");
+                "(guild|member) join (guild|server)")
+                .setName("Guild Join")
+                .setDesc("Fired when a user joins a guild")
+                .setExample("on guild join:");
 
         EventValues.registerEventValue(JoinGuildEvent.class, Bot.class, new Getter<Bot, JoinGuildEvent>() {
             @Override
@@ -46,16 +49,6 @@ public class EvtJoinGuild extends BaseEvent<GuildMemberJoinEvent, EvtJoinGuild.J
             }
         }, 0);
 
-    }
-
-    @Override
-    public Class<GuildMemberJoinEvent> getJDAClass() {
-        return GuildMemberJoinEvent.class;
-    }
-
-    @Override
-    public Class<JoinGuildEvent> getBukkitClass() {
-        return JoinGuildEvent.class;
     }
 
     public class JoinGuildEvent extends SimpleVixioEvent<GuildMemberJoinEvent> {

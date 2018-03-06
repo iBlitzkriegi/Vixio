@@ -39,6 +39,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
         }
 
         return null;
+
     }
 
     @Override
@@ -56,7 +57,6 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
         return "guild with id " + id.toString(event, b);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];

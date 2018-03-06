@@ -1,22 +1,14 @@
 package me.iblitzkriegi.vixio.events.base;
 
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
+public class SimpleVixioEvent<D extends net.dv8tion.jda.core.events.Event> extends SimpleBukkitEvent {
 
-public class SimpleVixioEvent<T extends net.dv8tion.jda.core.events.Event> extends Event {
+    private D JDAEvent;
 
-    private HandlerList handlerList = new HandlerList();
-    private T JDAEvent;
-
-    public HandlerList getHandlers() {
-        return handlerList;
-    }
-
-    public T getJDAEvent() {
+    public D getJDAEvent() {
         return JDAEvent;
     }
 
-    public void setJDAEvent(T JDAEvent) {
+    public void setJDAEvent(D JDAEvent) {
         this.JDAEvent = JDAEvent;
     }
 

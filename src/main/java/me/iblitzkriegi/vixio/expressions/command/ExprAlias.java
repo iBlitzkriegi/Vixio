@@ -9,6 +9,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.events.EvtDiscordCommand;
 import org.bukkit.event.Event;
 
 public class ExprAlias extends SimpleExpression<String> {
@@ -22,7 +23,7 @@ public class ExprAlias extends SimpleExpression<String> {
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
-        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class)) {
+        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class) && !ScriptLoader.isCurrentEvent(EvtDiscordCommand.VixioCommandEvent.class)) {
             Skript.error("You can only get the used alias in a discord command");
             return false;
         }

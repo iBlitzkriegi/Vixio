@@ -8,6 +8,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
+import me.iblitzkriegi.vixio.registration.TypeComparators;
 import me.iblitzkriegi.vixio.registration.TypeConverters;
 import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
@@ -63,6 +64,7 @@ public class Vixio extends JavaPlugin {
     private static void setup() {
         Types.register();
         TypeConverters.register();
+        TypeComparators.register();
     }
 
     public static ErrorHandler getErrorHandler() {
@@ -74,7 +76,7 @@ public class Vixio extends JavaPlugin {
         try {
             getAddonInstance()
                     .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes",
-                            "expressions", "commands", "changers")
+                            "expressions", "commands", "changers", "literals", "conditions")
                     .setLanguageFileDirectory("lang");
 
             Vixio.setup();

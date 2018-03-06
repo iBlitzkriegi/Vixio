@@ -14,6 +14,7 @@ import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -55,10 +56,19 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
                 }
                 , 0);
 
+        EventValues.registerEventValue(DiscordCommandEvent.class, Channel.class, new Getter<Channel, DiscordCommandEvent>() {
+                    @Override
+                    public Channel get(DiscordCommandEvent event) {
+                        return event.getChannel();
+                    }
+                }
+                , 0);
+
+
         EventValues.registerEventValue(DiscordCommandEvent.class, MessageChannel.class, new Getter<MessageChannel, DiscordCommandEvent>() {
                     @Override
                     public MessageChannel get(DiscordCommandEvent event) {
-                        return event.getChannel();
+                        return event.getMessageChannel();
                     }
                 }
                 , 0);
@@ -116,11 +126,11 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
     }
 
     @Override
-    public void register(final Trigger t) {
+    public void register(Trigger t) {
     }
 
     @Override
-    public void unregister(final Trigger t) {
+    public void unregister(Trigger t) {
         DiscordCommandFactory.getInstance().remove(command);
     }
 

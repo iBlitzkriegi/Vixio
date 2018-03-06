@@ -10,12 +10,15 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
 
-public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent, EvtAddReaction.ReactionAddEvent> {
+public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
 
     // TODO: add event values
     static {
         BaseEvent.register("reaction added", EvtAddReaction.class, ReactionAddEvent.class,
-                "reaction added");
+                "reaction add[ed]")
+                .setName("Reaction Add")
+                .setDesc("Fired when a reaction is added to a message")
+                .setExample("on reaction add:");
 
         EventValues.registerEventValue(ReactionAddEvent.class, Bot.class, new Getter<Bot, ReactionAddEvent>() {
             @Override
@@ -38,16 +41,6 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent, EvtAddRea
             }
         }, 0);
 
-    }
-
-    @Override
-    public Class<MessageReactionAddEvent> getJDAClass() {
-        return MessageReactionAddEvent.class;
-    }
-
-    @Override
-    public Class<ReactionAddEvent> getBukkitClass() {
-        return ReactionAddEvent.class;
     }
 
     public class ReactionAddEvent extends SimpleVixioEvent<MessageReactionAddEvent> {

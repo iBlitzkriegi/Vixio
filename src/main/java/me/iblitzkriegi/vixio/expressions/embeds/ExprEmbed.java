@@ -14,9 +14,11 @@ import org.bukkit.event.Event;
 public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprEmbed.class, EmbedBuilder.class, ExpressionType.SIMPLE, "[(the|an|[a] new)] embed")
+        Vixio.getInstance().registerExpression(ExprEmbed.class, EmbedBuilder.class, ExpressionType.SIMPLE,
+                "[(the|an|[a] new)] embed")
                 .setName("New/Current Embed")
-                .setDesc("If it isn't inside an embed scope, this expression returns a new embed. If it is inside of an embed scope, it returns the embed that belongs to that scope.")
+                .setDesc("If it isn't inside an embed scope, this expression returns a new embed. " +
+                        "If it is inside of an embed scope, it returns the embed that belongs to that scope.")
                 .setExample(
                         "# outside a scope",
                         "",
@@ -35,13 +37,13 @@ public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
     private boolean scope = false;
 
     @Override
-    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         scope = EffectSection.isCurrentSection(ScopeMakeEmbed.class);
         return true;
     }
 
     @Override
-    protected EmbedBuilder[] get(final Event e) {
+    protected EmbedBuilder[] get(Event e) {
         return new EmbedBuilder[]{
                 scope ? ScopeMakeEmbed.lastEmbed : new EmbedBuilder()
         };
@@ -53,7 +55,7 @@ public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
+    public String toString(Event e, boolean debug) {
         return "the embed";
     }
 

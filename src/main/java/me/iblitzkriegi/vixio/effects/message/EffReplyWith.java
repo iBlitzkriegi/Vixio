@@ -5,14 +5,19 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.Variable;
+import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.variables.Variables;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.util.Arrays;
@@ -22,7 +27,7 @@ import java.util.Arrays;
  */
 public class EffReplyWith extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %messages/strings%")
+        Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %messages/strings% [and store (it|the message) in %-objects%]")
                 .setName("Reply with")
                 .setDesc("Reply with a message in a event")
                 .setUserFacing("reply with \"%messages%\"")
@@ -31,6 +36,8 @@ public class EffReplyWith extends Effect {
     }
 
     private Expression<Object> message;
+    private Variable<?> varExpr;
+    private VariableString varName;
 
     @Override
     protected void execute(Event e) {
@@ -44,11 +51,24 @@ public class EffReplyWith extends Effect {
             return;
         }
         try {
-            //TODO: this needs to have the bot binded (maybe, it should work out fine because in most cases the event values line up)
+            channel = Util.bindChannel(bot, channel);
             for (Object s : objects) {
                 Message message = Util.messageFrom(s);
                 if (message != null) {
-                    channel.sendMessage(message).queue();
+                    if (varExpr == null) {
+                        channel.sendMessage(message).queue();
+                    } else {
+                        try {
+                            Message resultingMessage = channel.sendMessage(message).complete(true);
+                            if (varExpr.isList()) {
+                                SkriptUtil.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
+                            } else {
+                                Variables.setVariable(varName.toString(e), resultingMessage, e, varExpr.isLocal());
+                            }
+                        } catch (RateLimitedException e1) {
+                            Vixio.getErrorHandler().warn("Vixio tried to reply with and store a message but was rate limited");
+                        }
+                    }
                 }
             }
         } catch (PermissionException x) {
@@ -56,20 +76,25 @@ public class EffReplyWith extends Effect {
         }
     }
 
-
     @Override
     public String toString(Event event, boolean b) {
         return "reply with " + message.toString(event, b);
     }
 
     @Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+    public boolean init(Expression<?>[] exprs, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         if (ScriptLoader.getCurrentEvents() != null && Arrays.stream(ScriptLoader.getCurrentEvents())
                 .anyMatch(event -> EventValues.getEventValueGetter(event, MessageChannel.class, 0) != null) && Arrays.stream(ScriptLoader.getCurrentEvents())
                 .anyMatch(event -> EventValues.getEventValueGetter(event, Bot.class, 0) != null)) {
-            message = (Expression<Object>) expressions[0];
+            message = (Expression<Object>) exprs[0];
+            if (exprs[1] instanceof Variable) {
+                varExpr = (Variable<?>) exprs[1];
+                varName = SkriptUtil.getVariableName(varExpr);
+            }
+
             return true;
         }
+
         Skript.error("You can't use reply with in events that do not have a channel and bot to reply with.");
         return false;
     }

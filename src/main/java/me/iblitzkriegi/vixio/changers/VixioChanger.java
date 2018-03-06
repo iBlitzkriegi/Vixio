@@ -7,7 +7,7 @@ public abstract class VixioChanger<T> implements Changer<T> {
 
     @Override
     public final Class<?>[] acceptChange(ChangeMode mode) {
-        if (!EffChange.isParsing(null)) {
+        if (!EffChange.isParsing(null, true)) {
             return null;
         }
         return acceptChange(mode, true);

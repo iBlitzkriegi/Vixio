@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.scopes;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
@@ -13,7 +14,7 @@ public class ScopeMakeEmbed extends EffectSection {
     public static EmbedBuilder lastEmbed;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "(make|create) [embed] %embedbuilder%")
+        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "(make|create) (embed|embed %-embedbuilder%)")
                 .setName("Make Embed")
                 .setDesc("Provides a pretty and easy way of making a new embed with a bunch of different attributes")
                 .setExample(
@@ -31,7 +32,7 @@ public class ScopeMakeEmbed extends EffectSection {
 
     @Override
     public void execute(Event e) {
-        EmbedBuilder embed = builder.getSingle(e);
+        EmbedBuilder embed = builder == null ? new EmbedBuilder() : builder.getSingle(e);
         lastEmbed = embed == null ? new EmbedBuilder() : embed;
         runSection(e);
     }
@@ -46,7 +47,7 @@ public class ScopeMakeEmbed extends EffectSection {
         if (checkIfCondition())
             return false;
         if (!hasSection()) {
-            Vixio.getErrorHandler().warn("Vixio attempted to create a embed but no section was found.");
+            Skript.error("An embed creation scope is useless without any content!");
             return false;
         }
         builder = (Expression<EmbedBuilder>) exprs[0];

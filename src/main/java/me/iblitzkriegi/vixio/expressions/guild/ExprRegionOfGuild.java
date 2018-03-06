@@ -5,6 +5,9 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Guild;
 
 public class ExprRegionOfGuild extends SimplePropertyExpression<Guild, String> {
+
+    //TODO: this needs to return the Region, not a string once lang files are understood
+
     static {
         Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, String.class,
                 "region", "guilds")

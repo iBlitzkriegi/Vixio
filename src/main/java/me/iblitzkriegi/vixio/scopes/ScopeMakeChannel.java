@@ -14,7 +14,7 @@ public class ScopeMakeChannel extends EffectSection {
     public static ChannelBuilder channelBuilder;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeChannel.class, "(make|create) text channel", "(make|create) voice channel")
+        Vixio.getInstance().registerCondition(ScopeMakeChannel.class, "(make|create) [text] channel", "(make|create) voice channel")
                 .setName("Create channel scope")
                 .setDesc("Provides a easy way to create either a text channel or a voice channel.")
                 .setExample(

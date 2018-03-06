@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
     static {
         Vixio.getInstance().registerExpression(ExprBuilder.class, ChannelBuilder.class, ExpressionType.SIMPLE,
-                "[(the|an|[a] new)] channel[(-| ) builder]")
+                "[(the|a)][new] channel[(-| )builder]")
                 .setName("The Channel")
                 .setDesc("Get the channel in a create channel scope")
                 .setExample(

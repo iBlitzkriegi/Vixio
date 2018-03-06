@@ -11,6 +11,7 @@ import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import org.bukkit.event.Event;
 
 public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
+
     static {
         Vixio.getInstance().registerExpression(ExprLastChannelBuilder.class, ChannelBuilder.class, ExpressionType.SIMPLE,
                 "[the] last[ly] [(made|created)] channel[[ ]builder]")
@@ -26,11 +27,7 @@ public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
 
     @Override
     protected ChannelBuilder[] get(Event e) {
-        ChannelBuilder channelBuilder = ScopeMakeChannel.channelBuilder;
-        if (ScopeMakeChannel.channelBuilder == null) {
-            return null;
-        }
-        return new ChannelBuilder[]{channelBuilder};
+        return new ChannelBuilder[]{ScopeMakeChannel.channelBuilder};
     }
 
     @Override
@@ -52,4 +49,5 @@ public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         return true;
     }
+
 }

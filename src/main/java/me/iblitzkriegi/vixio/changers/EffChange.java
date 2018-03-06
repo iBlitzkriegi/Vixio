@@ -57,20 +57,20 @@ public class EffChange extends Effect {
     public static Bot currentBot;
     private static boolean parsing;
     private static Patterns<ChangeMode> patterns = new Patterns<>(new Object[][]{
-            {"(add|give) %objects% to (%~objects%) with %bot/string%", ChangeMode.ADD},
-            {"increase %~objects% by (%objects%) with %bot/string%", ChangeMode.ADD},
+            {"(add|give) %objects% to (%~objects%) (with|using) %bot/string%", ChangeMode.ADD},
+            {"increase %~objects% by (%objects%) (with|using) %bot/string%", ChangeMode.ADD},
             {"give %~objects% (%objects%) as %bot/string%", ChangeMode.ADD},
 
-            {"set %~objects% to (%objects%) with %bot/string%", ChangeMode.SET},
+            {"set %~objects% to (%objects%) (with|using) %bot/string%", ChangeMode.SET},
 
-            {"remove (all|every) %objects% from (%~objects%) with %bot/string%", ChangeMode.REMOVE_ALL},
+            {"remove (all|every) %objects% from (%~objects%) (with|using) %bot/string%", ChangeMode.REMOVE_ALL},
 
-            {"(remove|subtract) %objects% from (%~objects%) with %bot/string%", ChangeMode.REMOVE},
-            {"reduce %~objects% by (%objects%) with %bot/string%", ChangeMode.REMOVE},
+            {"(remove|subtract) %objects% from (%~objects%) (with|using) %bot/string%", ChangeMode.REMOVE},
+            {"reduce %~objects% by (%objects%) (with|using) %bot/string%", ChangeMode.REMOVE},
 
-            {"(delete|clear) (%~objects%) with %bot/string%", ChangeMode.DELETE},
+            {"(delete|clear) (%~objects%) (with|using) %bot/string%", ChangeMode.DELETE},
 
-            {"reset (%~objects%) with %bot/string%", ChangeMode.RESET}
+            {"reset (%~objects%) (with|using) %bot/string%", ChangeMode.RESET}
     });
 
     static {
@@ -91,11 +91,13 @@ public class EffChange extends Effect {
 
 //	private EasyChanger<?, ?> c = null;
 
-    public static boolean isParsing(Expression<?> expression) {
+    public static boolean isParsing(Expression<?> expression, boolean shouldError) {
         if (parsing) {
             return true;
         }
-        Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
+        if (shouldError) {
+            Skript.error((expression == null ? "This expression" : expression.toString(null, false)) + " can only be changed using Vixio's changer effects");
+        }
         return false;
     }
 

@@ -21,12 +21,12 @@ public class ExprLastEmbed extends SimpleExpression<EmbedBuilder> {
     }
 
     @Override
-    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         return true;
     }
 
     @Override
-    protected EmbedBuilder[] get(final Event e) {
+    protected EmbedBuilder[] get(Event e) {
         return new EmbedBuilder[]{ScopeMakeEmbed.lastEmbed};
     }
 
@@ -36,7 +36,7 @@ public class ExprLastEmbed extends SimpleExpression<EmbedBuilder> {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
+    public String toString(Event e, boolean debug) {
         return "the last made embed";
     }
 

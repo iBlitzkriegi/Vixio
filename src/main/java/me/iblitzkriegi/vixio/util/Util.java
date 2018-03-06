@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.util;
 
-import ch.njol.skript.Skript;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
@@ -18,17 +17,22 @@ import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import org.bukkit.Bukkit;
 
 import java.awt.Color;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -36,12 +40,29 @@ import java.util.Random;
 
 public class Util {
 
-    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
+    public static final int DEFAULT_BITRATE = 64000;
+
+    private static HashMap<String, Color> colors = new HashMap<>();
+
+    private static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static YoutubeSearchProvider youtubeSearchProvider =
             new YoutubeSearchProvider(
                     new YoutubeAudioSourceManager(false)
             );
     private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
+
+    static {
+        try {
+            for (Field color : Color.class.getDeclaredFields()) {
+                color.setAccessible(true);
+                if (color.getType() == Color.class) {
+                    colors.put(color.getName().toLowerCase(Locale.ENGLISH).replace("_", " "), (Color) color.get(null));
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
         return Arrays.asList(potentialMatches).contains(toMatch);
@@ -80,17 +101,7 @@ public class Util {
     }
 
     public static Color getColorFromString(String str) {
-        if (str == null) return null;
-
-        Color color = null;
-        try {
-            color = (Color) Color.class.getField(str.toUpperCase(Locale.ENGLISH).replace(" ", "_")).get(null);
-        } catch (NoSuchFieldException e) {
-        } catch (IllegalAccessException e1) {
-            Skript.exception(e1);
-        }
-
-        return color;
+        return str == null ? null : colors.get(str.toLowerCase(Locale.ENGLISH));
 
     }
 
@@ -105,6 +116,13 @@ public class Util {
             return Vixio.getInstance().botHashMap.get(input);
         }
         return null;
+    }
+
+    public static Bot botFromID(String ID) {
+        return Vixio.getInstance().botHashMap.values().stream()
+                .filter(b -> ID.equals(b.getSelfUser().getId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public static Message messageFrom(Object input) {
@@ -142,6 +160,17 @@ public class Util {
         }
     }
 
+    public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
+        if (messageChannel.getJDA() == bot.getJDA()) {
+            return messageChannel;
+        }
+
+        if (messageChannel.getType() == ChannelType.PRIVATE || messageChannel.getType() == ChannelType.GROUP) {
+            return bot.getJDA().getPrivateChannelById(messageChannel.getId());
+        } else {
+            return bot.getJDA().getTextChannelById(messageChannel.getId());
+        }
+    }
 
     public static VoiceChannel bindVoiceChannel(Bot bot, VoiceChannel voiceChannel) {
         if (!(voiceChannel.getJDA() == bot.getJDA())) {
@@ -163,6 +192,7 @@ public class Util {
     }
 
     public static Emoji unicodeFrom(String emote, Guild guild) {
+        //TODO: not working in dms https://gist.github.com/Pikachu920/dfa4472245a2e48b5b6de33f87b41d36
         try {
             if (EmojiManager.isEmoji(emote)) {
                 return new Emoji(emote);
@@ -200,5 +230,10 @@ public class Util {
         }
         return null;
     }
+
+    public static void sync(Runnable runnable) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Vixio.getInstance(), runnable, 0);
+    }
+
 }
 

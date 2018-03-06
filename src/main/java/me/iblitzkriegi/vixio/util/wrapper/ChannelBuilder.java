@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.ChannelType;
 
 public class ChannelBuilder {
+
     private String name;
     private boolean NSFW = false;
     private String topic;
@@ -63,4 +64,9 @@ public class ChannelBuilder {
     public Integer getUserLimit() {
         return userLimit;
     }
+
+    public void setUserLimit(Integer userLimit) {
+        this.userLimit = userLimit;
+    }
+
 }

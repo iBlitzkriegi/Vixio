@@ -48,7 +48,6 @@ public class ExprMember extends SimpleExpression<Member> {
         return user.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         user = (Expression<User>) exprs[0];

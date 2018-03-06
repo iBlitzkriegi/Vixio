@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.registration;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
@@ -67,12 +68,12 @@ public class Types {
 
             @Override
             public String toString(Message message, int arg1) {
-                return message.getId();
+                return message.getContentRaw();
             }
 
             @Override
             public String toVariableNameString(Message message) {
-                return message.getId();
+                return message.getContentRaw();
             }
 
         }.changer(new VixioChanger<Message>() {
@@ -215,7 +216,7 @@ public class Types {
 
         };
 
-        new SimpleType<ChannelBuilder>(ChannelBuilder.class, "channelbuilder", "channelbuilder") {
+        new SimpleType<ChannelBuilder>(ChannelBuilder.class, "channelbuilder", "channelbuilders?") {
 
             @Override
             public ChannelBuilder parse(String s, ParseContext pc) {
@@ -239,16 +240,16 @@ public class Types {
 
         };
 
-        new SimpleType<Bot>(Bot.class, "bot", "bot?") {
+        new SimpleType<Bot>(Bot.class, "bot", "(discord )?bots?") {
 
             @Override
             public Bot parse(String s, ParseContext pc) {
-                return null;
+                return Util.botFrom(s);
             }
 
             @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return true;
             }
 
             @Override
@@ -399,9 +400,22 @@ public class Types {
             @Override
             public String toVariableNameString(EmbedBuilder builder) {
                 return "embed";
-
             }
-        };
+        }.changer(new Changer<EmbedBuilder>() {
+            @Override
+            public Class<?>[] acceptChange(ChangeMode mode) {
+                return mode != ChangeMode.ADD ? null : new Class[]{MessageEmbed.Field.class};
+            }
+
+            @Override
+            public void change(EmbedBuilder[] what, Object[] delta, ChangeMode mode) {
+                for (EmbedBuilder builder : what) {
+                    for (Object field : delta) {
+                        builder.addField((MessageEmbed.Field) field);
+                    }
+                }
+            }
+        });
 
         new SimpleType<java.awt.Color>(java.awt.Color.class, "javacolor", "java ?colors?") {
 

@@ -10,6 +10,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.events.EvtDiscordCommand;
 import org.bukkit.event.Event;
 
 public class ExprCommand extends SimpleExpression<DiscordCommand> {
@@ -23,7 +24,7 @@ public class ExprCommand extends SimpleExpression<DiscordCommand> {
 
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parser) {
-        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class)) {
+        if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class) && !ScriptLoader.isCurrentEvent(EvtDiscordCommand.VixioCommandEvent.class)) {
             Skript.error("You can only get the used command in a discord command");
             return false;
         }

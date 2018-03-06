@@ -11,12 +11,13 @@ import net.dv8tion.jda.core.entities.Role;
 import org.bukkit.event.Event;
 
 public class ExprRoleWithId extends SimpleExpression<Role> {
+
     static {
         Vixio.getInstance().registerExpression(ExprRoleWithId.class, Role.class, ExpressionType.SIMPLE,
                 "role with id %string% [in %guild%]")
                 .setName("Role with ID")
-                .setDesc("Get a Role via it's ID, plain and simple.")
-                .setExample("add role with id \"5151561851\" to roles of event-member");
+                .setDesc("Get a Role via it's ID. You can get role IDs via the roles of guild and ID expressions.")
+                .setExample("add role with id \"5151561851\" to roles of event-user in event-guild");
     }
 
     private Expression<String> id;
@@ -48,11 +49,11 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
         return "role with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];
         guild = (Expression<Guild>) exprs[1];
         return true;
     }
+
 }

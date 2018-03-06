@@ -16,10 +16,14 @@ public abstract class ChangeableExpression implements Expression {
 
     @Override
     public final Class<?>[] acceptChange(Changer.ChangeMode mode) {
-        if (!EffChange.isParsing(this)) {
+        if (!EffChange.isParsing(this, shouldError())) {
             return null;
         }
         return acceptChange(mode, true);
+    }
+
+    public boolean shouldError() {
+        return true;
     }
 
     public abstract Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger);

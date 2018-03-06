@@ -11,15 +11,6 @@ public class EventListener<T> extends ListenerAdapter {
     // shouldn't be modified directly
     public static ArrayList<EventListener<?>> listeners = new ArrayList<>();
 
-    public boolean enabled = true;
-    private Class<T> clazz;
-    private Consumer<T> consumer;
-
-    public EventListener(Class<T> paramClass, Consumer<T> consumer) {
-        this.clazz = paramClass;
-        this.consumer = consumer;
-    }
-
     public static void addListener(EventListener<?> listener) {
         removeListener(listener);
         listeners.add(listener);
@@ -29,6 +20,15 @@ public class EventListener<T> extends ListenerAdapter {
     public static void removeListener(EventListener<?> listener) {
         listeners.remove(listener);
         Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().removeEventListener(listener));
+    }
+
+    public boolean enabled = true;
+    private Class<T> clazz;
+    private Consumer<T> consumer;
+
+    public EventListener(Class<T> paramClass, Consumer<T> consumer) {
+        this.clazz = paramClass;
+        this.consumer = consumer;
     }
 
     @Override

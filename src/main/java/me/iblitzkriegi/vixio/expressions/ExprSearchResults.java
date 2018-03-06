@@ -16,7 +16,7 @@ public class ExprSearchResults extends SimpleExpression<AudioTrack> {
     static {
         Vixio.getInstance().registerExpression(ExprSearchResults.class, AudioTrack.class, ExpressionType.SIMPLE, "[the] [last] search results")
                 .setName("Search Results")
-                .setDesc("Represents the search results from the last usage of the search effect.")
+                .setDesc("Represents the search results from the last usage of the search effect. The search results get reset every time the search effect is used.")
                 .setExample("on join:",
                         "\tsearch youtube for \"%player%\" and store the results in {_results::*}",
                         "\tif search results are set:",
@@ -25,7 +25,7 @@ public class ExprSearchResults extends SimpleExpression<AudioTrack> {
     }
 
     @Override
-    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         return true;
     }
 
@@ -43,7 +43,7 @@ public class ExprSearchResults extends SimpleExpression<AudioTrack> {
     }
 
     @Override
-    public AudioTrack[] get(final Event e) {
+    public AudioTrack[] get(Event e) {
         return EffSearch.lastResults;
     }
 
@@ -53,7 +53,7 @@ public class ExprSearchResults extends SimpleExpression<AudioTrack> {
     }
 
     @Override
-    public String toString(final Event e, final boolean debug) {
+    public String toString(Event e, boolean debug) {
         return "the search results";
     }
 
