@@ -36,6 +36,7 @@ public class EffLogin extends AsyncEffect {
         if (name == null || token == null || token.isEmpty()) {
             return;
         }
+
         if (Vixio.getInstance().botNameHashMap.get(name) != null) {
             // just to make the error show up outside of skript's reload errors
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Vixio.getInstance(),
@@ -43,22 +44,23 @@ public class EffLogin extends AsyncEffect {
                     1);
             return;
         }
+
         JDA api = null;
         try {
-            api = new JDABuilder(AccountType.BOT).setToken(token).buildBlocking();
-        } catch (LoginException | InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (AccountTypeException x) {
             try {
+                api = new JDABuilder(AccountType.BOT).setToken(token).buildBlocking();
+            } catch (AccountTypeException x) {
                 api = new JDABuilder(AccountType.CLIENT).setToken(token).buildBlocking();
-            } catch (LoginException | InterruptedException e1) {
-                e1.printStackTrace();
             }
+        } catch (LoginException | InterruptedException e1) {
+            Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
         }
+
         // Make the new bot listen to active events and commands
         for (EventListener<?> listener : EventListener.listeners) {
             api.addEventListener(listener);
         }
+
         api.addEventListener(new CommandListener());
         Bot bot = new Bot(name, api);
         Vixio.getInstance().botHashMap.put(api, bot);
