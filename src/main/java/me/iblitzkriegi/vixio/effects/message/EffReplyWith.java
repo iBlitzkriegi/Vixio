@@ -30,7 +30,6 @@ public class EffReplyWith extends Effect {
         Vixio.getInstance().registerEffect(EffReplyWith.class, "reply with %messages/strings% [and store (it|the message) in %-objects%]")
                 .setName("Reply with")
                 .setDesc("Reply with a message in a event")
-                .setUserFacing("reply with \"%messages%\"")
                 .setExample("reply with \"Hello %mention tag of event-user%\"");
 
     }
