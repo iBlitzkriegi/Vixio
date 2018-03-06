@@ -39,7 +39,7 @@ public class CondDeafened extends Condition implements EasyMultiple<Member, Void
 
     @Override
     public String toString(Event e, boolean debug) {
-        return members.toString(e, debug) + (isNegated() ? " is not" : " is ") + "guild deafened";
+        return members.toString(e, debug) + (isNegated() ? " is not" : " is ") + (guild ? "guild " : "") + "deafened";
     }
 
     @Override

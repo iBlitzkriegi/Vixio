@@ -39,7 +39,7 @@ public class CondMuted extends Condition implements EasyMultiple<Member, Void> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return members.toString(e, debug) + (isNegated() ? " is not" : " is ") + "guild muted";
+        return members.toString(e, debug) + (isNegated() ? " is not" : " is ") + (guild ? "guild " : "") + "muted";
     }
 
     @Override
