@@ -24,7 +24,7 @@ import org.bukkit.event.Event;
 public class ExprName extends ChangeableSimpleExpression<String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprName.class, String.class,
-                "name", "channel/guild/bot/user/role/audiotrack/category/channelbuilder")
+                "name", "channel/guild/bot/user/role/audiotrack/category")
                 .setName("Name of")
                 .setDesc("Get the name of something. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
@@ -46,8 +46,6 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             return new String[]{((Bot) o).getName()};
         } else if (o instanceof Role) {
             return new String[]{((Role) o).getName()};
-        } else if (o instanceof ChannelBuilder) {
-            return new String[]{((ChannelBuilder) o).getName()};
         } else if (o instanceof AudioTrack) {
             return new String[]{((AudioTrack) o).getInfo().title};
         }
@@ -85,6 +83,11 @@ public class ExprName extends ChangeableSimpleExpression<String> {
     }
 
     @Override
+    public boolean shouldError() {
+        return false;
+    }
+
+    @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         Object object = this.object.getSingle(e);
 
@@ -113,8 +116,6 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                         Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "name of", this.object, bot),
                                 x.getPermission().getName());
                     }
-                } else if (object instanceof ChannelBuilder) {
-                    ((ChannelBuilder) object).setName(name);
                 }
         }
     }

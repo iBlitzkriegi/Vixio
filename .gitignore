@@ -98,3 +98,7 @@ testserver/logs/2016-12-08-1.log.gz
 .idea/compiler.xml
 .idea/misc.xml
 .idea/modules.xml
+.idea/workspace.xml___jb_tmp___
+.idea/modules/Vixio_main.iml
+*.iml
+
