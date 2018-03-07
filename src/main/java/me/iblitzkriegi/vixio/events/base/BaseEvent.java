@@ -21,6 +21,10 @@ import java.util.Arrays;
 
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> extends SelfRegisteringSkriptEvent {
 
+    /**
+     * The ending appended to patterns if no custom ending is specified
+     */
+    public static final String APPENDED_ENDING = "[seen by %-string%]";
     private String stringRepresentation;
     private Trigger trigger;
     private EventListener<D> listener;
@@ -30,12 +34,6 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
     private String originalName;
     private Class<? extends Event>[] originalEvents;
     private Constructor<?> constructor;
-
-    /**
-     * The ending appended to patterns if no custom ending is specified
-     */
-    public static final String APPENDED_ENDING = "[seen by %-string%]";
-
 
     /**
      * @param name     The name of the event used for ScriptLoader#setCurrentEvents
@@ -48,11 +46,12 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
     }
 
     /**
-     /**
-     * @param name The name of the event used for ScriptLoader#setCurrentEvents
-     * @param ending The ending applied for checking the bot (which can be grabbed via BaseEvent.APPENDED_ENDING)
-     * @param type The class holding the event
-     * @param clazz The class holding the Bukkit event
+     * /**
+     *
+     * @param name     The name of the event used for ScriptLoader#setCurrentEvents
+     * @param ending   The ending applied for checking the bot (which can be grabbed via BaseEvent.APPENDED_ENDING)
+     * @param type     The class holding the event
+     * @param clazz    The class holding the Bukkit event
      * @param patterns The patterns for the event
      */
     public static Registration register(String name, String ending, Class type, Class clazz, String... patterns) {
@@ -161,6 +160,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
 
     /**
      * Used to check whether or not the event is valid for the trigger to run.
+     *
      * @param event The JDA event to be checked
      **/
     public boolean check(D event) {

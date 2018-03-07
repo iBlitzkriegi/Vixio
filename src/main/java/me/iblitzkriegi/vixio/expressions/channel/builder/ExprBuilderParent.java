@@ -25,6 +25,7 @@ public class ExprBuilderParent extends SimplePropertyExpression<ChannelBuilder, 
     public Category convert(ChannelBuilder builder) {
         return builder.getParent();
     }
+
     @Override
     public Class<? extends Category> getReturnType() {
         return Category.class;

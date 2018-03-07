@@ -24,16 +24,17 @@ public class ExprUserWithId extends SimpleExpression<User> {
     @Override
     protected User[] get(Event e) {
         String id = this.id.getSingle(e);
-        if (id == null) {
+        if (id == null || id.isEmpty()) {
             return null;
         }
 
         for (Bot bot : Vixio.getInstance().botHashMap.values()) {
-            if (bot.getJDA().getUserById(id) != null) {
-                return new User[]{bot.getJDA().getUserById(id)};
+            User user = bot.getJDA().getUserById(id);
+            if (user != null) {
+                return new User[]{user};
             }
         }
-        return new User[]{null};
+        return null;
     }
 
     @Override

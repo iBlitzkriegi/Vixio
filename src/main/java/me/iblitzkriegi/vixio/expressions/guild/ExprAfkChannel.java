@@ -29,6 +29,7 @@ public class ExprAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
     }
 
     private Expression<Guild> guilds;
+
     @Override
     protected VoiceChannel[] get(Event e) {
         Guild[] guilds = this.guilds.getAll(e);
