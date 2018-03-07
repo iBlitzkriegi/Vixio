@@ -1,9 +1,5 @@
 package me.iblitzkriegi.vixio.util;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Variable;
-import ch.njol.skript.lang.VariableString;
-import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
@@ -15,79 +11,63 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.enums.SearchSite;
+import me.iblitzkriegi.vixio.util.enums.SearchableSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
-import org.bukkit.event.Event;
+import org.bukkit.Bukkit;
 
 import java.awt.Color;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
 public class Util {
 
-    private static final Field VARIABLE_NAME;
-    private static boolean variableNameGetterExists = Skript.methodExists(Variable.class, "getName");
-    static {
+    public static final int DEFAULT_BITRATE = 64000;
 
-        if (!variableNameGetterExists) {
+    private static HashMap<String, Color> colors = new HashMap<>();
 
-            Field _VARIABLE_NAME = null;
-            try {
-                _VARIABLE_NAME = Variable.class.getDeclaredField("name");
-                _VARIABLE_NAME.setAccessible(true);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-                Skript.error("Skript's 'variable name' method could not be resolved.");
-            }
-            VARIABLE_NAME = _VARIABLE_NAME;
-
-        } else {
-            VARIABLE_NAME = null;
-        }
-
-    }
-
+    private static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static YoutubeSearchProvider youtubeSearchProvider =
             new YoutubeSearchProvider(
                     new YoutubeAudioSourceManager(false)
             );
-
-    public static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
-    // Variable name related code credit btk5h (https://github.com/btk5h)
-    public static VariableString getVariableName(Variable<?> var) {
-        if (variableNameGetterExists) {
-            return var.getName();
-        } else {
-            try {
-                return (VariableString) VARIABLE_NAME.get(var);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+    static {
+        try {
+            for (Field color : Color.class.getDeclaredFields()) {
+                color.setAccessible(true);
+                if (color.getType() == Color.class) {
+                    colors.put(color.getName().toLowerCase(Locale.ENGLISH).replace("_", " "), (Color) color.get(null));
+                }
             }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return null;
     }
 
     public static boolean equalsAnyIgnoreCase(String toMatch, String... potentialMatches) {
         return Arrays.asList(potentialMatches).contains(toMatch);
     }
 
-    public static AudioTrack[] search(SearchSite site, String[] queries) {
+    public static AudioTrack[] search(SearchableSite site, String[] queries) {
         List<AudioTrack> results = new ArrayList<>();
         AudioItem playlist = null;
 
@@ -108,8 +88,9 @@ public class Util {
 
             }
 
-            if (playlist instanceof AudioPlaylist)
+            if (playlist instanceof AudioPlaylist) {
                 results.addAll(((AudioPlaylist) playlist).getTracks());
+            }
 
         }
 
@@ -118,45 +99,29 @@ public class Util {
 
     }
 
-    public static void setList(String name, Event e, boolean local, Object... objects) {
-        if (objects == null || name == null) return;
-
-        int separatorLength = Variable.SEPARATOR.length() + 1;
-        name = name.substring(0, (name.length() - separatorLength));
-        name = name.toLowerCase(Locale.ENGLISH) + Variable.SEPARATOR;
-        Variables.setVariable(name + "*", null, e, local);
-        for (int i = 0; i < objects.length; i++)
-            Variables.setVariable(name + (i + 1), objects[i], e, local);
-    }
-
     public static Color getColorFromString(String str) {
-        if (str == null) return null;
-
-        Color color = null;
-        try {
-            color = (Color) Color.class.getField(str.toUpperCase(Locale.ENGLISH).replace(" ", "_")).get(null);
-        } catch (NoSuchFieldException e) {
-        } catch (IllegalAccessException e1) {
-            Skript.exception(e1);
-        }
-
-        return color;
+        return str == null ? null : colors.get(str.toLowerCase(Locale.ENGLISH));
 
     }
 
-    public static Bot botFrom(Object input){
+    public static Bot botFrom(Object input) {
         if (input == null) {
             return null;
-        } else if(input instanceof Bot) {
+        } else if (input instanceof Bot) {
             return (Bot) input;
-        } else if(input instanceof String) {
-            String string = (String) input;
-            Bot bot = Vixio.getInstance().botNameHashMap.get(string);
-            if (bot != null) {
-                return bot;
-            }
+        } else if (input instanceof String) {
+            return Vixio.getInstance().botNameHashMap.get(input);
+        } else if (input instanceof JDA) {
+            return Vixio.getInstance().botHashMap.get(input);
         }
         return null;
+    }
+
+    public static Bot botFromID(String ID) {
+        return Vixio.getInstance().botHashMap.values().stream()
+                .filter(b -> ID.equals(b.getSelfUser().getId()))
+                .findFirst()
+                .orElse(null);
     }
 
     public static Message messageFrom(Object input) {
@@ -174,7 +139,7 @@ public class Util {
         return null;
     }
 
-    public static boolean botIsConnected(Bot bot, JDA jda){
+    public static boolean botIsConnected(Bot bot, JDA jda) {
         return bot.getJDA() == jda;
     }
 
@@ -182,10 +147,7 @@ public class Util {
         if (!(guild.getJDA() == bot.getJDA())) {
             return bot.getJDA().getGuildById(guild.getId());
         } else {
-            if (guild != null) {
-                return guild;
-            }
-            return null;
+            return guild;
         }
     }
 
@@ -193,22 +155,27 @@ public class Util {
         if (!(textChannel.getJDA() == bot.getJDA())) {
             return bot.getJDA().getTextChannelById(textChannel.getId());
         } else {
-            if (textChannel != null) {
-                return textChannel;
-            }
-            return null;
+            return textChannel;
         }
     }
 
+    public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
+        if (messageChannel.getJDA() == bot.getJDA()) {
+            return messageChannel;
+        }
+
+        if (messageChannel.getType() == ChannelType.PRIVATE || messageChannel.getType() == ChannelType.GROUP) {
+            return bot.getJDA().getPrivateChannelById(messageChannel.getId());
+        } else {
+            return bot.getJDA().getTextChannelById(messageChannel.getId());
+        }
+    }
 
     public static VoiceChannel bindVoiceChannel(Bot bot, VoiceChannel voiceChannel) {
         if (!(voiceChannel.getJDA() == bot.getJDA())) {
             return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
         } else {
-            if (voiceChannel != null) {
-                return voiceChannel;
-            }
-            return null;
+            return voiceChannel;
         }
     }
 
@@ -219,24 +186,23 @@ public class Util {
 
             return voiceChannel == null ? textChannel : voiceChannel;
         } else {
-            if (channel != null) {
-                return channel;
-            }
-            return null;
+            return channel;
         }
     }
 
     public static Emoji unicodeFrom(String emote, Guild guild) {
+        //TODO: not working in dms https://gist.github.com/Pikachu920/dfa4472245a2e48b5b6de33f87b41d36
         try {
             if (EmojiManager.isEmoji(emote)) {
                 return new Emoji(emote);
             }
             Collection<Emote> emotes = guild.getEmotesByName(emote, false);
             return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
-        }catch (UnsupportedOperationException | NoSuchElementException x) {
+        } catch (UnsupportedOperationException | NoSuchElementException x) {
             return null;
         }
     }
+
     public static Emoji unicodeFrom(String emote) {
         if (EmojiManager.isEmoji(emote)) {
             return new Emoji(emote);
@@ -245,4 +211,23 @@ public class Util {
         }
     }
 
+    public static <T> T[] convertedArray(Class<T> convertTo, Object... objects) {
+        if (objects != null) {
+            T[] newArray = (T[]) Array.newInstance(convertTo, objects.length);
+            for (int i = 0; i < objects.length; i++) {
+                if (!convertTo.isInstance(objects[i])) {
+                    throw new RuntimeException("Tried to convert an array, but encountered an object that isn't an instance of the class to convert to");
+                }
+                newArray[i] = (T) objects[i];
+            }
+            return newArray;
+        }
+        return null;
+    }
+
+    public static void sync(Runnable runnable) {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Vixio.getInstance(), runnable, 0);
+    }
+
 }
+

@@ -13,7 +13,7 @@ public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
 
     static {
         Vixio.getInstance().registerExpression(ExprInlineEmbed.class, EmbedBuilder.class, ExpressionType.COMBINED,
-                "%embedbuilder% (with|and) [the] title %string%", "%embedbuilder% (with|and) [the] description %string%")
+                "%embedbuilder% ((with|and) [the] title %-string%|titled %-string%)", "%embedbuilder% (with|and) [the] description %string%")
                 .setName("Inline Embed")
                 .setDesc("Lets you easily make an embed with a couple common properties.")
                 .setExample("set {_embed} to a new embed with the title \"Title\" and the description \"Description\"");
@@ -24,10 +24,10 @@ public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
     private Expression<String> string;
 
     @Override
-    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         title = matchedPattern == 0;
         builder = (Expression<EmbedBuilder>) exprs[0];
-        string = (Expression<String>) exprs[1];
+        string = (Expression<String>) (exprs[1] == null ? exprs[2] : exprs[1]);
         return true;
     }
 
@@ -35,12 +35,15 @@ public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
     protected EmbedBuilder[] get(Event e) {
         EmbedBuilder embed = builder.getSingle(e);
         String str = string.getSingle(e);
-        if (embed == null) return null;
+        if (embed == null) {
+            return null;
+        }
 
-        if (title)
+        if (title) {
             embed.setTitle(str);
-        else
+        } else {
             embed.setDescription(str);
+        }
 
         return new EmbedBuilder[]{
                 embed

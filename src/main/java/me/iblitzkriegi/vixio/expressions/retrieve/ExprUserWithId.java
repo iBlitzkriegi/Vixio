@@ -6,37 +6,35 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
 public class ExprUserWithId extends SimpleExpression<User> {
     static {
         Vixio.getInstance().registerExpression(ExprUserWithId.class, User.class, ExpressionType.SIMPLE,
-                "user with id %string% [in %guild%]")
+                "user with id %string%")
                 .setName("User with ID")
                 .setDesc("Get a User via their ID.")
-                .setExample("name of user with id \"456145141891891\"");
+                .setExample("broadcast name of user with id \"456145141891891\"");
     }
 
     private Expression<String> id;
-    private Expression<Guild> guild;
 
     @Override
     protected User[] get(Event e) {
-        Guild guild = this.guild.getSingle(e);
         String id = this.id.getSingle(e);
-        if (guild == null || id == null) {
+        if (id == null || id.isEmpty()) {
             return null;
         }
 
-        Member member = guild.getMemberById(id);
-        if (member == null) {
-            return null;
+        for (Bot bot : Vixio.getInstance().botHashMap.values()) {
+            User user = bot.getJDA().getUserById(id);
+            if (user != null) {
+                return new User[]{user};
+            }
         }
-
-        return new User[]{member.getUser()};
+        return null;
     }
 
     @Override
@@ -51,14 +49,13 @@ public class ExprUserWithId extends SimpleExpression<User> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "user with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "user with id " + id.toString(e, debug);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];
-        guild = (Expression<Guild>) exprs[1];
         return true;
     }
 }

@@ -21,12 +21,12 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
                 .setExample("command /channel:" +
                         "\ttrigger:" +
                         "\t\tcreate text channel:" +
-                        "\t\t\tset name of the channel to \"Testingxdxd\"" +
+                        "\t\t\tset name of the channel to \"Vixio!\"" +
                         "\t\t\tset {guild} to guild with id \"219967335266648065\"" +
                         "\t\t\tset nsfw state of the channel as \"Jewel\" to true" +
                         "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"" +
-                        "\t\t\tset parent of the channel to category named \"xd\" in {guild}" +
-                        "\t\t\tcreate the channel in {guild} as \"Jewel\"");
+                        "\t\t\tset parent of the channel to category named \"Test Category\" in {guild}" +
+                        "\t\tcreate the channel in {guild} as \"Jewel\"");
     }
 
     private Expression<Guild> guild;

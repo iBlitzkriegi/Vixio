@@ -7,8 +7,9 @@ import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.AsyncEffect;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -20,7 +21,7 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends AsyncEffect {
     static {
-        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [(with|as) %bot/string%] [and store (it|the message) in %-objects%]")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [with %bot/string%] [and store (it|the message) in %-objects%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a Message to a Text Channel.")
                 .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"", "send \"hey\" to channel with id \"156156165165156\" as \"Jewel\" and store it in {_message}")
@@ -57,7 +58,7 @@ public class EffSendMessage extends AsyncEffect {
                                     try {
                                         Message resultingMessage = textChannel.sendMessage(message).complete(true);
                                         if (varExpr.isList()) {
-                                            Util.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
+                                            SkriptUtil.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
                                         } else {
                                             Variables.setVariable(varName.toString(e), resultingMessage, e, varExpr.isLocal());
                                         }
@@ -91,7 +92,7 @@ public class EffSendMessage extends AsyncEffect {
 
         if (exprs[3] instanceof Variable) {
             varExpr = (Variable<?>) exprs[3];
-            varName = Util.getVariableName(varExpr);
+            varName = SkriptUtil.getVariableName(varExpr);
         }
 
         return true;

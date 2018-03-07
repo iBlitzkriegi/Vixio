@@ -16,20 +16,15 @@ import java.util.Set;
 public class ExprTextChannelWithId extends SimpleExpression<TextChannel> {
     static {
         Vixio.getInstance().registerExpression(ExprTextChannelWithId.class, TextChannel.class, ExpressionType.SIMPLE,
-                "text(-| ) channel with id %string% [in %-guild%]")
+                "text(-| )channel with id %string% [in %-guild%]")
                 .setName("Text Channel with ID")
                 .setDesc("Get a Text channel by it's ID, can include the Guild it is in for faster results.")
-                .setExample("guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t\t" +
-                        "\t\tset {_cmd::*} to event-string split at \" \"" +
-                        "\t\tif {_cmd::1} is \"##topic\":" +
-                        "\t\t\tif {_cmd::2} is not set:" +
-                        "\t\t\t\treply with \"You must include an ID to find the channel by!\"" +
-                        "\t\t\t\tstop" +
-                        "\t\t\tif {_cmd::3} is not set:" +
-                        "\t\t\t\treply with \"You must give a topic to set.\"" +
-                        "\t\t\t\tstop" +
-                        "\t\t\tset topic of text channel with id \"%{_cmd::2}%\" as event-bot to \"%{_cmd::3}%\"");
+                .setExample("discord command topic <string> <string>:",
+                        "\tusage: topic <channel id> <new topic>",
+                        "\tprefixes: $",
+                        "\ttrigger:",
+                        "\t\tset name of text channel with id arg-1 to arg-2 with event-bot"
+                );
     }
 
     private Expression<String> id;

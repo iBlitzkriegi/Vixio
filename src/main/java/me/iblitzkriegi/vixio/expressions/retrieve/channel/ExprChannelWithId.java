@@ -22,7 +22,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE,
                 "channel with id %string% [in %-guild%]")
                 .setName("Channel with ID")
-                .setDesc("Get a Channel by its ID")
+                .setDesc("Grabs a channel by its ID")
                 .setExample("broadcast \"%name of channel with id \"\"6515615645451561\"\"%");
     }
 

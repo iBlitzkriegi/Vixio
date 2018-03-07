@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.EffectSection;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
@@ -14,7 +14,7 @@ public class ScopeMakeChannel extends EffectSection {
     public static ChannelBuilder channelBuilder;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeChannel.class, "(make|create) text channel", "(make|create) voice channel")
+        Vixio.getInstance().registerCondition(ScopeMakeChannel.class, "(make|create) [text] channel", "(make|create) voice channel")
                 .setName("Create channel scope")
                 .setDesc("Provides a easy way to create either a text channel or a voice channel.")
                 .setExample(
@@ -27,7 +27,9 @@ public class ScopeMakeChannel extends EffectSection {
                         "\t\tcreate the channel in {guild} as \"Jewel\""
                 );
     }
+
     private boolean channelType;
+
     @Override
     public void execute(Event e) {
         channelBuilder = new ChannelBuilder();

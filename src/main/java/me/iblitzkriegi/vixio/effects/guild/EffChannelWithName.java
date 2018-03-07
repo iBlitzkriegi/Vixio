@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class EffChannelWithName extends Effect{
+public class EffChannelWithName extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffChannelWithName.class,
                 "create text[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%] ", "create voice[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]")
@@ -27,10 +27,12 @@ public class EffChannelWithName extends Effect{
                         "\t\t\t\telse if {_cmd::2} is \"voice\":" +
                         "\t\t\t\t\tcreate voice channel named \"%{_cmd::3}%\"");
     }
+
     private Expression<String> name;
     private Expression<Guild> guild;
     private Expression<Object> bot;
     private boolean not;
+
     @Override
     protected void execute(Event e) {
         String name = this.name.getSingle(e);
@@ -54,7 +56,7 @@ public class EffChannelWithName extends Effect{
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "create channel named " + name.toString(e, debug) + " in " + guild.toString(e, debug) + " as " + bot.toString(e,debug);
+        return "create channel named " + name.toString(e, debug) + " in " + guild.toString(e, debug) + " as " + bot.toString(e, debug);
     }
 
     @Override

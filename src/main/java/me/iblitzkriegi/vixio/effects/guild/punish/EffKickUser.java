@@ -23,10 +23,12 @@ public class EffKickUser extends Effect {
                         "\t\tkick arg-1 from guild with id \"622156151\" due to \"Not following discord rules\" as \"Jewel\""
                 );
     }
+
     private Expression<Object> users;
     private Expression<Guild> guild;
     private Expression<Object> bot;
     private Expression<String> reason;
+
     @Override
     protected void execute(Event e) {
         Object[] users = this.users.getAll(e);

@@ -16,10 +16,11 @@ import java.util.List;
 
 public class ExprEmojiNamed extends SimpleExpression<Emoji> {
     static {
+        //TODO: make this properly nullable
         Vixio.getInstance().registerExpression(ExprEmojiNamed.class, Emoji.class, ExpressionType.SIMPLE,
                 "(emoji|emote|reaction)[s] %strings% [(from|in) %guild%]")
                 .setName("Emoji named")
-                .setDesc("Get a emoji by its name, if its a custom emote you must include the Guild.")
+                .setDesc("Get a emoji by its name, if its a custom emote you must include the guild.")
                 .setExample(
                         "on guild message receive:",
                         "\tadd reaction \"smile\" to event-message"

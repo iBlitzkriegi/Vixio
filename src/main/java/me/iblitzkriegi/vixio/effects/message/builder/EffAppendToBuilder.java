@@ -22,8 +22,10 @@ public class EffAppendToBuilder extends Effect {
                         "broadcast \"The final product is: %text of {e}%\""
                 );
     }
+
     private Expression<MessageBuilder> builder;
     private Expression<String> toAppend;
+
     @Override
     protected void execute(Event e) {
         MessageBuilder builder = this.builder.getSingle(e);

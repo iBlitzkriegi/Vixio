@@ -10,8 +10,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
 
-import java.util.Set;
-
 /**
  * Created by Blitz on 7/26/2017.
  */
@@ -21,7 +19,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
                 "(server|guild) with id %string%")
                 .setName("Guild with id")
                 .setDesc("Get a Guild via it's ID")
-                .setExample("guild with id \"16165192162168461\"");
+                .setExample("broadcast name of guild with id \"16165192162168461\"");
     }
 
     private Expression<String> id;
@@ -33,17 +31,15 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
             return null;
         }
 
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        if (!jdaInstances.isEmpty()) {
-            for (JDA jda : jdaInstances) {
-                Guild guild = jda.getGuildById(id);
-                if (guild != null) {
-                    return new Guild[]{guild};
-                }
+        for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+            Guild guild = jda.getGuildById(id);
+            if (guild != null) {
+                return new Guild[]{guild};
             }
         }
 
         return null;
+
     }
 
     @Override
@@ -61,7 +57,6 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
         return "guild with id " + id.toString(event, b);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];

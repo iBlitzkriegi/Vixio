@@ -7,8 +7,10 @@ import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -57,9 +59,10 @@ public class DiscordCommand {
 
     }
 
-    public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel channel, Message message, User user,
-                           Member member, JDA jda) {
-        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, channel, message, user, member);
+    public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel messageChannel, Channel channel,
+                           Message message, User user, Member member, JDA jda) {
+        Bot bot = Vixio.getInstance().botHashMap.get(jda);
+        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, messageChannel, channel, message, user, member, bot);
         if (args == null) {
             args = "";
         }
@@ -69,12 +72,11 @@ public class DiscordCommand {
 
         try {
 
-            Bot bot = Vixio.getInstance().botHashMap.get(jda);
             boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
 
             if (!ok) {
                 return false;
-            } else if (!this.getExecutableIn().contains(channel.getType())) {
+            } else if (!this.getExecutableIn().contains(messageChannel.getType())) {
                 return false;
             } else if (this.getRoles() != null && member != null) {
                 if (member.getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
@@ -84,7 +86,8 @@ public class DiscordCommand {
                 return false;
             }
 
-            trigger.execute(event);
+            // again, bukkit apis are mostly sync so run it on the main thread
+            Util.sync(() -> trigger.execute(event));
 
         } finally {
             log.stop();
