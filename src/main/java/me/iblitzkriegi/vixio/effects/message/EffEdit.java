@@ -30,16 +30,21 @@ public class EffEdit extends Effect {
 
     @Override
     protected void execute(Event e) {
-        Message content = Util.messageFrom(this.content.getSingle(e));
-        if (content == null) {
+        String content = this.content.getSingle(e);
+        if (content == null || content.trim().isEmpty()) {
             return;
         }
+
         for (Message message : messages.getAll(e)) {
             Bot bot = Util.botFromID(message.getAuthor().getId());
-            //TODO: use the message binding method once that exists to bind the message to the bot
             if (bot != null) {
-                message.editMessage(content).queue();
+                Message bindedMessage = Util.bindMessage(bot, Util.messageFrom(message));
+                if (bindedMessage != null) {
+                    bindedMessage.editMessage(content).queue();
+                }
+
             }
+
         }
     }
 
