@@ -19,7 +19,7 @@ public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMu
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMentionedUsers.class, User.class,
-                "mentioned user", "messages")
+                "mentioned user[s]", "messages")
                 .setName("Mentioned users")
                 .setDesc("Get the mentioned Users in a Message")
                 .setExample("set {_var::*} to event-message's mentioned users");

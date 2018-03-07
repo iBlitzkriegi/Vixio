@@ -6,7 +6,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
@@ -25,12 +24,16 @@ public class ExprUserWithId extends SimpleExpression<User> {
     @Override
     protected User[] get(Event e) {
         String id = this.id.getSingle(e);
-        Bot bot = Util.randomBot();
-        if (id == null || bot == null) {
+        if (id == null) {
             return null;
         }
 
-        return new User[]{bot.getJDA().getUserById(id)};
+        for (Bot bot : Vixio.getInstance().botHashMap.values()) {
+            if (bot.getJDA().getUserById(id) != null) {
+                return new User[]{bot.getJDA().getUserById(id)};
+            }
+        }
+        return new User[]{null};
     }
 
     @Override

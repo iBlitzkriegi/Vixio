@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 public class Util {
 
@@ -210,11 +209,6 @@ public class Util {
         } else {
             return new Emoji(EmojiParser.parseToUnicode(emote));
         }
-    }
-
-    public static Bot randomBot() {
-        Collection<Bot> bots = Vixio.getInstance().botHashMap.values();
-        return bots.isEmpty() ? null : bots.toArray(new Bot[bots.size()])[new Random().nextInt(bots.size())];
     }
 
     public static <T> T[] convertedArray(Class<T> convertTo, Object... objects) {
