@@ -24,6 +24,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.Bukkit;
 
 import java.awt.Color;
@@ -157,6 +158,19 @@ public class Util {
         } else {
             return textChannel;
         }
+    }
+
+    public static Message bindMessage(Bot bot, Message message) {
+        if (!(bot.getJDA() == message.getJDA())) {
+            try {
+                return bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId()).complete(true);
+            } catch (RateLimitedException e) {
+
+            }
+        } else {
+            return message;
+        }
+        return null;
     }
 
     public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
