@@ -21,7 +21,6 @@ public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
                         "command /lastMade:",
                         "\ttrigger:",
                         "\t\tcreate the last made channel in guild with id \"415615161890890\" as \"Jewel\""
-
                 );
     }
 
