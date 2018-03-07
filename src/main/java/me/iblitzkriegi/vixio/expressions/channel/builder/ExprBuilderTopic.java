@@ -13,7 +13,9 @@ public class ExprBuilderTopic extends SimplePropertyExpression<ChannelBuilder, S
                 "topic", "channelbuilders")
                 .setName("Topic of Channel")
                 .setDesc("Gets or sets the topic of a channel builder.")
-                .setExample("set topic of event-channel to \"Hi Pika\"");
+                .setExample("create channel:",
+                        "\tset topic of the channel to \"Hi Pika\""
+                );
     }
 
     @Override
