@@ -66,7 +66,7 @@ public class EffSearch extends AsyncEffect {
         AudioTrack[] results = Util.search(site, queries.getAll(e));
         lastResults = results;
         if (variable != null) {
-            SkriptUtil.setList(variable.toString(e), e, local, results);
+            SkriptUtil.setList(variable.toString(e), e, local, (Object[]) results);
         }
 
     }
