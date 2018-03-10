@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.message;
+package me.iblitzkriegi.vixio.expressions.message.emoji;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
