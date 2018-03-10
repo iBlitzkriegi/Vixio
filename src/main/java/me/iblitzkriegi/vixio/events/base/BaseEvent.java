@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> extends SelfRegisteringSkriptEvent {
 
@@ -27,7 +28,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
      * The ending appended to patterns if no custom ending is specified
      */
     public static final String APPENDED_ENDING = "[seen by %-string%]";
-    private HashMap<Class<?>, Object> valueMap = new HashMap<>();
+    private Map<Class<?>, Object> valueMap = new HashMap<>();
     private String stringRepresentation;
     private Trigger trigger;
     private EventListener<D> listener;

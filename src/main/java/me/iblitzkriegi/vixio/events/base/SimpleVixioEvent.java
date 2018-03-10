@@ -1,11 +1,12 @@
 package me.iblitzkriegi.vixio.events.base;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleVixioEvent<D extends net.dv8tion.jda.core.events.Event> extends SimpleBukkitEvent {
 
     private D JDAEvent;
-    private HashMap<Class<?>, Object> valueMap = new HashMap<>();
+    private Map<Class<?>, Object> valueMap = new HashMap<>();
 
     public D getJDAEvent() {
         return JDAEvent;
@@ -15,11 +16,11 @@ public class SimpleVixioEvent<D extends net.dv8tion.jda.core.events.Event> exten
         this.JDAEvent = JDAEvent;
     }
 
-    public HashMap<Class<?>, Object> getValueMap() {
+    public Map<Class<?>, Object> getValueMap() {
         return valueMap;
     }
 
-    public void setValueMap(HashMap<Class<?>, Object> valueMap) {
+    public void setValueMap(Map<Class<?>, Object> valueMap) {
         this.valueMap = valueMap;
     }
 
