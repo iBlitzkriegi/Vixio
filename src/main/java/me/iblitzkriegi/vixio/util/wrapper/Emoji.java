@@ -49,7 +49,7 @@ public class Emoji {
     }
 
     public boolean isAnimated() {
-        return isEmote ? emote.isAnimated() : null;
+        return isEmote ? emote.isAnimated() : false;
     }
 
     public String getID() {

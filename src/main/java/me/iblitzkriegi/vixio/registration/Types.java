@@ -350,12 +350,12 @@ public class Types {
 
             @Override
             public String toString(Member member, int arg1) {
-                return member.getNickname();
+                return member.getUser().getId();
             }
 
             @Override
             public String toVariableNameString(Member member) {
-                return member.getNickname();
+                return member.getUser().getId();
             }
 
         };
