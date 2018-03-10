@@ -226,7 +226,11 @@ public class Util {
     }
 
     public static void sync(Runnable runnable) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Vixio.getInstance(), runnable, 0);
+        Bukkit.getScheduler().runTask(Vixio.getInstance(), runnable);
+    }
+
+    public static void async(Runnable runnable) {
+        Bukkit.getScheduler().runTaskAsynchronously(Vixio.getInstance(), runnable);
     }
 
 }

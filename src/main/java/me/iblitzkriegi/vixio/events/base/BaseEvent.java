@@ -12,12 +12,14 @@ import ch.njol.skript.log.SkriptLogger;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.VixioGetter;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> extends SelfRegisteringSkriptEvent {
 
@@ -25,6 +27,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
      * The ending appended to patterns if no custom ending is specified
      */
     public static final String APPENDED_ENDING = "[seen by %-string%]";
+    private HashMap<Class<?>, Object> valueMap = new HashMap<>();
     private String stringRepresentation;
     private Trigger trigger;
     private EventListener<D> listener;
@@ -125,7 +128,13 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
                 event = compilerWorkaround;
 
                 event.setJDAEvent(JDAEvent);
-                Util.sync(() -> getTrigger().execute(event));
+                Util.async(() -> {
+                    for (BaseEvent.Value value : getValues()) {
+                        valueMap.put(value.clazz, value.getter.get(JDAEvent));
+                    }
+                    event.setValueMap(valueMap);
+                    Util.sync(() -> getTrigger().execute(event));
+                });
 
             }
         });
@@ -162,7 +171,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
      * Used to check whether or not the event is valid for the trigger to run.
      *
      * @param event The JDA event to be checked
-     **/
+     */
     public boolean check(D event) {
         return bot == null || bot.equalsIgnoreCase(Util.botFromID(event.getJDA().getSelfUser().getId()).getName());
     }
@@ -173,6 +182,24 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
 
     public Class<D> getJDAClass() {
         return jdaClass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Value[] getValues() {
+        return new BaseEvent.Value[]{};
+    }
+
+
+    public class Value {
+
+        private VixioGetter<D, Object> getter;
+        private Class<?> clazz;
+
+        public Value(Class<?> clazz, VixioGetter<D, Object> getter) {
+            this.getter = getter;
+            this.clazz = clazz;
+        }
+
     }
 
 }
