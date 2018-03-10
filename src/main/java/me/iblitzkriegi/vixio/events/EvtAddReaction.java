@@ -6,9 +6,14 @@ import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
 
@@ -38,6 +43,39 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
             @Override
             public Member get(ReactionAddEvent event) {
                 return event.getJDAEvent().getMember();
+            }
+        }, 0);
+
+        EventValues.registerEventValue(ReactionAddEvent.class, Guild.class, new Getter<Guild, ReactionAddEvent>() {
+            @Override
+            public Guild get(ReactionAddEvent event) {
+                return event.getJDAEvent().getGuild();
+            }
+        }, 0);
+
+        EventValues.registerEventValue(ReactionAddEvent.class, Message.class, new Getter<Message, ReactionAddEvent>() {
+            @Override
+            public Message get(ReactionAddEvent event) {
+                try {
+                    return event.getJDAEvent().getChannel().getMessageById(event.getJDAEvent().getMessageId()).complete(true);
+                } catch (RateLimitedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }, 0);
+
+        EventValues.registerEventValue(ReactionAddEvent.class, MessageChannel.class, new Getter<MessageChannel, ReactionAddEvent>() {
+            @Override
+            public MessageChannel get(ReactionAddEvent event) {
+                return event.getJDAEvent().getChannel();
+            }
+        }, 0);
+
+        EventValues.registerEventValue(ReactionAddEvent.class, Channel.class, new Getter<Channel, ReactionAddEvent>() {
+            @Override
+            public Channel get(ReactionAddEvent event) {
+                return event.getJDAEvent().getTextChannel();
             }
         }, 0);
 
