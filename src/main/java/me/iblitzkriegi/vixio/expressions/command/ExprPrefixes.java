@@ -5,7 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordCommand;
+import me.iblitzkriegi.vixio.discordCommands.DiscordCommand;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import org.bukkit.event.Event;
 

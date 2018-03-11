@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.commands;
+package me.iblitzkriegi.vixio.discordCommands;
 
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;

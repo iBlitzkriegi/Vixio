@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.discordCommands.DiscordCommandEvent;
 import org.bukkit.event.Event;
 
 public class EvtDiscordCommand extends SkriptEvent {

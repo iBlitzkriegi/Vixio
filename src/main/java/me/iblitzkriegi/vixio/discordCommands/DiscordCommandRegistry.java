@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.commands;
+package me.iblitzkriegi.vixio.discordCommands;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.config.Config;

@@ -14,9 +14,9 @@ import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import ch.njol.util.StringUtils;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordArgument;
-import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
-import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.discordCommands.DiscordArgument;
+import me.iblitzkriegi.vixio.discordCommands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.discordCommands.DiscordCommandFactory;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 

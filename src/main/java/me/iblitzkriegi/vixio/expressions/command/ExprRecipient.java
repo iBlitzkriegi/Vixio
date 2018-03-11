@@ -8,7 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
+import me.iblitzkriegi.vixio.discordCommands.DiscordCommandEvent;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
 
