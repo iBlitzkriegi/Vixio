@@ -6,6 +6,7 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
+import me.iblitzkriegi.vixio.commands.VixioCMD;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.registration.TypeComparators;
@@ -36,6 +37,7 @@ public class Vixio extends JavaPlugin {
     // JDA Related \\
     public HashMap<JDA, Bot> botHashMap = new HashMap<>();
     public HashMap<String, Bot> botNameHashMap = new HashMap<>();
+
 
 
     public Vixio() {
@@ -91,6 +93,7 @@ public class Vixio extends JavaPlugin {
         saveConfig();
         Metrics metrics = new Metrics(this);
         Documentation.setupSyntaxFile();
+        this.getCommand("vixio").setExecutor(new VixioCMD());
 
     }
 

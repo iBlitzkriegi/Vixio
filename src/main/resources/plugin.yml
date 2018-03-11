@@ -5,3 +5,7 @@ version: @VERSION@
 author: Blitz
 website: http://vixio.space
 depend: [Skript]
+commands:
+  vixio:
+    description: Default command for Vixio
+    usage: /<command>
