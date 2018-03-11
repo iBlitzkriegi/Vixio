@@ -2,10 +2,12 @@ package me.iblitzkriegi.vixio.events;
 
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -24,6 +26,8 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
                 .setName("Reaction Add")
                 .setDesc("Fired when a reaction is added to a message")
                 .setExample("on reaction add:");
+
+
 
         EventValues.registerEventValue(ReactionAddEvent.class, Bot.class, new Getter<Bot, ReactionAddEvent>() {
             @Override
@@ -55,8 +59,8 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
 
         EventValues.registerEventValue(ReactionAddEvent.class, Message.class, new Getter<Message, ReactionAddEvent>() {
             @Override
-            public Message get(ReactionAddEvent event) {
-                return event.getValue(Message.class);
+            public Message get(ReactionAddEvent e) {
+                return e.getValue(Message.class);
             }
         }, 0);
 
@@ -74,9 +78,38 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
             }
         }, 0);
 
+        EventValues.registerEventValue(ReactionAddEvent.class, Emoji.class, new Getter<Emoji, ReactionAddEvent>() {
+            @Override
+            public Emoji get(ReactionAddEvent event) {
+            // return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
+                if (event.getJDAEvent().getReactionEmote().getEmote() == null) {
+                    Emoji emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
+                    return emoji;
+                } else {
+                    Emoji emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getEmote().getName(), event.getJDAEvent().getGuild());
+                    return emoji;
+                }
+            }
+        }, 0);
+
     }
 
     public class ReactionAddEvent extends SimpleVixioEvent<MessageReactionAddEvent> {
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Value[] getValues() {
+        return new BaseEvent.Value[] {
+                new Value(Message.class, e -> {
+                    try {
+                        return e.getChannel().getMessageById(e.getMessageId()).complete(true);
+                    } catch (RateLimitedException e1) {
+                        Vixio.getErrorHandler().warn("Vixio tried to get the message event value for the reaction add event but was rate limited");
+                        return null;
+                    }
+                })
+        };
     }
 
 }

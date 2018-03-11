@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.wrapper.Emoji;
 import net.dv8tion.jda.core.entities.IMentionable;
 
 /**
@@ -9,7 +10,7 @@ import net.dv8tion.jda.core.entities.IMentionable;
  */
 public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "user/textchannel/member/role")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "user/textchannel/member/emoji/role")
                 .setName("Mention of")
                 .setDesc("Get the mention tag of something")
                 .setExample("reply with mention tag of event-user");
@@ -22,7 +23,15 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
 
     @Override
     public String convert(Object o) {
-        return ((IMentionable) o).getAsMention();
+        if (o instanceof IMentionable) {
+            return ((IMentionable) o).getAsMention();
+        } else if (o instanceof Emoji) {
+            if (((Emoji) o).isEmote()) {
+                return ((Emoji) o).getMention();
+            }
+            return ((Emoji) o).getName();
+        }
+        return null;
     }
 
     @Override
