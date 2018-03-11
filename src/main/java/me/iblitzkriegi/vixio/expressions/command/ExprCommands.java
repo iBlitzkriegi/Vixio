@@ -6,8 +6,8 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.discordCommands.DiscordCommand;
-import me.iblitzkriegi.vixio.discordCommands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.commands.DiscordCommand;
+import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import org.bukkit.event.Event;
 
 import java.util.Collection;

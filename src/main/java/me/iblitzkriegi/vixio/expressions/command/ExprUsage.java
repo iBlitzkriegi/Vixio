@@ -2,7 +2,7 @@ package me.iblitzkriegi.vixio.expressions.command;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.discordCommands.DiscordCommand;
+import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import org.bukkit.event.Event;
 
 public class ExprUsage extends SimplePropertyExpression<DiscordCommand, String> {

@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.discordCommands;
+package me.iblitzkriegi.vixio.commands;
 
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;

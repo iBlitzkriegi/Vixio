@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.discordCommands;
+package me.iblitzkriegi.vixio.commands;
 
 import me.iblitzkriegi.vixio.events.base.SimpleBukkitEvent;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;

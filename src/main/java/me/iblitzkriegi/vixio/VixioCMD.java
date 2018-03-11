@@ -1,6 +1,5 @@
-package me.iblitzkriegi.vixio.commands;
+package me.iblitzkriegi.vixio;
 
-import me.iblitzkriegi.vixio.Vixio;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
