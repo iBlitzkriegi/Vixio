@@ -36,13 +36,13 @@ public class VixioCMD implements CommandExecutor {
                     Server server = Vixio.getInstance().getServer();
                     builder.append("&8&l{&b&l*&8&l}&f&l&m------&b&lVixio debug&f&l&m------&8&l{&b&l*&8&l}");
                     builder.append("\n");
-                    builder.append("&b&lMinecraft Version: &f" + server.getVersion());
+                    builder.append("&b&lMinecraft: &f" + server.getVersion());
                     builder.append("\n");
-                    builder.append("&b&lBukkit Version: &f" + server.getBukkitVersion());
+                    builder.append("&b&lServer: &f" + server.getBukkitVersion());
                     builder.append("\n");
-                    builder.append("&b&lVixio Version: &f" + Vixio.getInstance().getDescription().getVersion());
+                    builder.append("&b&lVixio: &f" + Vixio.getInstance().getDescription().getVersion());
                     builder.append("\n");
-                    builder.append("&b&lSkript Version: &f" + server.getPluginManager().getPlugin("Skript").getDescription().getVersion());
+                    builder.append("&b&lSkript: &f" + server.getPluginManager().getPlugin("Skript").getDescription().getVersion());
                     builder.append("\n");
                     builder.append("&8&l{&b&l*&8&l}&f&l&m---------------------&8&l{&b&l*&8&l}");
                     sendMessage(sender, builder.toString(), false);
