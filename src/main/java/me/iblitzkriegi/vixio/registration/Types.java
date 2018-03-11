@@ -44,7 +44,7 @@ public class Types {
 
             @Override
             public String toString(Channel channel, int arg1) {
-                return channel.getId();
+                return channel.getName();
             }
 
             @Override
@@ -158,7 +158,7 @@ public class Types {
 
             @Override
             public String toString(TextChannel textChannel, int arg1) {
-                return textChannel.getId();
+                return textChannel.getName();
             }
 
             @Override
@@ -182,7 +182,7 @@ public class Types {
 
             @Override
             public String toString(Guild guild, int arg1) {
-                return guild.getId();
+                return guild.getName();
             }
 
             @Override
@@ -206,7 +206,7 @@ public class Types {
 
             @Override
             public String toString(VoiceChannel voiceChannel, int arg1) {
-                return voiceChannel.getId();
+                return voiceChannel.getName();
             }
 
             @Override
@@ -278,7 +278,7 @@ public class Types {
 
             @Override
             public String toString(User user, int arg1) {
-                return user.getId();
+                return user.getName();
             }
 
             @Override
@@ -307,7 +307,7 @@ public class Types {
 
             @Override
             public String toVariableNameString(Category category) {
-                return category.getName();
+                return category.getId();
             }
 
         };
@@ -331,7 +331,7 @@ public class Types {
 
             @Override
             public String toVariableNameString(Role role) {
-                return role.getName();
+                return role.getId();
             }
 
         };
@@ -350,7 +350,7 @@ public class Types {
 
             @Override
             public String toString(Member member, int arg1) {
-                return member.getUser().getId();
+                return member.getUser().getName();
             }
 
             @Override
@@ -671,7 +671,7 @@ public class Types {
 
             @Override
             public String toVariableNameString(MessageChannel channel) {
-                return channel.getName();
+                return channel.getId();
             }
 
         };
