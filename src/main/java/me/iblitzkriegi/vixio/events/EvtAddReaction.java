@@ -56,12 +56,7 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, Message.class, new Getter<Message, ReactionAddEvent>() {
             @Override
             public Message get(ReactionAddEvent event) {
-                try {
-                    return event.getJDAEvent().getChannel().getMessageById(event.getJDAEvent().getMessageId()).complete(true);
-                } catch (RateLimitedException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                return event.getValue(Message.class);
             }
         }, 0);
 
