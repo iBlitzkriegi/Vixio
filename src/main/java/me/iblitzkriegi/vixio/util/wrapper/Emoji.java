@@ -29,7 +29,7 @@ public class Emoji {
     }
 
     public Emote getEmote() {
-        return emote;
+        return isEmote ? emote : null;
     }
 
     public List<Role> getRoles() {

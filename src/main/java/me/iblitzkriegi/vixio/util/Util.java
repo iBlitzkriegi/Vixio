@@ -211,7 +211,16 @@ public class Util {
                 return new Emoji(emote);
             }
             Collection<Emote> emotes = guild.getEmotesByName(emote, false);
-            return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
+            if (emotes.isEmpty()) {
+                //TODO Need to check all jda instances until its found possibly, un-sure of how bot's retrieve emotes.
+                Collection<Emote> emotes1 = guild.getJDA().getEmotesByName(emote, false);
+                if (emotes1.isEmpty()) {
+                    return new Emoji(EmojiParser.parseToUnicode(":" + emote + ":"));
+                }
+                return new Emoji(emotes1.iterator().next());
+            }
+            return new Emoji(emotes.iterator().next());
+            //return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
         } catch (UnsupportedOperationException | NoSuchElementException x) {
             return null;
         }
