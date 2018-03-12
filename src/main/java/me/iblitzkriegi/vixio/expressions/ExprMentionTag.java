@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.entities.IMentionable;
  */
 public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "user/textchannel/member/emote/role")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "users/textchannels/members/emotes/roles")
                 .setName("Mention of")
                 .setDesc("Get the mention tag of something")
                 .setExample("reply with mention tag of event-user");
