@@ -2,11 +2,12 @@ package me.iblitzkriegi.vixio.util.wrapper;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.IMentionable;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
-public class Emote {
+public class Emote implements IMentionable {
     private String name;
     private net.dv8tion.jda.core.entities.Emote emote;
     private boolean isEmote = false;
@@ -55,7 +56,8 @@ public class Emote {
         return isEmote ? emote.getId() : null;
     }
 
-    public String getMention() {
-        return mention;
+    @Override
+    public String getAsMention() {
+        return isEmote ? mention : name;
     }
 }

@@ -23,15 +23,7 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
 
     @Override
     public String convert(Object o) {
-        if (o instanceof IMentionable) {
-            return ((IMentionable) o).getAsMention();
-        } else if (o instanceof Emote) {
-            if (((Emote) o).getEmote() != null) {
-                return ((Emote) o).getMention();
-            }
-            return ((Emote) o).getName();
-        }
-        return null;
+        return ((IMentionable) o).getAsMention();
     }
 
     @Override
