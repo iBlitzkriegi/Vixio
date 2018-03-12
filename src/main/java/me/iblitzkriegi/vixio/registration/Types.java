@@ -119,7 +119,7 @@ public class Types {
 
         };
 
-        new SimpleType<Emoji>(Emoji.class, "emoji", "emojis?") {
+        new SimpleType<Emoji>(Emoji.class, "emote", "emotes?") {
 
             @Override
             public Emoji parse(String s, ParseContext pc) {
