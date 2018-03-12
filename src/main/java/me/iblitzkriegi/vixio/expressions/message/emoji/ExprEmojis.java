@@ -9,7 +9,7 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageReaction;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -20,10 +20,10 @@ import org.bukkit.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements EasyMultiple<Message, Emoji> {
+public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements EasyMultiple<Message, Emote> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprEmojis.class, Emoji.class,
+        Vixio.getInstance().registerPropertyExpression(ExprEmojis.class, Emote.class,
                 "reactions", "messages")
                 .setName("Reactions of message")
                 .setDesc("Get the reactions of a message. Can be deleted, reset, removed and added to.")
@@ -36,20 +36,20 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements Eas
     private Expression<Message> messages;
 
     @Override
-    protected Emoji[] get(Event e) {
+    protected Emote[] get(Event e) {
         return convert(getReturnType(), messages.getAll(e), message -> {
-            List<Emoji> emojis = new ArrayList<>();
+            List<Emote> emojis = new ArrayList<>();
 
             for (MessageReaction messageReaction : message.getReactions()) {
                 String name = messageReaction.getReactionEmote().getName();
                 if (messageReaction.getReactionEmote().getEmote() == null) {
                     emojis.add(Util.unicodeFrom(name));
                 } else {
-                    emojis.add(new Emoji(messageReaction.getReactionEmote().getEmote()));
+                    emojis.add(new Emote(messageReaction.getReactionEmote().getEmote()));
                 }
             }
 
-            return emojis.toArray(new Emoji[emojis.size()]);
+            return emojis.toArray(new Emote[emojis.size()]);
         });
     }
 
@@ -59,8 +59,8 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements Eas
     }
 
     @Override
-    public Class<? extends Emoji> getReturnType() {
-        return Emoji.class;
+    public Class<? extends Emote> getReturnType() {
+        return Emote.class;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements Eas
                 mode == Changer.ChangeMode.REMOVE_ALL ||
                 mode == Changer.ChangeMode.DELETE ||
                 mode == Changer.ChangeMode.RESET) {
-            return new Class[]{Emoji[].class};
+            return new Class[]{Emote[].class};
         }
 
         return super.acceptChange(mode);
@@ -103,7 +103,7 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements Eas
                         if (Util.botIsConnected(bot, message.getJDA())) {
                             for (Object o : delta) {
                                 try {
-                                    Emoji emoji = (Emoji) o;
+                                    Emote emoji = (Emote) o;
                                     if (Util.botIsConnected(bot, message.getJDA())) {
                                         if (emoji.isEmote()) {
                                             message.addReaction(emoji.getEmote()).queue();
@@ -142,7 +142,7 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emoji> implements Eas
                 case REMOVE:
                     try {
                         for (Object o : delta) {
-                            Emoji emoji = (Emoji) o;
+                            Emote emoji = (Emote) o;
                             if (Util.botIsConnected(bot, message.getJDA())) {
                                 for (MessageReaction messageReaction : message.getReactions()) {
                                     if (messageReaction.getReactionEmote().getName().equals(emoji.getName())) {

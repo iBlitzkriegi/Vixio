@@ -7,17 +7,17 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprEmojiNamed extends SimpleExpression<Emoji> {
+public class ExprEmojiNamed extends SimpleExpression<Emote> {
     static {
         //TODO: make this properly nullable
-        Vixio.getInstance().registerExpression(ExprEmojiNamed.class, Emoji.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprEmojiNamed.class, Emote.class, ExpressionType.SIMPLE,
                 "(emoji|emote|reaction)[s] %strings% [(from|in) %guild%]")
                 .setName("Emoji named")
                 .setDesc("Get a emoji by its name, if its a custom emote you must include the guild.")
@@ -31,19 +31,19 @@ public class ExprEmojiNamed extends SimpleExpression<Emoji> {
     private Expression<Guild> guild;
 
     @Override
-    protected Emoji[] get(Event e) {
+    protected Emote[] get(Event e) {
         String[] emoteName = name.getAll(e);
         if (emoteName == null) {
             return null;
         }
 
-        List<Emoji> emojis = new ArrayList<>();
+        List<Emote> emojis = new ArrayList<>();
         for (String name : emoteName) {
             Guild emojiGuild = this.guild.getSingle(e);
             emojis.add(Util.unicodeFrom(name, emojiGuild));
         }
 
-        return emojis.toArray(new Emoji[emojis.size()]);
+        return emojis.toArray(new Emote[emojis.size()]);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class ExprEmojiNamed extends SimpleExpression<Emoji> {
     }
 
     @Override
-    public Class<? extends Emoji> getReturnType() {
-        return Emoji.class;
+    public Class<? extends Emote> getReturnType() {
+        return Emote.class;
     }
 
     @Override

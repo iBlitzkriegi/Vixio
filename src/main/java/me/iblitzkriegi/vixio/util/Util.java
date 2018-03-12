@@ -13,12 +13,11 @@ import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.enums.SearchableSite;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
@@ -204,33 +203,33 @@ public class Util {
         }
     }
 
-    public static Emoji unicodeFrom(String emote, Guild guild) {
+    public static Emote unicodeFrom(String emote, Guild guild) {
         //TODO: not working in dms https://gist.github.com/Pikachu920/dfa4472245a2e48b5b6de33f87b41d36
         try {
             if (EmojiManager.isEmoji(emote)) {
-                return new Emoji(emote);
+                return new Emote(emote);
             }
-            Collection<Emote> emotes = guild.getEmotesByName(emote, false);
+            Collection<net.dv8tion.jda.core.entities.Emote> emotes = guild.getEmotesByName(emote, false);
             if (emotes.isEmpty()) {
                 //TODO Need to check all jda instances until its found possibly, un-sure of how bot's retrieve emotes.
-                Collection<Emote> emotes1 = guild.getJDA().getEmotesByName(emote, false);
+                Collection<net.dv8tion.jda.core.entities.Emote> emotes1 = guild.getJDA().getEmotesByName(emote, false);
                 if (emotes1.isEmpty()) {
-                    return new Emoji(EmojiParser.parseToUnicode(":" + emote + ":"));
+                    return new Emote(EmojiParser.parseToUnicode(":" + emote + ":"));
                 }
-                return new Emoji(emotes1.iterator().next());
+                return new Emote(emotes1.iterator().next());
             }
-            return new Emoji(emotes.iterator().next());
+            return new Emote(emotes.iterator().next());
             //return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
         } catch (UnsupportedOperationException | NoSuchElementException x) {
             return null;
         }
     }
 
-    public static Emoji unicodeFrom(String emote) {
+    public static Emote unicodeFrom(String emote) {
         if (EmojiManager.isEmoji(emote)) {
-            return new Emoji(emote);
+            return new Emote(emote);
         } else {
-            return new Emoji(EmojiParser.parseToUnicode(emote));
+            return new Emote(EmojiParser.parseToUnicode(emote));
         }
     }
 

@@ -1,23 +1,22 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 
 import java.util.List;
 
-public class Emoji {
+public class Emote {
     private String name;
-    private Emote emote;
+    private net.dv8tion.jda.core.entities.Emote emote;
     private boolean isEmote = false;
     private String mention;
 
-    public Emoji(String name) {
+    public Emote(String name) {
         this.name = name;
     }
 
-    public Emoji(Emote emote) {
+    public Emote(net.dv8tion.jda.core.entities.Emote emote) {
         this.name = emote.getName();
         this.emote = emote;
         this.isEmote = true;
@@ -28,7 +27,7 @@ public class Emoji {
         return isEmote ? emote.getGuild() : null;
     }
 
-    public Emote getEmote() {
+    public net.dv8tion.jda.core.entities.Emote getEmote() {
         return isEmote ? emote : null;
     }
 

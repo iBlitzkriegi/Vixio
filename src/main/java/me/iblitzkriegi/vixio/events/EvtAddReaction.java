@@ -7,7 +7,7 @@ import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -78,15 +78,15 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(ReactionAddEvent.class, Emoji.class, new Getter<Emoji, ReactionAddEvent>() {
+        EventValues.registerEventValue(ReactionAddEvent.class, Emote.class, new Getter<Emote, ReactionAddEvent>() {
             @Override
-            public Emoji get(ReactionAddEvent event) {
+            public Emote get(ReactionAddEvent event) {
             // return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
                 if (event.getJDAEvent().getReactionEmote().getEmote() == null) {
-                    Emoji emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
+                    Emote emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
                     return emoji;
                 } else {
-                    Emoji emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getEmote().getName(), event.getJDAEvent().getGuild());
+                    Emote emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getEmote().getName(), event.getJDAEvent().getGuild());
                     return emoji;
                 }
             }

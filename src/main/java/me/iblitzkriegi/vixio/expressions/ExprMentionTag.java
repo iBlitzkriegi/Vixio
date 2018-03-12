@@ -2,7 +2,7 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.IMentionable;
 
 /**
@@ -25,11 +25,11 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     public String convert(Object o) {
         if (o instanceof IMentionable) {
             return ((IMentionable) o).getAsMention();
-        } else if (o instanceof Emoji) {
-            if (((Emoji) o).getEmote() != null) {
-                return ((Emoji) o).getMention();
+        } else if (o instanceof Emote) {
+            if (((Emote) o).getEmote() != null) {
+                return ((Emote) o).getMention();
             }
-            return ((Emoji) o).getName();
+            return ((Emote) o).getName();
         }
         return null;
     }

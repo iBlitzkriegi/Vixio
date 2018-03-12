@@ -12,7 +12,7 @@ import me.iblitzkriegi.vixio.util.skript.SimpleType;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import me.iblitzkriegi.vixio.util.wrapper.Emoji;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Category;
@@ -119,10 +119,10 @@ public class Types {
 
         };
 
-        new SimpleType<Emoji>(Emoji.class, "emote", "emotes?") {
+        new SimpleType<Emote>(Emote.class, "emote", "emotes?") {
 
             @Override
-            public Emoji parse(String s, ParseContext pc) {
+            public Emote parse(String s, ParseContext pc) {
                 return null;
             }
 
@@ -132,12 +132,12 @@ public class Types {
             }
 
             @Override
-            public String toString(Emoji emoji, int arg1) {
+            public String toString(Emote emoji, int arg1) {
                 return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
             }
 
             @Override
-            public String toVariableNameString(Emoji emoji) {
+            public String toVariableNameString(Emote emoji) {
                 return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
             }
 
