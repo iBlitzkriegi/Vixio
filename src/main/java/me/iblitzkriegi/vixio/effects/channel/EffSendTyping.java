@@ -8,6 +8,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffSendTyping extends Effect{
@@ -32,7 +33,13 @@ public class EffSendTyping extends Effect{
         }
 
         TextChannel bindedChannel = Util.bindChannel(bot, channel);
-        bindedChannel.sendTyping().queue();
+        if (bindedChannel != null) {
+            try {
+                bindedChannel.sendTyping().queue();
+            } catch (PermissionException x) {
+                Vixio.getErrorHandler().needsPerm(bot, "send typing", x.getPermission().getName());
+            }
+        }
     }
 
     @Override
