@@ -7,6 +7,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -21,18 +23,18 @@ public class EffSendTyping extends Effect{
                 .setExample("send typing in event-channel");
     }
 
-    private Expression<TextChannel> channel;
+    private Expression<Channel> channel;
     private Expression<Object> bot;
 
     @Override
     protected void execute(Event e) {
-        TextChannel channel = this.channel.getSingle(e);
+        Channel channel = this.channel.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (bot == null || channel == null) {
+        if (bot == null || channel == null || (!(channel.getType() == ChannelType.TEXT))) {
             return;
         }
 
-        TextChannel bindedChannel = Util.bindChannel(bot, channel);
+        TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) channel);
         if (bindedChannel != null) {
             try {
                 bindedChannel.sendTyping().queue();
@@ -49,7 +51,7 @@ public class EffSendTyping extends Effect{
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channel = (Expression<TextChannel>) exprs[0];
+        channel = (Expression<Channel>) exprs[0];
         bot = (Expression<Object>) exprs[1];
         return true;
     }
