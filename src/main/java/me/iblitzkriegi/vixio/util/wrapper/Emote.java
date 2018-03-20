@@ -15,6 +15,7 @@ public class Emote implements IMentionable {
 
     public Emote(String name) {
         this.name = name;
+        this.mention = name;
     }
 
     public Emote(net.dv8tion.jda.core.entities.Emote emote) {
@@ -60,4 +61,5 @@ public class Emote implements IMentionable {
     public String getAsMention() {
         return isEmote ? mention : name;
     }
+
 }

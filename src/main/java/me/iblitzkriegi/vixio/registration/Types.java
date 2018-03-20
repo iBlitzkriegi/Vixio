@@ -133,12 +133,12 @@ public class Types {
 
             @Override
             public String toString(Emote emoji, int arg1) {
-                return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
+                return emoji.getAsMention();
             }
 
             @Override
             public String toVariableNameString(Emote emoji) {
-                return emoji.isEmote() ? emoji.getEmote().getAsMention() : emoji.getName();
+                return emoji.getAsMention();
             }
 
         };
