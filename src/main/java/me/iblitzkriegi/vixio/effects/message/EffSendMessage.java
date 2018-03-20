@@ -23,7 +23,7 @@ public class EffSendMessage extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %channels% [with %bot/string%] [and store (it|the message) in %-objects%]")
                 .setName("Send Message to Text Channel")
-                .setDesc("Send a Message to a Text Channel.")
+                .setDesc("Send a message to a text channel.")
                 .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"", "send \"hey\" to channel with id \"156156165165156\" as \"Jewel\" and store it in {_message}")
                 .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string% [and store (it|the message) in %-objects%]");
     }
@@ -40,21 +40,18 @@ public class EffSendMessage extends AsyncEffect {
         if (bot == null) {
             return;
         }
-        try {
-            if (bot.getJDA() != null) {
-                for (Channel channel : channel.getAll(e)) {
-                    if (channel.getType().equals(ChannelType.TEXT)) {
-                        TextChannel textChannel = Util.botIsConnected(bot, channel.getJDA()) ?
-                                (TextChannel) channel : bot.getJDA().getTextChannelById(channel.getId());
 
+        try {
+            for (Channel channel : channel.getAll(e)) {
+                if (channel.getType().equals(ChannelType.TEXT)) {
+                    TextChannel textChannel = (TextChannel) Util.bindChannel(bot, channel);
+                    if (textChannel != null) {
                         for (Object m : message.getAll(e)) {
                             Message message = Util.messageFrom(m);
                             if (message != null) {
-
                                 if (varExpr == null) {
                                     textChannel.sendMessage(message).queue();
                                 } else {
-
                                     try {
                                         Message resultingMessage = textChannel.sendMessage(message).complete(true);
                                         if (varExpr.isList()) {
@@ -70,10 +67,11 @@ public class EffSendMessage extends AsyncEffect {
 
                             }
                         }
-
                     }
+
                 }
             }
+
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "send message");
         }
