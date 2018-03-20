@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 public class Util {
 
@@ -203,32 +204,62 @@ public class Util {
         }
     }
 
-    public static Emote unicodeFrom(String emote, Guild guild) {
-        //TODO: not working in dms https://gist.github.com/Pikachu920/dfa4472245a2e48b5b6de33f87b41d36
-        try {
-            if (EmojiManager.isEmoji(emote)) {
-                return new Emote(emote);
-            }
-            Collection<net.dv8tion.jda.core.entities.Emote> emotes = guild.getEmotesByName(emote, false);
-            if (emotes.isEmpty()) {
-                //TODO Need to check all jda instances until its found possibly, un-sure of how bot's retrieve emotes.
-                Collection<net.dv8tion.jda.core.entities.Emote> emotes1 = guild.getJDA().getEmotesByName(emote, false);
-                if (emotes1.isEmpty()) {
-                    return new Emote(EmojiParser.parseToUnicode(":" + emote + ":"));
+    public static Emote unicodeFrom(String input, Guild guild) {
+        String id = input.replaceAll("[^0-9]", "");
+        if (id.isEmpty()) {
+            try {
+                if (guild == null) {
+                    Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+                    for (JDA jda : jdaInstances) {
+                        Collection<net.dv8tion.jda.core.entities.Emote> emoteCollection = jda.getEmotesByName(input, false);
+                        if (!emoteCollection.isEmpty()) {
+                            return new Emote(emoteCollection.iterator().next());
+                        }
+                    }
+                    return unicodeFrom(input);
                 }
-                return new Emote(emotes1.iterator().next());
+                Collection<net.dv8tion.jda.core.entities.Emote> emotes = guild.getEmotesByName(input, false);
+                if (emotes.isEmpty()) {
+                    return unicodeFrom(input);
+                }
+
+                return new Emote(emotes.iterator().next());
+            } catch (UnsupportedOperationException | NoSuchElementException x) {
+                return null;
             }
-            return new Emote(emotes.iterator().next());
-            //return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
-        } catch (UnsupportedOperationException | NoSuchElementException x) {
-            return null;
+        } else {
+            if (guild == null) {
+                Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+                for (JDA jda : jdaInstances) {
+                    net.dv8tion.jda.core.entities.Emote emote = jda.getEmoteById(id);
+                    if (emote != null) {
+                        return new Emote(emote);
+                    }
+                }
+                return unicodeFrom(input);
+            }
+            try {
+                net.dv8tion.jda.core.entities.Emote emote = guild.getEmoteById(id);
+                if (emote == null) {
+                    net.dv8tion.jda.core.entities.Emote emote1 = guild.getJDA().getEmoteById(id);
+                    if (!(emote1 == null)) {
+                        return new Emote(emote1);
+                    }
+                    return null;
+                }
+
+                return new Emote(emote);
+            } catch (UnsupportedOperationException | NoSuchElementException x) {
+                return null;
+            }
         }
     }
 
-    public static Emote unicodeFrom(String emote) {
-        if (EmojiManager.isEmoji(emote)) {
-            return new Emote(emote);
+    public static Emote unicodeFrom(String input) {
+        if (EmojiManager.isEmoji(input)) {
+            return new Emote(input);
         } else {
+            String emote = input.contains(":") ? input : ":" + input + ":";
             return new Emote(EmojiParser.parseToUnicode(emote));
         }
     }

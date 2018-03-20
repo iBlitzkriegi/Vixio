@@ -39,7 +39,6 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements Eas
     protected Emote[] get(Event e) {
         return convert(getReturnType(), messages.getAll(e), message -> {
             List<Emote> emojis = new ArrayList<>();
-
             for (MessageReaction messageReaction : message.getReactions()) {
                 String name = messageReaction.getReactionEmote().getName();
                 if (messageReaction.getReactionEmote().getEmote() == null) {
@@ -97,6 +96,7 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements Eas
             if (channel == null) {
                 return;
             }
+
             switch (mode) {
                 case ADD:
                     try {
