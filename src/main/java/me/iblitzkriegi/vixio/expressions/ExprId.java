@@ -4,13 +4,14 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import net.dv8tion.jda.core.entities.ISnowflake;
+import net.dv8tion.jda.core.entities.Member;
 
 /**
  * Created by Blitz on 7/26/2017.
  */
 public class ExprId extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "id", "channel/guild/bot/user/message/role/avatar/category")
+        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "id", "channel/guild/bot/user/message/role/avatar/category/member")
                 .setName("ID of")
                 .setDesc("Get the ID of something")
                 .setExample("reply with \"%id of event-user%\"");
@@ -28,6 +29,8 @@ public class ExprId extends SimplePropertyExpression<Object, String> {
         } else if (o instanceof Avatar) {
             Avatar avatar = (Avatar) o;
             return avatar.isDefault() ? avatar.getUser().getDefaultAvatarId() : avatar.getUser().getAvatarId();
+        } else if (o instanceof Member) {
+            return ((Member) o).getUser().getId();
         }
         return null;
     }
