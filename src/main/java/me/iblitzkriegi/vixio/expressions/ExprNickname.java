@@ -24,7 +24,7 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
 
     @Override
     public String convert(Member member) {
-        return member.getNickname();
+        return member.getEffectiveName();
     }
 
     @Override

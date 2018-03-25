@@ -14,6 +14,7 @@ import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -36,7 +37,6 @@ public class Vixio extends JavaPlugin {
     // JDA Related \\
     public HashMap<JDA, Bot> botHashMap = new HashMap<>();
     public HashMap<String, Bot> botNameHashMap = new HashMap<>();
-
 
 
     public Vixio() {
