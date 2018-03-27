@@ -82,7 +82,7 @@ public class ExprBuilderText extends SimplePropertyExpression<MessageBuilder, St
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "text of " + getExpr().toString(e, debug);
+        return "the text of " + getExpr().toString(e, debug);
     }
 
 }
