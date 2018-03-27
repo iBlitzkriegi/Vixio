@@ -72,8 +72,8 @@ public class AudioHandlers {
 
     }
 
-    public static void skipTrack(TextChannel channel, Bot bot) {
-        GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild(), bot);
+    public static void skipTrack(Guild guild, Bot bot) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild, bot);
         musicManager.scheduler.nextTrack();
     }
 }
