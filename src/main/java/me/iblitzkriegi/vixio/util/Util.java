@@ -145,6 +145,9 @@ public class Util {
     }
 
     public static Guild bindGuild(Bot bot, Guild guild) {
+        if (guild == null || bot == null) {
+            return null;
+        }
         if (!(guild.getJDA() == bot.getJDA())) {
             return bot.getJDA().getGuildById(guild.getId());
         } else {

@@ -7,11 +7,11 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import org.bukkit.event.Event;
 
 public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, MessageEmbed.AuthorInfo> {
-
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedAuthor.class, MessageEmbed.AuthorInfo.class,
@@ -35,10 +35,10 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
 
     @Override
     public Class<?>[] acceptChange(ChangeMode mode) {
-        if ((mode == ChangeMode.SET || mode == ChangeMode.RESET || mode == ChangeMode.DELETE) && getExpr().isSingle()) {
+        if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
             return new Class[]{
-                    String.class,
-                    MessageEmbed.AuthorInfo.class
+                    MessageEmbed.AuthorInfo.class,
+                    String.class
             };
         }
         return super.acceptChange(mode);
@@ -46,22 +46,24 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
 
     @Override
     public void change(Event e, Object[] delta, ChangeMode mode) {
-
-        EmbedBuilder embed = getExpr().getSingle(e);
-        if (embed == null) return;
+        EmbedBuilder[] embeds = getExpr().getAll(e);
+        if (embeds == null) return;
 
         switch (mode) {
-
+            case SET:
+                for (EmbedBuilder embedBuilder : embeds) {
+                    MessageEmbed.AuthorInfo author = delta[0] instanceof String ?
+                            new EmbedBuilder().setAuthor((String) delta[0]).build().getAuthor() :
+                            (MessageEmbed.AuthorInfo) delta[0];
+                    embedBuilder.setAuthor(author.getName(), author.getUrl(), author.getIconUrl());
+                }
+                break;
             case RESET:
             case DELETE:
-                embed.setAuthor(null, null, null);
+                for (EmbedBuilder embedBuilder : embeds) {
+                    embedBuilder.setAuthor(null, null, null);
+                }
                 break;
-
-            case SET:
-                MessageEmbed.AuthorInfo author = delta[0] instanceof String ?
-                        new EmbedBuilder().setAuthor((String) delta[0]).build().getAuthor() :
-                        (MessageEmbed.AuthorInfo) delta[0];
-                embed.setAuthor(author.getName(), author.getUrl(), author.getIconUrl());
         }
     }
 
