@@ -47,7 +47,7 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET) && getExpr().isSingle()) {
             return new Class[]{Boolean.class};
         }
-        return null;
+        return super.acceptChange(mode);
     }
 
     @Override
