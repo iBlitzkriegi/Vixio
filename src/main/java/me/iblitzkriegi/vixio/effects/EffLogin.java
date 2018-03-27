@@ -64,6 +64,7 @@ public class EffLogin extends AsyncEffect {
 
         api.addEventListener(new CommandListener());
         Bot bot = new Bot(name, api);
+
         Vixio.getInstance().botHashMap.put(api, bot);
         Vixio.getInstance().botNameHashMap.put(name, bot);
     }
