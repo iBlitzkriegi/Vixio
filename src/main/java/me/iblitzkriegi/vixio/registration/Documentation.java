@@ -39,13 +39,17 @@ public class Documentation {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
                     for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        builder.append(reg.getSyntaxes()[i] + "\",");
+                        if (i + 1 == reg.getSyntaxes().length) {
+                            builder.append(reg.getSyntaxes()[i] + "\"");
+                        } else {
+                            builder.append(reg.getSyntaxes()[i] + "\",");
+                        }
                     }
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.write("\tsyntax: " + reg.getSyntax());
                     bw.newLine();
                 }
             }
@@ -57,14 +61,18 @@ public class Documentation {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
                     for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        builder.append(reg.getSyntaxes()[i] + "\",");
+                        if (i + 1 == reg.getSyntaxes().length) {
+                            builder.append(reg.getSyntaxes()[i] + "\"");
+                        } else {
+                            builder.append(reg.getSyntaxes()[i] + "\",");
+                        }
                     }
 
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.write("\tsyntax: " + reg.getSyntax());
                     bw.newLine();
                 }
             }
@@ -81,14 +89,18 @@ public class Documentation {
                         StringBuilder builder = new StringBuilder();
                         builder.append("\tsyntax: {\"");
                         for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                            builder.append(reg.getSyntaxes()[i] + "\",");
+                            if (i + 1 == reg.getSyntaxes().length) {
+                                builder.append(reg.getSyntaxes()[i] + "\"");
+                            } else {
+                                builder.append(reg.getSyntaxes()[i] + "\",");
+                            }
                         }
                         builder.append("}");
                         bw.write(builder.toString());
                         bw.newLine();
 
                     } else {
-                        bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                        bw.write("\tsyntax: " + reg.getSyntax());
                         bw.newLine();
                     }
                 }
@@ -101,13 +113,17 @@ public class Documentation {
                     StringBuilder builder = new StringBuilder();
                     builder.append("\tsyntax: {\"");
                     for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        builder.append(reg.getSyntaxes()[i] + "\",");
+                        if (i + 1 == reg.getSyntaxes().length) {
+                            builder.append(reg.getSyntaxes()[i] + "\"");
+                        } else {
+                            builder.append(reg.getSyntaxes()[i] + "\",");
+                        }
                     }
                     builder.append("}");
                     bw.write(builder.toString());
                     bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntaxes()[0]);
+                    bw.write("\tsyntax: " + reg.getSyntax());
                     bw.newLine();
                 }
             }

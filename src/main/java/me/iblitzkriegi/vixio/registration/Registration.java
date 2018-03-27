@@ -51,6 +51,10 @@ public class Registration {
         return this.syntaxes;
     }
 
+    public String getSyntax() {
+        return this.syntaxes[0];
+    }
+
     public String getExample() {
         return this.example;
     }
