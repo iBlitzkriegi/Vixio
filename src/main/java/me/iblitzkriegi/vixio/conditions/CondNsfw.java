@@ -14,14 +14,15 @@ public class CondNsfw extends Condition implements EasyMultiple<Object, Void> {
 
     static {
         Vixio.getInstance().registerCondition(CondNsfw.class,
-                "%channelbuilders/textchannels% (is|are) nsfw", "%channelbuilders/textchannels% (is|are) sfw")
+                "%channelbuilders/channels% (is|are) nsfw", "%channelbuilders/channels% (is|are) sfw")
                 .setName("NSFW")
                 .setDesc("Lets you check if a channel builder or text channel is nsfw/sfw.")
+                .setUserFacing("[the] nsfw state[s] of %channelbuilders/textchannels%", "%channelbuilders/textchannels%'[s] nsfw state[s]")
                 .setExample(
                         "discord command nsfw:",
                         "\tprefixes: $",
                         "\ttrigger:",
-                        "\t\tif event-textchannel is nsfw:",
+                        "\t\tif event-channel is nsfw:",
                         "\t\t\treply with \"%event-channel% is nsfw\""
                 );
     }
@@ -34,7 +35,7 @@ public class CondNsfw extends Condition implements EasyMultiple<Object, Void> {
             if (o instanceof ChannelBuilder) {
                 return ((ChannelBuilder) o).isNSFW();
             } else {
-                return ((TextChannel) o).isNSFW();
+                return o instanceof TextChannel ? ((TextChannel)o).isNSFW() : false;
             }
         }, isNegated());
     }

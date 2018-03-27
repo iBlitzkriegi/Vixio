@@ -53,7 +53,7 @@ public class EffCreateChannelBuilder extends Effect {
             } else {
                 bindedGuild.getController().createVoiceChannel(channelBuilder.getName())
                         .setParent(channelBuilder.getParent())
-                        .setBitrate(channelBuilder.getBitRate())
+                        .setBitrate(channelBuilder.getBitRate() * 1000)
                         .setUserlimit(channelBuilder.getUserLimit()).queue();
             }
         } catch (PermissionException x) {

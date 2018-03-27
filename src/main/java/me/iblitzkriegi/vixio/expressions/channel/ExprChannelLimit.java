@@ -6,23 +6,25 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class ExprChannelLimit extends ChangeableSimplePropertyExpression<VoiceChannel, Integer> {
+public class ExprChannelLimit extends ChangeableSimplePropertyExpression<Channel, Integer> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelLimit.class, Integer.class,
-                "user limit", "voicechannels")
-                .setName("User limit of Voice Channel")
-                .setDesc("Get or sets the user limit of a Voice Channel")
-                .setExample("reply with \"%user limit of event-voicechannel%\"");
+                "user limit", "voicechannels/channels")
+                .setName("User limit of voice channel")
+                .setDesc("Get or sets the user limit of a voice channel")
+                .setUserFacing("[the] user limit[s] of %voicechannels%","%voicechannels%'[s] user limit[s]")
+                .setExample("reply with \"%user limit of event-channel%\"");
     }
 
     @Override
-    public Integer convert(VoiceChannel channel) {
-        return channel.getUserLimit();
+    public Integer convert(Channel channel) {
+        return channel instanceof VoiceChannel ? ((VoiceChannel)channel).getUserLimit()  : null;
     }
 
     @Override
@@ -45,13 +47,15 @@ public class ExprChannelLimit extends ChangeableSimplePropertyExpression<VoiceCh
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for (VoiceChannel channel : getExpr().getAll(e)) {
-            channel = Util.bindVoiceChannel(bot, channel);
-            if (channel != null) {
-                try {
-                    channel.getManager().setUserLimit(mode == Changer.ChangeMode.DELETE ? 0 : (((Number) delta[0]).intValue())).queue();
-                } catch (PermissionException ex) {
-                    Vixio.getErrorHandler().needsPerm(bot, mode.name().toLowerCase() + " user limit", ex.getPermission().getName());
+        for (Channel channel : getExpr().getAll(e)) {
+            if (channel instanceof VoiceChannel) {
+                channel = Util.bindVoiceChannel(bot, (VoiceChannel) channel);
+                if (channel != null) {
+                    try {
+                        channel.getManager().setUserLimit(mode == Changer.ChangeMode.DELETE ? 0 : (((Number) delta[0]).intValue())).queue();
+                    } catch (PermissionException ex) {
+                        Vixio.getErrorHandler().needsPerm(bot, mode.name().toLowerCase() + " user limit", ex.getPermission().getName());
+                    }
                 }
             }
         }

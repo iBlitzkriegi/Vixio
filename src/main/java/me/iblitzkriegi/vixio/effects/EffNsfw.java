@@ -7,6 +7,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
@@ -14,15 +15,16 @@ public class EffNsfw extends Effect {
 
     static {
         Vixio.getInstance().registerEffect(EffNsfw.class,
-                "(make|mark) %textchannels% [as] [<n>]sfw (with|using) %bot/string%")
+                "(make|mark) %channels% [as] [<n>]sfw (with|using) %bot/string%")
                 .setName("Change NSFW")
                 .setDesc("Lets you mark a text channel as sfw/nsfw")
-                .setExample("mark event-textchannel as nsfw with event-bot");
+                .setUserFacing("(make|mark) %textchannels% [as] [<n>]sfw (with|using) %bot/string%")
+                .setExample("mark event-channel as nsfw with event-bot");
     }
 
     private boolean newState;
     private Expression<Bot> bot;
-    private Expression<TextChannel> channels;
+    private Expression<Channel> channels;
 
     @Override
     protected void execute(Event e) {
@@ -30,10 +32,13 @@ public class EffNsfw extends Effect {
         if (bot == null) {
             return;
         }
-        for (TextChannel channel : channels.getAll(e)) {
-            channel = Util.bindChannel(bot, channel);
-            if (channel != null) {
-                channel.getManager().setNSFW(newState).queue();
+
+        for (Channel channel : channels.getAll(e)) {
+            if (channel instanceof TextChannel) {
+                channel = Util.bindChannel(bot, (TextChannel) channel);
+                if (channel != null) {
+                    channel.getManager().setNSFW(newState).queue();
+                }
             }
         }
     }
@@ -45,7 +50,7 @@ public class EffNsfw extends Effect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channels = (Expression<TextChannel>) exprs[0];
+        channels = (Expression<Channel>) exprs[0];
         bot = (Expression<Bot>) exprs[1];
         newState = parseResult.regexes.size() == 1;
         return true;

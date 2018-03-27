@@ -11,9 +11,15 @@ public class ExprBuilderLimit extends SimplePropertyExpression<ChannelBuilder, I
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderLimit.class, Integer.class,
                 "user limit", "channelbuilders")
-                .setName("User limit of Voice Channel")
-                .setDesc("Get or sets the user limit of a Voice Channel")
-                .setExample("reply with \"%user limit of event-voicechannel%\"");
+                .setName("User limit of channel builder")
+                .setDesc("Get or sets the user limit of a channel builder")
+                .setExample("command /channel:" +
+                        "\ttrigger:" +
+                        "\t\tcreate voice channel:" +
+                        "\t\t\tset name of the channel to \"Chat\"" +
+                        "\t\t\tset {guild} to guild with id \"5155156165\"" +
+                        "\t\t\tset user limit of the channel to 3" +
+                        "\t\t\tcreate the channel in {guild} as \"Jewel\"");
     }
 
     @Override

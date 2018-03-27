@@ -5,17 +5,19 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
-public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<VoiceChannel, Integer> {
+public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Channel, Integer> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelBitrate.class, Integer.class,
-                "bitrate", "voicechannels")
+                "bitrate", "voicechannels/channels")
                 .setName("Bitrate of voice channel")
                 .setDesc("Get the bitrate of a voice channel." +
                         " The default value is 64kbps for channel builders. Rates multiplied by 1000." +
                         " You can set or reset this (resets to 64kbps)")
+                .setUserFacing("[the] bitrate[s] of %voicechannels%", "%voicechannels%'[s] bitrate[s]")
                 .setExample(
                         "command /bitrate <string> <number>:",
                         "\ttrigger:",
@@ -24,8 +26,8 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Voice
     }
 
     @Override
-    public Integer convert(VoiceChannel channel) {
-        return channel.getBitrate() / 1000;
+    public Integer convert(Channel channel) {
+        return channel instanceof VoiceChannel ? ((VoiceChannel) channel).getBitrate() / 1000: null;
     }
 
     @Override
@@ -52,11 +54,15 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Voice
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for (VoiceChannel channel : getExpr().getAll(e)) {
-            channel = Util.bindVoiceChannel(bot, channel);
-            channel.getManager().setBitrate(mode == Changer.ChangeMode.SET ?
-                    ((Number) delta[0]).intValue() * 1000 : Util.DEFAULT_BITRATE)
-                    .queue();
+        for (Channel channel : getExpr().getAll(e)) {
+            if (channel instanceof VoiceChannel) {
+                channel = Util.bindVoiceChannel(bot, (VoiceChannel) channel);
+                if (channel != null) {
+                    channel.getManager().setBitrate(mode == Changer.ChangeMode.SET ?
+                            ((Number) delta[0]).intValue() * 1000 : Util.DEFAULT_BITRATE)
+                            .queue();
+                }
+            }
         }
     }
 
