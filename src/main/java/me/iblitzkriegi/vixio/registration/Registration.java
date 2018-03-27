@@ -68,5 +68,10 @@ public class Registration {
         return this;
     }
 
+    public Registration setUserFacing(String... patterns) {
+        this.syntaxes = patterns;
+        return this;
+    }
+
 
 }
