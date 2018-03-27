@@ -6,21 +6,26 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import me.iblitzkriegi.vixio.registration.Documentation;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.registration.TypeComparators;
 import me.iblitzkriegi.vixio.registration.TypeConverters;
 import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
+import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Blitz on 7/22/2017.
@@ -37,6 +42,11 @@ public class Vixio extends JavaPlugin {
     // JDA Related \\
     public HashMap<JDA, Bot> botHashMap = new HashMap<>();
     public HashMap<String, Bot> botNameHashMap = new HashMap<>();
+
+    public AudioPlayerManager playerManager;
+    public Map<Guild,ArrayList<GuildMusicManager>> multiMap = new HashMap<>();
+
+
 
 
     public Vixio() {
@@ -81,6 +91,11 @@ public class Vixio extends JavaPlugin {
                     .setLanguageFileDirectory("lang");
 
             Vixio.setup();
+            AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+            AudioSourceManagers.registerRemoteSources(playerManager);
+            AudioSourceManagers.registerLocalSource(playerManager);
+
+            this.playerManager = playerManager;
         } catch (IOException e) {
             e.printStackTrace();
         }
