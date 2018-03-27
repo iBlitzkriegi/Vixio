@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.effects;
+package me.iblitzkriegi.vixio.effects.audio;
 
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;

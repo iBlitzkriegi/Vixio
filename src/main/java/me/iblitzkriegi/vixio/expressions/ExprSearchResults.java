@@ -8,7 +8,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.effects.EffSearch;
+import me.iblitzkriegi.vixio.effects.audio.EffSearch;
 import org.bukkit.event.Event;
 
 public class ExprSearchResults extends SimpleExpression<AudioTrack> {
