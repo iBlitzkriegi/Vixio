@@ -70,10 +70,10 @@ dependencies {
 
     // JDA
 
-    compile 'net.dv8tion:JDA:3.5.0_329'
+    compile 'net.dv8tion:JDA:3.5.1_353'
 
     // LavaPlayer
-    compile 'com.sedmelluq:lavaplayer:1.2.45'
+    compile 'com.sedmelluq:lavaplayer:1.2.58'
 
     // Skript API
     shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
