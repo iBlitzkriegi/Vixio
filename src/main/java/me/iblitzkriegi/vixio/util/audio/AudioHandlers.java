@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.util.audio;
 
 import ch.njol.skript.Skript;
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -69,7 +70,6 @@ public class AudioHandlers {
 
     public static void play(GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.queue(track);
-
     }
 
     public static void skipTrack(Guild guild, Bot bot) {

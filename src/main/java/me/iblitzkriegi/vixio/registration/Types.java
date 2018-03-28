@@ -604,7 +604,7 @@ public class Types {
 
         };
 
-        new SimpleType<AudioTrack>(AudioTrack.class, "audiotrack", "audio ?tracks?") {
+        new SimpleType<AudioTrack>(AudioTrack.class, "track", "tracks?") {
 
             @Override
             public AudioTrack parse(String s, ParseContext pc) {
