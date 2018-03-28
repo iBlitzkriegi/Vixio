@@ -22,6 +22,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.Bukkit;
@@ -193,6 +194,18 @@ public class Util {
             return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
         } else {
             return voiceChannel;
+        }
+    }
+
+    public static User bindUser(Bot bot, User user) {
+        if (user == null || bot == null) {
+            return null;
+        }
+
+        if (user.getJDA() == bot.getJDA()) {
+            return user;
+        } else {
+            return bot.getJDA().getUserById(user.getId());
         }
     }
 
