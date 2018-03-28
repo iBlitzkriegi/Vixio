@@ -1,6 +1,5 @@
-package me.iblitzkriegi.vixio.expressions.audio;
+package me.iblitzkriegi.vixio.expressions;
 
-import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
