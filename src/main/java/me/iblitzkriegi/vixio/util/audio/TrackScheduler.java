@@ -5,8 +5,6 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.events.base.TrackEvent;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -48,10 +46,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
-        MusicStorage musicStorage = Vixio.getInstance().musicStorage.get(player);
-        if (musicStorage != null) {
-            Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.START, musicStorage.getBot(), musicStorage.getGuild(), track));
-        }
+        //TODO add start event
     }
     public ArrayList getQueue() {
         return new ArrayList<>(queue);
