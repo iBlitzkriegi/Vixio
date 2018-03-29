@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.expressions.bot.audio;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -67,4 +68,22 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
         guild = (Expression<Guild>) exprs[1];
         return true;
     }
+
+    @Override
+    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
+        if (mode == Changer.ChangeMode.RESET) {
+            return new Class[0];
+        }
+
+        return super.acceptChange(mode);
+    }
+
+    @Override
+    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
+        if (bot != null) {
+            bot.getAudioManager(this.guild.getSingle(e)).scheduler.resetPlayer();
+        }
+    }
+
 }
