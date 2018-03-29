@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.audio.AudioHandlers;
+import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
@@ -30,7 +30,8 @@ public class EffSkip extends Effect {
             return;
         }
 
-        AudioHandlers.skipTrack(guild, bot);
+        GuildMusicManager musicManager = bot.getAudioManager(guild);
+        musicManager.scheduler.nextTrack();
     }
 
     @Override

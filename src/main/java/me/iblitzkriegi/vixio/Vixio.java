@@ -6,6 +6,7 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
@@ -16,6 +17,7 @@ import me.iblitzkriegi.vixio.registration.TypeConverters;
 import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
+import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -44,7 +46,7 @@ public class Vixio extends JavaPlugin {
     public HashMap<String, Bot> botNameHashMap = new HashMap<>();
 
     public AudioPlayerManager playerManager;
-    public Map<Guild,ArrayList<GuildMusicManager>> multiMap = new HashMap<>();
+    public HashMap<AudioPlayer, MusicStorage> musicStorage = new HashMap<>();
 
 
 

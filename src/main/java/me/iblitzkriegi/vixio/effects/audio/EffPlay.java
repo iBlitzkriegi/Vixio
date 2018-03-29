@@ -1,13 +1,16 @@
 package me.iblitzkriegi.vixio.effects.audio;
 
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.audio.AudioHandlers;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
@@ -33,12 +36,35 @@ public class EffPlay extends Effect {
             return;
         }
 
-        GuildMusicManager musicManager = AudioHandlers.getGuildAudioPlayer(guild, bot);
+        GuildMusicManager musicManager = bot.getAudioManager(guild);
         for (Object track : this.audio.getAll(e)) {
             if (track instanceof AudioTrack) {
-                AudioHandlers.play(musicManager, (AudioTrack) track);
+                musicManager.scheduler.queue((AudioTrack) track);
             } else if (track instanceof String) {
-                AudioHandlers.loadAndPlay(guild, (String) track, bot);
+                Vixio.getInstance().playerManager.loadItemOrdered(musicManager, (String) track, new AudioLoadResultHandler() {
+                    @Override
+                    public void trackLoaded(AudioTrack track) {
+                        musicManager.scheduler.queue(track);
+                    }
+
+                    @Override
+                    public void playlistLoaded(AudioPlaylist playlist) {
+                        for (AudioTrack track : playlist.getTracks()) {
+                            musicManager.scheduler.queue(track);
+                        }
+                    }
+
+                    @Override
+                    public void noMatches() {
+                        Skript.warning("Noting found by that Audio link.");
+                    }
+
+                    @Override
+                    public void loadFailed(FriendlyException exception) {
+                        Skript.warning("Could not load Audio from the provided link.");
+                    }
+
+                });
             }
         }
 

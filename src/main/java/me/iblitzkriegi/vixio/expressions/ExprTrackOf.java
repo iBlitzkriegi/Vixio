@@ -8,7 +8,6 @@ import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.audio.AudioHandlers;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
@@ -33,7 +32,7 @@ public class ExprTrackOf extends SimpleExpression<AudioTrack> {
             return null;
         }
 
-        GuildMusicManager musicManager = AudioHandlers.getGuildAudioPlayer(guild, bot);
+        GuildMusicManager musicManager = bot.getAudioManager(guild);
         return new AudioTrack[]{musicManager.player.getPlayingTrack()};
     }
 

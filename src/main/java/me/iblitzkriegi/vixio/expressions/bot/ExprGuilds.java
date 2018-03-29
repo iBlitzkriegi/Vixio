@@ -5,7 +5,6 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.expressions.ExprGuild;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;

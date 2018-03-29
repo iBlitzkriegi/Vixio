@@ -1,6 +1,5 @@
 package me.iblitzkriegi.vixio.expressions.bot.audio;
 
-import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -9,7 +8,6 @@ import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.audio.AudioHandlers;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.audio.TrackScheduler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -38,11 +36,7 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
             return null;
         }
 
-        GuildMusicManager musicManager = AudioHandlers.getGuildAudioPlayer(guild, bot);
-        if (musicManager == null) {
-            return null;
-        }
-
+        GuildMusicManager musicManager = bot.getAudioManager(guild);
         TrackScheduler scheduler = musicManager.scheduler;
         if (scheduler.getQueue().isEmpty()) {
             return null;

@@ -11,8 +11,6 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
