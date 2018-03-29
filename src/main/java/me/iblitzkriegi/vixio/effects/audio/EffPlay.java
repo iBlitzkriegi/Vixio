@@ -56,12 +56,12 @@ public class EffPlay extends Effect {
 
                     @Override
                     public void noMatches() {
-                        Skript.warning("Noting found by that Audio link.");
+                        Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to find anything.");
                     }
 
                     @Override
                     public void loadFailed(FriendlyException exception) {
-                        Skript.warning("Could not load Audio from the provided link.");
+                        Vixio.getErrorHandler().warn("Vixio attempted to load " + track  + " but was unable to.");
                     }
 
                 });
