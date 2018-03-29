@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.events;
+package me.iblitzkriegi.vixio.events.member;
 
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
