@@ -48,6 +48,6 @@ public class EffResume extends Effect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         guild = (Expression<Guild>) exprs[1];
-        return false;
+        return true;
     }
 }
