@@ -41,8 +41,7 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        Timespan timespan = (Timespan) delta[0];
-        long position = mode == Changer.ChangeMode.SET ? (timespan.getTicks_i() * 20) * 1000 : 0;
+        long position = mode == Changer.ChangeMode.SET ? (((Timespan) delta[0]).getTicks_i() / 20) * 1000 : 0;
         for (AudioTrack track : getExpr().getAll(e)) {
             track.setPosition(position);
         }
