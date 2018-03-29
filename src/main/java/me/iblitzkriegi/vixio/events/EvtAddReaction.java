@@ -19,7 +19,6 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
 
-    // TODO: add event values
     static {
         BaseEvent.register("reaction added", EvtAddReaction.class, ReactionAddEvent.class,
                 "reaction add[ed]")
@@ -81,7 +80,6 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, Emote.class, new Getter<Emote, ReactionAddEvent>() {
             @Override
             public Emote get(ReactionAddEvent event) {
-            // return emotes.isEmpty() ? new Emoji(EmojiParser.parseToUnicode(":" + emote + ":")) : new Emoji(emotes.iterator().next());
                 if (event.getJDAEvent().getReactionEmote().getEmote() == null) {
                     Emote emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
                     return emoji;

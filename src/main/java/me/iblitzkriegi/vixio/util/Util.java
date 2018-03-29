@@ -157,6 +157,9 @@ public class Util {
     }
 
     public static TextChannel bindChannel(Bot bot, TextChannel textChannel) {
+        if (bot == null || textChannel == null) {
+            return null;
+        }
         if (!(textChannel.getJDA() == bot.getJDA())) {
             return bot.getJDA().getTextChannelById(textChannel.getId());
         } else {
