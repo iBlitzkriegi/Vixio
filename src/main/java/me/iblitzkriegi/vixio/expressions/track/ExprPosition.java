@@ -1,9 +1,11 @@
 package me.iblitzkriegi.vixio.expressions.track;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.util.Timespan;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
+import org.bukkit.event.Event;
 
 public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan> {
     static {
@@ -28,4 +30,22 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
     public Class<? extends Timespan> getReturnType() {
         return Timespan.class;
     }
+
+    @Override
+    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
+        if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)) {
+            return new Class[]{Timespan.class};
+        }
+        return super.acceptChange(mode);
+    }
+
+    @Override
+    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+        Timespan timespan = (Timespan) delta[0];
+        long position = mode == Changer.ChangeMode.SET ? (timespan.getTicks_i() * 20) * 1000 : 0;
+        for (AudioTrack track : getExpr().getAll(e)) {
+            track.setPosition(position);
+        }
+    }
+
 }
