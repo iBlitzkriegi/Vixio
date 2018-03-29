@@ -33,10 +33,9 @@ public class EffBanUser extends Effect {
     @Override
     protected void execute(Event e) {
         Object[] users = this.users.getAll(e);
-        Guild guild = this.guild.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (bot == null || users == null || guild == null || bindedGuild == null) {
+        Guild guild = Util.bindGuild(bot, this.guild.getSingle(e));
+        if (bot == null || users == null || guild == null) {
             return;
         }
 
@@ -46,7 +45,7 @@ public class EffBanUser extends Effect {
         for (Object object : users) {
             String user = object instanceof User ? ((User) object).getId() : (String) object;
             try {
-                bindedGuild.getController().ban(user, days.intValue(), reason).queue();
+                guild.getController().ban(user, days.intValue(), reason).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "ban user", x.getPermission().getName());
             } catch (IllegalArgumentException x) {
