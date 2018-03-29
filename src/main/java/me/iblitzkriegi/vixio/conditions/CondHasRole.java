@@ -11,7 +11,8 @@ import org.bukkit.event.Event;
 
 public class CondHasRole extends Condition {
     static {
-        Vixio.getInstance().registerCondition(CondHasRole.class, "%member% has %role%")
+        Vixio.getInstance().registerCondition(CondHasRole.class,
+                "%member% has %role%", "%member% (does[n[']t]|does not) have %role%")
                 .setName("Member has role")
                 .setDesc("Check if a member has a specific role")
                 .setExample("if event-member has role with id \"216516161651\"");
@@ -19,6 +20,7 @@ public class CondHasRole extends Condition {
 
     private Expression<Member> member;
     private Expression<Role> role;
+    private boolean not;
 
     @Override
     public boolean check(Event e) {
@@ -27,18 +29,19 @@ public class CondHasRole extends Condition {
         if (role == null || member == null) {
             return false;
         }
-        return member.getRoles().contains(role);
+        return not == member.getRoles().contains(role);
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return member.toString(e, debug) + " has " + role.toString(e, debug);
+        return member.toString(e, debug) + (not ? " has " : " does not have ") + role.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         member = (Expression<Member>) exprs[0];
         role = (Expression<Role>) exprs[1];
+        not = matchedPattern == 0;
         return true;
     }
 }
