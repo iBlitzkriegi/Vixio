@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 public class EffResume extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffResume.class,
-                "resume [the] (track|song) %bot/string% is playing [in %guild%]")
+                "resume [the] (track|song|music) %bot/string% (is playing|has paused) [in %guild%]")
                 .setName("Resume track")
                 .setDesc("Resume a track a bot is playing in a guild, if the bot is not paused then nothing happens")
                 .setExample("resume the track event-bot is playing");
