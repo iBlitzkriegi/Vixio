@@ -9,9 +9,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import org.bukkit.event.Event;
 
-public class CondHasRole extends Condition {
+public class CondMemberRole extends Condition {
     static {
-        Vixio.getInstance().registerCondition(CondHasRole.class,
+        Vixio.getInstance().registerCondition(CondMemberRole.class,
                 "%member% has %role%", "%member% (does[n[']t]|does not) have %role%")
                 .setName("Member has role")
                 .setDesc("Check if a member has a specific role")
