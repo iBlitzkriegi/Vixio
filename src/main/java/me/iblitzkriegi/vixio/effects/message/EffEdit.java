@@ -30,8 +30,8 @@ public class EffEdit extends Effect {
 
     @Override
     protected void execute(Event e) {
-        String content = this.content.getSingle(e);
-        if (content == null || content.trim().isEmpty()) {
+        Message content = Util.messageFrom(this.content.getSingle(e));
+        if (content == null) {
             return;
         }
 
