@@ -3,7 +3,6 @@ package me.iblitzkriegi.vixio.expressions;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.IMentionable;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -27,7 +26,7 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     @Override
     public String convert(Object o) {
         if (o instanceof Channel) {
-            if (!(((Channel) o).getType() == ChannelType.TEXT)) {
+            if (!(o instanceof TextChannel)) {
                 return null;
             }
             return ((TextChannel) o).getAsMention();

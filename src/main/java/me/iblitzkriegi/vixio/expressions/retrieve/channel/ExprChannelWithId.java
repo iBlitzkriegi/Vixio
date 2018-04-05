@@ -54,7 +54,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
 
             }
 
-            return new Channel[]{channels.get(0)};
+            return channels.isEmpty() ? null : new Channel[]{channels.get(0)};
         }
 
         Guild guild = this.guild.getSingle(e);
@@ -67,7 +67,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
             channels.add(voiceChannel);
         }
 
-        return new Channel[]{channels.get(0)};
+        return channels.isEmpty() ? null : new Channel[]{channels.get(0)};
     }
 
     @Override
