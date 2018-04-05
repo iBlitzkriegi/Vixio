@@ -14,6 +14,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.event.Event;
 
 public class EffPlay extends Effect {
@@ -41,30 +42,32 @@ public class EffPlay extends Effect {
             if (track instanceof AudioTrack) {
                 musicManager.scheduler.queue((AudioTrack) track);
             } else if (track instanceof String) {
-                Vixio.getInstance().playerManager.loadItemOrdered(musicManager, (String) track, new AudioLoadResultHandler() {
-                    @Override
-                    public void trackLoaded(AudioTrack track) {
-                        musicManager.scheduler.queue(track);
-                    }
-
-                    @Override
-                    public void playlistLoaded(AudioPlaylist playlist) {
-                        for (AudioTrack track : playlist.getTracks()) {
+                if (!(StringUtils.startsWithIgnoreCase((String) track, "ytsearch:") || StringUtils.startsWithIgnoreCase((String) track, "scsearch:"))) {
+                    Vixio.getInstance().playerManager.loadItemOrdered(musicManager, (String) track, new AudioLoadResultHandler() {
+                        @Override
+                        public void trackLoaded(AudioTrack track) {
                             musicManager.scheduler.queue(track);
                         }
-                    }
 
-                    @Override
-                    public void noMatches() {
-                        Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to find anything.");
-                    }
+                        @Override
+                        public void playlistLoaded(AudioPlaylist playlist) {
+                            for (AudioTrack track : playlist.getTracks()) {
+                                musicManager.scheduler.queue(track);
+                            }
+                        }
 
-                    @Override
-                    public void loadFailed(FriendlyException exception) {
-                        Vixio.getErrorHandler().warn("Vixio attempted to load " + track  + " but was unable to.");
-                    }
+                        @Override
+                        public void noMatches() {
+                            Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to find anything.");
+                        }
 
-                });
+                        @Override
+                        public void loadFailed(FriendlyException exception) {
+                            Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to.");
+                        }
+
+                    });
+                }
             }
         }
 
