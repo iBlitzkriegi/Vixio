@@ -80,12 +80,11 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, Emote.class, new Getter<Emote, ReactionAddEvent>() {
             @Override
             public Emote get(ReactionAddEvent event) {
-                if (event.getJDAEvent().getReactionEmote().getEmote() == null) {
-                    Emote emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
-                    return emoji;
+                net.dv8tion.jda.core.entities.Emote emote = event.getJDAEvent().getReactionEmote().getEmote();
+                if (emote == null) {
+                    return Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
                 } else {
-                    Emote emoji = Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getEmote().getName(), event.getJDAEvent().getGuild());
-                    return emoji;
+                    return new Emote(emote);
                 }
             }
         }, 0);
