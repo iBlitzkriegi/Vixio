@@ -20,6 +20,10 @@ public class Registration {
         this.syntaxes = syntaxes;
     }
 
+    public Registration(String... syntaxes) {
+        this.syntaxes = syntaxes;
+    }
+
     public Registration setExample(String s) {
         this.example = s;
         return this;
