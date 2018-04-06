@@ -5,11 +5,13 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
@@ -23,7 +25,7 @@ import org.bukkit.event.Event;
 public class ExprName extends ChangeableSimpleExpression<String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprName.class, String.class,
-                "name", "channel/guild/bot/user/role/track/category")
+                "name", "channel/guild/bot/user/role/track/category/emote")
                 .setName("Name of")
                 .setDesc("Get the name of something. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
@@ -47,6 +49,15 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             return new String[]{((Role) o).getName()};
         } else if (o instanceof AudioTrack) {
             return new String[]{((AudioTrack) o).getInfo().title};
+        } else if (o instanceof Emote) {
+            if (((Emote) o).isEmote()) {
+                return new String[]{((Emote) o).getName()};
+            } else {
+                if (EmojiParser.parseToAliases(((Emote) o).getName()) != null) {
+                    return new String[]{EmojiParser.parseToAliases(((Emote) o).getName()).replaceAll(":", "")};
+                }
+            }
+            return null;
         }
         return null;
     }
