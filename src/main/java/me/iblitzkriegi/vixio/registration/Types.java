@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.ParseContext;
+import ch.njol.skript.util.EnumUtils;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
@@ -17,6 +18,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -145,6 +147,31 @@ public class Types {
             @Override
             public String toVariableNameString(Avatar avatar) {
                 return avatar.getAvatar();
+            }
+
+        };
+
+        EnumUtils<OnlineStatus> status = new EnumUtils<>(OnlineStatus.class, "online status");
+        new SimpleType<OnlineStatus>(OnlineStatus.class, "onlinestatus", "onlinestatus") {
+
+            @Override
+            public OnlineStatus parse(String s, ParseContext pc) {
+                return status.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(OnlineStatus onlineStatus, int flags) {
+                return status.toString(onlineStatus, flags);
+            }
+
+            @Override
+            public String toVariableNameString(OnlineStatus onlineStatus) {
+                return onlineStatus.toString();
             }
 
         };

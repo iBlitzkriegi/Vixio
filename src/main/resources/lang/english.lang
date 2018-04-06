@@ -5,3 +5,9 @@ channel types:
     group: group
     category: category
     unknown: unknown
+online status:
+    online: online
+    idle: away
+    do_not_disturb: do not disturb
+    invisible: invisible
+    offline: offline
