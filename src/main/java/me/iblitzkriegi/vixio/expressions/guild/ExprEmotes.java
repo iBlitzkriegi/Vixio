@@ -14,20 +14,29 @@ import java.util.ArrayList;
 public class ExprEmotes extends SimpleExpression<Emote> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmotes.class, Emote.class,
-                "emote", "guild")
+                "[<global>] emote", "guild")
                 .setName("Emotes of guild")
                 .setDesc("Get all of the emotes a guild has added.")
                 .setExample("set {var::*} to the emotes of event-guild");
     }
 
     private Expression<Guild> guild;
+    private boolean global;
 
     @Override
     protected Emote[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
         ArrayList<Emote> emotes = new ArrayList<>();
-        for (net.dv8tion.jda.core.entities.Emote emote : guild.getEmotes()) {
-            emotes.add(new Emote(emote));
+        if (global) {
+            for (net.dv8tion.jda.core.entities.Emote emote : guild.getEmotes()) {
+                emotes.add(new Emote(emote));
+            }
+        } else {
+            for (net.dv8tion.jda.core.entities.Emote emote : guild.getEmotes()) {
+                if (emote.isManaged()) {
+                    emotes.add(new Emote(emote));
+                }
+            }
         }
 
         return emotes.toArray(new Emote[emotes.size()]);
@@ -51,6 +60,7 @@ public class ExprEmotes extends SimpleExpression<Emote> {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guild = (Expression<Guild>) exprs[0];
+        global = parseResult.regexes.size() == 0;
         return true;
     }
 }
