@@ -3,6 +3,7 @@ package me.iblitzkriegi.vixio.registration;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.ParseContext;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
@@ -29,6 +30,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 
 public class Types {
+    @SuppressWarnings("unchecked")
     public static void register() {
         new SimpleType<Channel>(Channel.class, "channel", "channels?") {
 
@@ -77,6 +79,7 @@ public class Types {
             }
 
         }.changer(new VixioChanger<Message>() {
+
             @Override
             public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
                 if (mode == ChangeMode.DELETE) {
@@ -93,7 +96,11 @@ public class Types {
                     channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
                 }
             }
-        });
+
+        }.documentation("Delete message",
+                "Delete a %message% with a specific bot",
+                "delete %message% with %bot/string%",
+                "delete event-message with \"Jewel\""));
 
         new SimpleType<Avatar>(Avatar.class, "avatar", "avatars?") {
 
