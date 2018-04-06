@@ -15,6 +15,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class Types {
     @SuppressWarnings("unchecked")
@@ -90,10 +92,19 @@ public class Types {
 
             @Override
             public void change(Message[] messages, Object[] delta, Bot bot, ChangeMode mode) {
-                // TODO - support for generic message channels (mainly for dm usage)
                 for (Message message : messages) {
-                    TextChannel channel = Util.bindChannel(bot, (TextChannel) message.getChannel());
-                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                    MessageChannel channel = Util.bindMessageChannel(bot, message.getChannel());
+                    if (channel != null) {
+                        if (message.getAuthor().getId().equalsIgnoreCase(bot.getJDA().getSelfUser().getId())) {
+                            try {
+                                channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                            } catch (PermissionException x) {
+                                Vixio.getErrorHandler().needsPerm(bot, "delete message", x.getPermission().getName());
+                            }
+                        } else {
+                            Vixio.getErrorHandler().warn("Vixio attempted to delete a message sent by another user in DM but that is impossible.");
+                        }
+                    }
                 }
             }
 

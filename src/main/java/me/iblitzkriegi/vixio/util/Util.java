@@ -21,6 +21,7 @@ import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -164,6 +165,26 @@ public class Util {
             return bot.getJDA().getTextChannelById(textChannel.getId());
         } else {
             return textChannel;
+        }
+    }
+
+    public static MessageChannel bindMessageChannel(Bot bot, MessageChannel channel) {
+        if (bot == null || channel == null) {
+            return null;
+        }
+
+        if (!(channel.getJDA() == bot.getJDA())) {
+            PrivateChannel privateChannel = bot.getJDA().getPrivateChannelById(channel.getId());
+            TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
+            if (privateChannel != null) {
+                return privateChannel;
+            } else if (textChannel != null) {
+                return textChannel;
+            }
+
+            return null;
+        } else {
+            return channel;
         }
     }
 
