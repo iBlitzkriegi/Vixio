@@ -95,14 +95,26 @@ public class Types {
                 for (Message message : messages) {
                     MessageChannel channel = Util.bindMessageChannel(bot, message.getChannel());
                     if (channel != null) {
-                        if (message.getAuthor().getId().equalsIgnoreCase(bot.getJDA().getSelfUser().getId())) {
+                        if (channel.getType() == ChannelType.PRIVATE) {
+                            if (message.getAuthor().getId().equalsIgnoreCase(bot.getJDA().getSelfUser().getId())) {
+                                if (Util.botIsConnected(bot, message.getJDA())) {
+                                    message.delete().queue();
+                                } else {
+                                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                                }
+                            } else {
+                                Vixio.getErrorHandler().warn("Vixio attempted to delete a message sent by another user in DM but that is impossible.");
+                            }
+                        } else if (channel.getType() == ChannelType.TEXT) {
                             try {
-                                channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                                if (Util.botIsConnected(bot, message.getJDA())) {
+                                    message.delete().queue();
+                                } else {
+                                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                                }
                             } catch (PermissionException x) {
                                 Vixio.getErrorHandler().needsPerm(bot, "delete message", x.getPermission().getName());
                             }
-                        } else {
-                            Vixio.getErrorHandler().warn("Vixio attempted to delete a message sent by another user in DM but that is impossible.");
                         }
                     }
                 }
