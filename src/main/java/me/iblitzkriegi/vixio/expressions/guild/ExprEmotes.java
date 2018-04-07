@@ -1,3 +1,4 @@
+
 package me.iblitzkriegi.vixio.expressions.guild;
 
 import ch.njol.skript.lang.Expression;
@@ -64,3 +65,4 @@ public class ExprEmotes extends SimpleExpression<Emote> {
         return true;
     }
 }
+
