@@ -20,6 +20,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.PrivateChannel;
@@ -320,6 +321,23 @@ public class Util {
                 newArray[i] = (T) objects[i];
             }
             return newArray;
+        }
+        return null;
+    }
+
+    public static Member getMemberFromUser(User input) {
+        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        for (JDA jda : jdaInstances) {
+            if (jda.getSelfUser().getId().equalsIgnoreCase(input.getId())) {
+                return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
+            }
+            User user = jda.getUserById(input.getId());
+            if (user != null) {
+                List<Guild> guildList = jda.getMutualGuilds(user);
+                if (guildList != null) {
+                    return guildList.iterator().next().getMember(user);
+                }
+            }
         }
         return null;
     }
