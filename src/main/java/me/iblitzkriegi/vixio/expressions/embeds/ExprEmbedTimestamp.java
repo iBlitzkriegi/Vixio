@@ -7,6 +7,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.Date;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
 import org.bukkit.event.Event;
 
@@ -39,8 +40,7 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
 
     @Override
     public Date convert(final EmbedBuilder embed) {
-        return embed.isEmpty() || embed.build().getTimestamp() == null ? null :
-                new Date(embed.build().getTimestamp().toInstant().getEpochSecond() * 1000);
+        return embed.isEmpty() || embed.build().getTimestamp() == null ? null : Util.getDate(embed.build().getTimestamp());
     }
 
     @Override
