@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.util;
 
+import ch.njol.skript.util.Date;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
@@ -31,6 +32,7 @@ import org.bukkit.Bukkit;
 import java.awt.Color;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -302,6 +304,10 @@ public class Util {
             String emote = input.contains(":") ? input : ":" + input + ":";
             return new Emote(EmojiParser.parseToUnicode(emote));
         }
+    }
+
+    public static Date getDate(OffsetDateTime date) {
+        return new Date(date.toInstant().getEpochSecond() * 1000);
     }
 
     public static <T> T[] convertedArray(Class<T> convertTo, Object... objects) {
