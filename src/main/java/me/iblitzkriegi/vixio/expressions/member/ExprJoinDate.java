@@ -13,9 +13,9 @@ import net.dv8tion.jda.core.entities.User;
 public class ExprJoinDate extends SimplePropertyExpression<Object, Date> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprJoinDate.class, Date.class, "[<discord>] join date", "members/users")
-                .setName("Join Date of Member")
+                .setName("Join Date")
                 .setDesc("Get the date a member joined a guild.")
-                .setExample("reply with \"%join date of event-member%\"");
+                .setExample("reply with \"%discord join date of event-user%\"");
     }
 
     private boolean discord;
@@ -31,7 +31,7 @@ public class ExprJoinDate extends SimplePropertyExpression<Object, Date> {
             Member member = (Member) object;
             return discord ? Util.getDate(member.getJoinDate()) : Util.getDate(member.getUser().getCreationTime());
         } else if (object instanceof User) {
-            return discord ? null : Util.getDate(((User)object).getCreationTime());
+            return discord ? null : Util.getDate(((User) object).getCreationTime());
         }
         return null;
     }
