@@ -7,7 +7,7 @@ channel types:
     unknown: unknown
 online status:
     online: online
-    idle: away
+    idle: idle, away
     do_not_disturb: do not disturb
     invisible: invisible
     offline: offline
