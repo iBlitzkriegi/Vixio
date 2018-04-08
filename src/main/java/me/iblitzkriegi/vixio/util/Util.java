@@ -131,6 +131,9 @@ public class Util {
     }
 
     public static Message messageFrom(Object input) {
+        if (input == null) {
+            return null;
+        }
         if (input instanceof Message) {
             return (Message) input;
         } else if (input instanceof String) {

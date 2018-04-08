@@ -110,26 +110,7 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
 
                 }
             }
-
-
         }
-//        AccountManager manager = bot.getSelfUser().getManager();
-//        String file = (String) delta[0];
-//        if (!custom) {
-//            return;
-//        }
-//        if (file.contains("www") || file.contains("http")) {
-//            try {
-//                URL url = new URL(file);
-//                URLConnection connection = url.openConnection();
-//                connection.setRequestProperty("User-Agent", "Mozilla/4.77");
-//                manager.setAvatar(Icon.from(connection.getInputStream())).queue();
-//
-//
-//            } catch (IOException e1) {
-//            }
-//
-//        }
 
     }
 }
