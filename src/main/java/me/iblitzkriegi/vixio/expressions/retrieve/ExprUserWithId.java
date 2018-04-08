@@ -29,9 +29,13 @@ public class ExprUserWithId extends SimpleExpression<User> {
         }
 
         for (Bot bot : Vixio.getInstance().botHashMap.values()) {
-            User user = bot.getJDA().getUserById(id);
-            if (user != null) {
-                return new User[]{user};
+            try {
+                User user = bot.getJDA().getUserById(id);
+                if (user != null) {
+                    return new User[]{user};
+                }
+            } catch (NumberFormatException x) {
+
             }
         }
         return null;

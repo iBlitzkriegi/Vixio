@@ -16,6 +16,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,6 +77,8 @@ public class EffUploadFile extends AsyncEffect {
                 Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot but the URL was invalid/was unable to be loaded.");
             } catch (IOException e1) {
                 Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot with a URL but was unable to load the URL.");
+            } catch (IllegalArgumentException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to upload a file that was larger than 8mb!");
             }
         } else {
             File toSend = new File(file);

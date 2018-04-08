@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio;
 
+import me.iblitzkriegi.vixio.expressions.ExprLastError;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ public class ErrorHandler {
     public void log(String toLog) {
         if (theUserCares) {
             logger.info(toLog);
+            ExprLastError.lastError = toLog;
         }
     }
 
