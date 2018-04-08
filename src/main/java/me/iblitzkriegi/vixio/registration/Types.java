@@ -439,7 +439,7 @@ public class Types {
             }
         };
 
-        new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ? builders?") {
+        new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ?(builder)?s?") {
             public EmbedBuilder parse(String s, ParseContext pc) {
                 return null;
             }
@@ -585,30 +585,6 @@ public class Types {
             @Override
             public String toVariableNameString(MessageEmbed.AuthorInfo author) {
                 return author.getName();
-            }
-
-        };
-
-        new SimpleType<MessageEmbed>(MessageEmbed.class, "embed", "message ?embeds?") {
-
-            @Override
-            public MessageEmbed parse(String s, ParseContext pc) {
-                return null;
-            }
-
-            @Override
-            public boolean canParse(ParseContext pc) {
-                return false;
-            }
-
-            @Override
-            public String toString(MessageEmbed message, int arg1) {
-                return "embed";
-            }
-
-            @Override
-            public String toVariableNameString(MessageEmbed message) {
-                return "embed";
             }
 
         };
