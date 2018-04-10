@@ -1,15 +1,21 @@
 package me.iblitzkriegi.vixio.expressions.guild;
 
-import ch.njol.skript.expressions.base.SimplePropertyExpression;
+import ch.njol.skript.classes.Changer;
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
+import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.exceptions.PermissionException;
+import org.bukkit.event.Event;
 
-public class ExprRegionOfGuild extends SimplePropertyExpression<Guild, String> {
-
-    //TODO: this needs to return the Region, not a string once lang files are understood
-
+public class ExprRegionOfGuild extends ChangeableSimplePropertyExpression<Guild, Region> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, String.class,
+        Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, Region.class,
                 "region", "guilds")
                 .setName("Region of Guilds")
                 .setDesc("Get the current region of Guilds.")
@@ -22,12 +28,40 @@ public class ExprRegionOfGuild extends SimplePropertyExpression<Guild, String> {
     }
 
     @Override
-    public String convert(Guild guild) {
-        return guild.getRegion().getName();
+    public Region convert(Guild guild) {
+        return guild.getRegion();
     }
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Region> getReturnType() {
+        return Region.class;
+    }
+
+    @Override
+    public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
+        setExpr((Expression<? extends Guild>) exprs[0]);
+        return true;
+    }
+
+    @Override
+    public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
+        if (mode == Changer.ChangeMode.SET) {
+            return new Class[]{Region.class};
+        }
+        return null;
+    }
+
+    @Override
+    public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
+        for (Guild guild : getExpr().getAll(e)) {
+            Guild bindedGuild = Util.bindGuild(bot, guild);
+            if (bindedGuild != null) {
+                try {
+                    bindedGuild.getManager().setRegion((Region) delta[0]).queue();
+                } catch (PermissionException x) {
+                    Vixio.getErrorHandler().needsPerm(bot, "set region", x.getPermission().getName());
+                }
+            }
+        }
     }
 }

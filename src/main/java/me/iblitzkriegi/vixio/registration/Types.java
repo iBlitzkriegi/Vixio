@@ -19,6 +19,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -56,6 +57,31 @@ public class Types {
             @Override
             public String toVariableNameString(Channel channel) {
                 return channel.getId();
+            }
+
+        };
+
+        EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
+        new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
+
+            @Override
+            public Region parse(String s, ParseContext pc) {
+                return regionEnumUtils.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Region region, int arg1) {
+                return regionEnumUtils.toString(region, arg1);
+            }
+
+            @Override
+            public String toVariableNameString(Region region) {
+                return region.toString();
             }
 
         };

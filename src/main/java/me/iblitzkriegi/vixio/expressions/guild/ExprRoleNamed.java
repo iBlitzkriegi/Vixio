@@ -15,7 +15,7 @@ import java.util.List;
 public class ExprRoleNamed extends SimpleExpression<Role> {
     static {
         Vixio.getInstance().registerExpression(ExprRoleNamed.class, Role.class, ExpressionType.SIMPLE,
-                "role named %string% [in %guild%]")
+                "role[s] named %string% [in %guild%]")
                 .setName("Role named")
                 .setDesc("Get a role via it's name in a Guild! The guild may be assumed in events.")
                 .setExample("role[s] named \"Owner\"");

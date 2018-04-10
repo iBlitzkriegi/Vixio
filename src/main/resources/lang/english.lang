@@ -11,3 +11,19 @@ online status:
     do_not_disturb: do not disturb
     invisible: invisible
     offline: offline
+regions:
+    japan: japan
+    amsterdam: amsterdam
+    brazil: brazil
+    eu_west: europe west, eu west
+    eu_central: central europe, eu central
+    frankfurt: frankfurt
+    hong_kong: hong kong
+    london: london
+    russia: russia
+    singapore: singapore
+    sydney: sydney
+    us_west: united states west, us west
+    us_central: united states central, central united states, us central
+    us_south: united states south, us south
+    us_east: united states east, us east
