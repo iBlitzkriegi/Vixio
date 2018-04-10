@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import ch.njol.skript.conditions.base.PropertyCondition;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -146,6 +147,17 @@ public class Vixio extends JavaPlugin {
         Skript.registerExpression(c, returnType, ExpressionType.PROPERTY, patterns);
         Registration registration = new Registration(c, patterns);
         expressions.add(registration);
+        return registration;
+    }
+
+    public Registration registerPropertyCondition(final Class<? extends PropertyCondition> c, final String property, final String fromType) {
+        PropertyCondition.register(c, property, fromType);
+        String[] patterns = {
+                "%" + fromType + "% (is|are) " + property,
+                "%" + fromType + "% (isn't|is not|aren't|are not) " + property
+        };
+        Registration registration = new Registration(c, patterns);
+        conditions.add(registration);
         return registration;
     }
 
