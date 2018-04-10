@@ -31,7 +31,11 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
             return null;
         }
 
-        return new Role[]{guild.getRoleById(id)};
+        try {
+            return new Role[]{guild.getRoleById(id)};
+        } catch (NumberFormatException x) {
+            return null;
+        }
     }
 
     @Override
