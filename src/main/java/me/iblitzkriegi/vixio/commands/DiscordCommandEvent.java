@@ -39,6 +39,19 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
         this.bot = bot;
     }
 
+    public DiscordCommandEvent(DiscordCommandEvent original) {
+        this(original.getPrefix(),
+                original.getUsedAlias(),
+                original.getCommand(),
+                original.getGuild(),
+                original.getMessageChannel(),
+                original.getChannel(),
+                original.getMessage(),
+                original.getUser(),
+                original.getMember(),
+                original.getBot());
+    }
+
     public DiscordCommand getCommand() {
         return command;
     }
