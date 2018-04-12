@@ -10,15 +10,16 @@ import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.embed.Title;
+import me.iblitzkriegi.vixio.util.skript.EnumMapper;
 import me.iblitzkriegi.vixio.util.skript.SimpleType;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
@@ -35,6 +36,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class Types {
+
     @SuppressWarnings("unchecked")
     public static void register() {
         new SimpleType<Channel>(Channel.class, "channel", "channels?") {
@@ -755,6 +757,27 @@ public class Types {
             @Override
             public String toVariableNameString(ChannelType type) {
                 return type.name();
+            }
+
+        };
+
+        final EnumMapper<Permission> PERMISSION_PARSER = new EnumMapper<>(Permission.class);
+
+        new SimpleType<Permission>(Permission.class, "permission", "permissions?") {
+
+            @Override
+            public String toString(Permission permisson, int flags) {
+                return PERMISSION_PARSER.toString(permisson, flags);
+            }
+
+            @Override
+            public Permission parse(String str, ParseContext pc) {
+                return PERMISSION_PARSER.parse(str);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
             }
 
         };

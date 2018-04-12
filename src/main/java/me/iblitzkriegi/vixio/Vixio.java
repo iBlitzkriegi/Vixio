@@ -18,6 +18,8 @@ import me.iblitzkriegi.vixio.registration.TypeConverters;
 import me.iblitzkriegi.vixio.registration.Types;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
+import me.iblitzkriegi.vixio.util.enums.SearchableSite;
+import me.iblitzkriegi.vixio.util.skript.EnumMapper;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,6 +33,9 @@ import java.util.List;
  * Created by Blitz on 7/22/2017.
  */
 public class Vixio extends JavaPlugin {
+
+    public static EnumMapper<SearchableSite> enumutils = new EnumMapper<>(SearchableSite.class);
+
     // Instances \\
     public static Vixio instance;
     public static SkriptAddon addonInstance;
