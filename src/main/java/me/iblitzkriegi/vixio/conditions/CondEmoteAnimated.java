@@ -15,7 +15,7 @@ public class CondEmoteAnimated extends Condition implements EasyMultiple<Emote, 
                 "%emotes% (is|are) animated", "%emotes% (is|are)(n't| not) animated")
                 .setName("Emote is Animated")
                 .setDesc("Check if a emote is animated.")
-                .setExample("if event-emote is animed:");
+                .setExample("if event-emote is animated:");
     }
 
     private Expression<Emote> emotes;
