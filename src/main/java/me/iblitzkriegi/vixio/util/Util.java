@@ -1,6 +1,9 @@
 package me.iblitzkriegi.vixio.util;
 
+import ch.njol.skript.lang.Variable;
+import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.util.Date;
+import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
@@ -13,6 +16,7 @@ import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.enums.SearchableSite;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.JDA;
@@ -29,6 +33,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 
 import java.awt.Color;
 import java.lang.reflect.Array;
@@ -172,6 +177,31 @@ public class Util {
         } else {
             return textChannel;
         }
+    }
+
+    public static void storeInVar(VariableString name, Variable<?> varExpr, Object input, Event event) {
+        if (varExpr.isList()) {
+            SkriptUtil.setList(name.toString(event), event, varExpr.isLocal(), input);
+        } else {
+            Variables.setVariable(name.toString(event), input, event, varExpr.isLocal());
+        }
+
+    }
+
+    public static MessageChannel getMessageChannel(Bot bot, Object o) {
+        if (bot == null || o == null) {
+            return null;
+        }
+        if (o instanceof User) {
+            User bindedUser = bindUser(bot, (User) o);
+            try {
+                return bindedUser.openPrivateChannel().complete(true);
+            } catch (RateLimitedException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to open a private channel but was ratelimited.");
+                return null;
+            }
+        }
+        return bindMessageChannel(bot, (MessageChannel) o);
     }
 
     public static MessageChannel bindMessageChannel(Bot bot, MessageChannel channel) {

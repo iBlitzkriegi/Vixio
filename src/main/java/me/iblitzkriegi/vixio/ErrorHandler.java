@@ -42,15 +42,7 @@ public class ErrorHandler {
         log("Vixio tried to run the action " + action + " with bot " + bot.getName() + " but was missing the " + permission + " permission!");
     }
 
-    public void botCantFind(Bot bot, String object, String id) {
-        log("Vixio tried to find a " + object + " with the id " + id + " with the bot " + bot.getName() + " but the bot was unable to find it.");
-    }
-
-    public void cantFindBot(String bot, String action) {
-        log("Vixio tried to find a bot by " + bot + " to " + action + " but could not find the bot.");
-    }
-
-    public void noBotProvided(String action) {
-        Vixio.getErrorHandler().warn("Vixio attempted to " + action + " but no bot was provided!");
+    public void cantOpenPrivateChannel() {
+        log("Vixio attempted to open a private channel but was ratelimited.");
     }
 }
