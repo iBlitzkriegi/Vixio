@@ -16,7 +16,6 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +23,7 @@ import java.net.URLConnection;
 
 public class EffUploadFile extends AsyncEffect {
     static {
-        Vixio.getInstance().registerEffect(EffUploadFile.class, "(send|upload) %string% [with (message|embed) %-message/string%] to %user/channel% [with %bot/string%]")
+        Vixio.getInstance().registerEffect(EffUploadFile.class, "upload %string% [with (message|embed) %-message/string%] to %user/channel% [with %bot/string%]")
                 .setName("Send file")
                 .setDesc("Send a file to a channel or a user. You can input a direct URL to the file or a direct path to the local image/file.")
                 .setExample("send \"https://i.imgflip.com/27yc0d.jpg\" to event-channel");
