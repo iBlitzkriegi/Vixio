@@ -59,11 +59,7 @@ public class EffReplyWith extends Effect {
                     } else {
                         try {
                             Message resultingMessage = channel.sendMessage(message).complete(true);
-                            if (varExpr.isList()) {
-                                SkriptUtil.setList(varName.toString(e), e, varExpr.isLocal(), resultingMessage);
-                            } else {
-                                Variables.setVariable(varName.toString(e), resultingMessage, e, varExpr.isLocal());
-                            }
+                            Util.storeInVar(varName, varExpr, resultingMessage, e);
                         } catch (RateLimitedException e1) {
                             Vixio.getErrorHandler().warn("Vixio tried to reply with and store a message but was rate limited");
                         }

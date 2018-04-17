@@ -90,11 +90,7 @@ public class EffCreateChannelBuilder extends AsyncEffect {
             return;
         }
 
-        if (varExpr.isList()) {
-            SkriptUtil.setList(varName.toString(e), e, varExpr.isLocal(), channel);
-        } else {
-            Variables.setVariable(varName.toString(e), channel, e, varExpr.isLocal());
-        }
+        Util.storeInVar(varName, varExpr, channel, e);
 
     }
 
