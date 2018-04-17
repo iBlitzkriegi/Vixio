@@ -16,12 +16,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
+import java.time.Instant;
 
 public class EffLogin extends AsyncEffect {
 
     static {
         Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% (using|with) [the] name %string%")
-                .setName("Connect effect")
+                .setName("Login Effect")
                 .setDesc("Login to a bot account with a token")
                 .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
@@ -65,6 +66,7 @@ public class EffLogin extends AsyncEffect {
         api.addEventListener(new CommandListener());
         Bot bot = new Bot(name, api);
 
+        bot.setLoginTime(Instant.now().getEpochSecond());
         Vixio.getInstance().botHashMap.put(api, bot);
         Vixio.getInstance().botNameHashMap.put(name, bot);
     }

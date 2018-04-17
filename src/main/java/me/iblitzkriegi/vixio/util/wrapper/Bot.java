@@ -14,6 +14,7 @@ public class Bot implements IMentionable, ISnowflake {
     private JDA jda;
     private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();
+    private long uptime;
 
     public Bot(String name, JDA jda) {
         this.name = name;
@@ -26,6 +27,10 @@ public class Bot implements IMentionable, ISnowflake {
         this.selfUser = jda.getSelfUser();
         this.name = null;
 
+    }
+
+    public void setLoginTime(long uptime) {
+        this.uptime = uptime;
     }
 
     // Getters \\
@@ -50,7 +55,10 @@ public class Bot implements IMentionable, ISnowflake {
         }
 
         return guildMusicManagerMap.get(guild);
+    }
 
+    public long getUptime() {
+        return uptime;
     }
 
     @Override

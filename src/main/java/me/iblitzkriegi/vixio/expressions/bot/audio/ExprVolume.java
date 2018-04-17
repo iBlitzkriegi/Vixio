@@ -7,16 +7,12 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import jdk.nashorn.internal.runtime.NumberToString;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
-import me.iblitzkriegi.vixio.util.audio.TrackScheduler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
-
-import java.util.List;
 
 public class ExprVolume extends SimpleExpression<Number> {
     static {
