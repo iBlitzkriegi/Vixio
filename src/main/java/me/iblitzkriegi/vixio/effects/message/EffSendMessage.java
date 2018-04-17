@@ -19,7 +19,7 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends AsyncEffect {
     static {
-        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %users/channels% with %bot/string% [and store (it|the message) in %-objects%]")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %users/channels% [with %bot/string%] [and store (it|the message) in %-objects%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a message to a text channel.")
                 .setExample("send \"hey\" to channel with id \"156156165165156\" as \"Jewel\"", "send \"hey\" to channel with id \"156156165165156\" as \"Jewel\" and store it in {_message}")
@@ -34,7 +34,6 @@ public class EffSendMessage extends AsyncEffect {
 
     @Override
     protected void execute(Event e) {
-        System.out.println("in execute");
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         Message message = Util.messageFrom(this.message.getSingle(e));
         if (bot == null || message == null) {
@@ -42,7 +41,6 @@ public class EffSendMessage extends AsyncEffect {
         }
         try {
             for (Object source : sources.getArray(e)) {
-                System.out.println(source);
                 MessageChannel messageChannel = Util.getMessageChannel(bot, source);
                 if (messageChannel != null) {
                     if (varExpr == null) {
@@ -67,7 +65,6 @@ public class EffSendMessage extends AsyncEffect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        System.out.println("hey");
         message = (Expression<Object>) exprs[0];
         sources = (Expression<Object>) exprs[1];
         bot = (Expression<Object>) exprs[2];
