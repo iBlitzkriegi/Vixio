@@ -17,6 +17,7 @@ import org.bukkit.event.Event;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -85,12 +86,11 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
                 if (bot != null) {
                     String url = (String) delta[0];
                     AccountManager manager = bot.getSelfUser().getManager();
-                    if (url.contains("www") || url.contains("http") || url.contains("https")) {
+                    if (Util.isLink(url)) {
                         Util.async(() -> {
                             try {
-                                URLConnection connection = new URL((String) delta[0]).openConnection();
-                                connection.setRequestProperty("User-Agent", "Mozilla/4.77");
-                                manager.setAvatar(Icon.from(connection.getInputStream())).queue();
+                                InputStream inputStream = Util.getInputStreamFromUrl(url);
+                                manager.setAvatar(Icon.from(inputStream)).queue();
                             } catch (MalformedURLException e1) {
                                 Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot but the URL was invalid/was unable to be loaded.");
                             } catch (IOException e1) {

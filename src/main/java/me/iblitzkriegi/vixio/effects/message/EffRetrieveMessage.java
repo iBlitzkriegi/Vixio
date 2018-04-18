@@ -2,13 +2,10 @@ package me.iblitzkriegi.vixio.effects.message;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.Variable;
-import ch.njol.skript.lang.VariableString;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
-import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;

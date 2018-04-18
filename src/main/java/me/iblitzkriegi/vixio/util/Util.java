@@ -36,8 +36,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import java.awt.Color;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -356,6 +361,29 @@ public class Util {
             return newArray;
         }
         return null;
+    }
+    
+    public static boolean isLink(String url) {
+        return url.contains("www") || url.contains("http") || url.contains("https");
+    }
+
+    public static InputStream getInputStreamFromUrl(String url) {
+        try {
+            URLConnection connection = new URL(url).openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/4.77");
+            return connection.getInputStream();
+        } catch (MalformedURLException e1) {
+            Vixio.getErrorHandler().warn("Vixio attempted to load a url but the URL was invalid/was unable to be loaded.");
+        } catch (IOException e1) {
+            Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot with a URL but was unable to load the URL.");
+        } catch (IllegalArgumentException x) {
+            Vixio.getErrorHandler().warn("Vixio attempted to upload a file that was larger than 8mb!");
+        }
+        return null;
+    }
+
+    public static String getExtensionFromUrl(String s) {
+        return s.substring(s.lastIndexOf("."));
     }
 
     public static Member getMemberFromUser(Object object) {

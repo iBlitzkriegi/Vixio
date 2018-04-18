@@ -16,10 +16,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.InputStream;
 
 public class EffUploadFile extends AsyncEffect {
     static {
@@ -60,25 +57,16 @@ public class EffUploadFile extends AsyncEffect {
         if (bindedChannel == null) {
             return;
         }
-        if (file.contains("www") || file.contains("http") || file.contains("https")) {
-            try {
-                URLConnection connection = new URL(file).openConnection();
-                connection.setRequestProperty("User-Agent", "Mozilla/4.77");
-                String extension = file.substring(file.lastIndexOf("."));
-                if (message != null) {
-                    bindedChannel.sendMessage(message)
-                            .addFile(connection.getInputStream(), "file." + extension).queue();
-                } else {
-                    bindedChannel.sendFile(connection.getInputStream(), "file." + extension).queue();
-                }
-
-            } catch (MalformedURLException e1) {
-                Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot but the URL was invalid/was unable to be loaded.");
-            } catch (IOException e1) {
-                Vixio.getErrorHandler().warn("Vixio attempted to set the avatar of a bot with a URL but was unable to load the URL.");
-            } catch (IllegalArgumentException x) {
-                Vixio.getErrorHandler().warn("Vixio attempted to upload a file that was larger than 8mb!");
+        if (Util.isLink(file)) {
+            InputStream inputStream = Util.getInputStreamFromUrl(file);
+            String extension = Util.getExtensionFromUrl(file);
+            if (message != null) {
+                bindedChannel.sendMessage(message)
+                        .addFile(inputStream, "file." + extension).queue();
+            } else {
+                bindedChannel.sendFile(inputStream, "file." + extension).queue();
             }
+
         } else {
             File toSend = new File(file);
             if (toSend.exists()) {
