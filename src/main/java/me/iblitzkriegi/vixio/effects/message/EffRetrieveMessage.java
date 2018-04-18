@@ -28,8 +28,6 @@ public class EffRetrieveMessage extends AsyncEffect {
 
     private Expression<String> id;
     private Expression<Object> channel;
-    private Variable<?> varExpr;
-    private VariableString varName;
 
     @Override
     protected void execute(Event e) {
@@ -71,10 +69,6 @@ public class EffRetrieveMessage extends AsyncEffect {
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
         channel = (Expression<Object>) expressions[1];
-        if (expressions[2] instanceof Variable) {
-            varExpr = (Variable<?>) expressions[2];
-            varName = SkriptUtil.getVariableName(varExpr);
-        }
         return true;
     }
 
