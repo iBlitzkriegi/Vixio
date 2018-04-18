@@ -358,17 +358,20 @@ public class Util {
         return null;
     }
 
-    public static Member getMemberFromUser(User input) {
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        for (JDA jda : jdaInstances) {
-            if (jda.getSelfUser().getId().equalsIgnoreCase(input.getId())) {
-                return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
-            }
-            User user = jda.getUserById(input.getId());
-            if (user != null) {
-                List<Guild> guildList = jda.getMutualGuilds(user);
-                if (guildList != null) {
-                    return guildList.iterator().next().getMember(user);
+    public static Member getMemberFromUser(Object object) {
+        if (object instanceof User) {
+            User user = (User) object;
+            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+            for (JDA jda : jdaInstances) {
+                if (jda.getSelfUser().getId().equalsIgnoreCase(user.getId())) {
+                    return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
+                }
+                User searchedUser = jda.getUserById(user.getId());
+                if (user != null) {
+                    List<Guild> guildList = jda.getMutualGuilds(searchedUser);
+                    if (guildList != null) {
+                        return guildList.iterator().next().getMember(searchedUser);
+                    }
                 }
             }
         }
