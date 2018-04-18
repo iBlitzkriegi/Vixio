@@ -27,3 +27,8 @@ regions:
     us_central: united states central, central united states, us central
     us_south: united states south, us south
     us_east: united states east, us east
+gametypes:
+    default: playing
+    streaming: streaming
+    listening: listening
+    watching: watching

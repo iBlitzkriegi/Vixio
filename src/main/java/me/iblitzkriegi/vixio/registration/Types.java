@@ -22,6 +22,7 @@ import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -87,7 +88,7 @@ public class Types {
         );
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
-        new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
+        new SimpleType<Region>(Region.class, "serverregion", "serverregion") {
 
             @Override
             public Region parse(String s, ParseContext pc) {
@@ -96,7 +97,7 @@ public class Types {
 
             @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return true;
             }
 
             @Override
@@ -107,6 +108,31 @@ public class Types {
             @Override
             public String toVariableNameString(Region region) {
                 return region.toString();
+            }
+
+        };
+
+        EnumUtils<Game.GameType> gameEnumUtils = new EnumUtils<>(Game.GameType.class, "gametypes");
+        new SimpleType<Game.GameType>(Game.GameType.class, "gametype", "gametype") {
+
+            @Override
+            public Game.GameType parse(String s, ParseContext pc) {
+                return gameEnumUtils.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(Game.GameType gameType, int arg1) {
+                return gameEnumUtils.toString(gameType, arg1);
+            }
+
+            @Override
+            public String toVariableNameString(Game.GameType gameType) {
+                return gameType.toString();
             }
 
         };
