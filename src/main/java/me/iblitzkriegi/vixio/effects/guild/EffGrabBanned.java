@@ -11,6 +11,8 @@ import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
+import java.util.List;
+
 public class EffGrabBanned extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffGrabBanned.class, "(retrieve|grab) [the] (bans|ban list) of %guild%")
@@ -29,7 +31,10 @@ public class EffGrabBanned extends AsyncEffect {
         if (guild != null) {
             try {
                 ExprBanned.lastRetrievedBanList = null;
-                ExprBanned.lastRetrievedBanList = guild.getBanList().complete(true);
+                List<Guild.Ban> banList = guild.getBanList().complete(true);
+                if (banList != null) {
+                    ExprBanned.lastRetrievedBanList = banList;
+                }
             } catch (RateLimitedException e1) {
                 Vixio.getErrorHandler().warn("Vixio attempted to get the ban list of a guild but was ratelimited.");
             } catch (PermissionException x) {

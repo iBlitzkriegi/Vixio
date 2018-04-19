@@ -28,9 +28,11 @@ public class ExprBanned extends SimpleExpression<User> {
 
     @Override
     protected User[] get(Event e) {
+        if (lastRetrievedBanList == null) {
+            return null;
+        }
         ArrayList<User> users = new ArrayList<>();
         for (Guild.Ban ban : lastRetrievedBanList) {
-            System.out.println();
             users.add(ban.getUser());
         }
         return users.toArray(new User[0]);
