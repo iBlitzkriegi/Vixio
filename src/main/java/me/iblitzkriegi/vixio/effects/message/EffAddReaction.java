@@ -32,20 +32,22 @@ public class EffAddReaction extends Effect {
         }
 
         for (Message message : this.message.getAll(e)) {
-            Message bindedMessage = Util.bindMessage(bot, message);
-            if (bindedMessage != null) {
+            Util.bindMessage(bot, message).queue(bindedMessage -> {
+                if (bindedMessage == null) {
+                    return;
+                }
                 for (Emote emote : this.emote.getAll(e)) {
                     try {
                         if (emote.isEmote()) {
                             message.addReaction(emote.getEmote()).queue();
                         } else {
-                            message.addReaction(emote.getAsMention()).queue();
+                            message.addReaction(emote.getName()).queue();
                         }
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, "add reaction", x.getPermission().getName());
                     }
                 }
-            }
+            });
         }
     }
 

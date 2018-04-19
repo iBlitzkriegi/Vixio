@@ -38,11 +38,11 @@ public class EffEdit extends Effect {
         for (Message message : messages.getAll(e)) {
             Bot bot = Util.botFromID(message.getAuthor().getId());
             if (bot != null) {
-                Message bindedMessage = Util.bindMessage(bot, Util.messageFrom(message));
-                if (bindedMessage != null) {
-                    bindedMessage.editMessage(content).queue();
-                }
-
+                Util.bindMessage(bot, message).queue(bindedMessage -> {
+                    if (bindedMessage != null) {
+                        bindedMessage.editMessage(content).queue();
+                    }
+                });
             }
 
         }
