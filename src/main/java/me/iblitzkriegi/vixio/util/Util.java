@@ -32,6 +32,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.requests.RestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -229,17 +230,13 @@ public class Util {
         }
     }
 
-    public static Message bindMessage(Bot bot, Message message) {
+    public static RestAction<Message> bindMessage(Bot bot, Message message) {
         if (!(bot.getJDA() == message.getJDA())) {
-            try {
-                return bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId()).complete(true);
-            } catch (RateLimitedException e) {
-
-            }
+            return bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId());
         } else {
-            return message;
+            return new RestAction.EmptyRestAction<>(bot.getJDA(), message);
         }
-        return null;
+
     }
 
     public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
