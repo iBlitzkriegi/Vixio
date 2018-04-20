@@ -14,6 +14,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -25,7 +26,7 @@ import org.bukkit.event.Event;
 public class ExprName extends ChangeableSimpleExpression<String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprName.class, String.class,
-                "name", "channel/guild/bot/user/role/track/category/emote")
+                "name", "channel/guild/bot/user/role/track/category/emote/field")
                 .setName("Name of")
                 .setDesc("Get the name of something. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
@@ -58,6 +59,8 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                 }
             }
             return null;
+        } else if (o instanceof MessageEmbed.Field) {
+            return new String[]{((MessageEmbed.Field)o).getName()};
         }
         return null;
     }
