@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.bot.audio;
+package me.iblitzkriegi.vixio.expressions.audio;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;

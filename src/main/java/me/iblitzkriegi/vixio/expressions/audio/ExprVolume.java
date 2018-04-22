@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.bot.audio;
+package me.iblitzkriegi.vixio.expressions.audio;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.lang.Expression;
@@ -10,27 +10,24 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
-import me.iblitzkriegi.vixio.util.audio.TrackScheduler;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.event.Event;
 
-import java.util.List;
-
-public class ExprQueue extends SimpleExpression<AudioTrack> {
+public class ExprVolume extends SimpleExpression<Number> {
     static {
-        Vixio.getInstance().registerExpression(ExprQueue.class, AudioTrack.class, ExpressionType.SIMPLE,
-                "queue of %bot/string% [in %guild%]")
-                .setName("Queue of bot")
-                .setDesc("Get all the tracks a bot currently has queued up for a guild.")
-                .setExample("set {var::*} to queue of event-bot in event-guild");
+        Vixio.getInstance().registerExpression(ExprVolume.class, AudioTrack.class, ExpressionType.SIMPLE,
+                "volume of %bot/string% [in %guild%]")
+                .setName("Volume of bot")
+                .setDesc("Get the volume a bot is set to in a guild. Can be set to a number that is between 0 and 150. This can also be reset which sets the volume to 150. Anything over 150 is ignored and the volume is set to 150.")
+                .setExample("set {var::*} to volume of event-bot in event-guild");
     }
 
     private Expression<Object> bot;
     private Expression<Guild> guild;
 
     @Override
-    protected AudioTrack[] get(Event e) {
+    protected Number[] get(Event e) {
         Guild guild = this.guild.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (guild == null || bot == null) {
@@ -38,13 +35,7 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
         }
 
         GuildMusicManager musicManager = bot.getAudioManager(guild);
-        TrackScheduler scheduler = musicManager.scheduler;
-        if (scheduler.getQueue().isEmpty()) {
-            return null;
-        }
-
-        List<AudioTrack> tracks = scheduler.getQueue();
-        return tracks.toArray(new AudioTrack[tracks.size()]);
+        return new Number[]{musicManager.player.getVolume()};
     }
 
     @Override
@@ -53,13 +44,13 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
     }
 
     @Override
-    public Class<? extends AudioTrack> getReturnType() {
-        return AudioTrack.class;
+    public Class<? extends Number> getReturnType() {
+        return Number.class;
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "queue of " +  bot.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "volume of " +  bot.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
     @Override
@@ -71,8 +62,8 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
 
     @Override
     public Class<?>[] acceptChange(Changer.ChangeMode mode) {
-        if (mode == Changer.ChangeMode.RESET) {
-            return new Class[0];
+        if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET) {
+            return new Class[]{Number.class};
         }
 
         return super.acceptChange(mode);
@@ -82,7 +73,8 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (bot != null) {
-            bot.getAudioManager(this.guild.getSingle(e)).scheduler.resetPlayer();
+            int volume = mode == Changer.ChangeMode.SET ? ((Number)delta[0]).intValue() : 100;
+            bot.getAudioManager(this.guild.getSingle(e)).player.setVolume(volume);
         }
     }
 
