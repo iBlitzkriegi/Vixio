@@ -38,4 +38,5 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
     public Class<? extends Game.GameType> getReturnType() {
         return Game.GameType.class;
     }
+
 }

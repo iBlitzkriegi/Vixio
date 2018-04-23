@@ -14,7 +14,7 @@ public class EffMarkGametype extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffMarkGametype.class, "mark %bot/string% as %gametype% [to] [with title] %string% [(and|on|with|at) url %-string%]")
                 .setName("Mark Bot as Gametype")
-                .setDesc("Set a bot's game to a certain gametype. If the ")
+                .setDesc("Set a bot's game to a certain gametype. This can be: streaming/watching/playing/listening. For streaming you must include a valid twitch URL to stream to and a title.")
                 .setExample("mark event-bot as streaming with title \"Wow!\" and url \"https://www.twitch.tv/blitz_xox\"");
     }
 
