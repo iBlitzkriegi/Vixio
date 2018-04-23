@@ -71,6 +71,9 @@ public class Bot implements IMentionable, ISnowflake {
         return selfUser.getIdLong();
     }
 
+    public HashMap<Guild, GuildMusicManager> getGuildMusicManagerMap() {
+        return guildMusicManagerMap;
+    }
 
     @Override
     public String toString() {
