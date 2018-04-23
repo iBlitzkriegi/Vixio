@@ -27,7 +27,7 @@ public class ExprChannelPinned extends SimpleExpression<Message> {
 
     @Override
     protected Message[] get(Event e) {
-        if (pinnedMessages == null) {
+        if (pinnedMessages == null || pinnedMessages.isEmpty()) {
             return null;
         }
         return pinnedMessages.toArray(new Message[pinnedMessages.size()]);
