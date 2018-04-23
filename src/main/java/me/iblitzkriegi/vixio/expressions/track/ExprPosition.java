@@ -5,7 +5,15 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.util.Timespan;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.events.base.TrackEvent;
+import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+
+import java.util.Set;
 
 public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan> {
     static {
@@ -41,10 +49,20 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        long position = mode == Changer.ChangeMode.SET ? (((Timespan) delta[0]).getTicks_i() / 20) * 1000 : 0;
-        for (AudioTrack track : getExpr().getAll(e)) {
-            track.setPosition(position);
-        }
+        Util.async(() -> {
+            long position = mode == Changer.ChangeMode.SET ? (((Timespan) delta[0]).getTicks_i() / 20) * 1000 : 0;
+            for (AudioTrack track : getExpr().getAll(e)) {
+                track.setPosition(position);
+                for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+                    Bot bot = Util.botFrom(jda);
+                    for (Guild guild : bot.getGuildMusicManagerMap().keySet()) {
+                        if (bot.getAudioManager(guild).player.getPlayingTrack().equals(track)) {
+                            Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.SEEK, bot, guild, track));
+                        }
+                    }
+                }
+            }
+        });
     }
 
 }
