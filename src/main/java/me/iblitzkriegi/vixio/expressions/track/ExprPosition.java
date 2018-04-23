@@ -13,8 +13,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
-import java.util.Set;
-
 public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprPosition.class, Timespan.class,
@@ -49,20 +47,22 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        Util.async(() -> {
-            long position = mode == Changer.ChangeMode.SET ? (((Timespan) delta[0]).getTicks_i() / 20) * 1000 : 0;
-            for (AudioTrack track : getExpr().getAll(e)) {
-                track.setPosition(position);
+        long position = mode == Changer.ChangeMode.SET ? (((Timespan) delta[0]).getTicks_i() / 20) * 1000 : 0;
+        for (AudioTrack track : getExpr().getAll(e)) {
+            track.setPosition(position);
+            Util.async(() -> {
                 for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
                     Bot bot = Util.botFrom(jda);
                     for (Guild guild : bot.getGuildMusicManagerMap().keySet()) {
-                        if (bot.getAudioManager(guild).player.getPlayingTrack().equals(track)) {
-                            Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.SEEK, bot, guild, track));
+                        if (bot.getAudioManager(guild).player.getPlayingTrack() == track) {
+                            Util.sync(() -> {
+                                Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.SEEK, bot, guild, track));
+                            });
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
 }

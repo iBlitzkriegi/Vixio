@@ -392,7 +392,7 @@ public class Util {
                     return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
                 }
                 User searchedUser = jda.getUserById(user.getId());
-                if (user != null) {
+                if (searchedUser != null) {
                     List<Guild> guildList = jda.getMutualGuilds(searchedUser);
                     if (guildList != null) {
                         return guildList.iterator().next().getMember(searchedUser);
