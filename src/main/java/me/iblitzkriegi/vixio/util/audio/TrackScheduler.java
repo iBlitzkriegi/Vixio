@@ -36,7 +36,6 @@ public class TrackScheduler extends AudioEventAdapter {
         if (endReason.mayStartNext) {
             nextTrack();
         }
-
         MusicStorage musicStorage = Vixio.getInstance().musicStorage.get(player);
         if (musicStorage != null) {
             Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.END, musicStorage.getBot(), musicStorage.getGuild(), track));

@@ -39,7 +39,7 @@ public class TrackEvent extends SimpleBukkitEvent{
 
     public enum TrackState {
 
-        PAUSE, PLAY, START, END
+        PAUSE, PLAY, START, END, SEEK
 
     }
 
