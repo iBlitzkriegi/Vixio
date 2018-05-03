@@ -26,6 +26,7 @@ import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
@@ -63,7 +64,33 @@ public class Types {
                 return channel.getId();
             }
 
-        };
+        }.changer(new VixioChanger<Channel>() {
+                    @Override
+                    public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
+                        if (mode == ChangeMode.DELETE) {
+                            return new Class[0];
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    public void change(Channel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
+                        for (Channel channel : channels) {
+                            Channel bindedChannel = Util.bindChannel(bot, channel);
+                            if (bindedChannel != null) {
+                                try {
+                                    bindedChannel.delete().queue();
+                                } catch (PermissionException x) {
+                                    Vixio.getErrorHandler().needsPerm(bot, "delete channel", x.getPermission().getName());
+                                }
+                            }
+                        }
+                    }
+                }.documentation(
+                "Delete Channel",
+                "Delete a channel with a specific bot",
+                "delete %channel% with %bot/string%")
+        );
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
         new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
@@ -75,12 +102,37 @@ public class Types {
 
             @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return true;
             }
 
             @Override
             public String toString(Region region, int arg1) {
                 return regionEnumUtils.toString(region, arg1);
+            }
+
+        };
+
+        EnumUtils<Game.GameType> gameEnumUtils = new EnumUtils<>(Game.GameType.class, "gametypes");
+        new SimpleType<Game.GameType>(Game.GameType.class, "gametype", "gametype") {
+
+            @Override
+            public Game.GameType parse(String s, ParseContext pc) {
+                return gameEnumUtils.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(Game.GameType gameType, int arg1) {
+                return gameEnumUtils.toString(gameType, arg1);
+            }
+
+            @Override
+            public String toVariableNameString(Game.GameType gameType) {
+                return gameType.toString();
             }
 
         };
