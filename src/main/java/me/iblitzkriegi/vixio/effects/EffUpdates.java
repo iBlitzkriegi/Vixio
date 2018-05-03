@@ -12,10 +12,10 @@ import org.bukkit.event.Event;
 public class EffUpdates extends Effect {
 
 	static {
-		Vixio.getInstance().registerEffect(EffUpdates.class, "<pause|resume> updates for %messages%")
+		Vixio.getInstance().registerEffect(EffUpdates.class, "<pause|resume> updates (for|to) %messages%")
 				.setName("Updates")
 				.setDesc("Pauses or resumes update's to a message's data. For example, if updates are paused" +
-						"and a new reaction is added to the paused messages, the message will still show" +
+						"and a new reaction is added to the paused message, the message will still show" +
 						"as if it doesn't have that reaction.")
 				.setExample("on guild message receive:",
 						"\tpause updates for event-message"

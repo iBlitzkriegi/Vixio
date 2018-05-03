@@ -10,6 +10,7 @@ import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -58,7 +59,9 @@ public class EffReplyWith extends Effect {
                     } else {
                         try {
                             Message resultingMessage = channel.sendMessage(message).complete(true);
-                            Util.storeInVar(varName, varExpr, resultingMessage, e);
+                            if (resultingMessage != null) {
+                                Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
+                            }
                         } catch (RateLimitedException e1) {
                             Vixio.getErrorHandler().warn("Vixio tried to reply with and store a message but was rate limited");
                         }

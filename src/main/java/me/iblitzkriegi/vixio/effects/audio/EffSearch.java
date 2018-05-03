@@ -23,6 +23,7 @@ public class EffSearch extends AsyncEffect {
 
     static {
         Vixio.getInstance().registerEffect(EffSearch.class, "search %searchablesite% for %strings% [and store the results in %-objects%]")
+				.setUserFacing("search (youtube|soundcloud) for %strings% [and store the results in %listvariable%]")
                 .setName("Search Audio")
                 .setDesc("Lets you search various music sites for a query. You can either access the results via the search results expression, or store them in a variable.")
                 .setExample("on join:",
@@ -41,8 +42,8 @@ public class EffSearch extends AsyncEffect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         site = (Expression<SearchableSite>) exprs[0];
         queries = (Expression<String>) exprs[1];
-        if (exprs[1] != null) {
-            Expression<?> expr = exprs[1];
+        if (exprs[2] != null) {
+            Expression<?> expr = exprs[2];
             if (expr instanceof Variable) {
                 Variable<?> varExpr = (Variable<?>) expr;
                 if (varExpr.isList()) {

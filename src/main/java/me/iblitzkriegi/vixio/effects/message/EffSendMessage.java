@@ -6,6 +6,7 @@ import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
@@ -46,7 +47,9 @@ public class EffSendMessage extends AsyncEffect {
                         messageChannel.sendMessage(message).queue();
                     } else {
                         Message resultingMessage = messageChannel.sendMessage(message).complete(true);
-                        Util.storeInVar(varName, varExpr, resultingMessage, e);
+                        if (resultingMessage != null) {
+                            Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
+                        }
                     }
                 }
             }
