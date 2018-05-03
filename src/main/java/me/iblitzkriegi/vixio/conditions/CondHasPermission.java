@@ -41,6 +41,9 @@ public class CondHasPermission extends Condition {
 	public boolean check(Event e) {
 		Member member = this.member.getSingle(e);
 		Permission permission = this.permisson.getSingle(e);
+		if (permission == null || member == null) {
+			return false;
+		}
 		return isNegated() != member.hasPermission(permission);
 	}
 
