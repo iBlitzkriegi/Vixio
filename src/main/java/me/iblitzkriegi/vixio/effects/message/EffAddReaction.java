@@ -5,6 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
@@ -20,7 +21,7 @@ public class EffAddReaction extends Effect {
                 .setExample("add reaction \"smile\" to event-message with \"Jewel\"");
     }
 
-    private Expression<Message> message;
+    private Expression<UpdatingMessage> message;
     private Expression<Emote> emote;
     private Expression<Object> bot;
 
@@ -31,9 +32,9 @@ public class EffAddReaction extends Effect {
             return;
         }
 
-        for (Message message : this.message.getAll(e)) {
-            Util.bindMessage(bot, message).queue(bindedMessage -> {
-                if (bindedMessage == null) {
+        for (Message message : UpdatingMessage.convert(this.message.getAll(e))) {
+            Util.bindMessage(bot, message).queue(boundMessage -> {
+                if (boundMessage == null) {
                     return;
                 }
                 for (Emote emote : this.emote.getAll(e)) {
@@ -59,7 +60,7 @@ public class EffAddReaction extends Effect {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         emote = (Expression<Emote>) exprs[0];
-        message = (Expression<Message>) exprs[1];
+        message = (Expression<UpdatingMessage>) exprs[1];
         bot = (Expression<Object>) exprs[2];
         return true;
     }

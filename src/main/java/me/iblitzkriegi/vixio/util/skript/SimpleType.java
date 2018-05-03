@@ -36,7 +36,9 @@ public abstract class SimpleType<T> extends ClassInfo<T> implements Changer<T> {
 
     public abstract String toString(T arg0, int arg1);
 
-    public abstract String toVariableNameString(T arg0);
+    public String toVariableNameString(T arg0) {
+        return toString(arg0, 0);
+    }
 
     public T parse(String arg0, ParseContext arg1) {
         return null;

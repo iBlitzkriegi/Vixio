@@ -6,6 +6,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
@@ -48,10 +49,10 @@ public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent>
                 return event.getJDAEvent().getMember();
             }
         }, 0);
-        EventValues.registerEventValue(GuildMessageReceiveEvent.class, Message.class, new Getter<Message, GuildMessageReceiveEvent>() {
+        EventValues.registerEventValue(GuildMessageReceiveEvent.class, UpdatingMessage.class, new Getter<UpdatingMessage, GuildMessageReceiveEvent>() {
             @Override
-            public Message get(GuildMessageReceiveEvent event) {
-                return event.getJDAEvent().getMessage();
+            public UpdatingMessage get(GuildMessageReceiveEvent event) {
+                return UpdatingMessage.from(event.getJDAEvent().getMessage());
             }
         }, 0);
         EventValues.registerEventValue(GuildMessageReceiveEvent.class, Guild.class, new Getter<Guild, GuildMessageReceiveEvent>() {

@@ -6,6 +6,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
+import me.iblitzkriegi.vixio.util.MessageUpdater;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.AccountType;
@@ -16,13 +17,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 import javax.security.auth.login.LoginException;
-import java.time.Instant;
 
 public class EffLogin extends AsyncEffect {
 
     static {
         Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% (using|with) [the] name %string%")
-                .setName("Login Effect")
+                .setName("Connect effect")
                 .setDesc("Login to a bot account with a token")
                 .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
     }
@@ -64,9 +64,9 @@ public class EffLogin extends AsyncEffect {
         }
 
         api.addEventListener(new CommandListener());
+        api.addEventListener(new MessageUpdater());
         Bot bot = new Bot(name, api);
 
-        bot.setLoginTime(Instant.now().getEpochSecond());
         Vixio.getInstance().botHashMap.put(api, bot);
         Vixio.getInstance().botNameHashMap.put(name, bot);
     }

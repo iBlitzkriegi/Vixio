@@ -7,6 +7,7 @@ import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
@@ -31,10 +32,10 @@ public class EvtPrivateMessage extends BaseEvent<PrivateMessageReceivedEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(PrivateMessageEvent.class, Message.class, new Getter<Message, PrivateMessageEvent>() {
+        EventValues.registerEventValue(PrivateMessageEvent.class, UpdatingMessage.class, new Getter<UpdatingMessage, PrivateMessageEvent>() {
             @Override
-            public Message get(PrivateMessageEvent event) {
-                return event.getJDAEvent().getMessage();
+            public UpdatingMessage get(PrivateMessageEvent event) {
+                return UpdatingMessage.from(event.getJDAEvent().getMessage());
             }
         }, 0);
 

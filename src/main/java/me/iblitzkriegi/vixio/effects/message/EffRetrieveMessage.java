@@ -5,12 +5,14 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
@@ -29,32 +31,35 @@ public class EffRetrieveMessage extends AsyncEffect {
     @Override
     protected void execute(Event e) {
         ExprLastRetrievedMessage.lastRetrievedMessage = null;
+
         String id = this.id.getSingle(e);
         Object input = this.channel.getSingle(e);
 
         if (id == null || id.isEmpty() || input == null) {
             return;
         }
-        if (!(input instanceof Channel || input instanceof User)) {
+        if (!(input instanceof MessageChannel || input instanceof User)) {
             return;
         }
+
         MessageChannel messageChannel = null;
         try {
-            messageChannel = input instanceof Channel ? (MessageChannel) input : ((User) input).openPrivateChannel().complete(true);
+            messageChannel = input instanceof MessageChannel ? (MessageChannel) input : ((User) input).openPrivateChannel().complete(true);
         } catch (RateLimitedException x) {
             Vixio.getErrorHandler().warn("Vixio attempted to open a private channel but was ratelimited.");
         }
-        if (messageChannel.getType() == ChannelType.VOICE) {
-            return;
+
+        if (messageChannel != null) {
+            try {
+                Message message = messageChannel.getMessageById(id).complete(true);
+                ExprLastRetrievedMessage.lastRetrievedMessage = UpdatingMessage.from(message);
+            } catch (RateLimitedException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message but was ratelimited.");
+            } catch (NumberFormatException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message with a ID but the input was not a number");
+            }
         }
-        try {
-            Message message = messageChannel.getMessageById(id).complete(true);
-            ExprLastRetrievedMessage.lastRetrievedMessage = message;
-        } catch (RateLimitedException x) {
-            Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message but was ratelimited.");
-        } catch (NumberFormatException x) {
-            Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message with a ID but the input was not a number");
-        }
+
     }
 
     @Override

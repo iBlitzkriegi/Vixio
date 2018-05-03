@@ -10,10 +10,8 @@ import org.bukkit.event.Event;
 public class EvtDiscordCommand extends SkriptEvent {
 
     static {
-
         Vixio.getInstance().registerEvent("vixio command event", EvtDiscordCommand.class, DiscordCommandEvent.class,
                 "vixio command [%-string%]");
-
     }
 
     private String command;

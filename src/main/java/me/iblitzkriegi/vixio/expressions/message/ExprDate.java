@@ -3,25 +3,26 @@ package me.iblitzkriegi.vixio.expressions.message;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.util.Date;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.entities.Message;
 
-public class ExprDate extends SimplePropertyExpression<Message, Date> {
+public class ExprDate extends SimplePropertyExpression<UpdatingMessage, Date> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprDate.class, Date.class, "(date|creation date)", "messages")
-                .setName("Create Date of Message")
+        Vixio.getInstance().registerPropertyExpression(ExprDate.class, Date.class, "date", "messages")
+                .setName("Date of Message")
                 .setDesc("Get the time a message was sent.")
-                .setExample("reply with \"%creation date of event-message%\"");
+                .setExample("reply with \"%date of event-message%\"");
     }
 
     @Override
     protected String getPropertyName() {
-        return "(date|creation date)";
+        return "date";
     }
 
     @Override
-    public Date convert(Message message) {
-        return Util.getDate(message.getCreationTime());
+    public Date convert(UpdatingMessage m) {
+        return Util.getDate(m.getMessage().getCreationTime());
     }
 
     @Override

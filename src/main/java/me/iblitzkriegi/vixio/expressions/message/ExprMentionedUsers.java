@@ -5,6 +5,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by Blitz on 7/27/2017.
  */
-public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMultiple<Message, User> {
+public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMultiple<UpdatingMessage, User> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMentionedUsers.class, User.class,
@@ -25,11 +26,12 @@ public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMu
                 .setExample("set {_var::*} to event-message's mentioned users");
     }
 
-    private Expression<Message> messages;
+    private Expression<UpdatingMessage> messages;
 
     @Override
     protected User[] get(Event e) {
-        return convert(getReturnType(), messages.getAll(e), message -> {
+        return convert(getReturnType(), messages.getAll(e), msg -> {
+            Message message = UpdatingMessage.convert(msg);
             List<User> users = message.getMentionedUsers();
             return users.toArray(new User[users.size()]);
         });
@@ -51,7 +53,7 @@ public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMu
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        messages = (Expression<Message>) exprs[0];
+        messages = (Expression<UpdatingMessage>) exprs[0];
         return true;
     }
 
