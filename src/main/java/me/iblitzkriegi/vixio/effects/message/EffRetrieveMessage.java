@@ -1,43 +1,56 @@
 package me.iblitzkriegi.vixio.effects.message;
 
-import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.exceptions.ErrorResponseException;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
-/**
- * Created by Blitz on 8/19/2017.
- */
-public class EffRetrieveMessage extends Effect{
+public class EffRetrieveMessage extends AsyncEffect {
+
     static {
-        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message with id %string% from [text[-]]channel %channel%")
-            .setName("Retrieve message with id")
-            .setDesc("Get a Message via it's ID from a Guild/TextChannel")
-            .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
+        Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message [with id] %string% [(in|from) %channel%]")
+                .setName("Retrieve message with id")
+                .setDesc("Get a Message via it's ID from a Guild/TextChannel")
+                .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
     }
-    Expression<String> id;
-    Expression<TextChannel> channel;
+
+    private Expression<String> id;
+    private Expression<TextChannel> channel;
+
     @Override
-    protected void execute(Event event) {
-        if(id.getSingle(event)!=null) {
-            if (channel.getSingle(event) != null) {
-                channel.getSingle(event).getMessageById(id.getSingle(event)).queue(message -> ExprLastRetrievedMessage.lastRetrievedMessage = message);
-            } else {
-                Skript.error("You must include a TextChannel in order to retrieve the Message from it");
-            }
-        }else{
-            Skript.error("You must include a id in order to retrieve a Message");
+    protected void execute(Event e) {
+        //TODO: support dms
+        ExprLastRetrievedMessage.lastRetrievedMessage = null;
+        String id = this.id.getSingle(e);
+        Channel channel = this.channel.getSingle(e);
+
+        if (id == null || id.isEmpty() || channel == null) {
+            return;
+        }
+        if (!channel.getType().equals(ChannelType.TEXT)) {
+            return;
+        }
+
+        TextChannel textChannel = (TextChannel) channel;
+        try {
+            ExprLastRetrievedMessage.lastRetrievedMessage = textChannel.getMessageById(id).complete(true);
+        } catch (RateLimitedException | ErrorResponseException e1) {
+            e1.printStackTrace();
+            Vixio.getErrorHandler().warn("Vixio tried to retrieve a message but was rate limited");
         }
     }
 
     @Override
     public String toString(Event event, boolean b) {
-        return "retrieve message with id " + id.getSingle(event) + " from channel " + channel.getSingle(event);
+        return "retrieve message with id " + id.toString(event, b) + " from " + channel.toString(event, b);
     }
 
     @Override
@@ -46,4 +59,5 @@ public class EffRetrieveMessage extends Effect{
         channel = (Expression<TextChannel>) expressions[1];
         return true;
     }
+
 }

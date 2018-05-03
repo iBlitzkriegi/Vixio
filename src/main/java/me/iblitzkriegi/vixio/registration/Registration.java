@@ -1,8 +1,6 @@
 package me.iblitzkriegi.vixio.registration;
 
-import net.dv8tion.jda.core.events.Event;
-
-import java.util.ArrayList;
+import ch.njol.util.StringUtils;
 
 /**
  * Created by Blitz on 7/22/2017.
@@ -13,43 +11,74 @@ public class Registration {
     private String name;
     private String desc;
     private String example;
-    private Class<?> vClass;
+    private Class<?> clazz;
     private String[] syntaxes;
-    public Registration(Class<?> cls, String... syntaxes){
-        vClass = cls;
+    private String userFacing;
+
+    public Registration(Class<?> cls, String... syntaxes) {
+        clazz = cls;
         this.syntaxes = syntaxes;
     }
 
-    public Registration(Class clazz, ArrayList<String> patterns) {
-        this.syntaxes = patterns.toArray(new String[0]);
+    public Registration(String... syntaxes) {
+        this.syntaxes = syntaxes;
     }
 
-    public Registration setName(String s){
-        this.name = s;
-        return this;
-    }
-    public Registration setDesc(String s){
-        this.desc = s;
-        return this;
-    }
-    public Registration setExample(String s){
+    public Registration setExample(String s) {
         this.example = s;
         return this;
     }
-    public String getName(){
+
+    public String getName() {
         return this.name;
     }
-    public String getDesc(){
+
+    public Registration setName(String s) {
+        this.name = s;
+        return this;
+    }
+
+    public String getDesc() {
         return this.desc;
     }
-    public Class<?> getVClass(){
-        return vClass;
+
+    public Registration setDesc(String s) {
+        this.desc = s;
+        return this;
     }
-    public String[] getSyntaxes(){
+
+    public Class<?> getClazz() {
+        return clazz;
+    }
+
+    public String[] getSyntaxes() {
         return this.syntaxes;
     }
-    public String getExample(){
+
+    public String getSyntax() {
+        return this.syntaxes[0];
+    }
+
+    public String getExample() {
         return this.example;
+    }
+
+    public Registration setExample(String... s) {
+        return setExample(StringUtils.join(s, "\n"));
+    }
+
+    public String getUserFacing() {
+        return this.userFacing;
+    }
+
+    public Registration setUserFacing(String s) {
+        this.userFacing = s;
+        return this;
+    }
+
+    public Registration setUserFacing(String... patterns) {
+        this.syntaxes = patterns;
+        return this;
     }
 
 

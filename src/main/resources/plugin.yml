@@ -1,0 +1,11 @@
+name: Vixio
+description: Vixio, The Discord addon created to meet all of your Discord needs.
+main: me.iblitzkriegi.vixio.Vixio
+version: @VERSION@
+author: Blitz
+website: http://vixio.space
+depend: [Skript]
+commands:
+  vixio:
+    description: Default command for Vixio
+    usage: /<command>
