@@ -761,26 +761,8 @@ public class Types {
 
         };
 
-        final EnumMapper<Permission> PERMISSION_PARSER = new EnumMapper<>(Permission.class);
+        EnumMapper.register(Permission.class, "permission", "permissions?");
 
-        new SimpleType<Permission>(Permission.class, "permission", "permissions?") {
-
-            @Override
-            public String toString(Permission permisson, int flags) {
-                return PERMISSION_PARSER.toString(permisson, flags);
-            }
-
-            @Override
-            public Permission parse(String str, ParseContext pc) {
-                return PERMISSION_PARSER.parse(str);
-            }
-
-            @Override
-            public boolean canParse(ParseContext pc) {
-                return true;
-            }
-
-        };
 
     }
 }

@@ -34,8 +34,6 @@ import java.util.List;
  */
 public class Vixio extends JavaPlugin {
 
-    public static EnumMapper<SearchableSite> enumutils = new EnumMapper<>(SearchableSite.class);
-
     // Instances \\
     public static Vixio instance;
     public static SkriptAddon addonInstance;
