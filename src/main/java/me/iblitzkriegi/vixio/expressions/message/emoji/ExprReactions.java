@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -20,10 +21,10 @@ import org.bukkit.event.Event;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements EasyMultiple<Message, Emote> {
+public class ExprReactions extends ChangeableSimpleExpression<Emote> implements EasyMultiple<UpdatingMessage, Emote> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprEmojis.class, Emote.class,
+        Vixio.getInstance().registerPropertyExpression(ExprReactions.class, Emote.class,
                 "reactions", "messages")
                 .setName("Reactions of message")
                 .setDesc("Get the reactions of a message. Can be deleted, reset, removed and added to.")
@@ -33,11 +34,12 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements Eas
                 );
     }
 
-    private Expression<Message> messages;
+    private Expression<UpdatingMessage> messages;
 
     @Override
     protected Emote[] get(Event e) {
-        return convert(getReturnType(), messages.getAll(e), message -> {
+        return convert(getReturnType(), messages.getAll(e), msg -> {
+            Message message = UpdatingMessage.convert(msg);
             List<Emote> emojis = new ArrayList<>();
             for (MessageReaction messageReaction : message.getReactions()) {
                 String name = messageReaction.getReactionEmote().getName();
@@ -71,7 +73,7 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements Eas
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        messages = (Expression<Message>) exprs[0];
+        messages = (Expression<UpdatingMessage>) exprs[0];
         return true;
     }
 
@@ -90,7 +92,8 @@ public class ExprEmojis extends ChangeableSimpleExpression<Emote> implements Eas
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        change(messages.getAll(e), message -> {
+        change(messages.getAll(e), msg -> {
+            Message message = UpdatingMessage.convert(msg);
             TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
             //TODO: use Util#bindMessage to bind the message and remove botIsConnected checks after this
             if (channel == null) {

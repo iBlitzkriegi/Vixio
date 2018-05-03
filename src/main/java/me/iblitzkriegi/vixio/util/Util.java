@@ -133,9 +133,10 @@ public class Util {
     public static Message messageFrom(Object input) {
         if (input == null) {
             return null;
-        }
-        if (input instanceof Message) {
+        } else if (input instanceof Message) {
             return (Message) input;
+        } else if (input instanceof UpdatingMessage) {
+            return ((UpdatingMessage) input).getMessage();
         } else if (input instanceof String) {
             try {
                 return new MessageBuilder()

@@ -8,6 +8,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.embed.Title;
 import me.iblitzkriegi.vixio.util.skript.EnumMapper;
@@ -88,10 +89,10 @@ public class Types {
 
         };
 
-        new SimpleType<Message>(Message.class, "message", "messages?") {
+        new SimpleType<UpdatingMessage>(UpdatingMessage.class, "message", "messages?") {
 
             @Override
-            public Message parse(String s, ParseContext pc) {
+            public UpdatingMessage parse(String s, ParseContext pc) {
                 return null;
             }
 
@@ -101,13 +102,8 @@ public class Types {
             }
 
             @Override
-            public String toString(Message message, int arg1) {
-                return message.getContentRaw();
-            }
-
-            @Override
-            public String toVariableNameString(Message message) {
-                return message.getContentRaw();
+            public String toString(UpdatingMessage message, int arg1) {
+                return message.getMessage().getContentRaw();
             }
 
         }.changer(new VixioChanger<Message>() {

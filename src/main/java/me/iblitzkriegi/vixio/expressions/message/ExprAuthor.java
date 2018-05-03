@@ -2,10 +2,11 @@ package me.iblitzkriegi.vixio.expressions.message;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
-public class ExprAuthor extends SimplePropertyExpression<Message, User> {
+public class ExprAuthor extends SimplePropertyExpression<UpdatingMessage, User> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprAuthor.class, User.class, "author", "messages")
                 .setName("Author of Message")
@@ -19,8 +20,8 @@ public class ExprAuthor extends SimplePropertyExpression<Message, User> {
     }
 
     @Override
-    public User convert(Message o) {
-        return o.getAuthor();
+    public User convert(UpdatingMessage m) {
+        return m.getMessage().getAuthor();
     }
 
     @Override

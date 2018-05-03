@@ -6,6 +6,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
+import me.iblitzkriegi.vixio.util.MessageUpdater;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.AccountType;
@@ -63,6 +64,7 @@ public class EffLogin extends AsyncEffect {
         }
 
         api.addEventListener(new CommandListener());
+        api.addEventListener(new MessageUpdater());
         Bot bot = new Bot(name, api);
 
         Vixio.getInstance().botHashMap.put(api, bot);

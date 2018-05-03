@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -18,7 +19,7 @@ import org.bukkit.event.Event;
 /**
  * Created by Blitz on 8/19/2017.
  */
-public class ExprContent extends ChangeableSimplePropertyExpression<Message, String> implements EasyMultiple<Message, String> {
+public class ExprContent extends ChangeableSimplePropertyExpression<UpdatingMessage, String> implements EasyMultiple<UpdatingMessage, String> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprContent.class, String.class,
@@ -32,7 +33,8 @@ public class ExprContent extends ChangeableSimplePropertyExpression<Message, Str
     private boolean stripped;
 
     @Override
-    public String convert(Message message) {
+    public String convert(UpdatingMessage msg) {
+        Message message = UpdatingMessage.convert(msg);
         if (hasModifiers) {
             return stripped ? message.getContentStripped() : message.getContentDisplay();
         }
@@ -57,7 +59,7 @@ public class ExprContent extends ChangeableSimplePropertyExpression<Message, Str
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        setExpr((Expression<Message>) exprs[0]);
+        setExpr((Expression<UpdatingMessage>) exprs[0]);
         hasModifiers = parseResult.regexes.size() == 1;
         stripped = hasModifiers && parseResult.regexes.get(0).group().equals("stripped");
         return true;
@@ -66,7 +68,8 @@ public class ExprContent extends ChangeableSimplePropertyExpression<Message, Str
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) throws UnsupportedOperationException {
         //TODO: also needs a message bind
-        change(getExpr().getAll(e), message -> {
+        change(getExpr().getAll(e), msg -> {
+            Message message = UpdatingMessage.convert(msg);
             String content = mode == Changer.ChangeMode.SET ? (String) delta[0] : EmbedBuilder.ZERO_WIDTH_SPACE;
             if (message == null || !message.getAuthor().getId().equals(bot.getJDA().getSelfUser().getId())) {
                 return;
