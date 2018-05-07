@@ -6,18 +6,19 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 
 /**
  * Created by Blitz on 8/19/2017.
  */
-public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
+public class ExprLastRetrievedMessage extends SimpleExpression<UpdatingMessage> {
 
-    public static Message lastRetrievedMessage;
+    public static UpdatingMessage lastRetrievedMessage;
 
     static {
-        Vixio.getInstance().registerExpression(ExprLastRetrievedMessage.class, Message.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprLastRetrievedMessage.class, UpdatingMessage.class, ExpressionType.SIMPLE,
                 "last retrieved [discord] message")
                 .setName("Last retrieved Message")
                 .setDesc("Get the last retrieved message called from the retrieve message effect. Cleared every time the retrieve message effect is used.")
@@ -25,8 +26,8 @@ public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
     }
 
     @Override
-    protected Message[] get(Event event) {
-        return new Message[]{lastRetrievedMessage};
+    protected UpdatingMessage[] get(Event event) {
+        return new UpdatingMessage[]{lastRetrievedMessage};
     }
 
     @Override
@@ -35,8 +36,8 @@ public class ExprLastRetrievedMessage extends SimpleExpression<Message> {
     }
 
     @Override
-    public Class<? extends Message> getReturnType() {
-        return Message.class;
+    public Class<? extends UpdatingMessage> getReturnType() {
+        return UpdatingMessage.class;
     }
 
     @Override

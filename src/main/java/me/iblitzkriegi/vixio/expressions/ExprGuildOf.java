@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
@@ -25,8 +26,8 @@ public class ExprGuildOf extends SimplePropertyExpression<Object, Guild> {
     public Guild convert(Object o) {
         if (o instanceof Channel) {
             return ((Channel) o).getGuild();
-        }else if (o instanceof Message) {
-            return ((Message) o).getGuild();
+        }else if (o instanceof UpdatingMessage) {
+            return ((UpdatingMessage) o).getMessage().getGuild();
         } else if (o instanceof Emote) {
             return ((Emote) o).getGuild();
         } else if (o instanceof Role) {

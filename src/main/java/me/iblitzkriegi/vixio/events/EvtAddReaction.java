@@ -5,6 +5,7 @@ import ch.njol.skript.util.Getter;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
@@ -56,10 +57,10 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(ReactionAddEvent.class, Message.class, new Getter<Message, ReactionAddEvent>() {
+        EventValues.registerEventValue(ReactionAddEvent.class, UpdatingMessage.class, new Getter<UpdatingMessage, ReactionAddEvent>() {
             @Override
-            public Message get(ReactionAddEvent e) {
-                return e.getValue(Message.class);
+            public UpdatingMessage get(ReactionAddEvent e) {
+                return UpdatingMessage.from(e.getValue(Message.class));
             }
         }, 0);
 

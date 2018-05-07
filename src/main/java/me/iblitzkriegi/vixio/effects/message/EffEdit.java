@@ -5,6 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
@@ -25,7 +26,7 @@ public class EffEdit extends Effect {
                 );
     }
 
-    private Expression<Message> messages;
+    private Expression<UpdatingMessage> messages;
     private Expression<String> content;
 
     @Override
@@ -35,12 +36,12 @@ public class EffEdit extends Effect {
             return;
         }
 
-        for (Message message : messages.getAll(e)) {
+        for (Message message : UpdatingMessage.convert(messages.getAll(e))) {
             Bot bot = Util.botFromID(message.getAuthor().getId());
             if (bot != null) {
-                Util.bindMessage(bot, message).queue(bindedMessage -> {
-                    if (bindedMessage != null) {
-                        bindedMessage.editMessage(content).queue();
+                Util.bindMessage(bot, message).queue(boundMessage -> {
+                    if (boundMessage != null) {
+                        boundMessage.editMessage(content).queue();
                     }
                 });
             }
@@ -55,7 +56,7 @@ public class EffEdit extends Effect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        messages = (Expression<Message>) exprs[0];
+        messages = (Expression<UpdatingMessage>) exprs[0];
         content = (Expression<String>) exprs[1];
         return true;
     }

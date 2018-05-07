@@ -2,6 +2,7 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.entities.ISnowflake;
@@ -27,6 +28,8 @@ public class ExprId extends SimplePropertyExpression<Object, String> {
     public String convert(Object o) {
         if (o instanceof ISnowflake) {
             return ((ISnowflake) o).getId();
+        } else if (o instanceof UpdatingMessage) {
+            return ((UpdatingMessage) o).getMessage().getId();
         } else if (o instanceof Avatar) {
             Avatar avatar = (Avatar) o;
             return avatar.isDefault() ? avatar.getUser().getDefaultAvatarId() : avatar.getUser().getAvatarId();

@@ -13,6 +13,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
@@ -73,10 +74,10 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
                 }
                 , 0);
 
-        EventValues.registerEventValue(DiscordCommandEvent.class, Message.class, new Getter<Message, DiscordCommandEvent>() {
+        EventValues.registerEventValue(DiscordCommandEvent.class, UpdatingMessage.class, new Getter<UpdatingMessage, DiscordCommandEvent>() {
                     @Override
-                    public Message get(DiscordCommandEvent event) {
-                        return event.getMessage();
+                    public UpdatingMessage get(DiscordCommandEvent event) {
+                        return UpdatingMessage.from(event.getMessage());
                     }
                 }
                 , 0);

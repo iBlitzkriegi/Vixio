@@ -1,9 +1,15 @@
 package me.iblitzkriegi.vixio.util.skript;
 
+import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
+import me.iblitzkriegi.vixio.expressions.retrieve.ExprMember;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.Field;
@@ -47,6 +53,12 @@ public class SkriptUtil {
             }
         }
         return null;
+    }
+
+    public static Expression<Member> combineUserAndGuild(Expression<User> user, Expression<Guild> guild) {
+        ExprMember member = new ExprMember();
+        member.init(new Expression[] {user, guild}, 0, ScriptLoader.hasDelayBefore, null);
+        return member;
     }
 
     public static void setList(String name, Event e, boolean local, Object... objects) {

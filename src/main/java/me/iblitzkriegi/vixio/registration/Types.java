@@ -8,8 +8,11 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.embed.Title;
+import me.iblitzkriegi.vixio.util.enums.SearchableSite;
+import me.iblitzkriegi.vixio.util.skript.EnumMapper;
 import me.iblitzkriegi.vixio.util.skript.SimpleType;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -18,6 +21,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.Region;
 import net.dv8tion.jda.core.entities.Category;
 import net.dv8tion.jda.core.entities.Channel;
@@ -35,6 +39,7 @@ import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class Types {
+
     @SuppressWarnings("unchecked")
     public static void register() {
         new SimpleType<Channel>(Channel.class, "channel", "channels?") {
@@ -60,35 +65,35 @@ public class Types {
             }
 
         }.changer(new VixioChanger<Channel>() {
-            @Override
-            public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
-                if (mode == ChangeMode.DELETE) {
-                    return new Class[0];
-                }
-                return null;
-            }
+                    @Override
+                    public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
+                        if (mode == ChangeMode.DELETE) {
+                            return new Class[0];
+                        }
+                        return null;
+                    }
 
-            @Override
-            public void change(Channel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
-                for (Channel channel : channels) {
-                    Channel bindedChannel = Util.bindChannel(bot, channel);
-                    if (bindedChannel != null) {
-                        try {
-                            bindedChannel.delete().queue();
-                        } catch (PermissionException x) {
-                            Vixio.getErrorHandler().needsPerm(bot, "delete channel", x.getPermission().getName());
+                    @Override
+                    public void change(Channel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
+                        for (Channel channel : channels) {
+                            Channel bindedChannel = Util.bindChannel(bot, channel);
+                            if (bindedChannel != null) {
+                                try {
+                                    bindedChannel.delete().queue();
+                                } catch (PermissionException x) {
+                                    Vixio.getErrorHandler().needsPerm(bot, "delete channel", x.getPermission().getName());
+                                }
+                            }
                         }
                     }
-                }
-            }
-        }.documentation(
+                }.documentation(
                 "Delete Channel",
                 "Delete a channel with a specific bot",
                 "delete %channel% with %bot/string%")
         );
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
-        new SimpleType<Region>(Region.class, "serverregion", "serverregion") {
+        new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
 
             @Override
             public Region parse(String s, ParseContext pc) {
@@ -103,11 +108,6 @@ public class Types {
             @Override
             public String toString(Region region, int arg1) {
                 return regionEnumUtils.toString(region, arg1);
-            }
-
-            @Override
-            public String toVariableNameString(Region region) {
-                return region.toString();
             }
 
         };
@@ -137,10 +137,10 @@ public class Types {
 
         };
 
-        new SimpleType<Message>(Message.class, "message", "messages?") {
+        new SimpleType<UpdatingMessage>(UpdatingMessage.class, "message", "messages?") {
 
             @Override
-            public Message parse(String s, ParseContext pc) {
+            public UpdatingMessage parse(String s, ParseContext pc) {
                 return null;
             }
 
@@ -150,28 +150,23 @@ public class Types {
             }
 
             @Override
-            public String toString(Message message, int arg1) {
-                return message.getContentRaw();
+            public String toString(UpdatingMessage message, int arg1) {
+                return message.getMessage().getContentRaw();
             }
 
-            @Override
-            public String toVariableNameString(Message message) {
-                return message.getContentRaw();
-            }
-
-        }.changer(new VixioChanger<Message>() {
+        }.changer(new VixioChanger<UpdatingMessage>() {
 
             @Override
             public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
                 if (mode == ChangeMode.DELETE) {
-                    return new Class[]{Message.class};
+                    return new Class[0];
                 }
                 return null;
             }
 
             @Override
-            public void change(Message[] messages, Object[] delta, Bot bot, ChangeMode mode) {
-                for (Message message : messages) {
+            public void change(UpdatingMessage[] messages, Object[] delta, Bot bot, ChangeMode mode) {
+                for (Message message : UpdatingMessage.convert(messages)) {
                     MessageChannel channel = Util.bindMessageChannel(bot, message.getChannel());
                     if (channel != null) {
                         if (channel.getType() == ChannelType.PRIVATE) {
@@ -221,11 +216,6 @@ public class Types {
                 return avatar.getAvatar();
             }
 
-            @Override
-            public String toVariableNameString(Avatar avatar) {
-                return avatar.getAvatar();
-            }
-
         };
 
         EnumUtils<OnlineStatus> status = new EnumUtils<>(OnlineStatus.class, "online status");
@@ -246,11 +236,6 @@ public class Types {
                 return status.toString(onlineStatus, flags);
             }
 
-            @Override
-            public String toVariableNameString(OnlineStatus onlineStatus) {
-                return onlineStatus.toString();
-            }
-
         };
 
         new SimpleType<Emote>(Emote.class, "emote", "emotes?") {
@@ -267,11 +252,6 @@ public class Types {
 
             @Override
             public String toString(Emote emoji, int arg1) {
-                return emoji.getAsMention();
-            }
-
-            @Override
-            public String toVariableNameString(Emote emoji) {
                 return emoji.getAsMention();
             }
 
@@ -367,11 +347,6 @@ public class Types {
                 return channelBuilder.getName();
             }
 
-            @Override
-            public String toVariableNameString(ChannelBuilder channelBuilder) {
-                return channelBuilder.getName();
-            }
-
         };
 
         new SimpleType<Bot>(Bot.class, "bot", "(discord )?bots?") {
@@ -388,11 +363,6 @@ public class Types {
 
             @Override
             public String toString(Bot bot, int arg1) {
-                return bot.getName();
-            }
-
-            @Override
-            public String toVariableNameString(Bot bot) {
                 return bot.getName();
             }
 
@@ -509,11 +479,6 @@ public class Types {
                 return builder.isEmpty() ? null : builder.build().getContentRaw();
             }
 
-            @Override
-            public String toVariableNameString(MessageBuilder builder) {
-                return builder.isEmpty() ? null : builder.build().getContentRaw();
-
-            }
         };
 
         new SimpleType<EmbedBuilder>(EmbedBuilder.class, "embedbuilder", "embed ?(builder)?s?") {
@@ -531,10 +496,6 @@ public class Types {
                 return "embed";
             }
 
-            @Override
-            public String toVariableNameString(EmbedBuilder builder) {
-                return "embed";
-            }
         }.changer(new Changer<EmbedBuilder>() {
             @Override
             public Class<?>[] acceptChange(ChangeMode mode) {
@@ -563,11 +524,6 @@ public class Types {
                 return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
             }
 
-            @Override
-            public String toVariableNameString(java.awt.Color c) {
-                return "color from rgb " + c.getRed() + ", " + c.getGreen() + " and " + c.getBlue();
-            }
-
         };
 
         new SimpleType<MessageEmbed.Thumbnail>(MessageEmbed.Thumbnail.class, "thumbnail", "thumbnails?") {
@@ -584,11 +540,6 @@ public class Types {
 
             @Override
             public String toString(MessageEmbed.Thumbnail thumb, int arg1) {
-                return thumb.getUrl();
-            }
-
-            @Override
-            public String toVariableNameString(MessageEmbed.Thumbnail thumb) {
                 return thumb.getUrl();
             }
 
@@ -611,11 +562,6 @@ public class Types {
                 return image.getUrl();
             }
 
-            @Override
-            public String toVariableNameString(MessageEmbed.ImageInfo image) {
-                return image.getUrl();
-            }
-
         };
 
         new SimpleType<MessageEmbed.Footer>(MessageEmbed.Footer.class, "footer", "footers?") {
@@ -632,11 +578,6 @@ public class Types {
 
             @Override
             public String toString(MessageEmbed.Footer footer, int arg1) {
-                return footer.getText();
-            }
-
-            @Override
-            public String toVariableNameString(MessageEmbed.Footer footer) {
                 return footer.getText();
             }
 
@@ -659,11 +600,6 @@ public class Types {
                 return author.getName();
             }
 
-            @Override
-            public String toVariableNameString(MessageEmbed.AuthorInfo author) {
-                return author.getName();
-            }
-
         };
 
         new SimpleType<Title>(Title.class, "title", "titles?") {
@@ -680,11 +616,6 @@ public class Types {
 
             @Override
             public String toString(Title title, int arg1) {
-                return title.getText();
-            }
-
-            @Override
-            public String toVariableNameString(Title title) {
                 return title.getText();
             }
 
@@ -707,11 +638,6 @@ public class Types {
                 return field.getValue();
             }
 
-            @Override
-            public String toVariableNameString(MessageEmbed.Field field) {
-                return field.getValue();
-            }
-
         };
 
         new SimpleType<AudioTrack>(AudioTrack.class, "track", "tracks?") {
@@ -731,11 +657,6 @@ public class Types {
                 return track.getInfo().title;
             }
 
-            @Override
-            public String toVariableNameString(AudioTrack track) {
-                return track.getInfo().title;
-            }
-
         };
 
         new SimpleType<DiscordCommand>(DiscordCommand.class, "discordcommand", "discord ?commands?") {
@@ -752,11 +673,6 @@ public class Types {
 
             @Override
             public String toString(DiscordCommand cmd, int arg1) {
-                return cmd.getName();
-            }
-
-            @Override
-            public String toVariableNameString(DiscordCommand cmd) {
                 return cmd.getName();
             }
 
@@ -803,12 +719,12 @@ public class Types {
                 return type.name();
             }
 
-            @Override
-            public String toVariableNameString(ChannelType type) {
-                return type.name();
-            }
-
         };
+
+        EnumMapper.register(Permission.class, "permission", "permissions?");
+
+        EnumMapper.register(SearchableSite.class, "searchablesite", "searchable ?sites?");
+
 
     }
 }

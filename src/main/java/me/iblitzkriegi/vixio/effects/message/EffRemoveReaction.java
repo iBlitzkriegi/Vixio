@@ -4,6 +4,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -29,14 +30,14 @@ public class EffRemoveReaction extends AsyncEffect {
 
     private Expression<Emote> emote;
     private Expression<User> user;
-    private Expression<Message> message;
+    private Expression<UpdatingMessage> message;
     private Expression<Object> bot;
 
     @Override
     protected void execute(Event e) {
         Emote emote = this.emote.getSingle(e);
         User user = this.user.getSingle(e);
-        Message message = this.message.getSingle(e);
+        Message message = UpdatingMessage.convert(this.message.getSingle(e));
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (emote == null || user == null || message == null || bot == null) {
             return;
@@ -66,7 +67,7 @@ public class EffRemoveReaction extends AsyncEffect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         emote = (Expression<Emote>) exprs[0];
         user = (Expression<User>) exprs[1];
-        message = (Expression<Message>) exprs[2];
+        message = (Expression<UpdatingMessage>) exprs[2];
         bot = (Expression<Object>) exprs[3];
         return true;
     }

@@ -1,3 +1,5 @@
+version: 2
+
 channel types:
     text: ((text|message) channel|guild)
     voice: voice channel
