@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class ExprGuilds extends SimpleExpression<Guild> implements EasyMultiple<Bot, Guild> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprGuilds.class, Guild.class,
-                "guild", "bot")
+                "guild", "bot/string")
                 .setName("Guilds of bot")
                 .setDesc("Get all the guilds of a bot")
                 .setExample("set {var::*} to guilds of event-bot");

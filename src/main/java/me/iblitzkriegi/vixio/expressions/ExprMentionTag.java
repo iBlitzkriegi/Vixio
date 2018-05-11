@@ -14,7 +14,6 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
         Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "users/channel/members/emotes/roles")
                 .setName("Mention of")
                 .setDesc("Get the mention tag of something")
-                .setUserFacing("users/textchannels/members/emotes/roles")
                 .setExample("reply with mention tag of event-user");
     }
 

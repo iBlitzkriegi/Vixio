@@ -1,4 +1,4 @@
-version: 2
+version: 2.2-Vixio
 
 channel types:
     text: ((text|message) channel|guild)

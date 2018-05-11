@@ -74,7 +74,7 @@ public class EffChange extends Effect {
     });
 
     static {
-        Vixio.getInstance().registerEffect(EffChange.class, patterns.getPatterns());
+        Skript.getInstance().registerEffect(EffChange.class, patterns.getPatterns());
     }
 
     @SuppressWarnings("null")
