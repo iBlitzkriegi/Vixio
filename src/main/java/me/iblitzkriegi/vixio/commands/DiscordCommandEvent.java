@@ -23,10 +23,12 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
     private boolean cancelled;
     private Channel channel;
     private Bot bot;
+	private String arguments;
 
-    public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, Guild guild,
+	public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, String arguments, Guild guild,
                                MessageChannel messagechannel, Channel channel, Message message, User user,
                                Member member, Bot bot) {
+		this.arguments = arguments == null ? "" : arguments;
         this.command = command;
         this.guild = guild;
         this.user = user;
@@ -43,6 +45,7 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
         this(original.getPrefix(),
                 original.getUsedAlias(),
                 original.getCommand(),
+				original.getArguments(),
                 original.getGuild(),
                 original.getMessageChannel(),
                 original.getChannel(),
@@ -91,6 +94,18 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
     public Bot getBot() {
         return bot;
     }
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public String getArguments() {
+		return arguments;
+	}
+
+	public void setArguments(String arguments) {
+		this.arguments = arguments == null ? "" : arguments;
+	}
 
     @Override
     public boolean isCancelled() {

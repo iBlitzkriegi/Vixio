@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 public class ExprAlias extends SimpleExpression<String> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprAlias.class, String.class, ExpressionType.SIMPLE, "[the] used [usable] alias")
+		Vixio.getInstance().registerExpression(ExprAlias.class, String.class, ExpressionType.SIMPLE, "[the] used alias")
                 .setName("Alias")
                 .setDesc("Returns the used alias in a command")
                 .setExample("broadcast the used alias");
@@ -41,7 +41,7 @@ public class ExprAlias extends SimpleExpression<String> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "the used prefix";
+		return "the used alias";
     }
 
     @Override

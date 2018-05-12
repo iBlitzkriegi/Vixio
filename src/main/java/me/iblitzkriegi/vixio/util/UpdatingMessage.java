@@ -1,30 +1,23 @@
 package me.iblitzkriegi.vixio.util;
 
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.util.Kleenean;
 import ch.njol.util.Validate;
 import net.dv8tion.jda.core.entities.Message;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.messaging.Messenger;
+import net.dv8tion.jda.core.entities.impl.DataMessage;
 import org.eclipse.jdt.annotation.NonNull;
 
-import javax.annotation.Nonnull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 public class UpdatingMessage {
 
 	private static final Map<String, Message> MESSAGE_MAP = new HashMap<>();
 	// it's important to use a weakreference to prevent a memory leak here
 	private static final Map<String, WeakReference<UpdatingMessage>> UPDATING_MESSAGES = new HashMap<>();
+
+	private DataMessage dataMessage; // for built messages we don't have a real message in the map.
 
 	public static Message[] convert(UpdatingMessage[] updatingMessages) {
 		if (updatingMessages == null) {
@@ -47,13 +40,15 @@ public class UpdatingMessage {
 		return updatingMessage.getMessage();
 	}
 
-	public static UpdatingMessage from(@NonNull Message message) {
+	private UpdatingMessage(@NonNull Message message) {
 		Validate.notNull(message);
-		if (MESSAGE_MAP.get(message.getId()) == null) {
-			return new UpdatingMessage(message);
+		if (message instanceof DataMessage) { // DataMessages are from built message builders and don't have IDs
+			dataMessage = (DataMessage) message;
+		} else {
+			this.ID = message.getId();
+			MESSAGE_MAP.put(ID, message);
+			UPDATING_MESSAGES.put(ID, new WeakReference<>(this));
 		}
-		// this shouldn't ever cause an npe. something is bad if it did
-		return UPDATING_MESSAGES.get(message.getId()).get();
 	}
 
 	public static void put(String ID, Message message) {
@@ -73,11 +68,14 @@ public class UpdatingMessage {
 	private String ID;
 	private boolean paused;
 
-	private UpdatingMessage(@NonNull Message message) {
+	public static UpdatingMessage from(@NonNull Message message) {
 		Validate.notNull(message);
-		this.ID = message.getId();
-		MESSAGE_MAP.put(ID, message);
-		UPDATING_MESSAGES.put(ID, new WeakReference<>(this));
+		// DataMessages are from built message builders and don't have IDs
+		if (message instanceof DataMessage || MESSAGE_MAP.get(message.getId()) == null) {
+			return new UpdatingMessage(message);
+		}
+		// this shouldn't ever cause an npe. something is bad if it did
+		return UPDATING_MESSAGES.get(message.getId()).get();
 	}
 
 	public boolean isPaused() {
@@ -101,7 +99,7 @@ public class UpdatingMessage {
 	}
 
 	public Message getMessage() {
-		return MESSAGE_MAP.get(ID);
+		return dataMessage != null ? dataMessage : MESSAGE_MAP.get(ID);
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 public class ExprCommand extends SimpleExpression<DiscordCommand> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprCommand.class, String.class, ExpressionType.SIMPLE, "[the] used command")
+        Vixio.getInstance().registerExpression(ExprCommand.class, DiscordCommand.class, ExpressionType.SIMPLE, "[the] used command")
                 .setName("Command")
                 .setDesc("Returns the used command in a command")
                 .setExample("broadcast aliases of the used command");

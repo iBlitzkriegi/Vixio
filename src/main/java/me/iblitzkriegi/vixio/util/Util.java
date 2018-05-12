@@ -200,9 +200,9 @@ public class Util {
             return null;
         }
         if (o instanceof User) {
-            User bindedUser = bindUser(bot, (User) o);
+			User boundUser = bindUser(bot, (User) o);
             try {
-                return bindedUser.openPrivateChannel().complete(true);
+				return boundUser.openPrivateChannel().complete(true);
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to open a private channel but was ratelimited.");
                 return null;
