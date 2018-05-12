@@ -6,11 +6,15 @@ import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.config.validate.SectionValidator;
+import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.lang.util.SimpleLiteral;
 import ch.njol.skript.log.RetainingLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.registrations.Classes;
+import ch.njol.skript.util.StringMode;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.NonNullPair;
 import ch.njol.util.StringUtils;
@@ -44,7 +48,7 @@ public class DiscordCommandFactory {
             .addEntry("description", true)
             .addEntry("roles", true)
             .addEntry("aliases", true)
-            .addEntry("prefixes", false)
+			.addEntry("prefixes", true)
             .addEntry("bots", true)
             .addEntry("executable in", true)
             .addSection("trigger", false);
@@ -220,7 +224,27 @@ public class DiscordCommandFactory {
         String aliasesString = ScriptLoader.replaceOptions(node.get("aliases", ""));
         List<String> aliases = aliasesString.isEmpty() ? null : Arrays.asList(aliasesString.split(listPattern));
 
-        String[] prefixes = ScriptLoader.replaceOptions(node.get("prefixes", "")).split(listPattern);
+		List<Expression<String>> prefixes = new ArrayList<>();
+		String rawPrefixes = ScriptLoader.replaceOptions(node.get("prefixes", ""));
+		if (rawPrefixes.isEmpty()) {
+			if (command.length() == 1) {
+				prefixes.add(new SimpleLiteral<>("", false));
+			} else {
+				prefixes.add(new SimpleLiteral<>(String.valueOf(command.charAt(0)), false));
+				command = command.substring(1);
+			}
+		} else {
+			for (String prefix : rawPrefixes.split(listPattern)) {
+				if (!prefix.equals("%") && !prefix.equals("%%") && prefix.startsWith("%") && prefix.endsWith("%")) {
+					VariableString p = VariableString.newInstance(prefix, StringMode.MESSAGE);
+					if (p == null)
+						return null;
+					prefixes.add(p);
+				} else {
+					prefixes.add(new SimpleLiteral<>(prefix, false));
+				}
+			}
+		}
 
         String roleString = ScriptLoader.replaceOptions(node.get("roles", ""));
         List<String> roles = roleString.isEmpty() ? null : Arrays.asList(roleString.split(listPattern));
@@ -240,7 +264,7 @@ public class DiscordCommandFactory {
         try {
             discordCommand = new DiscordCommand(
                     node.getConfig().getFile(), command, pattern.toString(), currentArguments,
-                    Arrays.asList(prefixes), aliases, description, usage, roles, places, bots, ScriptLoader.loadItems(trigger)
+					prefixes, aliases, description, usage, roles, places, bots, ScriptLoader.loadItems(trigger)
             );
         } finally {
             this.currentArguments = null;

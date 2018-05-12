@@ -53,8 +53,8 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
         }
 
         for (Member member : members) {
-            Guild bindedGuild = Util.bindGuild(bot, member.getGuild());
-            if (bindedGuild == null) {
+			Guild boundGuild = Util.bindGuild(bot, member.getGuild());
+			if (boundGuild == null) {
                 continue;
             }
 
@@ -63,9 +63,9 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
                     if (delta[0] == null || ((String) delta[0]).isEmpty()) {
                         return;
                     }
-                    bindedGuild.getController().setNickname(member, (String) delta[0]).queue();
+					boundGuild.getController().setNickname(member, (String) delta[0]).queue();
                 } else {
-                    bindedGuild.getController().setNickname(member, null).queue();
+					boundGuild.getController().setNickname(member, null).queue();
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "nickname of", getExpr(), bot), x.getPermission().getName());

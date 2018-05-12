@@ -1,22 +1,14 @@
 package me.iblitzkriegi.vixio.commands;
 
+import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.TriggerItem;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
-import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +20,7 @@ public class DiscordCommand {
     private List<String> aliases;
     private List<String> roles;
     private List<ChannelType> executableIn;
-    private List<String> prefixes;
+	private List<Expression<String>> prefixes;
     private String description;
     private String usage;
     private String pattern;
@@ -38,9 +30,9 @@ public class DiscordCommand {
 
     private List<DiscordArgument<?>> arguments;
 
-    public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<String> prefixes,
-                          List<String> aliases, String description, String usage, List<String> roles,
-                          List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
+	public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<Expression<String>> prefixes,
+						  List<String> aliases, String description, String usage, List<String> roles,
+						  List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
         this.name = name;
         if (aliases != null) {
             aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
@@ -59,30 +51,22 @@ public class DiscordCommand {
 
     }
 
-    public boolean execute(String prefix, String alias, String args, Guild guild, MessageChannel messageChannel, Channel channel,
-                           Message message, User user, Member member, JDA jda) {
-        Bot bot = Vixio.getInstance().botHashMap.get(jda);
-        DiscordCommandEvent event = new DiscordCommandEvent(prefix, alias, this, guild, messageChannel, channel, message, user, member, bot);
-        if (args == null) {
-            args = "";
-        }
-
-
+	public boolean execute(DiscordCommandEvent event) {
         ParseLogHandler log = SkriptLogger.startParseLogHandler();
 
         try {
 
-            boolean ok = DiscordCommandFactory.getInstance().parseArguments(args, this, event);
+			boolean ok = DiscordCommandFactory.getInstance().parseArguments(event.getArguments(), this, event);
 
             if (!ok) {
                 return false;
-            } else if (!this.getExecutableIn().contains(messageChannel.getType())) {
+			} else if (!this.getExecutableIn().contains(event.getChannel().getType())) {
                 return false;
-            } else if (this.getRoles() != null && member != null) {
-                if (member.getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
+			} else if (this.getRoles() != null && event.getMember() != null) {
+				if (event.getMember().getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
                     return false;
                 }
-            } else if (bots != null && !bots.contains(bot.getName())) {
+			} else if (bots != null && !bots.contains(event.getBot().getName())) {
                 return false;
             }
 
@@ -112,7 +96,7 @@ public class DiscordCommand {
         return aliases;
     }
 
-    public List<String> getPrefixes() {
+	public List<Expression<String>> getPrefixes() {
         return prefixes;
     }
 

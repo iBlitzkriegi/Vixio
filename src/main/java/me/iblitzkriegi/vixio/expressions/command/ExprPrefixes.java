@@ -2,10 +2,12 @@ package me.iblitzkriegi.vixio.expressions.command;
 
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
+import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import org.bukkit.event.Event;
 
@@ -27,7 +29,11 @@ public class ExprPrefixes extends PropertyExpression<DiscordCommand, String> imp
 
     @Override
     public String[] get(Event e, DiscordCommand[] commands) {
-        return convert(getReturnType(), getExpr().getAll(e), c -> c.getPrefixes().toArray(new String[c.getPrefixes().size()]));
+		return convert(getReturnType(), getExpr().getAll(e), c -> c.getPrefixes().stream()
+				.filter(p -> e instanceof DiscordCommandEvent || p instanceof Literal)
+				.map(p -> p.getSingle(e))
+				.toArray(String[]::new)
+		);
     }
 
     @Override

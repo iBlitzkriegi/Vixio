@@ -725,6 +725,5 @@ public class Types {
 
         EnumMapper.register(SearchableSite.class, "searchablesite", "searchable ?sites?");
 
-
     }
 }

@@ -89,7 +89,7 @@ public abstract class SimpleType<T> extends ClassInfo<T> implements Changer<T> {
                             return SimpleType.this.toVariableNameString(arg0);
                         }
                     }));
-        } catch (Exception e) {
+		} catch (Throwable e) {
             Skript.warning("Couldn't register the type '" + name + "'. Due to: " + (e.getMessage() != null && !e.getMessage().isEmpty() ? e.getMessage() : "unknown"));
         }
 

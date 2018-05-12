@@ -3,11 +3,11 @@ package me.iblitzkriegi.vixio.registration;
 import ch.njol.skript.classes.Converter;
 import ch.njol.skript.registrations.Converters;
 import ch.njol.skript.util.Color;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 
@@ -30,12 +30,16 @@ public class TypeConverters {
         Converters.registerConverter(EmbedBuilder.class, MessageEmbed.class,
                 (Converter<EmbedBuilder, MessageEmbed>) e -> e.isEmpty() ? null : e.build()
         );
-        Converters.registerConverter(MessageBuilder.class, Message.class,
-                (Converter<MessageBuilder, Message>) builder -> builder.isEmpty() ? null : builder.build());
+		Converters.registerConverter(MessageBuilder.class, UpdatingMessage.class,
+				(Converter<MessageBuilder, UpdatingMessage>) builder -> {
+					UpdatingMessage m = builder.isEmpty() ? null : UpdatingMessage.from(builder.build());
+					System.out.println("message is " + m);
+					return m;
+				});
         Converters.registerConverter(Member.class, User.class,
                 (Converter<Member, User>) Member::getUser);
-        Converters.registerConverter(EmbedBuilder.class, Message.class,
-                (Converter<EmbedBuilder, Message>) b -> b.isEmpty() ? null : new MessageBuilder().setEmbed(b.build()).build());
+		Converters.registerConverter(EmbedBuilder.class, UpdatingMessage.class,
+				(Converter<EmbedBuilder, UpdatingMessage>) b -> b.isEmpty() ? null : UpdatingMessage.from(new MessageBuilder().setEmbed(b.build()).build()));
         Converters.registerConverter(Bot.class, User.class,
                 (Converter<Bot, User>) Bot::getSelfUser);
     }
