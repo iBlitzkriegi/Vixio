@@ -56,24 +56,29 @@ public class Documentation {
             bw.write("-=Effects=-");
             bw.newLine();
             for (Registration reg : Vixio.getInstance().effects) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                if (multipleSyntax) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("\tsyntax: {\"");
-                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        if (i + 1 == reg.getSyntaxes().length) {
-                            builder.append(reg.getSyntaxes()[i] + "\"");
-                        } else {
-                            builder.append(reg.getSyntaxes()[i] + "\",");
-                        }
-                    }
-
-                    builder.append("}");
-                    bw.write(builder.toString());
+                if (reg.getUserFacing() != null) {
+                    bw.write("\tsyntax: " + reg.getUserFacing());
                     bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntax());
-                    bw.newLine();
+                    boolean multipleSyntax = reg.getSyntaxes().length == 2;
+                    if (multipleSyntax) {
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("\tsyntax: {\"");
+                        for (int i = 0; i < reg.getSyntaxes().length; i++) {
+                            if (i + 1 == reg.getSyntaxes().length) {
+                                builder.append(reg.getSyntaxes()[i] + "\"");
+                            } else {
+                                builder.append(reg.getSyntaxes()[i] + "\",");
+                            }
+                        }
+
+                        builder.append("}");
+                        bw.write(builder.toString());
+                        bw.newLine();
+                    } else {
+                        bw.write("\tsyntax: " + reg.getSyntax());
+                        bw.newLine();
+                    }
                 }
             }
             bw.write("-=Expressions=-");
