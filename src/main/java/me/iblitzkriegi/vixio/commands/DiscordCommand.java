@@ -20,7 +20,7 @@ public class DiscordCommand {
     private List<String> aliases;
     private List<String> roles;
     private List<ChannelType> executableIn;
-	private List<Expression<String>> prefixes;
+    private List<Expression<String>> prefixes;
     private String description;
     private String usage;
     private String pattern;
@@ -30,9 +30,9 @@ public class DiscordCommand {
 
     private List<DiscordArgument<?>> arguments;
 
-	public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<Expression<String>> prefixes,
-						  List<String> aliases, String description, String usage, List<String> roles,
-						  List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
+    public DiscordCommand(File script, String name, String pattern, List<DiscordArgument<?>> arguments, List<Expression<String>> prefixes,
+                          List<String> aliases, String description, String usage, List<String> roles,
+                          List<ChannelType> executableIn, List<String> bots, List<TriggerItem> items) {
         this.name = name;
         if (aliases != null) {
             aliases.removeIf(alias -> alias.equalsIgnoreCase(name));
@@ -51,22 +51,25 @@ public class DiscordCommand {
 
     }
 
-	public boolean execute(DiscordCommandEvent event) {
+    public boolean execute(DiscordCommandEvent event) {
         ParseLogHandler log = SkriptLogger.startParseLogHandler();
 
         try {
 
-			boolean ok = DiscordCommandFactory.getInstance().parseArguments(event.getArguments(), this, event);
+            boolean ok = DiscordCommandFactory.getInstance().parseArguments(event.getArguments(), this, event);
 
             if (!ok) {
                 return false;
-			} else if (!this.getExecutableIn().contains(event.getChannel().getType())) {
+            }
+            if (!this.getExecutableIn().contains(event.getChannel().getType())) {
                 return false;
-			} else if (this.getRoles() != null && event.getMember() != null) {
-				if (event.getMember().getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
+            }
+            if (this.getRoles() != null && event.getMember() != null) {
+                if (event.getMember().getRoles().stream().noneMatch(r -> this.getRoles().contains(r.getName()))) {
                     return false;
                 }
-			} else if (bots != null && !bots.contains(event.getBot().getName())) {
+            }
+            if (bots != null && !bots.contains(event.getBot().getName())) {
                 return false;
             }
 
@@ -96,7 +99,7 @@ public class DiscordCommand {
         return aliases;
     }
 
-	public List<Expression<String>> getPrefixes() {
+    public List<Expression<String>> getPrefixes() {
         return prefixes;
     }
 
