@@ -33,7 +33,6 @@ public class TypeConverters {
 		Converters.registerConverter(MessageBuilder.class, UpdatingMessage.class,
 				(Converter<MessageBuilder, UpdatingMessage>) builder -> {
 					UpdatingMessage m = builder.isEmpty() ? null : UpdatingMessage.from(builder.build());
-					System.out.println("message is " + m);
 					return m;
 				});
         Converters.registerConverter(Member.class, User.class,
