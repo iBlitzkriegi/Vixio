@@ -75,7 +75,7 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
             return new Class[0];
         }
 
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

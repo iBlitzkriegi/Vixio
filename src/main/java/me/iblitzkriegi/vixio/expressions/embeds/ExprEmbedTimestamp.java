@@ -50,7 +50,7 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
                     Date.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

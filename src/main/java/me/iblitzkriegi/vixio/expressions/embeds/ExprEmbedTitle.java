@@ -45,7 +45,7 @@ public class ExprEmbedTitle extends SimplePropertyExpression<EmbedBuilder, Title
                     Title.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

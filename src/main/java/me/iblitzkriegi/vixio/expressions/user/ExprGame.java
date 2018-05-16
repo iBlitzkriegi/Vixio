@@ -52,7 +52,7 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET) {
             return new Class[]{String.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

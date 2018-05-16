@@ -37,7 +37,7 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Chan
         if (mode == Changer.ChangeMode.SET) {
             return new Class[]{Number.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

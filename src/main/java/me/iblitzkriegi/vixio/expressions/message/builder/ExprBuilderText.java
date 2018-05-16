@@ -53,7 +53,7 @@ public class ExprBuilderText extends SimplePropertyExpression<MessageBuilder, St
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET || mode == Changer.ChangeMode.DELETE)) {
             return new Class[]{String.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

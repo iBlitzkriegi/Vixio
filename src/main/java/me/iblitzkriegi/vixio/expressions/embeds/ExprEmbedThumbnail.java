@@ -40,7 +40,7 @@ public class ExprEmbedThumbnail extends SimplePropertyExpression<EmbedBuilder, T
                     String.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

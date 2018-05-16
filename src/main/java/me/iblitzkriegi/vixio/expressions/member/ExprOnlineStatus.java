@@ -53,7 +53,7 @@ public class ExprOnlineStatus extends SimplePropertyExpression<Object, OnlineSta
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET) {
             return new Class[]{OnlineStatus.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

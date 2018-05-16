@@ -40,7 +40,7 @@ public class ExprEmbedFooter extends SimplePropertyExpression<EmbedBuilder, Mess
                     MessageEmbed.Footer.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

@@ -40,7 +40,7 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
                     String.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

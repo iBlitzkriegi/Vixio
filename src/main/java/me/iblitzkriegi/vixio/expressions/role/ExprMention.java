@@ -23,7 +23,7 @@ public class ExprMention extends ChangeableSimplePropertyExpression<Role, Boolea
         if (mode == Changer.ChangeMode.SET) {
             return new Class[]{Boolean.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

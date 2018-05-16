@@ -66,7 +66,7 @@ public class ExprVolume extends SimpleExpression<Number> {
             return new Class[]{Number.class};
         }
 
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

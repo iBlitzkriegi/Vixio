@@ -61,7 +61,7 @@ public class ExprEmbedFields extends SimpleExpression<MessageEmbed.Field> {
                     MessageEmbed.Field[].class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

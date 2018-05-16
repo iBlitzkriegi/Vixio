@@ -42,7 +42,7 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
         if ((mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET)) {
             return new Class[]{Timespan.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

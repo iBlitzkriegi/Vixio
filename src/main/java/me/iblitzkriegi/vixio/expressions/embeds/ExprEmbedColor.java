@@ -38,7 +38,7 @@ public class ExprEmbedColor extends SimplePropertyExpression<EmbedBuilder, Color
         if ((mode == ChangeMode.SET || mode == ChangeMode.RESET || mode == ChangeMode.DELETE) && getExpr().isSingle()) {
             return new Class[]{Color.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

@@ -63,7 +63,7 @@ public class ExprPaused extends SimpleExpression<Boolean> {
              return new Class[]{Boolean.class};
          }
 
-         return super.acceptChange(mode);
+         return null;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class ExprBuilderEmbed extends SimplePropertyExpression<MessageBuilder, M
             return new Class[]{MessageEmbed.class};
         }
 
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

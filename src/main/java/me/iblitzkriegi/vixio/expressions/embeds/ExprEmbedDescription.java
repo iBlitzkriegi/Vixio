@@ -37,7 +37,7 @@ public class ExprEmbedDescription extends SimplePropertyExpression<EmbedBuilder,
         if ((mode == ChangeMode.SET || mode == ChangeMode.RESET || mode == ChangeMode.DELETE) && getExpr().isSingle()) {
             return new Class[]{String.class};
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

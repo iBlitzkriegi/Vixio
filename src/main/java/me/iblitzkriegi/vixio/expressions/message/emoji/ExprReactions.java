@@ -87,7 +87,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
             return new Class[]{Emote[].class};
         }
 
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override

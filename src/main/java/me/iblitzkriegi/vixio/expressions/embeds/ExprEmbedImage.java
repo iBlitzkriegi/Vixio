@@ -40,7 +40,7 @@ public class ExprEmbedImage extends SimplePropertyExpression<EmbedBuilder, Messa
                     String.class
             };
         }
-        return super.acceptChange(mode);
+        return null;
     }
 
     @Override
