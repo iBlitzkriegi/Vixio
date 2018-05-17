@@ -134,9 +134,12 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
                         valueMap.put(value.clazz, value.getter.get(JDAEvent));
                     }
                     event.setValueMap(valueMap);
-                    if (getTrigger() != null) {
-                        Util.sync(() -> getTrigger().execute(event));
-                    }
+                    Util.sync(() -> {
+                        if (getTrigger() != null) {
+                            getTrigger().execute(event);
+                        }
+                    });
+
                 });
 
             }
