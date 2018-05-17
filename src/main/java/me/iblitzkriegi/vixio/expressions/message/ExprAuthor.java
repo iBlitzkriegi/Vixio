@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.entities.User;
 
 public class ExprAuthor extends SimplePropertyExpression<UpdatingMessage, User> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprAuthor.class, User.class, "author", "messages")
+        Vixio.getInstance().registerPropertyExpression(ExprAuthor.class, User.class, "[discord] author", "messages")
                 .setName("Author of Message")
                 .setDesc("Get the author of a message")
                 .setExample("author of event-message");
