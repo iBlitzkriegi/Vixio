@@ -200,9 +200,9 @@ public class Util {
             return null;
         }
         if (o instanceof User) {
-			User boundUser = bindUser(bot, (User) o);
+            User boundUser = bindUser(bot, (User) o);
             try {
-				return boundUser.openPrivateChannel().complete(true);
+                return boundUser.openPrivateChannel().complete(true);
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to open a private channel but was ratelimited.");
                 return null;
@@ -360,7 +360,7 @@ public class Util {
         }
         return null;
     }
-    
+
     public static boolean isLink(String url) {
         return url.contains("www") || url.contains("http") || url.contains("https");
     }
