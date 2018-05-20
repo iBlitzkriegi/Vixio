@@ -10,7 +10,7 @@ import org.bukkit.event.Event;
 
 public class ExprLastError extends SimpleExpression<String> {
     static {
-        Vixio.getInstance().registerExpression(ExprLastError.class, String.class, ExpressionType.SIMPLE, "last vixio error")
+        Vixio.getInstance().registerExpression(ExprLastError.class, String.class, ExpressionType.SIMPLE, "[the] last vixio error")
                 .setName("Last vixio error")
                 .setDesc("Set when vixio runs into a error, like a permission error.")
                 .setExample("\t\tban event-user from event-guild\n" +
@@ -24,7 +24,12 @@ public class ExprLastError extends SimpleExpression<String> {
 
     @Override
     protected String[] get(Event e) {
-        return new String[]{getLastError(lastError)};
+        if (lastError == null) {
+            return null;
+        }
+        String error = lastError;
+        lastError = null;
+        return new String[]{error};
     }
 
     @Override
@@ -45,15 +50,5 @@ public class ExprLastError extends SimpleExpression<String> {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         return true;
-    }
-
-    public static String getLastError(String error) {
-        if (error != null) {
-            lastError = null;
-            return error;
-        } else {
-            return null;
-        }
-
     }
 }
