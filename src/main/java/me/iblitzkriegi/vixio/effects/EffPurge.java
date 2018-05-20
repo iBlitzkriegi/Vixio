@@ -38,13 +38,16 @@ public class EffPurge extends Effect {
                 .map(UpdatingMessage::getMessage)
                 .collect(Collectors.toList());
         Bot bot = Util.botFrom(this.bot.getSingle(e));
+        if (updatingMessages.isEmpty()) {
+            return;
+        }
         TextChannel tc = Util.bindChannel(bot, updatingMessages.get(0).getTextChannel());
         if (bot == null || tc == null) {
             return;
         }
         try {
             for(int i = 0; i < updatingMessages.size(); i += 100) {
-                List<Message> l = updatingMessages.subList(i, Math.min(updatingMessages.size() - i, i + 100));
+                List<Message> l = updatingMessages.subList(i, Math.min(updatingMessages.size(), i + 100));
                 if(l.size() == 1) {
                     l.get(0).delete().queue();
                 } else {
