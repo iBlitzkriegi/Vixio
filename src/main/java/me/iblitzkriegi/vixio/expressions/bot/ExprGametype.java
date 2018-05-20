@@ -10,7 +10,13 @@ import net.dv8tion.jda.core.entities.User;
 
 public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprGametype.class, Game.GameType.class, "game type", "bots/users/strings");
+        Vixio.getInstance().registerPropertyExpression(ExprGametype.class, Game.GameType.class, "game type", "bots/users/strings")
+                .setName("Game type")
+                .setDesc("Get the type of game a user, a bot, or a bot specified by name is playing.")
+                .setExample(
+                        "set {_type} to the game type of event-user" +
+                        "if {_type} is streaming:",
+                        "\tbroadcast \"HE'S LIVE!\"");
     }
     @Override
     protected String getPropertyName() {
