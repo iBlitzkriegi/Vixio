@@ -36,10 +36,16 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
             }
 
             return member.getGame() == null ? null : member.getGame().getName();
-        } else if (Util.botFrom(object) != null) {
+        } else {
+            Bot bot = Util.botFrom(object);
+            if (bot == null) {
+                return null;
+            }
+            if (bot.getJDA().getPresence().getGame() == null) {
+                return null;
+            }
             return Util.botFrom(object).getJDA().getPresence().getGame().getName();
         }
-        return null;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for(Object object : getExpr().getAll(e)) {
+        for (Object object : getExpr().getAll(e)) {
             if (Util.botFrom(object) != null) {
                 bot.getJDA().getPresence().setGame(Game.of(Game.GameType.DEFAULT, (String) delta[0]));
             }
