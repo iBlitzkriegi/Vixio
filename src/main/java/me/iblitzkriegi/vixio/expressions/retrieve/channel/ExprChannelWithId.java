@@ -58,6 +58,9 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         }
 
         Guild guild = this.guild.getSingle(e);
+        if (guild == null) {
+            return null;
+        }
         TextChannel textChannel = guild.getTextChannelById(id);
         VoiceChannel voiceChannel = guild.getVoiceChannelById(id);
         List<Channel> channels = new ArrayList<>();
