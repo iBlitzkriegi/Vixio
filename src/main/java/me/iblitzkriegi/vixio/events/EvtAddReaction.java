@@ -39,7 +39,7 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, User.class, new Getter<User, ReactionAddEvent>() {
             @Override
             public User get(ReactionAddEvent event) {
-                return event.getJDAEvent().getMember().getUser();
+                return event.getJDAEvent().getUser();
             }
         }, 0);
 
