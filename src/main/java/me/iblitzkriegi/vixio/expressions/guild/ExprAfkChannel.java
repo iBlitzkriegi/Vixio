@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ExprAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprAfkChannel.class, VoiceChannel.class,
-                "afk channel[s]", "guilds")
+                "afk channel", "guilds")
                 .setName("Afk channel of Guild")
                 .setDesc("Get the AFK voice channel of a guild. You can set this to another channel.")
                 .setExample("discord command afk:",

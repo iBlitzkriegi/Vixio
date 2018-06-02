@@ -13,7 +13,7 @@ public class ExprImageUrl extends SimplePropertyExpression<Object, String> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprImageUrl.class, String.class,
-                "[<proxy>] url[s]", "thumbnails/imageinfos/footers/authorinfos")
+                "[<proxy>] url", "thumbnails/imageinfos/footers/authorinfos")
                 .setName("Url of Image")
                 .setDesc("Returns the url of an embed's thumbnail, footer icon, author, icon or large image. Adding the proxy modifier to the syntax will return Discord's proxy url if possible.")
                 .setExample("broadcast \"%proxy url of {_embed}'s thumbnail%\"");

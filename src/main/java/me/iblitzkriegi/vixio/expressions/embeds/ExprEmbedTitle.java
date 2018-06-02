@@ -15,7 +15,7 @@ public class ExprEmbedTitle extends SimplePropertyExpression<EmbedBuilder, Title
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedTitle.class, Title.class,
-                "title[s]", "embedbuilders")
+                "title", "embedbuilders")
                 .setName("Title of Embed")
                 .setDesc("Returns the title of an embed.")
                 .setExample("set the embed title of {_embed} to title with text \"hey this is a cool title!\" and no icon");

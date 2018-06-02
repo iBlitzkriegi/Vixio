@@ -15,7 +15,7 @@ public class ExprEmbedImage extends SimplePropertyExpression<EmbedBuilder, Messa
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedImage.class, MessageEmbed.ImageInfo.class,
-                "image[s]", "embedbuilders")
+                "image", "embedbuilders")
                 .setName("Image of Embed")
                 .setDesc("Returns the image of an embed. Can be set any url (e.g. \"https://i.imgur.com/TQgR2hW.jpg\").")
                 .setExample("set the image of {_embed} to \"https://i.imgur.com/TQgR2hW.jpg\"");

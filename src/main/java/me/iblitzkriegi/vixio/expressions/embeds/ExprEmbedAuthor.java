@@ -14,7 +14,7 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedAuthor.class, MessageEmbed.AuthorInfo.class,
-                "(author info|author)[s]", "embedbuilders")
+                "(author info|author)", "embedbuilders")
                 .setName("Author of Embed")
                 .setDesc("Returns the author of an embed. Can be set to any author.")
                 .setExample("set author of {_embed} to author named \"Pikachu\"");

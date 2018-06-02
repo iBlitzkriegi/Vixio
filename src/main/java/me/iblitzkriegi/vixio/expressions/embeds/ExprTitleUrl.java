@@ -12,7 +12,7 @@ public class ExprTitleUrl extends SimplePropertyExpression<Title, String> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprTitleUrl.class, String.class,
-                "(url|link)[s]", "titles")
+                "(url|link)", "titles")
                 .setName("Url of Title")
                 .setDesc("Returns the url of a title.")
                 .setExample("broadcast \"%link of {_embed}'s title%\"");

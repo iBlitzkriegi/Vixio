@@ -16,7 +16,7 @@ import java.util.List;
 public class ExprEmbedFields extends SimpleExpression<MessageEmbed.Field> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprEmbedFields.class, MessageEmbed.Field.class, "field[s]", "embedbuilders")
+        Vixio.getInstance().registerPropertyExpression(ExprEmbedFields.class, MessageEmbed.Field.class, "field", "embedbuilders")
                 .setName("Fields Of Embed")
                 .setDesc("Returns a embed's fields")
                 .setExample("set {_fields::*} to fields of {_embed}");

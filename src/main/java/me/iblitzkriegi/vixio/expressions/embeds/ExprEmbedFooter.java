@@ -14,7 +14,7 @@ public class ExprEmbedFooter extends SimplePropertyExpression<EmbedBuilder, Mess
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedFooter.class, MessageEmbed.Footer.class,
-                "footer[s]", "embedbuilders")
+                "footer", "embedbuilders")
                 .setName("Footer of Embed")
                 .setDesc("Returns the footer of an embed. Can be set any footer.")
                 .setExample("set footer of {_embed} to a footer with text \"Hi Pika\" and icon \"https://i.imgur.com/TQgR2hW.jpg\"");
