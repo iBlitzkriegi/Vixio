@@ -1,11 +1,14 @@
 package me.iblitzkriegi.vixio.registration;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
 import ch.njol.skript.classes.Changer;
+import ch.njol.skript.classes.Parser;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.util.EnumUtils;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
+import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
@@ -36,6 +39,7 @@ import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 
 public class Types {
@@ -368,16 +372,65 @@ public class Types {
 
         };
 
-        new SimpleType<User>(User.class, "user", "users?") {
-
+        Parser<User> USER_PARSER = new Parser<User>() {
             @Override
-            public User parse(String s, ParseContext pc) {
+            public String toString(User o, int flags) {
                 return null;
             }
 
             @Override
+            public String toVariableNameString(User o) {
+                return null;
+            }
+
+            @Override
+            public String getVariableNamePattern() {
+                return null;
+            }
+            //TODO Account for dm's
+            @Override
+            public User parse(String s, ParseContext context) {
+                MessageReceivedEvent e = CommandListener.lastCommandEvent;
+                if (s.contains("#")) {
+                    String[] discrim = s.split("#");
+                    if (discrim.length > 2) {
+                        return null;
+                    }
+                    for (Member member : e.getGuild().getMembers()) {
+                        User user = member.getUser();
+                        if (user.getName().equalsIgnoreCase(discrim[0])) {
+                            if (user.getDiscriminator().equalsIgnoreCase(discrim[1])) {
+                                return user;
+                            }
+                        }
+                    }
+                    return null;
+                }
+                String id = s.replaceAll("[^0-9]", "");
+                if (id.isEmpty()) {
+                    return null;
+                }
+                Member member = e.getGuild().getMemberById(id);
+                if (member == null) {
+                    return null;
+                }
+                return member.getUser();
+            }
+        };
+
+        new SimpleType<User>(User.class, "user", "users?") {
+
+            @Override
+            public User parse(String s, ParseContext pc) {
+                if (CommandListener.lastCommandEvent == null) {
+                    return null;
+                }
+                return USER_PARSER.parse(s, pc);
+            }
+
+            @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return pc == ParseContext.COMMAND;
             }
 
             @Override
@@ -444,12 +497,19 @@ public class Types {
 
             @Override
             public Member parse(String s, ParseContext pc) {
-                return null;
+                if (CommandListener.lastCommandEvent == null) {
+                    return null;
+                }
+                User user = USER_PARSER.parse(s, pc);
+                if (user == null) {
+                    return null;
+                }
+                return CommandListener.lastCommandEvent.getGuild().getMember(user);
             }
 
             @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return pc == ParseContext.COMMAND;
             }
 
             @Override
