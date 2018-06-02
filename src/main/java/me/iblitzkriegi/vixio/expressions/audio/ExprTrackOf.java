@@ -17,6 +17,7 @@ public class ExprTrackOf extends SimpleExpression<AudioTrack> {
     static {
         Vixio.getInstance().registerExpression(ExprTrackOf.class, AudioTrack.class, ExpressionType.SIMPLE,
                 "[the] track[s] %bot/string% is playing [in %guild%]")
+                .setName("Track Bot Is Playing")
                 .setDesc("Get the tracks a bot is playing in a specific guild.")
                 .setExample("set {var} to the track event-bot is playing");
     }
