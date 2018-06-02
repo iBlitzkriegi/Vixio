@@ -35,7 +35,9 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -387,13 +389,23 @@ public class Types {
             public String getVariableNamePattern() {
                 return null;
             }
-            //TODO Account for dm's
             @Override
             public User parse(String s, ParseContext context) {
                 MessageReceivedEvent e = CommandListener.lastCommandEvent;
                 if (s.contains("#")) {
                     String[] discrim = s.split("#");
                     if (discrim.length > 2) {
+                        return null;
+                    }
+                    if (e.getChannelType() == ChannelType.PRIVATE) {
+                        PrivateChannel privateChannel = e.getPrivateChannel();
+                        SelfUser selfUser = privateChannel.getJDA().getSelfUser();
+                        String name = discrim[0].contains("@") ? discrim[0].replaceFirst("@", "") : discrim[0];
+                        if (selfUser.getName().equalsIgnoreCase(name)) {
+                            return selfUser;
+                        } else if (privateChannel.getUser().getName().equalsIgnoreCase(name)) {
+                            return privateChannel.getUser();
+                        }
                         return null;
                     }
                     for (Member member : e.getGuild().getMembers()) {
@@ -408,6 +420,14 @@ public class Types {
                 }
                 String id = s.replaceAll("[^0-9]", "");
                 if (id.isEmpty()) {
+                    return null;
+                }
+                if (e.getChannelType() == ChannelType.PRIVATE) {
+                    if (e.getAuthor().getId().equalsIgnoreCase(id)) {
+                        return e.getAuthor();
+                    } else if (e.getJDA().getSelfUser().getId().equalsIgnoreCase(id)) {
+                        return e.getJDA().getSelfUser();
+                    }
                     return null;
                 }
                 Member member = e.getGuild().getMemberById(id);
@@ -500,11 +520,15 @@ public class Types {
                 if (CommandListener.lastCommandEvent == null) {
                     return null;
                 }
+                MessageReceivedEvent e = CommandListener.lastCommandEvent;
+                if (e.getChannelType() == ChannelType.PRIVATE) {
+                    return null;
+                }
                 User user = USER_PARSER.parse(s, pc);
                 if (user == null) {
                     return null;
                 }
-                return CommandListener.lastCommandEvent.getGuild().getMember(user);
+                return e.getGuild().getMember(user);
             }
 
             @Override

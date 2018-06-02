@@ -61,7 +61,7 @@ public class DiscordCommand {
             if (!ok) {
                 return false;
             }
-            if (!this.getExecutableIn().contains(event.getChannel().getType())) {
+            if (!this.getExecutableIn().contains(event.getMessageChannel().getType())) {
                 return false;
             }
             if (this.getRoles() != null && event.getMember() != null) {
