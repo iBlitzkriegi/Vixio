@@ -28,7 +28,8 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
     @Override
     public String convert(Object object) {
         if (object instanceof Member) {
-            return ((Member) object).getGame().getName();
+            Member member = (Member) object;
+            return member.getGame() == null ? null : member.getGame().getName();
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
             if (member == null) {
