@@ -14,11 +14,11 @@ import org.bukkit.event.Event;
 public class EffChannelWithName extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffChannelWithName.class,
-                "create text[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%] ", "create voice[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]")
+                "create text[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]", "create voice[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]")
                 .setName("Create channel")
                 .setDesc("Create either a voice channel or a text channel as requested.")
                 .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t" +
+                        "\tif name of event-bot contains \"Jewel\":" +
                         "\t\tset {_cmd::*} to split content of event-message at \" \"" +
                         "\t\tif {_cmd::1} is \"create\":" +
                         "\t\t\tif id of event-user is \"98208218022428672\":" +

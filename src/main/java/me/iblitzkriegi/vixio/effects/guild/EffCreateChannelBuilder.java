@@ -24,14 +24,14 @@ public class EffCreateChannelBuilder extends AsyncEffect {
                 "create %channelbuilder% in %guild% [(with|as) %bot/string%] [and store (it|the channel) in %-objects%]")
                 .setName("Create Channel Builder")
                 .setDesc("Create a channel created with the create channel scope")
-                .setExample("command /channel:\n" +
-                        "\ttrigger:\n" +
-                        "\t\tcreate text channel:\n" +
-                        "\t\t\tset name of the channel to \"Testingxdxd\"\n" +
-                        "\t\t\tset {guild} to guild with id \"219967335266648065\"\n" +
+                .setExample("command /channel:" +
+                        "\ttrigger:" +
+                        "\t\tcreate text channel:" +
+                        "\t\t\tset name of the channel to \"Testingxdxd\"" +
+                        "\t\t\tset {guild} to guild with id \"219967335266648065\"" +
                         "\t\t\tset nsfw state of the channel as \"Jewel\" to true" +
-                        "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"\n" +
-                        "\t\t\tset parent of the channel to category named \"xd\" in {guild}\n" +
+                        "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"" +
+                        "\t\t\tset parent of the channel to category named \"xd\" in {guild}" +
                         "\t\t\tcreate the channel in {guild} as \"Jewel\"");
     }
 

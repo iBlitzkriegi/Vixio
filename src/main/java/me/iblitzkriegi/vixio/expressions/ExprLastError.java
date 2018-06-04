@@ -13,10 +13,10 @@ public class ExprLastError extends SimpleExpression<String> {
         Vixio.getInstance().registerExpression(ExprLastError.class, String.class, ExpressionType.SIMPLE, "[the] last vixio error")
                 .setName("Last vixio error")
                 .setDesc("Set when vixio runs into a error, like a permission error.")
-                .setExample("\t\tban event-user from event-guild\n" +
-                        "\t\tset {var} to last vixio error\n" +
-                        "\t\tif {var} is set:\n" +
-                        "\t\t\tif {var} contains \"permission\":\n" +
+                .setExample("\t\tban event-user from event-guild" +
+                        "\t\tset {var} to last vixio error" +
+                        "\t\tif {var} is set:" +
+                        "\t\t\tif {var} contains \"permission\":" +
                         "\t\t\treply with \"I tried to ban that user but didnt have the perms!\"");
     }
 
