@@ -95,7 +95,8 @@ public class Types {
                 }.documentation(
                 "Delete Channel",
                 "Delete a channel with a specific bot",
-                "delete %channel% with %bot/string%")
+                "delete %channel% with %bot/string%",
+                "delete event-channel with event-bot")
         );
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
