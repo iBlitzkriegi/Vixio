@@ -5,12 +5,13 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 
-public class ExprEmbeds extends PropertyExpression<Message, EmbedBuilder> implements EasyMultiple<Message, EmbedBuilder> {
+public class ExprEmbeds extends PropertyExpression<UpdatingMessage, EmbedBuilder> implements EasyMultiple<UpdatingMessage, EmbedBuilder> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbeds.class, EmbedBuilder.class,
@@ -23,13 +24,13 @@ public class ExprEmbeds extends PropertyExpression<Message, EmbedBuilder> implem
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        setExpr((Expression<Message>) exprs[0]);
+        setExpr((Expression<UpdatingMessage>) exprs[0]);
         return true;
     }
 
     @Override
-    protected EmbedBuilder[] get(Event e, Message[] messages) {
-        return convert(getReturnType(), getExpr().getAll(e), message -> message.getEmbeds().stream()
+    protected EmbedBuilder[] get(Event e, UpdatingMessage[] messages) {
+        return convert(getReturnType(), getExpr().getAll(e), message -> message.getMessage().getEmbeds().stream()
                 .map(EmbedBuilder::new)
                 .toArray(size -> new EmbedBuilder[size])
         );
