@@ -62,7 +62,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
         for (int i = 0; i < patterns.length; i++) {
             patterns[i] += " " + ending;
         }
-        return Vixio.getInstance().registerEvent(name, type, clazz, patterns);
+        return Vixio.getInstance().registerEvent(name, type, clazz, patterns).setEvent(clazz);
     }
 
     @Override

@@ -2,6 +2,8 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.util.StringUtils;
 
+import java.util.ArrayList;
+
 /**
  * Created by Blitz on 7/22/2017.
  */
@@ -14,6 +16,7 @@ public class Registration {
     private Class<?> clazz;
     private String[] syntaxes;
     private String userFacing;
+    private Class event;
 
     public Registration(Class<?> cls, String... syntaxes) {
         clazz = cls;
@@ -64,7 +67,10 @@ public class Registration {
     }
 
     public Registration setExample(String... s) {
-        return setExample(StringUtils.join(s, "\n"));
+        String example = StringUtils.join(s, ",")
+                .replaceAll("\t", "\\\\t")
+                .replaceAll("\"", "\\\\\"");
+        return setExample(example);
     }
 
     public String getUserFacing() {
@@ -81,5 +87,12 @@ public class Registration {
         return this;
     }
 
+    public Registration setEvent(Class clazz) {
+        this.event = clazz;
+        return this;
+    }
 
+    public Class getEvent() {
+        return event;
+    }
 }
