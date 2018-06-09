@@ -135,7 +135,6 @@ public class Documentation {
             }
             bw.flush();
             bw.close();
-            generateJson();
             //getEventValues(bw, 0, EventJDAEvent.class, EventGuildMessageReceived.class, AnyEvent.class);
 
         } catch (IOException e) {
