@@ -6,15 +6,18 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import org.bukkit.event.Event;
+
+import java.util.Set;
 
 public class ExprRoleWithId extends SimpleExpression<Role> {
 
     static {
         Vixio.getInstance().registerExpression(ExprRoleWithId.class, Role.class, ExpressionType.SIMPLE,
-                "role with id %string% [in %guild%]")
+                "role with id %string% [in %-guild%]")
                 .setName("Role with ID")
                 .setDesc("Get a Role via it's ID. You can get role IDs via the roles of guild and ID expressions.")
                 .setExample("add role with id \"5151561851\" to roles of event-user in event-guild");
@@ -26,8 +29,22 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
     @Override
     protected Role[] get(Event e) {
         String id = this.id.getSingle(e);
-        Guild guild = this.guild.getSingle(e);
-        if (guild == null || id == null) {
+        Guild guild = this.guild == null ? null : this.guild.getSingle(e);
+        if (id == null) {
+            return null;
+        }
+        if (guild == null) {
+            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+            for (JDA jda : jdaInstances) {
+                try {
+                    Role role = jda.getRoleById(id);
+                    if (role != null) {
+                        return new Role[]{role};
+                    }
+                } catch (NumberFormatException x) {
+                    return null;
+                }
+            }
             return null;
         }
 
