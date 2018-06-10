@@ -67,7 +67,7 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "role with id " + id.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "role with id " + id.toString(e, debug) + (guild == null ? "" : " in " + guild.toString(e, debug));
     }
 
     @Override
