@@ -15,15 +15,14 @@ import java.util.List;
 public class ExprRoleNamed extends SimpleExpression<Role> {
     static {
         Vixio.getInstance().registerExpression(ExprRoleNamed.class, Role.class, ExpressionType.SIMPLE,
-                "role[s] named %string% [in %guild%]")
-                .setName("Role named")
+                "roles named %string% [in %guild%]")
+                .setName("Roles Named")
                 .setDesc("Get a role via it's name in a Guild! The guild may be assumed in events.")
                 .setExample("role[s] named \"Owner\"");
     }
 
     private Expression<Guild> guild;
     private Expression<String> name;
-    private boolean isSingle;
 
     @Override
     protected Role[] get(Event e) {
@@ -36,7 +35,6 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
         try {
             List<Role> roles = guild.getRolesByName(name, false);
             if (roles.size() > 1) {
-                isSingle = false;
                 return roles.toArray(new Role[roles.size()]);
             }
 
@@ -48,7 +46,7 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
 
     @Override
     public boolean isSingle() {
-        return isSingle;
+        return false;
     }
 
     @Override
