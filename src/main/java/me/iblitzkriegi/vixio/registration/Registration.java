@@ -13,6 +13,7 @@ public class Registration {
     private String name;
     private String desc;
     private String example;
+    private String splitExample;
     private Class<?> clazz;
     private String[] syntaxes;
     private String userFacing;
@@ -70,6 +71,7 @@ public class Registration {
         String example = StringUtils.join(s, ",")
                 .replaceAll("\t", "\\\\t")
                 .replaceAll("\"", "\\\\\"");
+        splitExample = StringUtils.join(s, "\n");
         return setExample(example);
     }
 
@@ -94,5 +96,12 @@ public class Registration {
 
     public Class getEvent() {
         return event;
+    }
+
+    public String getSplitExample() {
+        if (splitExample == null) {
+            return this.example;
+        }
+        return splitExample;
     }
 }
