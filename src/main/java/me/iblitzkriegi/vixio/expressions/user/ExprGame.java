@@ -17,7 +17,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
         Vixio.getInstance().registerPropertyExpression(ExprGame.class, String.class,
                 "game", "members/users/bots/strings")
                 .setName("Game of User")
-                .setDesc("Get the game of a user. You may use this to set a bots game, this will set it as Playing: <whatever you input>. Use the mark gametype expression to use the other types.")
+                .setDesc("Get the game of a user. You may use this to set a bots game, this will set it as Playing: <whatever you input>. Use the mark as gametype effect to use the other types.")
                 .setExample("game of user with id \"4165651561561\"");
     }
 
