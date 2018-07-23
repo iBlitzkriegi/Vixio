@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.expressions.user;
 
 import ch.njol.skript.classes.Changer;
+import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
@@ -10,13 +11,13 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
-public class ExprGame extends ChangeableSimplePropertyExpression<Object, String> {
+public class ExprGame extends SimplePropertyExpression<Object, String> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprGame.class, String.class,
                 "game", "members/users/bots/strings")
                 .setName("Game of User")
-                .setDesc("Get the game of a user")
+                .setDesc("Get the game of a user. You may use this to set a bots game, this will set it as Playing: <whatever you input>. Use the mark gametype expression to use the other types.")
                 .setExample("game of user with id \"4165651561561\"");
     }
 
@@ -55,7 +56,7 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
     }
 
     @Override
-    public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
+    public Class<?>[] acceptChange(Changer.ChangeMode mode) {
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.RESET) {
             return new Class[]{String.class};
         }
@@ -63,10 +64,11 @@ public class ExprGame extends ChangeableSimplePropertyExpression<Object, String>
     }
 
     @Override
-    public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
+    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
         for (Object object : getExpr().getAll(e)) {
             if (Util.botFrom(object) != null) {
-                bot.getJDA().getPresence().setGame(Game.of(Game.GameType.DEFAULT, (String) delta[0]));
+                Bot bot = Util.botFrom(object);
+                bot.getJDA().getPresence().setGame(mode == Changer.ChangeMode.SET ? Game.of(Game.GameType.DEFAULT, (String) delta[0]) : null);
             }
         }
     }
