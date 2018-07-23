@@ -35,6 +35,9 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         if (id == null || id.isEmpty()) {
             return null;
         }
+        if (!id.matches("-?\\d+(.\\d+)?")) {
+            return null;
+        }
 
         if (guild == null) {
             Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
