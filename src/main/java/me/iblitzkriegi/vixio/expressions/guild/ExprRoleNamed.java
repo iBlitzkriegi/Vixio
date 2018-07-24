@@ -15,7 +15,7 @@ import java.util.List;
 public class ExprRoleNamed extends SimpleExpression<Role> {
     static {
         Vixio.getInstance().registerExpression(ExprRoleNamed.class, Role.class, ExpressionType.SIMPLE,
-                "roles named %string% [in %guild%]")
+                "role[<s>] named %string% [in %guild%]")
                 .setName("Roles Named")
                 .setDesc("Get a role via it's name in a Guild! The guild may be assumed in events.")
                 .setExample("role[s] named \"Owner\"");
@@ -23,6 +23,7 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
 
     private Expression<Guild> guild;
     private Expression<String> name;
+    private boolean roles;
 
     @Override
     protected Role[] get(Event e) {
@@ -35,6 +36,9 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
         try {
             List<Role> roles = guild.getRolesByName(name, false);
             if (roles.size() > 1) {
+                if (this.roles) {
+                    return new Role[]{roles.get(0)};
+                }
                 return roles.toArray(new Role[roles.size()]);
             }
 
@@ -46,7 +50,7 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
 
     @Override
     public boolean isSingle() {
-        return false;
+        return roles;
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         name = (Expression<String>) exprs[0];
         guild = (Expression<Guild>) exprs[1];
+        roles = parseResult.regexes.size() == 0;
         return true;
     }
 }
