@@ -19,7 +19,7 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Chann
                         " You can set or reset this (resets to 64kbps)")
                 .setUserFacing("[the] bitrate[s] of %voicechannels%", "%voicechannels%'[s] bitrate[s]")
                 .setExample(
-                        "command /bitrate <string> <number>:",
+                        "discord command $bitrate <string> <number>:",
                         "\ttrigger:",
                         "\t\tset bitrate of voice channel with id arg-1 to arg-2"
                 );

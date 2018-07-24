@@ -40,8 +40,8 @@ public class CondMemberRole extends Condition {
         }
         if (roleName) {
             String name = (String) role;
-            for (Role role2 : member.getRoles()) {
-                if (role2.getName().equalsIgnoreCase(name)) {
+            for (Role memberRole : member.getRoles()) {
+                if (memberRole.getName().equalsIgnoreCase(name)) {
                     return not == true;
                 }
             }

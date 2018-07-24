@@ -18,12 +18,12 @@ public class CondDeafened extends Condition implements EasyMultiple<Member, Void
                 .setDesc("If the \"guild\" modifier is included, this passes if the member is deafened via a guild admin." +
                         "If it isn't included, it passes if the user has either deafened themselves, or was deafened by an admin")
                 .setExample(
-                        "discord command checkGuildDeaf <text> <text>:",
-                        "\tprefixes: $",
+                        "discord command $checkGuildMute <member>:",
                         "\ttrigger:",
-                        "\t\tset {member} to user with id arg-1 in event-guild",
-                        "\t\tif {member} is guild deafened:",
-                        "\t\t\tbroadcast \"%{member}% is guild deafened!\""
+                        "\t\tif arg-1 is guild muted:",
+                        "\t\t\treply with \"%arg-1% is guild muted!\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"%arg-1% is not guild muted!\""
                 );
     }
 

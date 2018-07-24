@@ -18,12 +18,12 @@ public class CondMuted extends Condition implements EasyMultiple<Member, Void> {
                 .setDesc("If the \"guild\" modifier is included, this passes if the member is muted via a guild admin." +
                         "If it isn't included, it passes if the user has either muted themselves, or was muted by an admin")
                 .setExample(
-                        "discord command checkGuildMute <text> <text>:",
-                        "\tprefixes: $",
-                        "\ttrigger:",
-                        "\t\tset {member} to user with id arg-1 in event-guild",
-                        "\t\tif {member} is guild muted:",
-                        "\t\t\tbroadcast \"%{member}% is guild muted!\""
+                        "discord command $checkGuildMute <member>:,",
+                        "\ttrigger:,",
+                        "\t\tif arg-1 is guild muted:,",
+                        "\t\t\treply with \"%arg-1% is guild muted!\",",
+                        "\t\t\tstop,",
+                        "\t\treply with \"%arg-1% is not guild muted!\""
                 );
     }
 
