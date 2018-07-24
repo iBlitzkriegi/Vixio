@@ -25,14 +25,12 @@ public class EffCreateChannelBuilder extends AsyncEffect {
                 .setName("Create Channel Builder")
                 .setDesc("Create a channel created with the create channel scope")
                 .setExample(
-                        "discord command $setup:",
+                        "discord command ##create:",
                         "\ttrigger:",
-                        "\t\tcreate text channel:",
-                        "\t\t\tset the name of the channel to \"Bot Channel\"",
-                        "\t\t\tset nsfw state of the channel to false",
-                        "\t\t\tset the topic of the channel to \"Bot Testing\"",
-                        "\t\tcreate the last made channel in event-guild with \"Jewel\" and store it in {_channel}",
-                        "\t\treply with \"The channel has been created! <##%id of {_channel}%>\""
+                        "\t\tcreate voice channel:",
+                        "\t\t\tset the name of the channel to \"{@bot}\"",
+                        "\t\t\tset the bitrate of the channel to 69",
+                        "\t\t\tcreate the channel in event-guild"
                 );
     }
 
@@ -62,10 +60,14 @@ public class EffCreateChannelBuilder extends AsyncEffect {
                 }
                 guild.getController().createVoiceChannel(channelBuilder.getName())
                         .setParent(channelBuilder.getParent())
-                        .setBitrate(channelBuilder.getBitRate())
+                        .setBitrate(channelBuilder.getBitRate() * 1000)
                         .setUserlimit(channelBuilder.getUserLimit()).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "create channel", x.getPermission().getName());
+                return;
+            } catch (IllegalArgumentException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to create a channel with a name that was less than 2 characters or more than 100 which is not supported.");
+                return;
             }
             return;
         }
@@ -87,6 +89,9 @@ public class EffCreateChannelBuilder extends AsyncEffect {
             return;
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, "create channel", x.getPermission().getName());
+            return;
+        } catch (IllegalArgumentException x) {
+            Vixio.getErrorHandler().warn("Vixio attempted to create a channel with a name that was less than 2 characters or more than 100 which is not supported.");
             return;
         }
 

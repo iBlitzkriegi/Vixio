@@ -18,9 +18,13 @@ public class ExprLastChannelBuilder extends SimpleExpression<ChannelBuilder> {
                 .setName("Last Created Channel Builder")
                 .setDesc("Get the last made Channel Builder created via the Channel Builder scope.")
                 .setExample(
-                        "command /lastMade:",
+                        "discord command $create <text>:",
                         "\ttrigger:",
-                        "\t\tcreate the last made channel in guild with id \"415615161890890\" as \"Jewel\""
+                        "\t\tcreate text channel:",
+                        "\t\t\tset the name of the channel to arg-1 ",
+                        "\t\t\tset the topic of the channel to \"Hi Pika\"",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I've successfully created a channel named `%arg-1%`, ID: %id of {_chnl}%\""
                 );
     }
 
