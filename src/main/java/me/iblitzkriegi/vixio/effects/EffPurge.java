@@ -22,7 +22,19 @@ public class EffPurge extends Effect {
         Vixio.getInstance().registerEffect(EffPurge.class, "purge %messages% with %bot/string%")
                 .setName("Purge Messages")
                 .setDesc("Bulk delete a bunch of messages.")
-                .setExample("purge the last grabbed messages with event-bot");
+                .setExample(
+                        "discord command $purge <number>:",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tset {_num} to arg-1 ",
+                        "\t\tgrab the last {_num} messages in event-channel",
+                        "\t\tpurge the grabbed messages with event-bot",
+                        "\t\tset {_error} to last vixio error ",
+                        "\t\tif {_error} is set:",
+                        "\t\t\treply with \"I ran into an error! `%{_error}%`\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I have successfully purged %arg-1% messages\""
+                );
     }
 
     private Expression<UpdatingMessage> messages;
@@ -46,9 +58,9 @@ public class EffPurge extends Effect {
             return;
         }
         try {
-            for(int i = 0; i < updatingMessages.size(); i += 100) {
+            for (int i = 0; i < updatingMessages.size(); i += 100) {
                 List<Message> l = updatingMessages.subList(i, Math.min(updatingMessages.size(), i + 100));
-                if(l.size() == 1) {
+                if (l.size() == 1) {
                     l.get(0).delete().queue();
                 } else {
                     tc.deleteMessages(l).queue();

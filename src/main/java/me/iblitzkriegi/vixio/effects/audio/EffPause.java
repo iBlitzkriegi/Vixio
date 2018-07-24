@@ -17,7 +17,7 @@ public class EffPause extends Effect {
                 "pause [the] (track|song) %bot/string% is playing [in %guild%]")
                 .setName("Pause track")
                 .setDesc("Pause a track a bot is playing in a guild, if it is already paused nothing happens")
-                .setExample("pause the track event-bot is playing");
+                .setExample("pause the track event-bot is playing in event-guild");
     }
 
     private Expression<Object> bot;

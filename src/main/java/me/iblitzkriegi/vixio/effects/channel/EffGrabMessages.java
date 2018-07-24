@@ -23,7 +23,19 @@ public class EffGrabMessages extends AsyncEffect {
                 .setName("Grab Messages")
                 .setDesc("Grab a number of messages from a text channel")
                 .setUserFacing("grab [the] last %number% messages in %textchannel%")
-                .setExample("grab the last 5 messages in event-channel");
+                .setExample(
+                        "discord command $purge <number>:",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tset {_num} to arg-1 ",
+                        "\t\tgrab the last {_num} messages in event-channel",
+                        "\t\tpurge the grabbed messages with event-bot",
+                        "\t\tset {_error} to last vixio error ",
+                        "\t\tif {_error} is set:",
+                        "\t\t\treply with \"I ran into an error! `%{_error}%`\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I have successfully purged %arg-1% messages\""
+                );
     }
 
     private Expression<Number> messages;

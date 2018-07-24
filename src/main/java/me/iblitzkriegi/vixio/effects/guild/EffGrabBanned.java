@@ -19,8 +19,15 @@ public class EffGrabBanned extends AsyncEffect {
                 .setName("Bans list")
                 .setDesc("Retrieve all of the banned users in a guild. The results are stored in the \"retrieved bans\" expression")
                 .setExample(
-                        "grab bans of event-guild" +
-                        "loop retrieved bans:");
+                        "discord command $bans:",
+                        "\ttrigger:",
+                        "\t\tgrab bans of event-guild",
+                        "\t\tset {_errors} to the last vixio error",
+                        "\t\tif {_errors} is set:",
+                        "\t\t\treply with \"I ran into an error! %{_errors}%\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"Here are the current bans: `%grabbed bans%`\""
+                );
     }
 
     private Expression<Guild> guild;

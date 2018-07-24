@@ -16,9 +16,19 @@ public class EffMute extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffMute.class, "[<un>]mute %members% [(with|using) %bot%]")
                 .setName("Mute")
-                .setName("Lets you mute/unmute a user/member")
-                .setExample("mute event-user in event-guild with event-bot",
-                        "unmute event-member with event-bot"
+                .setName("Mute/UnMute a User/Member")
+                .setExample(
+                        "discord command $mute <member>:",
+                        "\ttrigger:",
+                        "\t\tif voice channel of arg-1 is not set:",
+                        "\t\t\treply with \"You cannot mute or unmute someone who is not in a voice channel\"",
+                        "\t\t\tstop",
+                        "\t\tif arg-1 is not guild muted:",
+                        "\t\t\tmute arg-1 with event-bot",
+                        "\t\t\treply with \"%arg-1% is now muted\"",
+                        "\t\telse:",
+                        "\t\t\tunmute arg-1 with event-bot",
+                        "\t\t\treply with \"%arg-1% is no longer muted\""
                 );
     }
 

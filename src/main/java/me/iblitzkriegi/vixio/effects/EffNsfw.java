@@ -19,7 +19,14 @@ public class EffNsfw extends Effect {
                 .setName("Change NSFW")
                 .setDesc("Lets you mark a text channel as sfw/nsfw")
                 .setUserFacing("(make|mark) %textchannels% [as] [<n>]sfw (with|using) %bot/string%")
-                .setExample("mark event-channel as nsfw with event-bot");
+                .setExample(
+                        "discord command $nsfw <boolean>:",
+                        "\ttrigger:",
+                        "\t\tif arg-1 is true:",
+                        "\t\t\tmark event-channel as nsfw with event-bot",
+                        "\t\t\tstop",
+                        "\t\tmark event-channel as sfw with event-bot"
+                );
     }
 
     private boolean newState;

@@ -7,12 +7,9 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
@@ -22,7 +19,15 @@ public class EffRetrieveMessage extends AsyncEffect {
         Vixio.getInstance().registerEffect(EffRetrieveMessage.class, "retrieve message [with id] %string% [(in|from) %channel/user%]")
                 .setName("Retrieve message with id")
                 .setDesc("Get a Message via it's ID from a Guild/TextChannel")
-                .setExample("retrieve message with id \"1265152161551661561\" from channel event-channel");
+                .setExample(
+                        "discord command $addReaction <text> <text>:",
+                        "\ttrigger:",
+                        "\t\tretrieve message with id arg-1 ",
+                        "\t\tif last retrieved message is not set:",
+                        "\t\t\treply with \"Could not find a message with that id!\"",
+                        "\t\t\tstop",
+                        "\t\tadd reaction arg-2 to reactions of last retrieved message with event-bot"
+                );
     }
 
     private Expression<String> id;

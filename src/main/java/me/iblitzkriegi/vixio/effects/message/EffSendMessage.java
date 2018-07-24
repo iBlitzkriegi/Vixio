@@ -19,11 +19,22 @@ import org.bukkit.event.Event;
 
 public class EffSendMessage extends AsyncEffect {
     static {
-		Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %users/channels% with %bot/string% [and store (it|the message) in %-objects%]")
+        Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %users/channels% with %bot/string% [and store (it|the message) in %-objects%]")
                 .setName("Send Message to Text Channel")
                 .setDesc("Send a message to a text channel.")
-				.setExample("send \"hey\" to channel with id \"156156165165156\" with \"Jewel\"", "send \"hey\" to channel with id \"156156165165156\" with \"Jewel\" and store it in {_message}")
-                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string% [and store (it|the message) in %-objects%]");
+                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string% [and store (it|the message) in %-objects%]")
+                .setExample(
+                        "discord command $send <text> [<text>]:",
+                        "\ttrigger:",
+                        "\t\tif arg-2 is not set:",
+                        "\t\t\tsend arg-1 to event-channel with event-bot",
+                        "\t\t\tstop",
+                        "\t\tset {_channel} to channel with id arg-2",
+                        "\t\tif {_channel} is not set:",
+                        "\t\t\treply with \"I could not find a channel with that id!\"",
+                        "\t\t\tstop",
+                        "\t\tsend arg-1 to {_channel} with event-bot"
+                );
     }
 
     private Expression<Object> message;

@@ -17,15 +17,17 @@ public class EffChannelWithName extends Effect {
                 "create text[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]", "create voice[(-| )]channel [named] %string% [in %guild%] [(as|with) %bot/string%]")
                 .setName("Create channel")
                 .setDesc("Create either a voice channel or a text channel as requested.")
-                .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":" +
-                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
-                        "\t\tif {_cmd::1} is \"create\":" +
-                        "\t\t\tif id of event-user is \"98208218022428672\":" +
-                        "\t\t\t\tif {_cmd::2} is \"text\":" +
-                        "\t\t\t\t\tcreate text channel named \"%{_cmd::3}%\"" +
-                        "\t\t\t\telse if {_cmd::2} is \"voice\":" +
-                        "\t\t\t\t\tcreate voice channel named \"%{_cmd::3}%\"");
+                .setExample(
+                        "discord command $create <text> <text>:",
+                        "\ttrigger:",
+                        "\t\tif arg-1 contains \"voice\":",
+                        "\t\t\tcreate voice channel named arg-2",
+                        "\t\t\tstop",
+                        "\t\telse if arg-1 contains \"text\":",
+                        "\t\t\tcreate text channel named arg-2",
+                        "\t\t\tstop",
+                        "\t\treply with \"The first argument must either be \"\"text\"\" or \"\"voice\"\"\""
+                );
     }
 
     private Expression<String> name;

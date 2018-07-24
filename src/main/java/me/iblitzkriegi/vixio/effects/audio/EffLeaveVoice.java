@@ -15,7 +15,15 @@ public class EffLeaveVoice extends Effect {
         Vixio.getInstance().registerEffect(EffLeaveVoice.class, "make %bots/strings% (leave|disconnect from) (voice|vc) [in %guild%]")
                 .setName("Leave Voice Channel")
                 .setDesc("Make a bot leave it's voice channel in a guild.")
-                .setExample("make \"Jewel\" disconnect from vc");
+                .setExample(
+                        "discord command leave:",
+                        "\tprefixes: ##",
+                        "\ttrigger:",
+                        "\t\tif voice channel of event-bot in event-guild is set:",
+                        "\t\t\tmake event-bot leave vc",
+                        "\t\t\treply with \"I've left my voice channel\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I'm not currently in any voice channels!\"");
     }
 
     private Expression<Guild> guild;

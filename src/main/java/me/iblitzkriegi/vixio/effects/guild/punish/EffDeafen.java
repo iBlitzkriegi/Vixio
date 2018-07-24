@@ -16,9 +16,19 @@ public class EffDeafen extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffDeafen.class, "[<un>]deafen %members% [(with|using) %bot%]")
                 .setName("Deafen user")
-                .setDesc("Lets you deafen or undeafen a member/user")
-                .setExample("deafen event-user in event-guild",
-                        "undeafen event-member"
+                .setDesc("Lets you deafen or undeafen a member/user. They must be in a voice channel for this to take effect.")
+                .setExample(
+                        "discord command $deaf <member>:",
+                        "\ttrigger:",
+                        "\t\tif voice channel of arg-1 is not set:",
+                        "\t\t\treply with \"You cannot deaf or undeafen someone who is not in a voice channel\"",
+                        "\t\t\tstop",
+                        "\t\tif arg-1 is not guild deafened:",
+                        "\t\t\tdeafen arg-1 with event-bot",
+                        "\t\t\treply with \"%arg-1% is now deaf\"",
+                        "\t\telse:",
+                        "\t\t\tundeafen arg-1 with event-bot",
+                        "\t\t\treply with \"%arg-1% is no longer deafened\""
                 );
     }
 

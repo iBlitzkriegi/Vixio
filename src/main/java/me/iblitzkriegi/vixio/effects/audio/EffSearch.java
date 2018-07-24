@@ -2,7 +2,6 @@ package me.iblitzkriegi.vixio.effects.audio;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
@@ -15,18 +14,17 @@ import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import org.bukkit.event.Event;
 
-import java.util.Locale;
-
 public class EffSearch extends AsyncEffect {
 
     public static AudioTrack[] lastResults;
 
     static {
         Vixio.getInstance().registerEffect(EffSearch.class, "search %searchablesite% for %strings% [and store the results in %-objects%]")
-				.setUserFacing("search (youtube|soundcloud) for %strings% [and store the results in %listvariable%]")
+                .setUserFacing("search (youtube|soundcloud) for %strings% [and store the results in %listvariable%]")
                 .setName("Search Audio")
                 .setDesc("Lets you search various music sites for a query. You can either access the results via the search results expression, or store them in a variable.")
-                .setExample("on join:",
+                .setExample(
+                        "on join:",
                         "\tsearch youtube for \"%player%\" and store the results in {_results::*}",
                         "\tif {_results::*} is set:",
                         "\t\tmessage \"Did you know there are %size of {_results::*}% videos about you on YouTube?\" to player"

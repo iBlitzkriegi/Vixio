@@ -19,7 +19,15 @@ public class EffMoveMember extends Effect {
                 .setName("Move Member to Voice Channel")
                 .setDesc("Move a member to a different voice channel, they must already be in a voice channel to be moved.")
                 .setUserFacing("move %member% to %voicechannel% [with %bot/string%]")
-                .setExample("move event-member to voice channel with id \"415615615616\"");
+                .setExample(
+                        "discord command $move <member> <string>:",
+                        "\ttrigger:",
+                        "\t\tset {_voiceChannel} to voice channel with id arg-2",
+                        "\t\tif {_voiceChannel} is not set:",
+                        "\t\t\treply with \"I could not find a voice channel by that id\"",
+                        "\t\t\tstop",
+                        "\t\tmove arg-1 to {_voiceChannel}"
+                );
     }
 
     Expression<Object> bot;

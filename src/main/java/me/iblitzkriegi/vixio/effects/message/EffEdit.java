@@ -18,11 +18,10 @@ public class EffEdit extends Effect {
                 .setName("Edit Message")
                 .setDesc("A more natural way to edit a message. Don't forget that you can only edit your own messages.")
                 .setExample(
-                        "command /edit:",
-                        "\tprefixes: $",
+                        "discord command $edit:",
                         "\ttrigger:",
-                        "\t\treply with \"woah!\" and store it in {_message}",
-                        "\t\tedit {_message} to say \"this is cool!\""
+                        "\t\treply with \"Ping\" and store it in {_msg}",
+                        "\t\tedit {_msg} to show \"Pong!\""
                 );
     }
 

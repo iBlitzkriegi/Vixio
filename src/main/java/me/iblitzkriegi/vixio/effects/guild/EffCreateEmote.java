@@ -18,10 +18,16 @@ import java.io.InputStream;
 
 public class EffCreateEmote extends Effect {
     static {
-        Vixio.getInstance().registerEffect(EffCreateEmote.class, "create emote %string% with name %string% [in %guild%] [with %bot/string%]")
+        Vixio.getInstance().registerEffect(EffCreateEmote.class, "create emote %string% with [the] name %string% [in %guild%] [with %bot/string%]")
                 .setName("Create emote")
                 .setDesc("Create a emote in a specific guild, the first %string% can either be a direct url or a direct local path to a file.")
-                .setExample("create emote \"C:\\Users\\matthew\\Desktop\\Vixio2\\plugins\\Cat.jpg");
+                .setExample(
+                        "discord command $createEmote <text> <text>:",
+                        "\ttrigger:",
+                        "\t\tcreate emote arg-1 with name arg-2 ",
+                        "\t\twait 2 seconds",
+                        "\t\treply with \"%reaction arg-2%\""
+                );
     }
 
     private Expression<String> file;

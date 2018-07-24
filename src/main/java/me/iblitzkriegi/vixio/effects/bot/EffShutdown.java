@@ -14,7 +14,11 @@ public class EffShutdown extends Effect {
         Vixio.getInstance().registerEffect(EffShutdown.class, "(logout [of]|shutdown) %bot/string%")
                 .setName("Logout of Bot")
                 .setDesc("Shutdown or logout of a bot, destroys the instance and closes the connection")
-                .setExample("logout of \"Jewel\"");
+                .setExample(
+                        "discord command $shutdown:",
+                        "\ttrigger:",
+                        "\t\tshutdown event-bot"
+                );
     }
 
     private Expression<Object> bot;

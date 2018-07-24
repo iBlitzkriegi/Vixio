@@ -25,7 +25,10 @@ public class EffLogin extends AsyncEffect {
         Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% (using|with) [the] name %string%")
                 .setName("Login")
                 .setDesc("Login to a bot account with a token")
-                .setExample("login to discord account with token \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" named \"Rawr\"");
+                .setExample(
+                        "on skript load:",
+                        "\tlogin to \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" with the name \"VixioButler\""
+                );
     }
 
     private Expression<String> token;

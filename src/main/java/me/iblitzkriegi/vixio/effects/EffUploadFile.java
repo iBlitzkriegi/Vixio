@@ -7,11 +7,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
@@ -23,7 +19,14 @@ public class EffUploadFile extends AsyncEffect {
         Vixio.getInstance().registerEffect(EffUploadFile.class, "upload %string% [with (message|embed) %-message/string%] to %user/channel% [with %bot/string%]")
                 .setName("Send file")
                 .setDesc("Send a file to a channel or a user. You can input a direct URL to the file or a direct path to the local image/file.")
-                .setExample("send \"https://i.imgflip.com/27yc0d.jpg\" to event-channel");
+                .setExample(
+                        "discord command $upload <text> [<text>]:",
+                        "\ttrigger:",
+                        "\t\tif arg-2 is not set:",
+                        "\t\t\tupload arg-1 to event-channel",
+                        "\t\t\tstop",
+                        "\t\tupload arg-1 with message arg-2 to event-channel"
+                );
     }
 
     private Expression<String> file;

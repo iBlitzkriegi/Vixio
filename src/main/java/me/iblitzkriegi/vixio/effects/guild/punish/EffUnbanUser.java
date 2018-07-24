@@ -20,7 +20,7 @@ public class EffUnbanUser extends Effect {
                 .setExample(
                         "command /ban <text>:",
                         "\ttrigger:",
-                        "\t\tunban arg-1 from guild with id \"622156151\" due to \"Not following discord rules\" as \"Jewel\"");
+                        "\t\tunban arg-1 from event-guild");
     }
 
     private Expression<Object> users;
