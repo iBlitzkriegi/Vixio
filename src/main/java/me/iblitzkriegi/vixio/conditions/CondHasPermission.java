@@ -24,7 +24,7 @@ public class CondHasPermission extends Condition {
     }
 
     private Expression<Member> member;
-    private Expression<Permission> permisson;
+    private Expression<Permission> permission;
 
     @Override
 
@@ -34,7 +34,7 @@ public class CondHasPermission extends Condition {
         } else {
             member = (Expression<Member>) exprs[0];
         }
-        permisson = (Expression<Permission>) exprs[1];
+        permission = (Expression<Permission>) exprs[1];
         setNegated(matchedPattern > 1);
         return true;
     }
@@ -42,7 +42,7 @@ public class CondHasPermission extends Condition {
     @Override
     public boolean check(Event e) {
         Member member = this.member.getSingle(e);
-        Permission permission = this.permisson.getSingle(e);
+        Permission permission = this.permission.getSingle(e);
         if (permission == null || member == null) {
             return false;
         }
@@ -51,7 +51,7 @@ public class CondHasPermission extends Condition {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return member.toString(e, debug) + " has permission " + permisson.toString(e, debug);
+        return member.toString(e, debug) + " has permission " + permission.toString(e, debug);
     }
 
 }
