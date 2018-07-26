@@ -15,17 +15,14 @@ import java.util.List;
 public class ExprMembers extends SimpleExpression<Member> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMembers.class, Member.class,
-                "members", "guild/category")
+                "discord members", "guild/category")
                 .setName("Members of")
                 .setDesc("Get all of the Member from a variety of different types.")
-                .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t" +
-                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
-                        "\t\tif {_cmd::*} is \"##members\":" +
-                        "\t\t\tset {_num} to 0" +
-                        "\t\t\tloop members of event-guild:" +
-                        "\t\t\t\tadd 1 to {_num}" +
-                        "\t\t\treply with \"The guild has %{_num}% members.\"");
+                .setExample(
+                        "discord command $guild:",
+                        "\ttrigger:",
+                        "\t\treply with \"%size of members of event-guild%\""
+                );
     }
 
     private Expression<Object> object;
