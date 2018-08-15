@@ -11,10 +11,16 @@ public class ExprBuilderTopic extends SimplePropertyExpression<ChannelBuilder, S
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderTopic.class, String.class,
                 "topic", "channelbuilders")
-                .setName("Topic of Channel")
+                .setName("Topic of channel builder")
                 .setDesc("Gets or sets the topic of a channel builder.")
-                .setExample("create channel:",
-                        "\tset topic of the channel to \"Hi Pika\""
+                .setExample(
+                        "discord command $create <text>:",
+                        "\ttrigger:",
+                        "\t\tcreate text channel:",
+                        "\t\t\tset the name of the channel to arg-1 ",
+                        "\t\t\tset the topic of the channel to \"Hi Pika\"",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I've successfully created a channel named `%arg-1%`, ID: %id of {_chnl}%\""
                 );
     }
 

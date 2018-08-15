@@ -17,10 +17,18 @@ import org.bukkit.event.Event;
 public class ExprVolume extends SimpleExpression<Number> {
     static {
         Vixio.getInstance().registerExpression(ExprVolume.class, AudioTrack.class, ExpressionType.SIMPLE,
-                "volume of %bot/string% [in %guild%]")
+                "[the] volume of %bot/string% [in %guild%]")
                 .setName("Volume of bot")
                 .setDesc("Get the volume a bot is set to in a guild. Can be set to a number that is between 0 and 150. This can also be reset which sets the volume to 150. Anything over 150 is ignored and the volume is set to 150.")
-                .setExample("set {var::*} to volume of event-bot in event-guild");
+                .setExample(
+                        "discord command $volume [<number>]:",
+                        "\ttrigger:",
+                        "\t\tif arg-1 is not set:",
+                        "\t\t\treply with \"%volume of event-bot%\"",
+                        "\t\t\tstop",
+                        "\t\tset the volume of event-bot to arg-1",
+                        "\t\treply with \"My volume is now: `%volume of event-bot%`\""
+                );
     }
 
     private Expression<Object> bot;
@@ -50,7 +58,7 @@ public class ExprVolume extends SimpleExpression<Number> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "volume of " +  bot.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "volume of " + bot.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class ExprVolume extends SimpleExpression<Number> {
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (bot != null) {
-            int volume = mode == Changer.ChangeMode.SET ? ((Number)delta[0]).intValue() : 100;
+            int volume = mode == Changer.ChangeMode.SET ? ((Number) delta[0]).intValue() : 100;
             bot.getAudioManager(this.guild.getSingle(e)).player.setVolume(volume);
         }
     }

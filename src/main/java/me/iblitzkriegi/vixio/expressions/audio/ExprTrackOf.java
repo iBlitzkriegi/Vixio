@@ -19,7 +19,15 @@ public class ExprTrackOf extends SimpleExpression<AudioTrack> {
                 "[the] track[s] %bot/string% is playing [in %guild%]")
                 .setName("Track Bot Is Playing")
                 .setDesc("Get the tracks a bot is playing in a specific guild.")
-                .setExample("set {var} to the track event-bot is playing");
+                .setExample(
+                        "discord command $info:",
+                        "\ttrigger:",
+                        "\t\tset {_track} to track event-bot is playing",
+                        "\t\tif {_track} is not set:",
+                        "\t\t\treply with \"I am not currently playing anything!\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I am currently playing %name of {_track}% by %author of {_track}%\""
+                );
     }
 
     private Expression<Object> bot;

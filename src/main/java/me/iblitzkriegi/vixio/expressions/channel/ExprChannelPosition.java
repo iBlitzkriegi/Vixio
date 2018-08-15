@@ -11,10 +11,16 @@ import org.bukkit.event.Event;
 
 public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Channel, Number> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprChannelPosition.class, Number.class, "position", "channels")
+        Vixio.getInstance().registerPropertyExpression(ExprChannelPosition.class, Number.class, "[discord] position", "channels")
                 .setName("Position of Channel")
-                .setDesc("Get the current position of a channel. 0 being the first channel, or the highest position channel.")
-                .setExample("set {var} to position of channel with id \"65156156156\"");
+                .setDesc("Get or set the current position of a channel. 0 being the first channel, or the highest position channel.")
+                .setExample(
+                        "discord command $pos <text>:",
+                        "\ttrigger:",
+                        "\t\tset {_vc} to channel with id arg-1",
+                        "\t\treply with \"%{_vc}%\"",
+                        "\t\treply with \"%discord position of {_vc}%\""
+                );
     }
 
     @Override

@@ -4,7 +4,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.expressions.channel.ExprChannelPinned;
+import me.iblitzkriegi.vixio.expressions.channel.ExprGrabbedPins;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -31,8 +31,8 @@ public class EffGrabPins extends AsyncEffect {
         MessageChannel channel = Util.getMessageChannel(bot, source);
         if (channel != null) {
             try {
-                ExprChannelPinned.pinnedMessages = null;
-                ExprChannelPinned.pinnedMessages = channel.getPinnedMessages().complete(true);
+                ExprGrabbedPins.pinnedMessages = null;
+                ExprGrabbedPins.pinnedMessages = channel.getPinnedMessages().complete(true);
             } catch (RateLimitedException e1) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve pinned messages but was ratelimited");
             }

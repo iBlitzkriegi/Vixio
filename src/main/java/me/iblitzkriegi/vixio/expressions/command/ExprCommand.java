@@ -16,7 +16,7 @@ public class ExprCommand extends SimpleExpression<DiscordCommand> {
 
     static {
         Vixio.getInstance().registerExpression(ExprCommand.class, DiscordCommand.class, ExpressionType.SIMPLE, "[the] used command")
-                .setName("Command")
+                .setName("Used Command")
                 .setDesc("Returns the used command in a command")
                 .setExample("broadcast aliases of the used command");
     }

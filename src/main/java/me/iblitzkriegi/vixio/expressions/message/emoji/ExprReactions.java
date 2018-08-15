@@ -26,7 +26,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprReactions.class, Emote.class,
                 "reactions", "messages")
-                .setName("Reactions of message")
+                .setName("Reactions of Message")
                 .setDesc("Get the reactions of a message. Can be deleted, reset, removed and added to.")
                 .setExample(
                         "on guild message receive:",

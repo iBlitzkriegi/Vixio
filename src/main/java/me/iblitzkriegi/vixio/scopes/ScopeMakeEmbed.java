@@ -18,7 +18,7 @@ public class ScopeMakeEmbed extends EffectSection {
                 .setName("Make Embed")
                 .setDesc("Provides a pretty and easy way of making a new embed with a bunch of different attributes")
                 .setExample(
-                        "command scope:",
+                        "command $scope:",
                         "\ttrigger:",
                         "\t\tmake a new embed:",
                         "\t\t\tset color of embed the embed to red",

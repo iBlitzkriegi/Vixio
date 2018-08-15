@@ -15,10 +15,18 @@ import java.util.List;
 public class ExprRoleNamed extends SimpleExpression<Role> {
     static {
         Vixio.getInstance().registerExpression(ExprRoleNamed.class, Role.class, ExpressionType.SIMPLE,
-                "role[<s>] named %string% [in %guild%]")
-                .setName("Roles Named")
-                .setDesc("Get a role via it's name in a Guild! The guild may be assumed in events.")
-                .setExample("role[s] named \"Owner\"");
+                "[the] role[<s>] (with [the] name|named) %string% [in %guild%]")
+                .setName("Role Named")
+                .setDesc("Get a role via it's name in a guild.")
+                .setExample(
+                        "discord command $role <text>:",
+                        "\ttrigger:",
+                        "\t\tset {_role} to role named arg-1",
+                        "\t\tif {_role} is not set:",
+                        "\t\t\treply with \"Could not find a role by that name!\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I found the role! ID: %id of {_role}%\""
+                );
     }
 
     private Expression<Guild> guild;
@@ -33,19 +41,16 @@ public class ExprRoleNamed extends SimpleExpression<Role> {
             return null;
         }
 
-        try {
-            List<Role> roles = guild.getRolesByName(name, false);
-            if (roles.size() > 1) {
-                if (this.roles) {
-                    return new Role[]{roles.get(0)};
-                }
-                return roles.toArray(new Role[roles.size()]);
+        List<Role> roles = guild.getRolesByName(name, false);
+        if (roles.size() > 1) {
+            if (this.roles) {
+                return new Role[]{roles.get(0)};
             }
-
-            return new Role[]{roles.get(0)};
-        } catch (NullPointerException | IndexOutOfBoundsException x) {
-            return null;
+            return roles.toArray(new Role[roles.size()]);
         }
+
+        return roles.isEmpty() ? null : new Role[]{roles.get(0)};
+
     }
 
     @Override

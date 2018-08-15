@@ -9,7 +9,7 @@ public class ExprDuration extends SimplePropertyExpression<AudioTrack, Timespan>
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDuration.class, Timespan.class,
                 "duration", "tracks")
-                .setName("Duration of track")
+                .setName("Duration of Track")
                 .setDesc("Get the duration of a track. This is how long it is.")
                 .setExample("broadcast \"%duration of track event-bot is playing%\"");
     }

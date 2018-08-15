@@ -15,8 +15,8 @@ public class ExprDeafened extends ChangeableSimplePropertyExpression<Member, Boo
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDeafened.class, Boolean.class,
                 "[<guild>] deafen[ed] state", "members")
-                .setName("Guild State of Member")
-                .setDesc("Get the deafened state of a Member in a Guild. If they are deafened by someone then this returns true. This will not be updated unless a User is in a Voice Channel when they are deafened.")
+                .setName("Guild Deafened State of Member")
+                .setDesc("Get the deafened state of a member in a guild. If they are deafened by someone then this returns true. This will not be updated unless a user is in a voice channel when they are deafened.")
                 .setExample(
                         "on guild message receive:",
                         "\treply with \"%deafen state of event-user in event-guild%\""

@@ -20,10 +20,15 @@ import java.util.List;
 public class ExprQueue extends SimpleExpression<AudioTrack> {
     static {
         Vixio.getInstance().registerExpression(ExprQueue.class, AudioTrack.class, ExpressionType.SIMPLE,
-                "queue of %bot/string% [in %guild%]")
+                "[the] queue of %bot/string% [in %guild%]")
                 .setName("Queue of bot")
                 .setDesc("Get all the tracks a bot currently has queued up for a guild.")
-                .setExample("set {var::*} to queue of event-bot in event-guild");
+                .setExample(
+                        "discord command $reset:",
+                        "\ttrigger:",
+                        "\t\treset the queue of event-bot",
+                        "\t\treply with \"You have successfully cleared my queue\""
+                );
     }
 
     private Expression<Object> bot;
@@ -59,7 +64,7 @@ public class ExprQueue extends SimpleExpression<AudioTrack> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "queue of " +  bot.toString(e, debug) + " in " + guild.toString(e, debug);
+        return "queue of " + bot.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
     @Override

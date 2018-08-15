@@ -23,8 +23,8 @@ public class ScopeMakeChannel extends EffectSection {
                         "\t\tcreate text channel:",
                         "\t\tset name of the channel to \"Testing\"",
                         "\t\tset {guild} to guild with id \"56156156615611\"",
-                        "\t\tset nsfw state of this channel as \"Jewel\" to true",
-                        "\t\tcreate the channel in {guild} as \"Jewel\""
+                        "\t\tset nsfw state of the channel to true",
+                        "\t\tcreate the channel in {guild} with \"Jewel\""
                 );
     }
 

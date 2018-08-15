@@ -15,7 +15,7 @@ import java.util.List;
 public class ExprMembers extends SimpleExpression<Member> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprMembers.class, Member.class,
-                "discord members", "guild/category")
+                "discord member", "guild/category")
                 .setName("Members of")
                 .setDesc("Get all of the Member from a variety of different types.")
                 .setExample(

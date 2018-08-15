@@ -20,10 +20,13 @@ public class ExprChannels extends SimpleExpression<Channel> {
                 .setName("Channels of")
                 .setDesc("Get all of the channels of a guild or category.")
                 .setExample(
-                        "on guild message receive:",
-                        "\tset {_channels::*} to channels of event-guild",
-                        "\tloop {_channels::*}:",
-                        "\t\tbroadcast \"%name of loop-value%\""
+                        "discord command $channels [<text>]:",
+                        "\ttrigger:",
+                        "\t\tif arg-1 is not set:",
+                        "\t\t\treply with \"Here are the current channels: `%channels of event-guild%`\"",
+                        "\t\t\tstop",
+                        "\t\tset {_category} to category named arg-1",
+                        "\t\treply with \"Here are the channels of the category named %arg-1%: `%channels of {_category}%`\""
                 );
     }
 

@@ -14,7 +14,11 @@ public class ExprUptime extends SimplePropertyExpression<Object, Timespan> {
         Vixio.getInstance().registerPropertyExpression(ExprUptime.class, Date.class, "uptime", "strings/bots")
                 .setName("Uptime Of Bot")
                 .setDesc("Get the amount of time a bot has been up in a skript date form.")
-                .setExample("reply with \"%uptime of event-bot%\"");
+                .setExample(
+                        "discord command $uptime:",
+                        "\ttrigger:",
+                        "\t\treply with \"I've been awake for %uptime of event-bot%\""
+                );
     }
 
     @Override

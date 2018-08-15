@@ -8,7 +8,7 @@ public class ExprIdentifier extends SimplePropertyExpression<AudioTrack, String>
     static {
         Vixio.getInstance().registerPropertyExpression(ExprIdentifier.class, String.class,
                 "identifier", "tracks")
-                .setName("Identifier of track")
+                .setName("Identifier of Track")
                 .setDesc("Get a track's identifier, this is the unique ID given to it by the hosting site.")
                 .setExample("broadcast \"%identifier of track event-bot is playing%\"");
     }

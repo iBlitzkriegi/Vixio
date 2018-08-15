@@ -18,12 +18,12 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
                 .setName("The Channel")
                 .setDesc("Get the channel in a create channel scope")
                 .setExample(
-                        "command /channel:",
+                        "discord command $setup:",
                         "\ttrigger:",
                         "\t\tcreate text channel:",
-                        "\t\tset name of the channel to \"Testing\"",
-                        "\t\tset {guild} to guild with id \"56156156615611\"",
-                        "\t\tcreate the channel in {guild} as \"Jewel\""
+                        "\t\t\tset the name of the channel to \"Bot channel\"",
+                        "\t\t\tset the topic of the channel to \"Hi Pika\"",
+                        "\t\t\tcreate the channel in event-guild and store it in {_chnl}"
                 );
 
     }

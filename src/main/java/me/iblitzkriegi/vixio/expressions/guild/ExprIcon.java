@@ -7,8 +7,8 @@ import net.dv8tion.jda.core.entities.Guild;
 public class ExprIcon extends SimplePropertyExpression<Guild, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprIcon.class, String.class, "icon", "guilds")
-                .setName("Icon URl of Guild")
-                .setDesc("Get a guilds icon url.")
+                .setName("Icon URL of Guild")
+                .setDesc("Get a guild's icon url.")
                 .setExample("reply with \"%icon of event-guild%\"");
     }
 

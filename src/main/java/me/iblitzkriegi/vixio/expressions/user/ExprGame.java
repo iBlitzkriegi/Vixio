@@ -18,7 +18,11 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
                 "game", "members/users/bots/strings")
                 .setName("Game of User")
                 .setDesc("Get the game of a user. You may use this to set a bots game, this will set it as Playing: <whatever you input>. Use the mark as gametype effect to use the other types.")
-                .setExample("game of user with id \"4165651561561\"");
+                .setExample(
+                        "discord command $info <user>:",
+                        "\ttrigger:",
+                        "\t\treply with \"%game of arg-1%\""
+                );
     }
 
     @Override

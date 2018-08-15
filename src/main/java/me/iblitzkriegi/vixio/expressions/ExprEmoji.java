@@ -19,7 +19,7 @@ public class ExprEmoji extends SimpleExpression<Emote> {
         //TODO: make this properly nullable
         Vixio.getInstance().registerExpression(ExprEmoji.class, Emote.class, ExpressionType.SIMPLE,
                 "(emoji|emote|reaction)[s] %strings% [(from|in) %-guild%]")
-                .setName("Emoji named")
+                .setName("Emoji Named")
                 .setDesc("Get a emoji by its name, if its a custom emote you must include the guild.")
                 .setExample(
                         "on guild message receive:",

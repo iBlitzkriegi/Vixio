@@ -11,15 +11,17 @@ public class ExprBuilderLimit extends SimplePropertyExpression<ChannelBuilder, I
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderLimit.class, Integer.class,
                 "user limit", "channelbuilders")
-                .setName("User limit of channel builder")
+                .setName("User limit of a channel builder")
                 .setDesc("Get or sets the user limit of a channel builder")
-                .setExample("command /channel:" +
-                        "\ttrigger:" +
-                        "\t\tcreate voice channel:" +
-                        "\t\t\tset name of the channel to \"Chat\"" +
-                        "\t\t\tset {guild} to guild with id \"5155156165\"" +
-                        "\t\t\tset user limit of the channel to 3" +
-                        "\t\t\tcreate the channel in {guild} as \"Jewel\"");
+                .setExample(
+                        "discord command $create:",
+                        "\ttrigger:",
+                        "\t\tcreate voice channel:",
+                        "\t\t\tset the name of the channel to \"{@bot}\"",
+                        "\t\t\tset the user limit of the channel to 5",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I have successfully created the channel! ID: %id of {_chnl}%\""
+                );
     }
 
     @Override

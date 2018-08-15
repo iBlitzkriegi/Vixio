@@ -19,7 +19,7 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
         Vixio.getInstance().registerExpression(ExprRoleWithId.class, Role.class, ExpressionType.SIMPLE,
                 "role with id %string% [in %-guild%]")
                 .setName("Role with ID")
-                .setDesc("Get a Role via it's ID. You can get role IDs via the roles of guild and ID expressions.")
+                .setDesc("Get a Role via it's ID. You may get the id of a role by either making the role mentionable and typing \\@rolename or by looping the roles of the guild and finding it by name. You could also use the `role named` syntax to retrieve the role outright.")
                 .setExample("add role with id \"5151561851\" to roles of event-user in event-guild");
     }
 

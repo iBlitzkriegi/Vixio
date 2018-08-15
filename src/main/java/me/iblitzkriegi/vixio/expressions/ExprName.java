@@ -28,7 +28,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
         Vixio.getInstance().registerPropertyExpression(ExprName.class, String.class,
                 "name", "channel/guild/bot/user/role/track/category/emote/field")
                 .setName("Name of")
-                .setDesc("Get the name of something. You can set the name of channels, guilds, bots, categories, and channel builders.")
+                .setDesc("Get the name of any discord entity. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
     }
 

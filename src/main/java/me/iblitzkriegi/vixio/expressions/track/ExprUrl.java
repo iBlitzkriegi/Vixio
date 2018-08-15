@@ -8,7 +8,7 @@ public class ExprUrl extends SimplePropertyExpression<AudioTrack, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprUrl.class, String.class,
                 "ur(i|l)", "tracks")
-                .setName("Url of track")
+                .setName("Url of Track")
                 .setDesc("Get a track's url.")
                 .setExample("broadcast \"%url of track event-bot is playing%\"");
     }

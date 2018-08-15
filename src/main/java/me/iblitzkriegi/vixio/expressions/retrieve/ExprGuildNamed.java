@@ -16,7 +16,7 @@ public class ExprGuildNamed extends SimpleExpression<Guild> {
     static {
         Vixio.getInstance().registerExpression(ExprGuildNamed.class, Guild.class, ExpressionType.SIMPLE,
                 "guild[s] named %string%")
-                .setName("Guild named")
+                .setName("Guild  Named")
                 .setDesc("Get all the guilds with a certain name that vixio can find.")
                 .setExample("set {_var::*} to guilds named \"Vixio\"");
     }

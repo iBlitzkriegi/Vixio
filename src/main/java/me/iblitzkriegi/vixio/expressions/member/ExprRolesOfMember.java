@@ -22,7 +22,7 @@ public class ExprRolesOfMember extends ChangeableSimpleExpression<Role> implemen
         Vixio.getInstance().registerPropertyExpression(ExprRolesOfMember.class, Role.class,
                 "role", "members")
                 .setName("Roles of Member")
-                .setDesc("Get the roles that a Member has in a Guild. You can remove, add and set the roles.")
+                .setDesc("Get the roles that a member has in a guild. You can remove, add and set the roles.")
                 .setExample("remove role with id \"6110981981981\" from roles of event-member");
     }
 

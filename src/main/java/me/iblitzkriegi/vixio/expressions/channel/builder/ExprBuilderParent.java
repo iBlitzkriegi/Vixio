@@ -12,12 +12,16 @@ public class ExprBuilderParent extends SimplePropertyExpression<ChannelBuilder, 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderParent.class, Category.class,
                 "(category|parent)", "channelbuilders")
-                .setName("Category of channel")
-                .setDesc("Get or set the category of a channel.")
-                .setExample("discord command channel <text>",
-                        "\tprefixes: $",
+                .setName("Category of channel builder")
+                .setDesc("Get or set the category of a channel builder.")
+                .setExample(
+                        "discord command $create <text>:",
                         "\ttrigger:",
-                        "\t\treply with \"%category of a new channel builder%\""
+                        "\t\tcreate text channel:",
+                        "\t\t\tset the name of the channel to arg-1 ",
+                        "\t\t\tset the parent of the channel to category named \"xd\"",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I've successfully created a channel named `%arg-1%`, ID: %id of {_chnl}%\""
                 );
     }
 

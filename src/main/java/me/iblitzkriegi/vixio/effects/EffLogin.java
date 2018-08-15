@@ -50,7 +50,7 @@ public class EffLogin extends AsyncEffect {
             return;
         }
 
-        JDA api = null;
+        JDA api;
         try {
             try {
                 api = new JDABuilder(AccountType.BOT).setToken(token).buildBlocking();

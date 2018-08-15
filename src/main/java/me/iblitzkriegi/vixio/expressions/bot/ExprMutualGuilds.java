@@ -17,10 +17,14 @@ import java.util.Collection;
 public class ExprMutualGuilds extends SimpleExpression<Guild> {
     static {
         Vixio.getInstance().registerExpression(ExprMutualGuilds.class, Guild.class, ExpressionType.SIMPLE,
-                "[the] mutual guilds of %user% [and %bot/string%]", "%user%[[']s] and %bot/string%[[']s] mutual guilds")
+                "[the] mutual guilds (of|with) %user% [and %bot/string%]", "%user%[[']s] and %bot/string%[[']s] mutual guilds")
                 .setName("Mutual Guild of User")
                 .setDesc("Get all the guilds a user and a bot share. The bot may be assumed in events.")
-                .setExample("set {_guilds::} to mutual guilds of event-user");
+                .setExample(
+                        "discord command $mutual <user>:",
+                        "\ttrigger:",
+                        "\t\treply with \"I share %size of mutual guilds of arg-1% guilds with %arg-1%\""
+                );
     }
 
     private Expression<User> user;

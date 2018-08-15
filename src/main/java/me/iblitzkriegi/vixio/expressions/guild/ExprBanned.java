@@ -14,17 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExprBanned extends SimpleExpression<User> {
+    public static List<Guild.Ban> lastRetrievedBanList;
+
     static {
         Vixio.getInstance().registerExpression(ExprBanned.class, User.class, ExpressionType.SIMPLE, "[last] (grabbed|retrieved) bans")
                 .setName("Retrieved bans")
-                .setDesc("Get the last set of retrieved bans from a guild.")
+                .setDesc("Get the last set of retrieved bans from a guild. The bot must have enough permissions to retrieve the bans list.")
                 .setExample(
-                        "grab bans of event-guild",
-                        "loop retrieved bans"
+                        "discord command $bans:",
+                        "\ttrigger:",
+                        "\t\tgrab bans of event-guild",
+                        "\t\treply with \"Here are the banned users: %grabbed bans%\""
                 );
     }
-
-    public static List<Guild.Ban> lastRetrievedBanList;
 
     @Override
     protected User[] get(Event e) {

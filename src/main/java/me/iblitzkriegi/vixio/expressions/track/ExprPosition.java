@@ -17,8 +17,8 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
     static {
         Vixio.getInstance().registerPropertyExpression(ExprPosition.class, Timespan.class,
                 "position", "tracks")
-                .setName("Position of track")
-                .setDesc("Get the position a track is at. This is the current time it is at")
+                .setName("Position of Track")
+                .setDesc("Get the position a track is at. This is the current play time the track is at.")
                 .setExample("broadcast \"%position of track event-bot is playing%\"");
     }
 

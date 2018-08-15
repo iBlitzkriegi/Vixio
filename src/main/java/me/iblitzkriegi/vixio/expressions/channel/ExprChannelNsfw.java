@@ -13,8 +13,8 @@ public class ExprChannelNsfw extends ChangeableSimplePropertyExpression<TextChan
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelNsfw.class, Boolean.class,
                 "nsfw state", "textchannels")
-                .setName("NSFW State")
-                .setDesc("Returns whether or not a channel is NSFW (false by default).")
+                .setName("NSFW state of Text Channel")
+                .setDesc("Returns whether or not a channel is NSFW (false by default). This can be set to a boolean or reset.")
                 .setExample(
                         "discord command nsfw <boolean>:",
                         "\tprefixes: $",

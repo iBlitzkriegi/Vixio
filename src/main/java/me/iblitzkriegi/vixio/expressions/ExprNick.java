@@ -19,7 +19,7 @@ public class ExprNick extends SimpleExpression<String> {
                 .setDesc("Get the new or previous nickname from the nick change event.")
                 .setExample(
                         "on nickname change:",
-                        "\tbroadcast \"%event-member% has changed their nick from %prev nick% to %new nick%\"\n"
+                        "\tbroadcast \"%event-member% has changed their nick from %prev nick% to %new nick%\""
                 );
     }
 

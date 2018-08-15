@@ -18,7 +18,8 @@ public class ExprCommands extends SimpleExpression<DiscordCommand> {
         Vixio.getInstance().registerExpression(ExprCommands.class, DiscordCommand.class, ExpressionType.SIMPLE, "[all] discord commands")
                 .setName("All Commands")
                 .setDesc("Returns all registered discord commands")
-                .setExample("loop all discord commands:",
+                .setExample(
+                        "loop all discord commands:",
                         "\tbroadcast description of loop-value"
                 );
     }

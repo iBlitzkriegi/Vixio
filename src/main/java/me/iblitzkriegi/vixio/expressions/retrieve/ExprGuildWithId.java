@@ -17,7 +17,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
     static {
         Vixio.getInstance().registerExpression(ExprGuildWithId.class, Guild.class, ExpressionType.SIMPLE,
                 "(server|guild) with id %string%")
-                .setName("Guild with id")
+                .setName("Guild with ID")
                 .setDesc("Get a Guild via it's ID")
                 .setExample("broadcast name of guild with id \"16165192162168461\"");
     }

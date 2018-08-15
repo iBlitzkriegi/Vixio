@@ -16,23 +16,18 @@ public class ExprBuilderEmbed extends SimplePropertyExpression<MessageBuilder, M
                 "embed", "messagebuilders")
                 .setName("Embed of Message Builder")
                 .setDesc("Get the Embed of a Message Builder. You can set, delete and reset the embed.")
-                .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t" +
-                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
-                        "\t\tif {_cmd::1} is \"##build\": " +
-                        "\t\t\tmake embed:" +
-                        "\t\t\t\tadd field with value \"to remove\" to fields of the embed" +
-                        "\t\t\t\tadd field with value \"to remove\" to fields of the embed # this one shoudl stay because im only removing not removing all" +
-                        "\t\t\t\tadd field with value \"to stay\" to fields of the embed" +
-                        "\t\t\t\tset color of the embed to red" +
-                        "\t\t\tset {e} to a new message builder" +
-                        "\t\t\tset text of {e} to \"Hey there \"" +
-                        "\t\t\tappend \"Current text: %text of {e}%\" to {e}" +
-                        "\t\t\tappend \"World!\" to {e}" +
-                        "\t\t\tappend \"Appended form: %text of {e}%\" to {e}" +
-                        "\t\t\tset embed of {e} to last embed" +
-                        "\t\t\tappend \"Info for embed attached to this builder: %color of embed of {e}%\" to {e}" +
-                        "\t\t\tsend {e} to event-channel with event-bot");
+                .setExample(
+                        "discord command $build:",
+                        "\ttrigger:",
+                        "\t\tmake embed:",
+                        "\t\t\tadd field with value \"Hey there this is an embed!\" to the embed",
+                        "\t\t\tset color of the embed to red",
+                        "\t\tset {e} to a new message builder",
+                        "\t\tset text of {e} to \"Hey there%nl%\"",
+                        "\t\tset embed of {e} to last embed",
+                        "\t\tappend \"Info for embed attached to this builder: %color of embed of {e}%\" to {e}",
+                        "\t\tsend {e} to event-channel with event-bot\t"
+                );
     }
 
     @Override

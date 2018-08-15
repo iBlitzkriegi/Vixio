@@ -17,8 +17,20 @@ public class ExprGrabbedMessages extends SimpleExpression<UpdatingMessage> {
         Vixio.getInstance().registerExpression(ExprGrabbedMessages.class, UpdatingMessage.class, ExpressionType.SIMPLE,
                 "[the] grabbed messages")
                 .setName("Grabbed Messages")
-                .setDesc("Get the grabbed messages from the grab messages effect. The messages can be deleted, which purges them.")
-                .setExample("delete the grabbed messages with event-bot");
+                .setDesc("Get the grabbed messages from the grab messages effect. This can be used in the purge effect to purge the messages.")
+                .setExample(
+                        "discord command $purge <number>:",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tset {_num} to arg-1 ",
+                        "\t\tgrab the last {_num} messages in event-channel",
+                        "\t\tpurge the grabbed messages with event-bot",
+                        "\t\tset {_error} to last vixio error ",
+                        "\t\tif {_error} is set:",
+                        "\t\t\treply with \"I ran into an error! `%{_error}%`\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"I have successfully purged %arg-1% messages\""
+                );
     }
 
     @Override

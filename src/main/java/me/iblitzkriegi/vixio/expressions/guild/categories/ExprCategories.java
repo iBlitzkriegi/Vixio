@@ -19,17 +19,13 @@ public class ExprCategories extends ChangeableSimpleExpression<Category> impleme
         Vixio.getInstance().registerPropertyExpression(ExprCategories.class, Category.class,
                 "categories", "guilds")
                 .setName("Categories of guild")
-                .setDesc("Get all of the categories in a guild. They are converted to their names. Must include a bot to modify the categories. Changers: ADD, REMOVE, DELETE")
-                .setExample("on guild message received:" +
-                        "\tif name of event-bot contains \"Jewel\":\t" +
-                        "\t\tset {_cmd::*} to split content of event-message at \" \"" +
-                        "\t\tif {_cmd::*} is \"##categories\":" +
-                        "\t\t\tset {_m} to a message builder" +
-                        "\t\t\tappend \"-= Here are the current categories -=%nl%\" to {_m}" +
-                        "\t\t\tappend \"```%nl%\" to {_m}" +
-                        "\t\t\tloop categories of event-guild:" +
-                        "\t\t\t\tappend \"%name of loop-value% %nl%\" to {_m}" +
-                        "\t\t\tappend \"```\" to {_m}");
+                .setDesc("Get all of the categories in a guild. You may add a category to this by name which creates a category, or delete/remove a category by inputting a category.")
+                .setExample(
+                        "discord command $categories:",
+                        "\ttrigger:",
+                        "\t\tset {_categories::*} to the categories of event-guild",
+                        "\t\treply with \"Here are the current categories: `%{_categories::*}%`\""
+                );
     }
 
     private Expression<Guild> guilds;

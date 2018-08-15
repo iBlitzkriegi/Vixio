@@ -15,18 +15,18 @@ import java.util.List;
 public class ExprCategoryNamed extends SimpleExpression<Category> {
     static {
         Vixio.getInstance().registerExpression(ExprCategoryNamed.class, Category.class, ExpressionType.SIMPLE,
-                "category named %string% [in %guild%]")
+                "[the] category (with [the] name|named) %string% [in %guild%]")
                 .setName("Category named")
                 .setDesc("Get a Category by its name in a Guild.")
-                .setExample("command /channel:" +
-                        "\ttrigger:" +
-                        "\t\tcreate text channel:" +
-                        "\t\t\tset name of the channel to \"Vixio!\"" +
-                        "\t\t\tset {guild} to guild with id \"219967335266648065\"" +
-                        "\t\t\tset nsfw state of the channel as \"Jewel\" to true" +
-                        "\t\t\tset topic of the channel as \"Jewel\" to \"Jewel testing\"" +
-                        "\t\t\tset parent of the channel to category named \"Test Category\" in {guild}" +
-                        "\t\tcreate the channel in {guild} as \"Jewel\"");
+                .setExample(
+                        "discord command $create <text>:",
+                        "\ttrigger:",
+                        "\t\tcreate text channel:",
+                        "\t\t\tset the name of the channel to arg-1 ",
+                        "\t\t\tset the parent of the channel to category named \"xd\"",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I've successfully created a channel named `%arg-1%`, ID: %id of {_chnl}%\""
+                );
     }
 
     private Expression<Guild> guild;
@@ -46,13 +46,8 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
             return null;
         }
 
-        try {
-            return new Category[]{categories.get(0)};
-        } catch (IndexOutOfBoundsException x) {
+        return categories.isEmpty() ? null : new Category[]{categories.get(0)};
 
-        }
-
-        return null;
     }
 
     @Override

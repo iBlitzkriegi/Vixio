@@ -22,8 +22,8 @@ public class ExprAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
                 "afk channel", "guilds")
                 .setName("Afk channel of Guild")
                 .setDesc("Get the AFK voice channel of a guild. You can set this to another channel.")
-                .setExample("discord command afk:",
-                        "\tprefixes: $",
+                .setExample(
+                        "discord command $afk:",
                         "\ttrigger:",
                         "\t\treply with \"%afk channel of event-guild%\"");
     }
@@ -68,10 +68,10 @@ public class ExprAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
         }
         VoiceChannel channel = (VoiceChannel) delta[0];
         for (Guild guild : guilds) {
-            Guild bindedGuild = Util.bindGuild(bot, guild);
+            Guild boundGuild = Util.bindGuild(bot, guild);
             try {
-                if (bindedGuild != null) {
-                    bindedGuild.getManager().setAfkChannel(channel).queue();
+                if (boundGuild != null) {
+                    boundGuild.getManager().setAfkChannel(channel).queue();
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "set afk channel", x.getPermission().getName());

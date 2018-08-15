@@ -19,10 +19,11 @@ public class ExprOwner extends ChangeableSimplePropertyExpression<Guild, Member>
                 "owner", "guilds")
                 .setName("Owner of Guild")
                 .setDesc("Get or set the owner of a guild.")
-                .setExample("command /transfer <text>:" +
-                        "\ttrigger:" +
-                        "\t\tset {guild} to guild with id \"5611840019819\"" +
-                        "\t\tset owner of {guild} to user with id \"16518918911891\" in {guild} as \"Jewel\"");
+                .setExample(
+                        "discord command $transfer <member>:",
+                        "\ttrigger:",
+                        "\t\tset owner of event-guild to arg-1 with event-bot"
+                );
     }
 
     @Override

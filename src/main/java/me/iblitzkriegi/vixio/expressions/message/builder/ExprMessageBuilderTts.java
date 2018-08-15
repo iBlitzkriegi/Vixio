@@ -16,11 +16,12 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
                 .setName("TTS of Message Builder")
                 .setDesc("Get the TTS state of a Message Builder. The state can be set to true or false.")
                 .setExample(
-                        "command /build",
+                        "discord command $tts:",
                         "\ttrigger:",
-                        "\t\tset {e} to a new message builder",
-                        "\t\tset tts of {e} to false",
-                        "\t\tbroadcast \"%tts of {e}%\""
+                        "\t\tset {_} to a new message builder",
+                        "\t\tset tts state of {_} to true",
+                        "\t\tsend {_} to event-channel with event-bot",
+                        "\t\treply with \"done?\""
                 );
     }
 

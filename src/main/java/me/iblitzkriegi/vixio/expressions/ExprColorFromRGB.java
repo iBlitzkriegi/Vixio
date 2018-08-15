@@ -18,8 +18,9 @@ public class ExprColorFromRGB extends SimpleExpression<Color> {
         Vixio.getInstance().registerExpression(ExprColorFromRGB.class, Color.class, ExpressionType.SIMPLE,
                 "[java[ ]]colo[u]r from rgb %number%(, | and )%number%(, | and )%number%")
                 .setName("Color")
-                .setDesc("A color that can be more specific that Skript's  color type.")
-                .setExample("set {_color} to color from rgb 0, 0 and 0 # results in black",
+                .setDesc("A color that can be more specific that Skript's color type.")
+                .setExample(
+                        "set {_color} to color from rgb 0, 0 and 0 # results in black",
                         "set {_color} to black # results in black",
                         "set {_color} to \"black\" parsed as a color  # results in black"
                 );

@@ -14,17 +14,17 @@ public class ExprBuilderBitrate extends SimplePropertyExpression<ChannelBuilder,
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderBitrate.class, Integer.class,
                 "bitrate", "channelbuilders")
-                .setName("Bitrate of voice channel")
+                .setName("Bitrate of channel builder")
                 .setDesc("Get the bitrate of a channel builder. " +
                         "The default value is 64kbps for channel builders. Rates multiplied by 1000." +
                         "You can set or reset this (resets to 64kbps)")
                 .setExample(
-                        "command /channel:",
+                        "discord command $create:",
                         "\ttrigger:",
                         "\t\tcreate voice channel:",
-                        "\t\t\tset name of the channel to \"Testing\"",
-                        "\t\t\tset bitrate of the channel as \"Jewel\" to 69",
-                        "\t\tcreate the channel in guild with id \"56156156615611\" as \"Jewel\""
+                        "\t\t\tset the name of the channel to \"{@bot}\"",
+                        "\t\t\tset the bitrate of the channel to 69",
+                        "\t\t\tcreate the channel in event-guild"
                 );
     }
 
@@ -60,7 +60,7 @@ public class ExprBuilderBitrate extends SimplePropertyExpression<ChannelBuilder,
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
         for (ChannelBuilder builder : getExpr().getAll(e)) {
-            builder.setBitRate(mode == Changer.ChangeMode.SET ? ((Number) delta[0]).intValue() * 1000 : Util.DEFAULT_BITRATE);
+            builder.setBitRate(mode == Changer.ChangeMode.SET ? ((Number) delta[0]).intValue() : Util.DEFAULT_BITRATE);
         }
     }
 }

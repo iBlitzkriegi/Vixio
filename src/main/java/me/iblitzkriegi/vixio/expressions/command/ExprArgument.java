@@ -36,7 +36,8 @@ public class ExprArgument extends SimpleExpression<Object> {
                 "[][the] %*classinfo%( |-)arg[ument][( |-)<\\d+>]", "[][the] arg[ument]( |-)%*classinfo%[( |-)<\\d+>]")
                 .setName("Argument")
                 .setDesc("Represents the argument of a command")
-                .setExample("discord command say <string>:",
+                .setExample(
+                        "discord command say <string>:",
                         "\tprefixes: !, . and ;",
                         "\ttrigger:",
                         "\t\treply with arg-1 # replies with the first argument"

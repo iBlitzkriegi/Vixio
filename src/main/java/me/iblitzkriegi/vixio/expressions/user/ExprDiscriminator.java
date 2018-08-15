@@ -9,9 +9,13 @@ public class ExprDiscriminator extends SimplePropertyExpression<User, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprDiscriminator.class, String.class,
                 "discriminator", "users")
-                .setName("Discriminator of user")
+                .setName("Discriminator of User")
                 .setDesc("Get the discriminator of a user, this is the four numbers after a users name.")
-                .setExample("discriminator of user with id \"4165651561561\"");
+                .setExample(
+                        "discord command $info <user>:",
+                        "\ttrigger:",
+                        "\t\treply with \"%discriminator of arg-1%\""
+                );
     }
 
     @Override

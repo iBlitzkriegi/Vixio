@@ -41,10 +41,15 @@ public class ExprBuilderText extends SimplePropertyExpression<MessageBuilder, St
 
     @Override
     public String convert(MessageBuilder messageBuilder) {
-        if (stripped) {
-            return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentStripped();
-        } else {
-            return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentRaw();
+        try {
+            if (stripped) {
+                return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentStripped();
+            } else {
+                return messageBuilder.isEmpty() ? null : messageBuilder.build().getContentRaw();
+            }
+        } catch (IllegalStateException x) {
+            Vixio.getErrorHandler().warn("Vixio attempted to build a message with more than 2000 characters.");
+            return null;
         }
     }
 

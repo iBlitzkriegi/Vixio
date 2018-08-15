@@ -10,16 +10,16 @@ public class ExprBuilderNsfw extends SimplePropertyExpression<ChannelBuilder, Bo
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderNsfw.class, Boolean.class,
                 "nsfw state", "channelbuilders")
-                .setName("NSFW State")
-                .setDesc("Returns whether or not a channel builder is NSFW (false by default).")
+                .setName("NSFW State of a channel builder")
+                .setDesc("Returns whether or not a channel builder is NSFW (false by default). Can be set to either true or false.")
                 .setExample(
-                        "command /channel:",
+                        "discord command $create <text> <boolean>:",
                         "\ttrigger:",
                         "\t\tcreate text channel:",
-                        "\t\tset name of the channel to \"Testing\"",
-                        "\t\tset {guild} to guild with id \"56156156615611\"",
-                        "\t\tset nsfw state of this channel as \"Jewel\" to true",
-                        "\t\tcreate the channel in {guild} as \"Jewel\""
+                        "\t\t\tset the name of the channel to arg-1",
+                        "\t\t\tset the nsfw state of the channel to arg-2",
+                        "\t\tcreate the last made channel in event-guild and store it in {_chnl}",
+                        "\t\treply with \"I've successfully created a channel named `%arg-1%`, ID: %id of {_chnl}%\""
                 );
     }
 

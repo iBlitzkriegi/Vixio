@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.expressions.guild;
 
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
@@ -14,8 +15,8 @@ import java.util.List;
 
 public class ExprVoiceChannels extends SimpleExpression<VoiceChannel> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprVoiceChannels.class, VoiceChannel.class,
-                "voice(-| )channel", "guild/category")
+        Vixio.getInstance().registerExpression(ExprVoiceChannels.class, VoiceChannel.class, ExpressionType.SIMPLE,
+                "[the] voice[(-| )]channels of %guild/category%", "%guild/category%'[s] voice[(-| )]channels")
                 .setName("Voice Channels")
                 .setDesc("Get all of the voice channels of a guild or category.")
                 .setExample(

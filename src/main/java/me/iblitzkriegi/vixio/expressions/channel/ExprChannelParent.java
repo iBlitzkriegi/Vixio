@@ -15,12 +15,15 @@ public class ExprChannelParent extends ChangeableSimplePropertyExpression<Channe
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelParent.class, Category.class,
                 "(category|parent)", "channels")
-                .setName("Category of channel")
+                .setName("Category of Channel")
                 .setDesc("Get or set the category of a channel.")
-                .setExample("discord command channel <text>",
-                        "\tprefixes: $",
+                .setExample(
+                        "discord command $category <string> <string>:",
                         "\ttrigger:",
-                        "\t\treply with \"%(category of channel with id arg-1)'s name%\""
+                        "\t\tset {_category} to category named arg-2",
+                        "\t\tset {_channel} to channel with id arg-1",
+                        "\t\tset parent of {_channel} to {_category} with event-bot",
+                        "\t\treply with \"Successfully moved %{_channel}% to %{_category}%\""
                 );
     }
 

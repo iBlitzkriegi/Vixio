@@ -4,6 +4,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.IMentionable;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 /**
@@ -11,9 +12,9 @@ import net.dv8tion.jda.core.entities.TextChannel;
  */
 public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "users/channel/members/emotes/roles")
+        Vixio.getInstance().registerPropertyExpression(ExprMentionTag.class, String.class, "mention tag", "users/channel/members/emotes/roles/textchannel")
                 .setName("Mention of")
-                .setDesc("Get the mention tag of something")
+                .setDesc("Get the mention tag of any discord entity that can be mentioned.")
                 .setExample("reply with mention tag of event-user");
     }
 
@@ -25,10 +26,10 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
     @Override
     public String convert(Object o) {
         if (o instanceof Channel) {
-            if (!(o instanceof TextChannel)) {
-                return null;
+            if (o instanceof TextChannel) {
+                return ((TextChannel)o).getAsMention();
             }
-            return ((TextChannel) o).getAsMention();
+            return null;
 
         }
         return ((IMentionable) o).getAsMention();

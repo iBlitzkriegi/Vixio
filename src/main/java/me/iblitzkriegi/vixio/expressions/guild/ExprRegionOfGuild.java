@@ -17,8 +17,8 @@ public class ExprRegionOfGuild extends ChangeableSimplePropertyExpression<Guild,
     static {
         Vixio.getInstance().registerPropertyExpression(ExprRegionOfGuild.class, Region.class,
                 "region", "guilds")
-                .setName("Region of Guilds")
-                .setDesc("Get the current region of Guilds.")
+                .setName("Region of Guild")
+                .setDesc("Get the current region of a guild.")
                 .setExample("broadcast \"%region of event-guild%\"");
     }
 

@@ -14,10 +14,16 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
                 .setName("Game type")
                 .setDesc("Get the type of game a user, a bot, or a bot specified by name is playing.")
                 .setExample(
-                        "set {_type} to the game type of event-user" +
-                        "if {_type} is streaming:",
-                        "\tbroadcast \"HE'S LIVE!\"");
+                        "discord command $streaming <user>:",
+                        "\ttrigger:",
+                        "\t\tset {_type} to the game type of event-user",
+                        "\t\tif {_type} is streaming:",
+                        "\t\t\treply with \"%arg-1% is live!\"",
+                        "\t\t\tstop",
+                        "\t\treply with \"%arg-1% is not streaming currently\""
+                );
     }
+
     @Override
     protected String getPropertyName() {
         return "game type";

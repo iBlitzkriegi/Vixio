@@ -16,7 +16,7 @@ public class ExprOnlineStatus extends SimplePropertyExpression<Object, OnlineSta
         Vixio.getInstance().registerPropertyExpression(ExprOnlineStatus.class, OnlineStatus.class,
                 "[online][(-| )]status", "members/users/bots/strings")
                 .setName("Online status of")
-                .setDesc("Get a users online status of a user/member. Or the online status of a bot, which can be set.")
+                .setDesc("Get the online status of a user or a member. The online status can be set or reset for a bot.")
                 .setExample("set status of event-bot to do not disturb");
     }
 

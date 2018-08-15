@@ -17,12 +17,15 @@ public class ExprTextChannels extends SimpleExpression<TextChannel> {
         Vixio.getInstance().registerPropertyExpression(ExprTextChannels.class, TextChannel.class,
                 "text(-| )channel", "guild/category")
                 .setName("Text Channels of")
-                .setDesc("Get all of the Text Channels in a Guild/Category.")
+                .setDesc("Get all of the text channels in a guild or a category.")
                 .setExample(
-                        "on guild message receive:",
-                        "\tset {_channels::*} to text channels of event-guild",
-                        "\tloop {_channels::*}:",
-                        "\t\tbroadcast \"%name of loop-value%\""
+                        "discord command $channels [<text>]:",
+                        "\ttrigger:",
+                        "\t\tif arg-1 is not set:",
+                        "\t\t\treply with \"Here are the current channels: `%channels of event-guild%`\"",
+                        "\t\t\tstop",
+                        "\t\tset {_category} to category named arg-1",
+                        "\t\treply with \"Here are the channels of the category named %arg-1%: `%channels of {_category}%`\""
                 );
     }
 

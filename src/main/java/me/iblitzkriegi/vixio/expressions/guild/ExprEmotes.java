@@ -1,4 +1,3 @@
-
 package me.iblitzkriegi.vixio.expressions.guild;
 
 import ch.njol.skript.lang.Expression;
@@ -18,7 +17,23 @@ public class ExprEmotes extends SimpleExpression<Emote> {
                 "[<global>] emote", "guild")
                 .setName("Emotes of guild")
                 .setDesc("Get all of the emotes a guild has added.")
-                .setExample("set {var::*} to the emotes of event-guild");
+                .setExample(
+                        "discord command $emotes:",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tloop emotes of event-guild:",
+                        "\t\t\tif loop-value is animated:",
+                        "\t\t\t\tadd loop-value to {_animated::*}",
+                        "\t\t\telse:",
+                        "\t\t\t\tadd loop-value to {_non::*}",
+                        "\t\tcreate embed:",
+                        "\t\t\tset the author info of the embed to author named \"Emotes %reaction \"\":smile:\"\"%\" with no url and no icon",
+                        "\t\t\tset the description of the embed to \"%name of event-guild% has %size of {_non::*}% regular emotes and %size of {_animated::*}% animated emotes!!\"",
+                        "\t\t\tset the colour of the embed to Purple",
+                        "\t\t\tadd field named \"Local emotes (1/1)\" with value \"%{_non::*}%\" to embed",
+                        "\t\t\tadd field named \"Animated emotes (1/1)\" with value \"%{_animated::*}%\" to embed",
+                        "\t\tsend the last created embed to event-channel with event-bot"
+                );
     }
 
     private Expression<Guild> guild;

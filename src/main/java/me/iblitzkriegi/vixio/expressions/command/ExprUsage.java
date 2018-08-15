@@ -10,7 +10,7 @@ public class ExprUsage extends SimplePropertyExpression<DiscordCommand, String> 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprUsage.class, String.class,
                 "usage", "discordcommands")
-                .setName("usage of Command")
+                .setName("Usage of Command")
                 .setDesc("Returns the usage of a command.")
                 .setExample("broadcast usage of \"commandname\" parsed as a discord command");
     }

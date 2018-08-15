@@ -15,8 +15,8 @@ public class ExprChannelTopic extends ChangeableSimplePropertyExpression<Channel
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelTopic.class, String.class,
                 "topic", "channels")
-                .setName("Topic of Channel")
-                .setDesc("Get or set the topic of a text channel.")
+                .setName("Topic of Text Channel")
+                .setDesc("Get or set the topic of a text channel. You may also delete the topic to reset it.")
                 .setUserFacing("the] topic[s] of %textchannels%" ,"%textchannels%'[s] topic[s]")
                 .setExample("set topic of event-channel to \"Hi Pika\" with event-bot");
     }

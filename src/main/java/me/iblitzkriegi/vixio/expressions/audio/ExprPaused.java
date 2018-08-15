@@ -18,7 +18,17 @@ public class ExprPaused extends SimpleExpression<Boolean> {
                 "%bot/string% paused state [in %guild%]")
                 .setName("Bot paused state")
                 .setDesc("Check if a bot is paused or not. Can be set to true/false.")
-                .setExample("set event-bot paused state to true");
+                .setExample(
+                        "discord command $pause:",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tif event-bot is paused:",
+                        "\t\t\tset event-bot paused state to false",
+                        "\t\t\treply with \"I'm no longer paused\"",
+                        "\t\t\tstop",
+                        "\t\tset event-bot paused state to true",
+                        "\t\treply with \"I'm now paused\""
+                );
     }
 
     private Expression<Object> bot;
@@ -59,11 +69,11 @@ public class ExprPaused extends SimpleExpression<Boolean> {
 
     @Override
     public Class<?>[] acceptChange(Changer.ChangeMode mode) {
-         if (mode == Changer.ChangeMode.SET) {
-             return new Class[]{Boolean.class};
-         }
+        if (mode == Changer.ChangeMode.SET) {
+            return new Class[]{Boolean.class};
+        }
 
-         return null;
+        return null;
     }
 
     @Override

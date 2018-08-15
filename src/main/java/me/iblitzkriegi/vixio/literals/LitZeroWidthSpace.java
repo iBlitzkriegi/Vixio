@@ -12,7 +12,10 @@ import org.bukkit.event.Event;
 public class LitZeroWidthSpace extends SimpleLiteral<String> {
 
     static {
-        Vixio.getInstance().registerExpression(LitZeroWidthSpace.class, String.class, ExpressionType.SIMPLE, "[a] zero width space");
+        Vixio.getInstance().registerExpression(LitZeroWidthSpace.class, String.class, ExpressionType.SIMPLE, "[a] zero width space")
+                .setName("Zero width space")
+                .setDesc("Get a zero width space")
+                .setExample("append zero width space to {_messageBuilder}");
     }
 
     public LitZeroWidthSpace() {

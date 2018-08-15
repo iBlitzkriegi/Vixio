@@ -15,7 +15,7 @@ public class ExprPrefix extends SimpleExpression<String> {
 
     static {
         Vixio.getInstance().registerExpression(ExprPrefix.class, String.class, ExpressionType.SIMPLE, "[the] used prefix")
-                .setName("Prefix")
+                .setName("Used Prefix")
                 .setDesc("Returns the used prefix in a command")
                 .setExample("broadcast the used prefix");
     }

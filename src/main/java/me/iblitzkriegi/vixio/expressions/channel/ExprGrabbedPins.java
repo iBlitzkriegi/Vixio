@@ -11,19 +11,21 @@ import org.bukkit.event.Event;
 
 import java.util.List;
 
-public class ExprChannelPinned extends SimpleExpression<Message> {
+public class ExprGrabbedPins extends SimpleExpression<Message> {
+    public static List<Message> pinnedMessages;
+
     static {
-        Vixio.getInstance().registerExpression(ExprChannelPinned.class, Message.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprGrabbedPins.class, Message.class, ExpressionType.SIMPLE,
                 "[last] (grabbed|retrieved) (pins|pinned messages)")
                 .setName("Last Retrieved Pins")
                 .setDesc("Get the results of the last \"grab pinned messages\" search.")
                 .setExample(
-                        "grab pinned messages in event-channel",
-                        "reply with \"%grabbed pins%\""
+                        "discord command $pins:",
+                        "\ttrigger:",
+                        "\t\tgrab pinned messages in event-channel",
+                        "\t\treply with \"%grabbed pins%\""
                 );
     }
-
-    public static List<Message> pinnedMessages;
 
     @Override
     protected Message[] get(Event e) {

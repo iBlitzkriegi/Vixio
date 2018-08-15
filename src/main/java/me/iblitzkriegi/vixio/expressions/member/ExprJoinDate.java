@@ -14,7 +14,7 @@ public class ExprJoinDate extends SimplePropertyExpression<Object, Date> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprJoinDate.class, Date.class, "[<discord>] join date", "members/users")
                 .setName("Join Date")
-                .setDesc("Get the date a member joined a guild.")
+                .setDesc("Get the date a member joined a guild. If you append discord then it gets the date they joined discord, otherwise its the date they joined the guild if the input is a member and the discord join date for users.")
                 .setExample("reply with \"%discord join date of event-user%\"");
     }
 

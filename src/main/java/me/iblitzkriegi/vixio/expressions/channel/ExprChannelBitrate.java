@@ -13,7 +13,7 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Chann
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelBitrate.class, Integer.class,
                 "bitrate", "voicechannels/channels")
-                .setName("Bitrate of voice channel")
+                .setName("Bitrate of Voice Channel")
                 .setDesc("Get the bitrate of a voice channel." +
                         " The default value is 64kbps for channel builders. Rates multiplied by 1000." +
                         " You can set or reset this (resets to 64kbps)")
@@ -27,7 +27,7 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Chann
 
     @Override
     public Integer convert(Channel channel) {
-        return channel instanceof VoiceChannel ? ((VoiceChannel) channel).getBitrate() / 1000: null;
+        return channel instanceof VoiceChannel ? ((VoiceChannel) channel).getBitrate() / 1000 : null;
     }
 
     @Override

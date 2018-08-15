@@ -10,6 +10,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Icon;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.SelfUser;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.managers.AccountManager;
@@ -24,10 +25,14 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprAvatar.class, Avatar.class,
-                "[<default>] avatar", "users/bots/strings")
-                .setName("Avatar of user")
+                "[discord] [<default>] avatar", "users/bots/strings/member")
+                .setName("Avatar of User")
                 .setDesc("Get either the user's custom avatar or their default one that discord gave them. You can extract the id from the url using the ID expression.")
-                .setExample("broadcast \"%avatar of user with id \"\"44950981891\"\"%\"");
+                .setExample(
+                        "discord command $info <user>:",
+                        "\ttrigger:",
+                        "\t\treply with \"%avatar of arg-1%\""
+                );
     }
 
     private boolean custom;
@@ -44,6 +49,9 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
             }
             SelfUser selfUser = bot.getSelfUser();
             return new Avatar(selfUser, custom ? selfUser.getAvatarUrl() : selfUser.getDefaultAvatarUrl(), custom);
+        } else if (object instanceof Member) {
+            User user = ((Member) object).getUser();
+            return new Avatar(user, custom ? user.getAvatarUrl() : user.getDefaultAvatarUrl(), custom);
         }
         return null;
     }

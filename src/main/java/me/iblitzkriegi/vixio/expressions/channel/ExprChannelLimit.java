@@ -16,15 +16,19 @@ public class ExprChannelLimit extends ChangeableSimplePropertyExpression<Channel
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelLimit.class, Integer.class,
                 "user limit", "voicechannels/channels")
-                .setName("User limit of voice channel")
+                .setName("User limit of Voice Channel")
                 .setDesc("Get or sets the user limit of a voice channel")
-                .setUserFacing("[the] user limit[s] of %voicechannels%","%voicechannels%'[s] user limit[s]")
-                .setExample("reply with \"%user limit of event-channel%\"");
+                .setUserFacing("[the] user limit[s] of %voicechannels%", "%voicechannels%'[s] user limit[s]")
+                .setExample(
+                        "discord command $bitrate <string> <number>:",
+                        "\ttrigger:",
+                        "\t\tset user limit of voice channel with id arg-1 to arg-2 with event-bot"
+                );
     }
 
     @Override
     public Integer convert(Channel channel) {
-        return channel instanceof VoiceChannel ? ((VoiceChannel)channel).getUserLimit()  : null;
+        return channel instanceof VoiceChannel ? ((VoiceChannel) channel).getUserLimit() : null;
     }
 
     @Override
