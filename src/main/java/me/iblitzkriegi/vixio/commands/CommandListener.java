@@ -28,12 +28,13 @@ public class CommandListener extends ListenerAdapter {
 
                     DiscordCommandEvent event = new DiscordCommandEvent(null, alias, command, null,
                             e.getGuild(), e.getChannel(), e.getTextChannel(), e.getMessage(),
-                            e.getAuthor(), e.getMember(), Util.botFromID(e.getJDA().getSelfUser().getId()));
+                            e.getAuthor(), e.getMember(), Util.botFrom(e.getJDA()));
                     String rawPrefix = prefix.getSingle(event);
-                    if (nonNull(rawPrefix) && StringUtils.startsWithIgnoreCase(content, rawPrefix + alias)) {
+                    String usedCommand = alias.split( " ")[0];
+                    if (nonNull(rawPrefix) && content.equalsIgnoreCase(rawPrefix + usedCommand)) {
                         event.setPrefix(rawPrefix);
                         try {
-                            event.setArguments(content.substring((rawPrefix + alias).length() + 1));
+                            event.setArguments(content.substring((rawPrefix + usedCommand).length() + 1));
                         } catch (StringIndexOutOfBoundsException e1) {
                             event.setArguments(null);
                         }
