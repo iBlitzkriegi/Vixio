@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 public class EffGrabPins extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffGrabPins.class, "(retrieve|grab) pinned messages (of|in|with) %textchannel/channel/user% [with %bot/string%]")
-                .setName("Garb Pinned Messages")
+                .setName("Grab Pinned Messages")
                 .setDesc("Grab the pinned messages of a channel or a dm with a user. Can be gotten with the last grabbed pinned messages expression.")
                 .setUserFacing("(retrieve|grab) pinned messages (of|in|with) %textchannel/user%")
                 .setExample("grab pinned messages of event-channel");
