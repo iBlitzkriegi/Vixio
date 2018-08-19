@@ -20,9 +20,9 @@ import org.bukkit.event.Event;
 public class EffSendMessage extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffSendMessage.class, "send %messages/strings% to %users/channels% with %bot/string% [and store (it|the message) in %-objects%]")
-                .setName("Send Message to Text Channel")
-                .setDesc("Send a message to a text channel.")
-                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels% with %bot/string% [and store (it|the message) in %-objects%]")
+                .setName("Send Message")
+                .setDesc("Send a message to either a user or a text channel.")
+                .setUserFacing("send %message/string/messagebuilder/embedbuilder% to %channels/users% with %bot/string% [and store (it|the message) in %-objects%]")
                 .setExample(
                         "discord command $send <text> [<text>]:",
                         "\ttrigger:",
