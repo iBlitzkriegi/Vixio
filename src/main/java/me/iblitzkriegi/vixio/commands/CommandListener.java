@@ -30,11 +30,11 @@ public class CommandListener extends ListenerAdapter {
                             e.getGuild(), e.getChannel(), e.getTextChannel(), e.getMessage(),
                             e.getAuthor(), e.getMember(), Util.botFrom(e.getJDA()));
                     String rawPrefix = prefix.getSingle(event);
-                    String usedCommand = alias.split( " ")[0];
-                    if (nonNull(rawPrefix) && content.equalsIgnoreCase(rawPrefix + usedCommand)) {
+                    String usedCommand = content.split( " ")[0];
+                    if (nonNull(rawPrefix) && usedCommand.equalsIgnoreCase(rawPrefix + alias)) {
                         event.setPrefix(rawPrefix);
                         try {
-                            event.setArguments(content.substring((rawPrefix + usedCommand).length() + 1));
+                            event.setArguments(content.substring((usedCommand).length() + 1));
                         } catch (StringIndexOutOfBoundsException e1) {
                             event.setArguments(null);
                         }

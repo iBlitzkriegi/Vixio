@@ -12,11 +12,7 @@ import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -60,7 +56,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             }
             return null;
         } else if (o instanceof MessageEmbed.Field) {
-            return new String[]{((MessageEmbed.Field)o).getName()};
+            return new String[]{((MessageEmbed.Field) o).getName()};
         }
         return null;
     }
@@ -111,8 +107,9 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                     bot.getSelfUser().getManager().setName(name).queue();
                 } else if (object instanceof Channel) {
                     Channel channel = Util.bindChannel(bot, (Channel) object);
+
                     try {
-                        channel.getManager().setName(name).queue();
+                        channel.getManager().setName(name.replaceAll(" ", "-")).queue();
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "name of", this.object, bot),
                                 x.getPermission().getName());
