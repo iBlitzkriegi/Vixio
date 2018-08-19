@@ -14,6 +14,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioReference;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.vdurmont.emoji.EmojiManager;
 import com.vdurmont.emoji.EmojiParser;
+
+import ch.njol.util.coll.CollectionUtils;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.enums.SearchableSite;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
@@ -28,6 +30,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -52,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 
 public class Util {
@@ -122,16 +126,21 @@ public class Util {
     }
 
     public static Bot botFrom(Object input) {
-        if (input == null) {
-            return null;
-        } else if (input instanceof Bot) {
+        if (input instanceof Bot)
             return (Bot) input;
-        } else if (input instanceof String) {
+        else if (input instanceof String)
             return Vixio.getInstance().botNameHashMap.get(input);
-        } else if (input instanceof JDA) {
+        else if (input instanceof JDA)
             return Vixio.getInstance().botHashMap.get(input);
-        }
-        return null;
+        else
+            return null;
+    }
+
+    public static Bot[] botFrom(Object... bots) {
+        return Arrays.stream(bots)
+                .filter(Objects::nonNull)
+                .map(Util::botFrom)
+                .toArray(Bot[]::new);
     }
 
     public static Bot botFromID(String ID) {

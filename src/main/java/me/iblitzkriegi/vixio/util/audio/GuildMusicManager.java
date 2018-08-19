@@ -6,10 +6,11 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 
 public class GuildMusicManager {
-    public final AudioPlayer player;
-    public final TrackScheduler scheduler;
-    public final Guild guild;
-    public final Bot bot;
+
+    private AudioPlayer player;
+    private TrackScheduler scheduler;
+    private Guild guild;
+    private Bot bot;
 
     public GuildMusicManager(Guild guild, Bot bot) {
         player = Vixio.getInstance().playerManager.createPlayer();
@@ -19,6 +20,18 @@ public class GuildMusicManager {
         this.bot = bot;
         MusicStorage musicStorage = new MusicStorage(bot, guild);
         Vixio.getInstance().musicStorage.put(player, musicStorage);
+    }
+
+    public AudioPlayer getPlayer() {
+        return player;
+    }
+
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public Bot getBot() {
+        return bot;
     }
 
     public AudioPlayerSendHandler getSendHandler() {

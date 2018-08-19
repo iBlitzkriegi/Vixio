@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 // idk a better name for this, meant for use w/ expressions
-public interface EasyMultiple<F, T> {
+public class EasyMultiple {
 
     /**
      * Provides an easy way of converting single or multiple inputs without the hassle of
@@ -20,7 +20,7 @@ public interface EasyMultiple<F, T> {
      * @param converter  The converter to apply to {@param from}
      * @return An array of all the converted objects, possibly null
      */
-    default T[] convert(Class<? extends T> returnType, F[] from, Converter<F, T> converter) {
+    public static <T, F> T[] convert(Class<? extends T> returnType, F[] from, Converter<F, T> converter) {
         if (from == null || from.length == 0) {
             return null;
         }
@@ -42,7 +42,7 @@ public interface EasyMultiple<F, T> {
      * @param changed The F's of objects being changed
      * @param changer - a changer representing what you want to do to each F object
      */
-    default void change(F[] changed, EasyChanger<F> changer) {
+    public static <T, F> void change(F[] changed, EasyChanger<F> changer) {
         if (changed == null || changed.length == 0) {
             return;
         }
@@ -58,7 +58,7 @@ public interface EasyMultiple<F, T> {
      * @param checker - a changer representing what you want to do to each F object
      * @param negated - whether or not to negate the result
      */
-    default boolean check(F[] checked, Checker<F> checker, boolean negated) {
+    public static <T, F> boolean check(F[] checked, Checker<F> checker, boolean negated) {
         if (checked == null || checked.length == 0) {
             return false;
         }
@@ -69,6 +69,5 @@ public interface EasyMultiple<F, T> {
                 .filter(Objects::nonNull)
                 .allMatch(checker::check);
     }
-
 
 }

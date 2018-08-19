@@ -1,119 +1,59 @@
-group 'me.iblitzkriegi.vixio'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
-        classpath 'de.undercouch:gradle-download-task:3.3.0'
-    }
-
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'java'
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'de.undercouch.download'
-apply plugin: 'java'
+group 'me.iblitzkriegi.vixio'
+version '2.0.0'
 
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
 
-sourceCompatibility = 1.8
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     jcenter()
 
     //Spigot API
     maven {
-        name 'spigot-repo'
         url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
     }
 
-    //LavaPlayer
-    maven {
-        url 'http://maven.sedmelluq.com'
-    }
-
-    //Bungeecord-chat (needed for Spigot)
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
-
-    //Skript API
-    maven {
-        url 'https://raw.githubusercontent.com/bensku/mvn-repo/master/'
-    }
-
-    //Skript's dependencies (to avoid errors when compiling)
-    maven {
-        url 'https://repo.destroystokyo.com/repository/maven-public/'
-    }
-
-    maven {
-        url 'http://maven.sk89q.com/repo'
-    }
-
-    maven {
-        url 'http://nexus.hc.to/content/repositories/pub_releases'
-    }
-
+    // Jitpack (for Skript)
     maven {
         url 'https://jitpack.io'
     }
 
 }
 
-
 dependencies {
 
     // Spigot API
-    shadow group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
+    shadow 'org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT'
 
     // JDA
-
-    compile 'net.dv8tion:JDA:3.5.1_353'
+    implementation 'net.dv8tion:JDA:3.7.1_395'
 
     // LavaPlayer
-    compile 'com.sedmelluq:lavaplayer:1.2.58'
+    implementation 'com.sedmelluq:lavaplayer:1.3.7'
 
     // Skript API
-    shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
-    compile 'ch.qos.logback:logback-classic:1.2.3'
-    compile 'com.vdurmont:emoji-java:3.3.0'
+    shadow 'com.github.SkriptLang:Skript:dev37c'
 
+    // Logback
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    // Emoji-java
+    implementation 'com.vdurmont:emoji-java:4.0.0'
+
+}
+
+shadowJar {
+    classifier = ''
+    destinationDir = new File(project.property('destinationDir'))
 
 }
 
 jar.enabled = false
 assemble.dependsOn(shadowJar)
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
-def pluginDir = 'src/main/resources/plugin.yml'
-def tempDir = 'build/tmp/tempResources'
-
-
-processResources.doFirst {
-    copy {
-        from(pluginDir)
-        into(tempDir)
-    }
-    ant.replace(file: pluginDir, token: '@VERSION@', value: project.property('version'))
-}
-
-processResources.doLast {
-    copy {
-        from(tempDir + '/plugin.yml')
-        into(project.file(pluginDir).parent)
-    }
-}
-
-shadowJar {
-    classifier = ''
-
-    relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
-    relocate 'org.apache.http', project.group + ".org.apache.http"
-    relocate 'org.apache.commons.io', project.group + ".org.apache.commons.io"
-    destinationDir = new File(project.property('destinationDir'))
-
-}

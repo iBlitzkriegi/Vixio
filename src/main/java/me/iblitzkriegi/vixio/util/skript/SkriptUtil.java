@@ -6,9 +6,12 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.variables.Variables;
+import ch.njol.util.coll.CollectionUtils;
+import me.iblitzkriegi.vixio.expressions.guild.ExprRoleNamed;
 import me.iblitzkriegi.vixio.expressions.retrieve.ExprMember;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
