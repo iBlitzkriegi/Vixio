@@ -1,23 +1,22 @@
 package me.iblitzkriegi.vixio.conditions;
 
-import ch.njol.skript.lang.Condition;
+import ch.njol.skript.conditions.base.PropertyCondition;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import net.dv8tion.jda.core.entities.TextChannel;
-import org.bukkit.event.Event;
 
-public class CondNsfw extends Condition implements EasyMultiple<Object, Void> {
+public class CondNsfw extends PropertyCondition<Object> {
 
     static {
-        Vixio.getInstance().registerCondition(CondNsfw.class,
-                "%channelbuilders/channels% (is|are) nsfw", "%channelbuilders/channels% (is|are) sfw")
-                .setName("NSFW")
+        Vixio.getInstance().registerPropertyCondition(CondNsfw.class,
+                "(nsfw|1¦sfw)", "channels/channelbuilders")
+                .setName("Is NSFW")
                 .setDesc("Lets you check if a channel builder or text channel is nsfw/sfw.")
-                .setUserFacing("[the] nsfw state[s] of %channelbuilders/textchannels%", "%channelbuilders/textchannels%'[s] nsfw state[s]")
+                .setUserFacing("%channelbuilders/textchannels% (is|are) (nsfw|sfw)",
+                            "%channelbuilders/textchannels% (isn't|is not|aren't|are not) (nsfw|sfw)")
                 .setExample(
                         "discord command nsfw:",
                         "\tprefixes: $",
@@ -27,28 +26,22 @@ public class CondNsfw extends Condition implements EasyMultiple<Object, Void> {
                 );
     }
 
-    private Expression<Object> channels;
-
     @Override
-    public boolean check(Event e) {
-        return check(channels.getAll(e), o -> {
-            if (o instanceof ChannelBuilder) {
-                return ((ChannelBuilder) o).isNSFW();
-            } else {
-                return o instanceof TextChannel ? ((TextChannel)o).isNSFW() : false;
-            }
-        }, isNegated());
+    public boolean check(Object channel) {
+        if (!(channel instanceof TextChannel || channel instanceof ChannelBuilder))
+            return false;
+        return channel instanceof TextChannel ? ((TextChannel) channel).isNSFW() : ((ChannelBuilder) channel).isNSFW();
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
-        return channels.toString() + " is " + (isNegated() ? "" : "n") + "sfw";
+    protected String getPropertyName() {
+        return "nsfw";
     }
 
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channels = (Expression<Object>) exprs[0];
-        setNegated(matchedPattern == 1);
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+        super.init(exprs, matchedPattern, isDelayed, parseResult);
+        setNegated(matchedPattern == 1 || parseResult.mark == 1);
         return true;
     }
 

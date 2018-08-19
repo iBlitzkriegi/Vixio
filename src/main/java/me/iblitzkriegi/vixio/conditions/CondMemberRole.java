@@ -1,5 +1,8 @@
 package me.iblitzkriegi.vixio.conditions;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,10 +13,13 @@ import net.dv8tion.jda.core.entities.Role;
 import org.bukkit.event.Event;
 
 public class CondMemberRole extends Condition {
+
     static {
         Vixio.getInstance().registerCondition(CondMemberRole.class,
-                "%member% (has|have) [the] role %role%", "%member% (does[n[']t]|does not) have [the] role %role%",
-                "%member% (has|have) [the] role [named] %string%", "%member% (does[n[']t]|does not) have [the] role [named] %string%")
+                "%members% (has|have) [the] role[s] %roles%",
+                "%members% (don't|do not|doesn't|does not) have [the] role[s] %roles%",
+                "%members% (has|have) [the] role[s] [named] %strings%",
+                "%members% (don't|do not|doesn't|does not) have [the] role[s] [named] %strings%")
                 .setName("Member has role")
                 .setDesc("Check if a member either does, or does not have either a specific %role$ or a role with a certain name.")
                 .setExample(
@@ -26,41 +32,46 @@ public class CondMemberRole extends Condition {
                 );
     }
 
-    private Expression<Member> member;
-    private Expression<Object> role;
-    private boolean not;
+    private Expression<Member> members;
+    private Expression<Object> roles;
     private boolean roleName;
 
+    // TODO test this
     @Override
     public boolean check(Event e) {
-        Member member = this.member.getSingle(e);
-        Object role = this.role.getSingle(e);
-        if (role == null || member == null) {
-            return false;
-        }
-        if (roleName) {
-            String name = (String) role;
-            for (Role memberRole : member.getRoles()) {
-                if (memberRole.getName().equalsIgnoreCase(name)) {
-                    return not == true;
-                }
+        String[] roleNames = Arrays.stream(roles.getArray(e))
+                .map(role -> role instanceof Role ? ((Role) role).getName() : role)
+                .toArray(String[]::new);
+
+        Stream<String> memberRoles;
+        for (Member member : members.getArray(e)) {
+            for (String name : roleNames) {
+                memberRoles = member.getRoles()
+                        .stream()
+                        .map(Role::getName);
+
+                if (memberRoles == null)
+                    return false;
+
+                if (!memberRoles.anyMatch(name::equalsIgnoreCase) && !isNegated())
+                    return false;
             }
-            return not == false;
         }
-        return not == member.getRoles().contains(role);
+        return true;
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return member.toString(e, debug) + (not ? " has " : " does not have ") + (roleName ? "the role named " : "") + role.toString(e, debug);
+        return members.toString(e, debug) + (isNegated() ? " has " : " does not have ") + (roleName ? "the roles named " : "") + roles.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        member = (Expression<Member>) exprs[0];
-        role = (Expression<Object>) exprs[1];
-        roleName = matchedPattern == 2 || matchedPattern == 3;
-        not = matchedPattern == 0 || matchedPattern == 2;
+        members = (Expression<Member>) exprs[0];
+        roles = (Expression<Object>) exprs[1];
+        roleName = matchedPattern > 1;
+        setNegated(matchedPattern == 1 || matchedPattern == 3);
         return true;
     }
+
 }
