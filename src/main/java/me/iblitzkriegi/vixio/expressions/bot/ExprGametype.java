@@ -4,6 +4,7 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
@@ -34,7 +35,7 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
         if (object instanceof Bot || object instanceof String) {
             Bot bot = Util.botFrom(object);
             if (bot != null) {
-                return bot.getJDA().getPresence().getGame().getType();
+                return bot.getJDA().getShards().get(0).getPresence().getGame().getType();
             }
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);

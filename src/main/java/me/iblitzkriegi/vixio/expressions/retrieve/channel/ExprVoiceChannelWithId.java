@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
@@ -46,16 +47,17 @@ public class ExprVoiceChannelWithId extends SimpleExpression<VoiceChannel> {
             return null;
         }
 
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
         if (jdaInstances.isEmpty()) {
             Vixio.getErrorHandler().warn("Vixio attempted to get a voice channel by ID but no Bots were logged in to do so.");
             return null;
         }
-
-        for (JDA jda : jdaInstances) {
-            VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
-            if (voiceChannel != null) {
-                return new VoiceChannel[]{voiceChannel};
+        for (ShardManager shardManager : jdaInstances) {
+            for (JDA jda : shardManager.getShards()) {
+                VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
+                if (voiceChannel != null) {
+                    return new VoiceChannel[]{voiceChannel};
+                }
             }
         }
         return null;

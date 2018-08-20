@@ -7,8 +7,12 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.bot.sharding.ShardManager;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import org.bukkit.event.Event;
+
+import java.util.Arrays;
 
 public class EffMarkGametype extends Effect {
     static {
@@ -55,7 +59,7 @@ public class EffMarkGametype extends Effect {
             case DEFAULT:
             case WATCHING:
             case LISTENING:
-                bot.getJDA().getPresence().setGame(Game.of(gameType, title));
+                bot.getJDA().setGame(Game.of(gameType, title));
                 break;
             case STREAMING:
                 if (url == null) {
@@ -65,8 +69,7 @@ public class EffMarkGametype extends Effect {
                 if (!Game.isValidStreamingUrl(url)) {
                     return;
                 }
-                bot.getJDA().getPresence().setGame(Game.of(gameType, title, url));
-
+                bot.getJDA().setGame(Game.of(gameType, title, url));
         }
 
     }

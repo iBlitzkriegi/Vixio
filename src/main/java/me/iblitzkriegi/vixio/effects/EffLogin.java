@@ -9,9 +9,8 @@ import me.iblitzkriegi.vixio.events.base.EventListener;
 import me.iblitzkriegi.vixio.util.MessageUpdater;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.bot.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.exceptions.AccountTypeException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -50,14 +49,14 @@ public class EffLogin extends AsyncEffect {
             return;
         }
 
-        JDA api;
+        ShardManager api = null;
         try {
             try {
-                api = new JDABuilder(AccountType.BOT).setToken(token).buildBlocking();
+                api = new DefaultShardManagerBuilder().setToken(token).build();
             } catch (AccountTypeException x) {
-                api = new JDABuilder(AccountType.CLIENT).setToken(token).buildBlocking();
+                api = new DefaultShardManagerBuilder().setToken(token).build();
             }
-        } catch (LoginException | InterruptedException e1) {
+        } catch (LoginException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
             return;

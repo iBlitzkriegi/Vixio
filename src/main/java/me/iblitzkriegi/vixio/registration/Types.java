@@ -177,7 +177,7 @@ public class Types {
                     MessageChannel channel = Util.bindMessageChannel(bot, message.getChannel());
                     if (channel != null) {
                         if (channel.getType() == ChannelType.PRIVATE) {
-                            if (message.getAuthor().getId().equalsIgnoreCase(bot.getJDA().getSelfUser().getId())) {
+                            if (message.getAuthor().getId().equalsIgnoreCase(bot.getId())) {
                                 if (Util.botIsConnected(bot, message.getJDA())) {
                                     message.delete().queue();
                                 } else {

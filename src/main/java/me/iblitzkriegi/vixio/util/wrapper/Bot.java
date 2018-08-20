@@ -1,6 +1,7 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.IMentionable;
@@ -11,21 +12,20 @@ import java.util.HashMap;
 
 public class Bot implements IMentionable, ISnowflake {
     private String name;
-    private JDA jda;
+    private ShardManager jda;
     private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();
     private long uptime;
 
-    public Bot(String name, JDA jda) {
+    public Bot(String name, ShardManager jda) {
         this.name = name;
         this.jda = jda;
-        this.selfUser = jda.getSelfUser();
     }
 
-    public Bot(JDA jda) {
+    public Bot(ShardManager jda) {
         this.jda = jda;
-        this.selfUser = jda.getSelfUser();
         this.name = null;
+        this.selfUser = jda.getShards().get(0).getSelfUser();
 
     }
 
@@ -34,12 +34,8 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     // Getters \\
-    public JDA getJDA() {
+    public ShardManager getJDA() {
         return this.jda;
-    }
-
-    public SelfUser getSelfUser() {
-        return selfUser;
     }
 
     public String getName() {
@@ -63,12 +59,16 @@ public class Bot implements IMentionable, ISnowflake {
 
     @Override
     public String getAsMention() {
-        return selfUser.getAsMention();
+        return jda.getShards().get(0).getSelfUser().getAsMention();
     }
 
     @Override
     public long getIdLong() {
-        return selfUser.getIdLong();
+        return jda.getShards().get(0).getSelfUser().getIdLong();
+    }
+
+    public SelfUser getSelfUser() {
+        return jda.getShards().get(0).getSelfUser();
     }
 
     public HashMap<Guild, GuildMusicManager> getGuildMusicManagerMap() {
