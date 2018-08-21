@@ -12,20 +12,20 @@ import java.util.HashMap;
 
 public class Bot implements IMentionable, ISnowflake {
     private String name;
-    private ShardManager jda;
+    private ShardManager shardManager;
     private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();
     private long uptime;
 
     public Bot(String name, ShardManager jda) {
         this.name = name;
-        this.jda = jda;
+        this.shardManager = jda;
     }
 
-    public Bot(ShardManager jda) {
-        this.jda = jda;
+    public Bot(ShardManager shardManager) {
+        this.shardManager = shardManager;
         this.name = null;
-        this.selfUser = jda.getShards().get(0).getSelfUser();
+        this.selfUser = shardManager.getApplicationInfo().getJDA().getSelfUser();
 
     }
 
@@ -34,8 +34,8 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     // Getters \\
-    public ShardManager getJDA() {
-        return this.jda;
+    public ShardManager getShardMananger() {
+        return this.shardManager;
     }
 
     public String getName() {
@@ -59,16 +59,16 @@ public class Bot implements IMentionable, ISnowflake {
 
     @Override
     public String getAsMention() {
-        return jda.getShards().get(0).getSelfUser().getAsMention();
+        return selfUser.getAsMention();
     }
 
     @Override
     public long getIdLong() {
-        return jda.getShards().get(0).getSelfUser().getIdLong();
+        return shardManager.getApplicationInfo().getJDA()
     }
 
     public SelfUser getSelfUser() {
-        return jda.getShards().get(0).getSelfUser();
+        return selfUser;
     }
 
     public HashMap<Guild, GuildMusicManager> getGuildMusicManagerMap() {

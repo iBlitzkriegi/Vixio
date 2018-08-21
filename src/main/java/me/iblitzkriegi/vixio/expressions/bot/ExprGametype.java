@@ -35,7 +35,7 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
         if (object instanceof Bot || object instanceof String) {
             Bot bot = Util.botFrom(object);
             if (bot != null) {
-                return bot.getJDA().getShards().get(0).getPresence().getGame().getType();
+                return bot.getShardMananger().getApplicationInfo().getJDA().getPresence().getGame().getType();
             }
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);

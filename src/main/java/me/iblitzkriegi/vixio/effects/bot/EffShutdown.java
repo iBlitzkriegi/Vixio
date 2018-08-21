@@ -30,7 +30,7 @@ public class EffShutdown extends Effect {
             return;
         }
 
-        bot.getJDA().shutdown();
+        bot.getShardMananger().shutdown();
         Vixio.getInstance().botHashMap.remove(bot);
         Vixio.getInstance().botNameHashMap.remove(bot.getName());
     }

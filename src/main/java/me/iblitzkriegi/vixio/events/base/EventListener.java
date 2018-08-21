@@ -22,12 +22,12 @@ public class EventListener<T> extends ListenerAdapter {
     public static void addListener(EventListener<?> listener) {
         removeListener(listener);
         listeners.add(listener);
-        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().addEventListener(listener));
+        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getShardMananger().addEventListener(listener));
     }
 
     public static void removeListener(EventListener<?> listener) {
         listeners.remove(listener);
-        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getJDA().removeEventListener(listener));
+        Vixio.getInstance().botHashMap.forEach((k, v) -> v.getShardMananger().removeEventListener(listener));
     }
 
     @Override

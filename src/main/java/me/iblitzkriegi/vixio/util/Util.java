@@ -153,7 +153,7 @@ public class Util {
     }
 
     public static boolean botIsConnected(Bot bot, JDA jda) {
-        return bot.getJDA() == jda;
+        return bot.getShardMananger().getApplicationInfo().getJDA() == jda;
     }
 
     public static Guild bindGuild(Bot bot, Guild guild) {
@@ -161,7 +161,7 @@ public class Util {
             return null;
         }
         if (!(guild.getJDA() == bot.getJDA())) {
-            return bot.getJDA().getGuildById(guild.getId());
+            return bot.getShardMananger().getGuildById(guild.getId());
         } else {
             return guild;
         }
@@ -172,7 +172,7 @@ public class Util {
             return null;
         }
         if (!(textChannel.getJDA() == bot.getJDA())) {
-            return bot.getJDA().getTextChannelById(textChannel.getId());
+            return bot.getShardMananger().getTextChannelById(textChannel.getId());
         } else {
             return textChannel;
         }
@@ -208,9 +208,9 @@ public class Util {
             return null;
         }
 
-        if (!(channel.getJDA() == bot.getJDA())) {
-            PrivateChannel privateChannel = bot.getJDA().getPrivateChannelById(channel.getId());
-            TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
+        if (!(channel.getJDA() == bot.getShardMananger().getGuildById(channel.getId()))) {
+            PrivateChannel privateChannel = bot.getShardMananger().getPrivateChannelById(channel.getId());
+            TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
             if (privateChannel != null) {
                 return privateChannel;
             } else if (textChannel != null) {
@@ -233,6 +233,18 @@ public class Util {
     }
 
     public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
+        ShardManager manager = bot.getShardMananger();
+        if (messageChannel.getType() == ChannelType.PRIVATE) {
+            PrivateChannel privateChannel = manager.getPrivateChannelById(messageChannel.getId());
+            if (privateChannel == null) {
+                return messageChannel;
+            }
+            return privateChannel;
+
+        }
+        if (bot.getShardMananger().getTextChannelById(messageChannel.getId()) != null) {
+
+        }
         if (messageChannel.getJDA() == bot.getJDA()) {
             return messageChannel;
         }
@@ -266,8 +278,8 @@ public class Util {
 
     public static Channel bindChannel(Bot bot, Channel channel) {
         if (!(channel.getJDA() == bot.getJDA())) {
-            TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
-            VoiceChannel voiceChannel = bot.getJDA().getVoiceChannelById(channel.getId());
+            TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
+            VoiceChannel voiceChannel = bot.getShardMananger().getVoiceChannelById(channel.getId());
 
             return voiceChannel == null ? textChannel : voiceChannel;
         } else {
