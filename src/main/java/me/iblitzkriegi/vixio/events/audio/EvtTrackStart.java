@@ -19,27 +19,6 @@ public class EvtTrackStart extends SkriptEvent {
                 .setName("Track start")
                 .setDesc("Fired when a song starts. May be when a new track in the queue starts or when the first track is played.")
                 .setExample("on track start seen by \"Jewel\"");
-        EventValues.registerEventValue(TrackEvent.class, Bot.class, new Getter<Bot, TrackEvent>() {
-            @Override
-            public Bot get(TrackEvent event) {
-                return event.getBot();
-            }
-        }, 0);
-
-        EventValues.registerEventValue(TrackEvent.class, Guild.class, new Getter<Guild, TrackEvent>() {
-            @Override
-            public Guild get(TrackEvent event) {
-                return event.getGuild();
-            }
-        }, 0);
-
-        EventValues.registerEventValue(TrackEvent.class, AudioTrack.class, new Getter<AudioTrack, TrackEvent>() {
-            @Override
-            public AudioTrack get(TrackEvent event) {
-                return event.getTrack();
-            }
-        }, 0);
-
     }
 
     private Expression<String> bot;
