@@ -135,7 +135,6 @@ public class Documentation {
             }
             bw.flush();
             bw.close();
-            //getEventValues(bw, 0, EventJDAEvent.class, EventGuildMessageReceived.class, AnyEvent.class);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,6 +143,7 @@ public class Documentation {
     }
 
     public static void generateJson() {
+        //TODO REVIST! Could be heavily shortened and optimized 
         File file = new File(Vixio.getInstance().getDataFolder(), "syntaxes.json");
         try {
             if (!file.exists()) {
@@ -159,83 +159,200 @@ public class Documentation {
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             // Effects
-            bw.write("\t{");
-            bw.newLine();
-            bw.write("\t\t\"effects\": [{");
-            int effects = 0;
-            for (Registration reg : Vixio.getInstance().effects) {
-                effects = effects + 1;
-                bw.newLine();
-                bw.write("\t\t{");
-                bw.newLine();
-                bw.write("\t\t\t\"examples\": [");
-                bw.newLine();
-                bw.write("\t\t\t\t[\"" + reg.getExample() + "\"]");
-                bw.newLine();
-                bw.write("\t\t\t],");
-                bw.newLine();
-                bw.write("\t\t\t\"name\": \"" + reg.getName() + "\",");
-                bw.newLine();
-                bw.write("\t\t\t\"description\": \"" + reg.getDesc() + "\",");
-                bw.newLine();
-                bw.write("\t\t\t\"syntaxes\": [{");
-                bw.newLine();
-                if (reg.getUserFacing() != null) {
-                    bw.write("\t\t\t\t\"syntax\": \"" + reg.getUserFacing() + "\"");
-                    bw.newLine();
-                } else {
-                    boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                    if (multipleSyntax) {
-                        int multiSyntax = 0;
-                        for (String syntax : reg.getSyntaxes()) {
-                            multiSyntax = multiSyntax + 1;
-                            if (multiSyntax == 1) {
-                                bw.write("\t\t\t\t\"syntax\": \"" + syntax + "\"");
-                                bw.newLine();
-                                bw.write("\t\t\t}, {");
-                                bw.newLine();
+            bw.write("{\n");
+            bw.write("\t\"events\": [\n");
+            int events = Vixio.getInstance().events.size();
+            int i = 0;
+            for (Registration registration : Vixio.getInstance().events) {
+                i++;
+                if (registration.getEvent() != null) {
+                    bw.write(tab("{", 2));
+                    bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 3));
+                    bw.write(tab("\"name\": \"" + registration.getName() + "\",", 3));
+                    bw.write(tab("\"patterns\": [", 3));
+                    if (registration.getSyntaxes().length > 1) {
+                        int patterns = 0;
+                        for (String pattern : registration.getSyntaxes()) {
+                            patterns++;
+                            if (patterns < registration.getSyntaxes().length) {
+                                bw.write(tab("\"" + pattern + "\",", 4));
                             } else {
-                                if (multiSyntax != reg.getSyntaxes().length) {
-                                    bw.write("\t\t\t\t\"syntax\": \"" + syntax + "\"");
-                                    bw.newLine();
-                                } else {
-                                    bw.write("\t\t\t\t\"syntax\": \"" + syntax + "\"");
-                                    bw.newLine();
-                                }
+                                bw.write(tab("\"" + pattern + "\"", 4));
                             }
                         }
+
                     } else {
-                        bw.write("\t\t\t\t\"syntax\": \"" + reg.getSyntax() + "\"");
-                        bw.newLine();
+                        bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    }
+                    bw.write(tab("],", 3));
+                    if (registration.getEvent() != null) {
+                        List<String> eventValues = getEventValues(registration.getEvent());
+                        bw.write(tab("\"eventvalues\": [", 3));
+                        int eventValue = 0;
+                        for (String s : eventValues) {
+                            eventValue++;
+                            if (eventValue < eventValues.size()) {
+                                bw.write(tab("\"" + s + "\",", 4));
+                            } else {
+                                bw.write(tab("\"" + s + "\"", 4));
+                            }
+                        }
+                    }
+                    bw.write(tab("],", 3));
+                    bw.write(tab("\"examples\": [", 3));
+                    int examples = 0;
+                    String[] splitExample = registration.getExample().split(",");
+                    for (String example : splitExample) {
+                        examples++;
+                        if (examples < splitExample.length) {
+                            bw.write(tab("\"" + escapeString(example) + "\",", 4));
+                        } else {
+                            bw.write(tab("\"" + escapeString(example) + "\"", 4));
+                        }
+                    }
+                    bw.write(tab("]", 3));
+                    if (i < events) {
+                        bw.write(tab("},", 2));
+                    } else {
+                        bw.write(tab("}", 2));
+                        bw.write(tab("],", 1));
                     }
                 }
-                if (effects != Vixio.getInstance().effects.size()) {
-                    bw.write("\t\t\t}],");
-                    bw.newLine();
-                    bw.write("\t\t},");
-                } else {
-                    bw.write("\t\t\t}]");
-                    bw.newLine();
-                    bw.write("\t\t}");
-                }
             }
-            bw.newLine();
-            bw.write("\t\t}],");
-            bw.newLine();
-            bw.write("\t},");
+            //CONDITIONS
+            bw.write(tab("\"conditions\": [", 1));
+            int conditions = Vixio.getInstance().conditions.size();
+            int conditionCount = 0;
+            for (Registration registration : Vixio.getInstance().conditions) {
+                conditionCount++;
+                bw.write(tab("{", 2));
+                bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
+                bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
+                bw.write(tab("\"patterns\": [", 3));
+                if (registration.getSyntaxes().length > 1) {
+                    int patterns = 0;
+                    for (String pattern : registration.getSyntaxes()) {
+                        patterns++;
+                        if (patterns < registration.getSyntaxes().length) {
+                            bw.write(tab("\"" + pattern + "\",", 4));
+                        } else {
+                            bw.write(tab("\"" + pattern + "\"", 4));
+                        }
+                    }
 
+                } else {
+                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                }
+                bw.write(tab("],", 3));
+                bw.write(tab("\"examples\": [", 3));
+                int examples = 0;
+                String[] splitExample = registration.getExample().split(",");
+                for (String example : splitExample) {
+                    examples++;
+                    if (examples < splitExample.length) {
+                        bw.write(tab("\"" + escapeString(example) + "\",", 4));
+                    } else {
+                        bw.write(tab("\"" + escapeString(example) + "\"", 4));
+                    }
+                }
+                bw.write(tab("]", 3));
+                if (conditionCount < conditions) {
+                    bw.write(tab("},", 2));
+                } else {
+                    bw.write(tab("}", 2));
+                    bw.write(tab("],", 1));
+                }
 
-//            bw.write("-=Events=-");
-//            bw.newLine();
-//            for (Registration reg : Vixio.getInstance().events) {
-//                if (reg.getEvent() != null) {
-//                    bw.write("syntax: " + reg.getSyntax());
-//                    bw.newLine();
-//                    List<String> values = getEventValues(reg.getEvent());
-//                    bw.write("Event values: " + values.subList(0, values.size()));
-//                    bw.newLine();
-//                }
-//            }
+            }
+            bw.write(tab("\"effects\": [", 1));
+            int effects = Vixio.getInstance().effects.size();
+            int effectsCount = 0;
+            for (Registration registration : Vixio.getInstance().effects) {
+                effectsCount++;
+                bw.write(tab("{", 2));
+                bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
+                bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
+                bw.write(tab("\"patterns\": [", 3));
+                if (registration.getSyntaxes().length > 1) {
+                    int patterns = 0;
+                    for (String pattern : registration.getSyntaxes()) {
+                        patterns++;
+                        if (patterns < registration.getSyntaxes().length) {
+                            bw.write(tab("\"" + pattern + "\",", 4));
+                        } else {
+                            bw.write(tab("\"" + pattern + "\"", 4));
+                        }
+                    }
+
+                } else {
+                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                }
+                bw.write(tab("],", 3));
+                bw.write(tab("\"examples\": [", 3));
+                int examples = 0;
+                String[] splitExample = registration.getExample().split(",");
+                for (String example : splitExample) {
+                    examples++;
+                    if (examples < splitExample.length) {
+                        bw.write(tab("\"" + escapeString(example) + "\",", 4));
+                    } else {
+                        bw.write(tab("\"" + escapeString(example) + "\"", 4));
+                    }
+                }
+                bw.write(tab("]", 3));
+                if (effectsCount < effects) {
+                    bw.write(tab("},", 2));
+                } else {
+                    bw.write(tab("}", 2));
+                    bw.write(tab("],", 1));
+                }
+
+            }
+            bw.write(tab("\"expressions\": [", 1));
+            int expressions = Vixio.getInstance().expressions.size();
+            int expressionsCount = 0;
+            for (Registration registration : Vixio.getInstance().expressions) {
+                expressionsCount++;
+                bw.write(tab("{", 2));
+                bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
+                bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
+                bw.write(tab("\"patterns\": [", 3));
+                if (registration.getSyntaxes().length > 1) {
+                    int patterns = 0;
+                    for (String pattern : registration.getSyntaxes()) {
+                        patterns++;
+                        if (patterns < registration.getSyntaxes().length) {
+                            bw.write(tab("\"" + pattern + "\",", 4));
+                        } else {
+                            bw.write(tab("\"" + pattern + "\"", 4));
+                        }
+                    }
+
+                } else {
+                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                }
+                bw.write(tab("],", 3));
+                bw.write(tab("\"examples\": [", 3));
+                int examples = 0;
+                String[] splitExample = registration.getExample().split(",");
+                for (String example : splitExample) {
+                    examples++;
+                    if (examples < splitExample.length) {
+                        bw.write(tab("\"" + escapeString(example) + "\",", 4));
+                    } else {
+                        bw.write(tab("\"" + escapeString(example) + "\"", 4));
+                    }
+                }
+                bw.write(tab("]", 3));
+                if (expressionsCount < expressions) {
+                    bw.write(tab("},", 2));
+                } else {
+                    bw.write(tab("}", 2));
+                    bw.write(tab("]", 1));
+                    bw.write("}");
+                }
+
+            }
             bw.flush();
             bw.close();
         } catch (IOException e) {
@@ -308,5 +425,19 @@ public class Documentation {
         }
         return null;
 
+    }
+
+    public static String tab(String s, int tabs) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < tabs; i++) {
+            builder.append("\t");
+        }
+        builder.append(s + "\n");
+        return builder.toString();
+    }
+
+    public static String escapeString(String s) {
+        return s.replaceAll("\t", "\\\\t")
+                .replaceAll("\"", "\\\"");
     }
 }
