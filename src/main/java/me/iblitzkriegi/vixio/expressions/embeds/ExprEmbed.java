@@ -21,11 +21,7 @@ public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
                         "If it is inside of an embed scope, it returns the embed that belongs to that scope.")
                 .setExample(
                         "# outside a scope",
-                        "",
                         "set {_e} to a new embed",
-                        "",
-                        "# or in a scope",
-                        "",
                         "make a new embed:",
                         "\tset color of embed the embed to red",
                         "\tset url of the embed to \"https://google.com\"",

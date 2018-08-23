@@ -15,8 +15,8 @@ public class EffMute extends Effect {
 
     static {
         Vixio.getInstance().registerEffect(EffMute.class, "[<un>]mute %members% [(with|using) %bot%]")
-                .setName("Mute")
                 .setName("Mute/UnMute a User/Member")
+                .setDesc("Either guild mute a member, or guild unmute a member.")
                 .setExample(
                         "discord command $mute <member>:",
                         "\ttrigger:",

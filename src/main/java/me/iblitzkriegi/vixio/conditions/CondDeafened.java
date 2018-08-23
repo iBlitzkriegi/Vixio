@@ -15,7 +15,7 @@ public class CondDeafened extends Condition implements EasyMultiple<Member, Void
         Vixio.getInstance().registerCondition(CondDeafened.class,
                 "%members% (is|are) [<guild>] deafened", "%members% (is|are)(n't| not) [<guild>] deafened")
                 .setName("Member is deafened")
-                .setDesc("If the \"guild\" modifier is included, this passes if the member is deafened via a guild admin." +
+                .setDesc("If the guild modifier is included, this passes if the member is deafened via a guild admin." +
                         "If it isn't included, it passes if the user has either deafened themselves, or was deafened by an admin")
                 .setExample(
                         "discord command $checkGuildMute <member>:",

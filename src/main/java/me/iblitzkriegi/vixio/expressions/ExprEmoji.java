@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ExprEmoji extends SimpleExpression<Emote> {
     static {
-        //TODO: make this properly nullable
         Vixio.getInstance().registerExpression(ExprEmoji.class, Emote.class, ExpressionType.SIMPLE,
                 "(emoji|emote|reaction)[s] %strings% [(from|in) %-guild%]")
                 .setName("Emoji Named")

@@ -12,7 +12,18 @@ import org.bukkit.event.Event;
 public class LitNewLine extends SimpleLiteral<String> {
 
     static {
-        Vixio.getInstance().registerExpression(LitNewLine.class, String.class, ExpressionType.SIMPLE, "([a] new line|nl)");
+        Vixio.getInstance().registerExpression(LitNewLine.class, String.class, ExpressionType.SIMPLE, "([a] new line|nl)")
+                .setName("New Line")
+                .setDesc("Get a newline, which means skips to a new line")
+                .setExample(
+                        "discord command $nl:",
+                        "\ttrigger:",
+                        "\t\tset {_m} to a message builder",
+                        "\t\tappend \"Hey!\" to {_m}",
+                        "\t\tappend \"%nl%\" to {_m}",
+                        "\t\tappend \"There!\" to {_m}",
+                        "\t\treply with {_m}"
+                );
     }
 
     public LitNewLine() {

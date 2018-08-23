@@ -11,7 +11,11 @@ public class EvtDiscordCommand extends SkriptEvent {
 
     static {
         Vixio.getInstance().registerEvent("vixio command event", EvtDiscordCommand.class, DiscordCommandEvent.class,
-                "vixio command [%-string%]");
+                "vixio command [%-string%]")
+                .setName("Vixio Command")
+                .setDesc("Used to detect when a specific vixio command is fired")
+                .setExample("on vixio command \"eval\":")
+                .setEvent(DiscordCommandEvent.class);
     }
 
     private String command;

@@ -9,7 +9,7 @@ import org.bukkit.event.Event;
 public class ExprBuilderName extends SimplePropertyExpression<ChannelBuilder, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprBuilderName.class, String.class, "name", "channelbuilders")
-                .setName("Name of channel builder")
+                .setName("Name of Channel Builder")
                 .setDesc("Get the name of a channel builder. Can be set to a string.")
                 .setExample(
                         "discord command $create <text>:",

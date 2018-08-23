@@ -21,7 +21,8 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
                 "(timestamp|date)", "embedbuilders")
                 .setName("Timestamp of Embed")
                 .setDesc("Returns the timestamp of an embed. Can be set to any date (e.g. now).")
-                .setExample("set the timestamp of {_embed} to now",
+                .setExample(
+                        "set the timestamp of {_embed} to now",
                         "",
                         "# You can also set it to a date in the past/future like this",
                         "",
