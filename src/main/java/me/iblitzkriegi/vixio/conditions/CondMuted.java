@@ -15,7 +15,7 @@ public class CondMuted extends Condition implements EasyMultiple<Member, Void> {
         Vixio.getInstance().registerCondition(CondMuted.class,
                 "%members% (is|are) [<guild>] muted", "%members% (is|are)(n't| not) [<guild>] muted")
                 .setName("Member is muted")
-                .setDesc("If the \"guild\" modifier is included, this passes if the member is muted via a guild admin." +
+                .setDesc("If the guild modifier is included, this passes if the member is muted via a guild admin." +
                         "If it isn't included, it passes if the user has either muted themselves, or was muted by an admin")
                 .setExample(
                         "discord command $checkGuildMute <member>:",
