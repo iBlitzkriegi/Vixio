@@ -12,7 +12,7 @@ import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 public class EvtBotGuildJoin extends BaseEvent<GuildJoinEvent> {
     static {
         BaseEvent.register("bot join guild", EvtBotGuildJoin.class, BotGuildJoin.class, "bot (join|enter) [new] guild")
-                .setName("Bot join Guild")
+                .setName("Bot Join Guild")
                 .setDesc("Fired when a bot joins a new guild.")
                 .setExample("on bot join guild");
 
