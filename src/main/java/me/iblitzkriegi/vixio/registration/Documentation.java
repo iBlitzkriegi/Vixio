@@ -139,7 +139,6 @@ public class Documentation {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        generateJson();
 
     }
 
