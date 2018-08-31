@@ -29,7 +29,10 @@ public class Registration {
     }
 
     public Registration setExample(String s) {
-        this.example = s;
+        String example = s
+                .replaceAll("\t", "\\\\t")
+                .replaceAll("\"", "\\\\\"");
+        this.example = example;
         return this;
     }
 
@@ -70,7 +73,7 @@ public class Registration {
     public Registration setExample(String... s) {
         String example = StringUtils.join(s, ",")
                 .replaceAll("\t", "\\\\t")
-                .replaceAll("\"", "\\\\\"");
+                .replaceAll("\"", "\\\"");
         splitExample = StringUtils.join(s, "\n");
         return setExample(example);
     }
@@ -100,8 +103,8 @@ public class Registration {
 
     public String getSplitExample() {
         if (splitExample == null) {
-            return this.example;
+            return this.example.replaceAll("\\\\\"", "\"");
         }
-        return splitExample;
+        return splitExample.replaceAll("\\\\\"", "\"");
     }
 }

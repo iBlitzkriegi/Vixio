@@ -20,8 +20,11 @@ public class EffUploadFile extends AsyncEffect {
                 .setName("Send file")
                 .setDesc("Send a file to a channel or a user. You can input a direct URL to the file or a direct path to the local image/file.")
                 .setExample(
-                        "discord command $upload <text> [<text>]:",
+                        "discord command $upload [<text>] [<text>]:",
                         "\ttrigger:",
+                        "\t\tif arg-1 is not set:",
+                        "\t\t\tupload \"https://cdn.discordapp.com/attachments/236641445363056651/482328479288000513/e8873489-b8e8-41f0-bfdf-1af0e7f8689a.png\" to event-channel",
+                        "\t\t\tstop",
                         "\t\tif arg-2 is not set:",
                         "\t\t\tupload arg-1 to event-channel",
                         "\t\t\tstop",

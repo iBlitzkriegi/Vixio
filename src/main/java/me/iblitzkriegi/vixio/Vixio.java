@@ -11,11 +11,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import me.iblitzkriegi.vixio.registration.Documentation;
-import me.iblitzkriegi.vixio.registration.Registration;
-import me.iblitzkriegi.vixio.registration.TypeComparators;
-import me.iblitzkriegi.vixio.registration.TypeConverters;
-import me.iblitzkriegi.vixio.registration.Types;
+import me.iblitzkriegi.vixio.registration.*;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
@@ -46,8 +42,6 @@ public class Vixio extends JavaPlugin {
 
     public AudioPlayerManager playerManager;
     public HashMap<AudioPlayer, MusicStorage> musicStorage = new HashMap<>();
-
-
 
 
     public Vixio() {

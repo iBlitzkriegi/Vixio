@@ -17,7 +17,7 @@ public class EffAddReaction extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffAddReaction.class, "add %emotes% to %messages% [with %bot/string%]")
                 .setName("Add Reaction to Message")
-                .setDesc("Add a reaction to a message, can get a reaction with the \"reaction %string%\" expression")
+                .setDesc("Add a reaction to a message, can get a reaction with the reaction %string% expression")
                 .setExample("add reaction \"smile\" to event-message with \"Jewel\"");
     }
 

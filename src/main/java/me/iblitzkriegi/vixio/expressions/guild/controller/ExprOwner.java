@@ -16,7 +16,7 @@ public class ExprOwner extends ChangeableSimplePropertyExpression<Guild, Member>
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprOwner.class, Member.class,
-                "owner", "guilds")
+                "discord owner", "guilds")
                 .setName("Owner of Guild")
                 .setDesc("Get or set the owner of a guild.")
                 .setExample(
@@ -62,6 +62,6 @@ public class ExprOwner extends ChangeableSimplePropertyExpression<Guild, Member>
 
     @Override
     protected String getPropertyName() {
-        return "owner";
+        return "discord owner";
     }
 }

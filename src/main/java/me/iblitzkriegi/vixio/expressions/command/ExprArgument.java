@@ -34,8 +34,9 @@ public class ExprArgument extends SimpleExpression<Object> {
                 "[][the] arg[ument][s](-| )<(\\d+)>", "[][the] <(\\d*1)st|(\\d*2)nd|(\\d*3)rd|(\\d*[4-90])th> arg[ument][s]",
                 "[][the] arg[ument][s]",
                 "[][the] %*classinfo%( |-)arg[ument][( |-)<\\d+>]", "[][the] arg[ument]( |-)%*classinfo%[( |-)<\\d+>]")
-                .setName("Argument")
+                .setName("Last Argument")
                 .setDesc("Represents the argument of a command")
+                .setUserFacing("[the] last arg[ument][s]")
                 .setExample(
                         "discord command say <string>:",
                         "\tprefixes: !, . and ;",
