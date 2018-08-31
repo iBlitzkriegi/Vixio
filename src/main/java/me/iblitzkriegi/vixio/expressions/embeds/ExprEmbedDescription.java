@@ -16,7 +16,7 @@ public class ExprEmbedDescription extends SimplePropertyExpression<EmbedBuilder,
         Vixio.getInstance().registerPropertyExpression(ExprEmbedDescription.class, String.class,
                 "description", "embedbuilders")
                 .setName("Description of Embed")
-                .setDesc("Returns the description of an embed. Can be set to any string (e.g. \"Hi there!\").")
+                .setDesc("Returns the description of an embed. Can be set to any string.")
                 .setExample("set the description of {_embed} to \"This is a cool description!\"");
     }
 

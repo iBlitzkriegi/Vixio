@@ -139,11 +139,12 @@ public class Documentation {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        generateJson();
 
     }
 
     public static void generateJson() {
-        //TODO REVIST! Could be heavily shortened and optimized 
+        //TODO REVIST! Could be heavily shortened
         File file = new File(Vixio.getInstance().getDataFolder(), "syntaxes.json");
         try {
             if (!file.exists()) {
@@ -229,19 +230,23 @@ public class Documentation {
                 bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
                 bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
                 bw.write(tab("\"patterns\": [", 3));
-                if (registration.getSyntaxes().length > 1) {
-                    int patterns = 0;
-                    for (String pattern : registration.getSyntaxes()) {
-                        patterns++;
-                        if (patterns < registration.getSyntaxes().length) {
-                            bw.write(tab("\"" + pattern + "\",", 4));
-                        } else {
-                            bw.write(tab("\"" + pattern + "\"", 4));
-                        }
-                    }
-
+                if (registration.getUserFacing() != null) {
+                    bw.write(tab("\"" + registration.getUserFacing() + "\"", 4));
                 } else {
-                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    if (registration.getSyntaxes().length > 1) {
+                        int patterns = 0;
+                        for (String pattern : registration.getSyntaxes()) {
+                            patterns++;
+                            if (patterns < registration.getSyntaxes().length) {
+                                bw.write(tab("\"" + pattern + "\",", 4));
+                            } else {
+                                bw.write(tab("\"" + pattern + "\"", 4));
+                            }
+                        }
+
+                    } else {
+                        bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    }
                 }
                 bw.write(tab("],", 3));
                 bw.write(tab("\"examples\": [", 3));
@@ -273,19 +278,23 @@ public class Documentation {
                 bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
                 bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
                 bw.write(tab("\"patterns\": [", 3));
-                if (registration.getSyntaxes().length > 1) {
-                    int patterns = 0;
-                    for (String pattern : registration.getSyntaxes()) {
-                        patterns++;
-                        if (patterns < registration.getSyntaxes().length) {
-                            bw.write(tab("\"" + pattern + "\",", 4));
-                        } else {
-                            bw.write(tab("\"" + pattern + "\"", 4));
-                        }
-                    }
-
+                if (registration.getUserFacing() != null) {
+                    bw.write(tab("\"" + registration.getUserFacing() + "\"", 4));
                 } else {
-                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    if (registration.getSyntaxes().length > 1) {
+                        int patterns = 0;
+                        for (String pattern : registration.getSyntaxes()) {
+                            patterns++;
+                            if (patterns < registration.getSyntaxes().length) {
+                                bw.write(tab("\"" + pattern + "\",", 4));
+                            } else {
+                                bw.write(tab("\"" + pattern + "\"", 4));
+                            }
+                        }
+
+                    } else {
+                        bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    }
                 }
                 bw.write(tab("],", 3));
                 bw.write(tab("\"examples\": [", 3));
@@ -317,19 +326,23 @@ public class Documentation {
                 bw.write(tab("\"description\": \"" + escapeString(registration.getDesc()) + "\",", 2));
                 bw.write(tab("\"name\": \"" + registration.getName() + "\",", 2));
                 bw.write(tab("\"patterns\": [", 3));
-                if (registration.getSyntaxes().length > 1) {
-                    int patterns = 0;
-                    for (String pattern : registration.getSyntaxes()) {
-                        patterns++;
-                        if (patterns < registration.getSyntaxes().length) {
-                            bw.write(tab("\"" + pattern + "\",", 4));
-                        } else {
-                            bw.write(tab("\"" + pattern + "\"", 4));
-                        }
-                    }
-
+                if (registration.getUserFacing() != null) {
+                    bw.write(tab("\"" + registration.getUserFacing() + "\"", 4));
                 } else {
-                    bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    if (registration.getSyntaxes().length > 1) {
+                        int patterns = 0;
+                        for (String pattern : registration.getSyntaxes()) {
+                            patterns++;
+                            if (patterns < registration.getSyntaxes().length) {
+                                bw.write(tab("\"" + pattern + "\",", 4));
+                            } else {
+                                bw.write(tab("\"" + pattern + "\"", 4));
+                            }
+                        }
+
+                    } else {
+                        bw.write(tab("\"" + registration.getSyntax() + "\"", 4));
+                    }
                 }
                 bw.write(tab("],", 3));
                 bw.write(tab("\"examples\": [", 3));

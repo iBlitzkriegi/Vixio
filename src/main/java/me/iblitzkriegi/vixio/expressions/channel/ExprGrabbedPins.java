@@ -18,7 +18,7 @@ public class ExprGrabbedPins extends SimpleExpression<Message> {
         Vixio.getInstance().registerExpression(ExprGrabbedPins.class, Message.class, ExpressionType.SIMPLE,
                 "[last] (grabbed|retrieved) (pins|pinned messages)")
                 .setName("Last Retrieved Pins")
-                .setDesc("Get the results of the last \"grab pinned messages\" search.")
+                .setDesc("Get the results of the last grab pinned messages search.")
                 .setExample(
                         "discord command $pins:",
                         "\ttrigger:",

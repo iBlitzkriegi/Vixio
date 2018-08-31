@@ -17,7 +17,7 @@ public class EffGrabBanned extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffGrabBanned.class, "(retrieve|grab) [the] (bans|ban list) of %guild%")
                 .setName("Bans list")
-                .setDesc("Retrieve all of the banned users in a guild. The results are stored in the \"retrieved bans\" expression")
+                .setDesc("Retrieve all of the banned users in a guild. The results are stored in the retrieved bans expression")
                 .setExample(
                         "discord command $bans:",
                         "\ttrigger:",
