@@ -32,106 +32,61 @@ public class Documentation {
             FileWriter fw;
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("-=Conditions=-");
-            bw.newLine();
-            for (Registration reg : Vixio.getInstance().conditions) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                if (multipleSyntax) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("\tsyntax: {\"");
-                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        if (i + 1 == reg.getSyntaxes().length) {
-                            builder.append(reg.getSyntaxes()[i] + "\"");
-                        } else {
-                            builder.append(reg.getSyntaxes()[i] + "\",");
-                        }
+            bw.write(tab("Conditions:", 0));
+            for (Registration registration : Vixio.getInstance().conditions) {
+                bw.write(tab("name: " + registration.getName(), 1));
+                bw.write(tab("description: " + registration.getDesc(), 2));
+                bw.write(tab("patterns:", 2));
+                if (registration.getUserFacing() == null) {
+                    for (String pattern : registration.getSyntaxes()) {
+                        bw.write(tab("- " + pattern, 3));
                     }
-                    builder.append("}");
-                    bw.write(builder.toString());
-                    bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntax());
-                    bw.newLine();
+                    bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
-            }
-            bw.write("-=Effects=-");
-            bw.newLine();
-            for (Registration reg : Vixio.getInstance().effects) {
-                if (reg.getUserFacing() != null) {
-                    bw.write("\tsyntax: " + reg.getUserFacing());
-                    bw.newLine();
-                } else {
-                    boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                    if (multipleSyntax) {
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("\tsyntax: {\"");
-                        for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                            if (i + 1 == reg.getSyntaxes().length) {
-                                builder.append(reg.getSyntaxes()[i] + "\"");
-                            } else {
-                                builder.append(reg.getSyntaxes()[i] + "\",");
-                            }
-                        }
 
-                        builder.append("}");
-                        bw.write(builder.toString());
-                        bw.newLine();
-                    } else {
-                        bw.write("\tsyntax: " + reg.getSyntax());
-                        bw.newLine();
-                    }
-                }
             }
-            bw.write("-=Expressions=-");
-            bw.newLine();
-
-            for (Registration reg : Vixio.getInstance().expressions) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                if (reg.getUserFacing() != null) {
-                    bw.write("\tsyntax: " + reg.getUserFacing());
-                    bw.newLine();
-                } else {
-                    if (multipleSyntax) {
-                        StringBuilder builder = new StringBuilder();
-                        builder.append("\tsyntax: {\"");
-                        for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                            if (i + 1 == reg.getSyntaxes().length) {
-                                builder.append(reg.getSyntaxes()[i] + "\"");
-                            } else {
-                                builder.append(reg.getSyntaxes()[i] + "\",");
-                            }
-                        }
-                        builder.append("}");
-                        bw.write(builder.toString());
-                        bw.newLine();
-
-                    } else {
-                        bw.write("\tsyntax: " + reg.getSyntax());
-                        bw.newLine();
+            bw.write(tab("Effects:", 0));
+            for (Registration registration : Vixio.getInstance().effects) {
+                bw.write(tab("name: " + registration.getName(), 1));
+                bw.write(tab("description: " + registration.getDesc(), 2));
+                bw.write(tab("patterns:", 2));
+                if (registration.getUserFacing() == null) {
+                    for (String pattern : registration.getSyntaxes()) {
+                        bw.write(tab("- " + pattern, 3));
                     }
+                } else {
+                    bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+
             }
-            bw.write("-=Events=-");
-            bw.newLine();
-            for (Registration reg : Vixio.getInstance().events) {
-                boolean multipleSyntax = reg.getSyntaxes().length == 2;
-                if (multipleSyntax) {
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("\tsyntax: {\"");
-                    for (int i = 0; i < reg.getSyntaxes().length; i++) {
-                        if (i + 1 == reg.getSyntaxes().length) {
-                            builder.append(reg.getSyntaxes()[i] + "\"");
-                        } else {
-                            builder.append(reg.getSyntaxes()[i] + "\",");
-                        }
+            bw.write(tab("Expressions:", 0));
+            for (Registration registration : Vixio.getInstance().expressions) {
+                bw.write(tab("name: " + registration.getName(), 1));
+                bw.write(tab("description: " + registration.getDesc(), 2));
+                bw.write(tab("patterns:", 2));
+                if (registration.getUserFacing() == null) {
+                    for (String pattern : registration.getSyntaxes()) {
+                        bw.write(tab("- " + pattern, 3));
                     }
-                    builder.append("}");
-                    bw.write(builder.toString());
-                    bw.newLine();
                 } else {
-                    bw.write("\tsyntax: " + reg.getSyntax());
-                    bw.newLine();
+                    bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+
+            }
+            bw.write(tab("Events:", 0));
+            for (Registration registration : Vixio.getInstance().events) {
+                bw.write(tab("name: " + registration.getName(), 1));
+                bw.write(tab("description: " + registration.getDesc(), 2));
+                bw.write(tab("patterns:", 2));
+                if (registration.getUserFacing() == null) {
+                    for (String pattern : registration.getSyntaxes()) {
+                        bw.write(tab("- " + pattern, 3));
+                    }
+                } else {
+                    bw.write(tab("- " + registration.getUserFacing(), 3));
+                }
+
             }
             bw.flush();
             bw.close();
