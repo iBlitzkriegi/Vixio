@@ -129,7 +129,7 @@ public class Util {
 
     public static Bot botFromID(String ID) {
         return Vixio.getInstance().botHashMap.values().stream()
-                .filter(b -> ID.equals(b.getRDA().getSelfUser().getId()))
+                .filter(b -> ID.equals(b.getJDA().getSelfUser().getId()))
                 .findFirst()
                 .orElse(null);
     }
@@ -239,7 +239,7 @@ public class Util {
             }
         }
         //TODO USE GETJDA HERE
-        return new RestAction.EmptyRestAction<>(bot.getRDA(), message);
+        return new RestAction.EmptyRestAction<>(bot.getJDA(), message);
 
     }
 
@@ -408,7 +408,7 @@ public class Util {
             Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             for (ShardManager jda : jdaInstances) {
                 Bot bot = Util.botFrom(jda);
-                if (bot.getRDA().getSelfUser().getId().equalsIgnoreCase(user.getId())) {
+                if (bot.getJDA().getSelfUser().getId().equalsIgnoreCase(user.getId())) {
                     return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
                 }
                 User searchedUser = jda.getUserById(user.getId());

@@ -58,12 +58,12 @@ public class Bot implements IMentionable, ISnowflake {
 
     @Override
     public String getAsMention() {
-        return getRDA().getSelfUser().getAsMention();
+        return getJDA().getSelfUser().getAsMention();
     }
 
     @Override
     public long getIdLong() {
-        return getRDA().getSelfUser().getIdLong();
+        return getJDA().getSelfUser().getIdLong();
     }
 
     public HashMap<Guild, GuildMusicManager> getGuildMusicManagerMap() {
@@ -75,7 +75,7 @@ public class Bot implements IMentionable, ISnowflake {
         return getName();
     }
 
-    public JDA getRDA() {
+    public JDA getJDA() {
         return shardManager.getShards().get(0);
     }
 
@@ -84,6 +84,6 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     public SelfUser getSelfUser() {
-        return getRDA().getSelfUser();
+        return getJDA().getSelfUser();
     }
 }
