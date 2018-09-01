@@ -6,6 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import net.dv8tion.jda.bot.sharding.ShardManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
@@ -88,39 +89,41 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
                 return singular ? new TextChannel[]{textChannels.get(0)} : textChannels.toArray(new TextChannel[textChannels.size()]);
             }
         }
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        for (JDA jda : jdaInstances) {
-            if (mark == 0) {
-                voiceChannels = jda.getVoiceChannelByName(name, false);
-                textChannels = jda.getTextChannelsByName(name, false);
-                if (!(voiceChannels.isEmpty()) || (!(textChannels.isEmpty()))) {
-                    if (singular) {
-                        return voiceChannels.isEmpty() ? new TextChannel[]{textChannels.get(0)} : new VoiceChannel[]{voiceChannels.get(0)};
+        Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        for (ShardManager shardManager : jdaInstances) {
+            for (JDA jda : shardManager.getShards()) {
+                if (mark == 0) {
+                    voiceChannels = jda.getVoiceChannelByName(name, false);
+                    textChannels = jda.getTextChannelsByName(name, false);
+                    if (!(voiceChannels.isEmpty()) || (!(textChannels.isEmpty()))) {
+                        if (singular) {
+                            return voiceChannels.isEmpty() ? new TextChannel[]{textChannels.get(0)} : new VoiceChannel[]{voiceChannels.get(0)};
+                        }
+                        List<Channel> channels = new ArrayList<>();
+                        int size = 0;
+                        if (!textChannels.isEmpty()) {
+                            channels.addAll(textChannels);
+                            size = size + textChannels.size();
+                        }
+                        if (!voiceChannels.isEmpty()) {
+                            channels.addAll(voiceChannels);
+                            size = size + voiceChannels.size();
+                        }
+                        return channels.toArray(new Channel[size]);
                     }
-                    List<Channel> channels = new ArrayList<>();
-                    int size = 0;
-                    if (!textChannels.isEmpty()) {
-                        channels.addAll(textChannels);
-                        size = size + textChannels.size();
-                    }
+                } else if (mark == 1) {
+                    voiceChannels = jda.getVoiceChannelByName(name, false);
                     if (!voiceChannels.isEmpty()) {
-                        channels.addAll(voiceChannels);
-                        size = size + voiceChannels.size();
+                        return singular ? new VoiceChannel[]{voiceChannels.get(0)} : voiceChannels.toArray(new VoiceChannel[voiceChannels.size()]);
                     }
-                    return channels.toArray(new Channel[size]);
+                } else if (mark == 2) {
+                    textChannels = jda.getTextChannelsByName(name, false);
+                    if (!textChannels.isEmpty()) {
+                        return singular ? new TextChannel[]{textChannels.get(0)} : textChannels.toArray(new TextChannel[textChannels.size()]);
+                    }
                 }
-            } else if (mark == 1) {
-                voiceChannels = jda.getVoiceChannelByName(name, false);
-                if (!voiceChannels.isEmpty()) {
-                    return singular ? new VoiceChannel[]{voiceChannels.get(0)} : voiceChannels.toArray(new VoiceChannel[voiceChannels.size()]);
-                }
-            } else if (mark == 2) {
-                textChannels = jda.getTextChannelsByName(name, false);
-                if (!textChannels.isEmpty()) {
-                    return singular ? new TextChannel[]{textChannels.get(0)} : textChannels.toArray(new TextChannel[textChannels.size()]);
-                }
-            }
 
+            }
         }
         return null;
     }

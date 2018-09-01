@@ -48,7 +48,8 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
             if (bot == null) {
                 return null;
             }
-            JDA jda = bot.getJDA().getShards().get(0);
+            //TODO GET JDA HERE
+            JDA jda = bot.getShardMananger().getShards().get(0);
             if (jda.getPresence().getGame() == null) {
                 return null;
             }
@@ -74,7 +75,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
         for (Object object : getExpr().getAll(e)) {
             if (Util.botFrom(object) != null) {
                 Bot bot = Util.botFrom(object);
-                bot.getJDA().setGame(mode == Changer.ChangeMode.SET ? Game.of(Game.GameType.DEFAULT, (String) delta[0]) : null);
+                bot.getShardMananger().setGame(mode == Changer.ChangeMode.SET ? Game.of(Game.GameType.DEFAULT, (String) delta[0]) : null);
             }
         }
     }

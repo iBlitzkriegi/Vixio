@@ -18,7 +18,7 @@ public class ExprGuilds extends SimpleExpression<Guild> implements EasyMultiple<
                 .setName("Guilds of bot")
                 .setDesc("Get all the guilds of a bot")
                 .setExample(
-                        ""
+                        "loop guilds of \"bot\":"
                 );
     }
 
@@ -28,7 +28,7 @@ public class ExprGuilds extends SimpleExpression<Guild> implements EasyMultiple<
     protected Guild[] get(Event e) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         if (bot != null) {
-            return bot.getJDA().getGuilds().toArray(new Guild[0]);
+            return bot.getShardMananger().getGuilds().toArray(new Guild[0]);
         }
         return null;
     }

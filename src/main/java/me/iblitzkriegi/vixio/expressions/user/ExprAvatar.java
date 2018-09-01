@@ -47,7 +47,7 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
             if (bot == null) {
                 return null;
             }
-            SelfUser selfUser = bot.getSelfUser();
+            SelfUser selfUser = bot.getRDA().getSelfUser();
             return new Avatar(selfUser, custom ? selfUser.getAvatarUrl() : selfUser.getDefaultAvatarUrl(), custom);
         } else if (object instanceof Member) {
             User user = ((Member) object).getUser();
@@ -91,7 +91,7 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
                 Bot bot = Util.botFrom(object);
                 if (bot != null) {
                     String url = (String) delta[0];
-                    AccountManager manager = bot.getSelfUser().getManager();
+                    AccountManager manager = bot.getRDA().getSelfUser().getManager();
                     if (Util.isLink(url)) {
                         Util.async(() -> {
                             try {

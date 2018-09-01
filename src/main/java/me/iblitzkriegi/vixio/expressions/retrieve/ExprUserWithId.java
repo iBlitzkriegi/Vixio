@@ -30,7 +30,7 @@ public class ExprUserWithId extends SimpleExpression<User> {
 
         for (Bot bot : Vixio.getInstance().botHashMap.values()) {
             try {
-                User user = bot.getJDA().getUserById(id);
+                User user = bot.getShardMananger().getUserById(id);
                 if (user != null) {
                     return new User[]{user};
                 }

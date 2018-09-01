@@ -104,7 +104,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
         switch (mode) {
             case SET:
                 if (object instanceof Bot) {
-                    bot.getSelfUser().getManager().setName(name).queue();
+                    bot.getRDA().getSelfUser().getManager().setName(name).queue();
                 } else if (object instanceof Channel) {
                     Channel channel = Util.bindChannel(bot, (Channel) object);
 

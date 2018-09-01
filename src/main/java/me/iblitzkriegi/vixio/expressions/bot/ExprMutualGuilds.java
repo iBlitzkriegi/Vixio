@@ -37,7 +37,7 @@ public class ExprMutualGuilds extends SimpleExpression<Guild> {
         if (bot == null || user == null) {
             return null;
         }
-        Collection<Guild> mutualGuilds = bot.getJDA().getMutualGuilds(user);
+        Collection<Guild> mutualGuilds = bot.getShardMananger().getMutualGuilds(user);
         return mutualGuilds.toArray(new Guild[0]);
     }
 
