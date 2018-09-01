@@ -28,7 +28,7 @@ import net.dv8tion.jda.core.requests.RestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
@@ -37,14 +37,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Set;
 
 public class Util {
 
@@ -128,7 +122,7 @@ public class Util {
 
     public static Bot botFromID(String ID) {
         return Vixio.getInstance().botHashMap.values().stream()
-                .filter(b -> ID.equals(b.getSelfUser().getId()))
+                .filter(b -> ID.equals(b.getRDA().getSelfUser().getId()))
                 .findFirst()
                 .orElse(null);
     }
@@ -153,29 +147,36 @@ public class Util {
     }
 
     public static boolean botIsConnected(Bot bot, JDA jda) {
-        return bot.getShardMananger().getApplicationInfo().getJDA() == jda;
+        for (JDA shardJDA : bot.getShardMananger().getShards()) {
+            if (shardJDA == jda) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Guild bindGuild(Bot bot, Guild guild) {
         if (guild == null || bot == null) {
             return null;
         }
-        if (!(guild.getJDA() == bot.getJDA())) {
-            return bot.getShardMananger().getGuildById(guild.getId());
-        } else {
-            return guild;
+        for (JDA jda : bot.getShardMananger().getShards()) {
+            if (guild.getJDA() == jda) {
+                return guild;
+            }
         }
+        return bot.getShardMananger().getGuildById(guild.getId());
     }
 
     public static TextChannel bindChannel(Bot bot, TextChannel textChannel) {
         if (bot == null || textChannel == null) {
             return null;
         }
-        if (!(textChannel.getJDA() == bot.getJDA())) {
-            return bot.getShardMananger().getTextChannelById(textChannel.getId());
-        } else {
-            return textChannel;
+        for (JDA jda : bot.getShardMananger().getShards()) {
+            if (textChannel.getJDA() == jda) {
+                return textChannel;
+            }
         }
+        return bot.getShardMananger().getTextChannelById(textChannel.getId());
     }
 
     public static void storeInVar(VariableString name, Variable<?> varExpr, Object input, Event event) {
@@ -208,32 +209,40 @@ public class Util {
             return null;
         }
 
-        if (!(channel.getJDA() == bot.getShardMananger().getGuildById(channel.getId()))) {
-            PrivateChannel privateChannel = bot.getShardMananger().getPrivateChannelById(channel.getId());
-            TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
-            if (privateChannel != null) {
-                return privateChannel;
-            } else if (textChannel != null) {
-                return textChannel;
+        for (JDA jda : bot.getShardMananger().getShards()) {
+            if (channel.getJDA() == jda) {
+                return channel;
             }
-
-            return null;
-        } else {
-            return channel;
         }
+
+        PrivateChannel privateChannel = bot.getShardMananger().getPrivateChannelById(channel.getId());
+        TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
+        if (privateChannel != null) {
+            return privateChannel;
+        } else if (textChannel != null) {
+            return textChannel;
+        }
+        return channel;
     }
 
     public static RestAction<Message> bindMessage(Bot bot, Message message) {
-        if (!(bot.getJDA() == message.getJDA())) {
-            return bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId());
-        } else {
-            return new RestAction.EmptyRestAction<>(bot.getJDA().getShards().get(0), message);
+        for (JDA jda : bot.getShardMananger().getShards()) {
+            if (message.getJDA() == jda) {
+                return new RestAction.EmptyRestAction<>(jda, message);
+            }
         }
+        //TODO USE GETJDA HERE
+        return new RestAction.EmptyRestAction<>(bot.getRDA(), message);
 
     }
 
     public static MessageChannel bindChannel(Bot bot, MessageChannel messageChannel) {
         ShardManager manager = bot.getShardMananger();
+        for (JDA jda : manager.getShards()) {
+            if (jda == messageChannel.getJDA()) {
+                return messageChannel;
+            }
+        }
         if (messageChannel.getType() == ChannelType.PRIVATE) {
             PrivateChannel privateChannel = manager.getPrivateChannelById(messageChannel.getId());
             if (privateChannel == null) {
@@ -242,26 +251,20 @@ public class Util {
             return privateChannel;
 
         }
-        if (bot.getShardMananger().getTextChannelById(messageChannel.getId()) != null) {
-
-        }
-        if (messageChannel.getJDA() == bot.getJDA()) {
+        TextChannel textChannel = manager.getTextChannelById(messageChannel.getId());
+        if (textChannel == null) {
             return messageChannel;
         }
-
-        if (messageChannel.getType() == ChannelType.PRIVATE || messageChannel.getType() == ChannelType.GROUP) {
-            return bot.getJDA().getPrivateChannelById(messageChannel.getId());
-        } else {
-            return bot.getJDA().getTextChannelById(messageChannel.getId());
-        }
+        return textChannel == null ? messageChannel : textChannel;
     }
 
     public static VoiceChannel bindVoiceChannel(Bot bot, VoiceChannel voiceChannel) {
-        if (!(voiceChannel.getJDA() == bot.getJDA())) {
-            return bot.getJDA().getVoiceChannelById(voiceChannel.getId());
-        } else {
-            return voiceChannel;
+        for (JDA jda : bot.getShardMananger().getShards()) {
+            if (voiceChannel == jda) {
+                return voiceChannel;
+            }
         }
+        return bot.getShardMananger().getVoiceChannelById(voiceChannel.getId());
     }
 
     public static User bindUser(Bot bot, User user) {
@@ -269,22 +272,26 @@ public class Util {
             return null;
         }
 
-        if (user.getJDA() == bot.getJDA()) {
-            return user;
-        } else {
-            return bot.getJDA().getUserById(user.getId());
+        for (JDA jda : bot.getShards()) {
+            if (jda == user.getJDA()) {
+                return user;
+            }
         }
+        return bot.getShardMananger().getUserById(user.getId());
     }
 
     public static Channel bindChannel(Bot bot, Channel channel) {
-        if (!(channel.getJDA() == bot.getJDA())) {
-            TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
-            VoiceChannel voiceChannel = bot.getShardMananger().getVoiceChannelById(channel.getId());
-
-            return voiceChannel == null ? textChannel : voiceChannel;
-        } else {
-            return channel;
+        for (JDA jda : bot.getShards()) {
+            if (jda == channel.getJDA()) {
+                return channel;
+            }
         }
+        VoiceChannel voiceChannel = bot.getShardMananger().getVoiceChannelById(channel.getId());
+        TextChannel textChannel = bot.getShardMananger().getTextChannelById(channel.getId());
+        if (textChannel == null && voiceChannel == null) {
+            return null;
+        }
+        return textChannel == null ? voiceChannel : textChannel;
     }
 
     public static Emote unicodeFrom(String input, Guild guild) {
@@ -394,7 +401,7 @@ public class Util {
             Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             for (ShardManager jda : jdaInstances) {
                 Bot bot = Util.botFrom(jda);
-                if (bot.getSelfUser().getId().equalsIgnoreCase(user.getId())) {
+                if (bot.getRDA().getSelfUser().getId().equalsIgnoreCase(user.getId())) {
                     return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
                 }
                 User searchedUser = jda.getUserById(user.getId());
