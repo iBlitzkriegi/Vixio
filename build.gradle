@@ -73,7 +73,7 @@ dependencies {
 
     // JDA
 
-    compile 'net.dv8tion:JDA:3.5.1_353'
+    compile 'net.dv8tion:JDA:3.7.1_409'
 
     // LavaPlayer
     compile 'com.sedmelluq:lavaplayer:1.2.58'
