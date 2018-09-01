@@ -114,8 +114,15 @@ public class Util {
             return (Bot) input;
         } else if (input instanceof String) {
             return Vixio.getInstance().botNameHashMap.get(input);
-        } else if (input instanceof ShardManager) {
-            return Vixio.getInstance().botHashMap.get(input);
+        } else if (input instanceof JDA) {
+            JDA botJDA = (JDA) input;
+            for (ShardManager shardManager : Vixio.getInstance().botHashMap.keySet()) {
+                for (JDA jda : shardManager.getShards()) {
+                    if (jda == botJDA) {
+                        return Vixio.getInstance().botHashMap.get(shardManager);
+                    }
+                }
+            }
         }
         return null;
     }
