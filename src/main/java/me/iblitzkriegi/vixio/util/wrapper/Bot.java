@@ -9,11 +9,11 @@ import net.dv8tion.jda.core.entities.ISnowflake;
 import net.dv8tion.jda.core.entities.SelfUser;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Bot implements IMentionable, ISnowflake {
     private String name;
     private ShardManager shardManager;
-    private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();
     private long uptime;
 
@@ -25,7 +25,6 @@ public class Bot implements IMentionable, ISnowflake {
     public Bot(ShardManager shardManager) {
         this.shardManager = shardManager;
         this.name = null;
-        this.selfUser = shardManager.getApplicationInfo().getJDA().getSelfUser();
 
     }
 
@@ -59,16 +58,12 @@ public class Bot implements IMentionable, ISnowflake {
 
     @Override
     public String getAsMention() {
-        return selfUser.getAsMention();
+        return getRDA().getSelfUser().getAsMention();
     }
 
     @Override
     public long getIdLong() {
-        return shardManager.getApplicationInfo().getJDA()
-    }
-
-    public SelfUser getSelfUser() {
-        return selfUser;
+        return getRDA().getSelfUser().getIdLong();
     }
 
     public HashMap<Guild, GuildMusicManager> getGuildMusicManagerMap() {
@@ -80,4 +75,15 @@ public class Bot implements IMentionable, ISnowflake {
         return getName();
     }
 
+    public JDA getRDA() {
+        return shardManager.getShards().get(0);
+    }
+
+    public List<JDA> getShards() {
+        return shardManager.getShards();
+    }
+
+    public SelfUser getSelfUser() {
+        return getRDA().getSelfUser();
+    }
 }
