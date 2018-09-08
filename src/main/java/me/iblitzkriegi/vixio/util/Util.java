@@ -154,7 +154,7 @@ public class Util {
     }
 
     public static boolean botIsConnected(Bot bot, JDA jda) {
-        for (JDA shardJDA : bot.getShardMananger().getShards()) {
+        for (JDA shardJDA : bot.getShards()) {
             if (shardJDA == jda) {
                 return true;
             }
@@ -166,7 +166,7 @@ public class Util {
         if (guild == null || bot == null) {
             return null;
         }
-        for (JDA jda : bot.getShardMananger().getShards()) {
+        for (JDA jda : bot.getShards()) {
             if (guild.getJDA() == jda) {
                 return guild;
             }
@@ -178,7 +178,7 @@ public class Util {
         if (bot == null || textChannel == null) {
             return null;
         }
-        for (JDA jda : bot.getShardMananger().getShards()) {
+        for (JDA jda : bot.getShards()) {
             if (textChannel.getJDA() == jda) {
                 return textChannel;
             }
@@ -238,7 +238,7 @@ public class Util {
                 return new RestAction.EmptyRestAction<>(jda, message);
             }
         }
-        //TODO USE GETJDA HERE
+
         return new RestAction.EmptyRestAction<>(bot.getJDA(), message);
 
     }
@@ -408,11 +408,12 @@ public class Util {
             Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             for (ShardManager jda : jdaInstances) {
                 Bot bot = Util.botFrom(jda);
-                if (bot.getJDA().getSelfUser().getId().equalsIgnoreCase(user.getId())) {
+                if (bot.getSelfUser().getId().equalsIgnoreCase(user.getId())) {
                     return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
                 }
                 User searchedUser = jda.getUserById(user.getId());
                 if (searchedUser != null) {
+                    System.out.println("found user! " + searchedUser);
                     List<Guild> guildList = jda.getMutualGuilds(searchedUser);
                     if (guildList != null) {
                         return guildList.iterator().next().getMember(searchedUser);

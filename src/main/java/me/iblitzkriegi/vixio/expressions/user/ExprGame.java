@@ -46,10 +46,11 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
         } else {
             Bot bot = Util.botFrom(object);
             if (bot == null) {
+                System.out.println("cant parse bot");
                 return null;
             }
             //TODO GET JDA HERE
-            JDA jda = bot.getShardMananger().getShards().get(0);
+            JDA jda = bot.getJDA();
             if (jda.getPresence().getGame() == null) {
                 return null;
             }
