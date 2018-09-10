@@ -403,17 +403,21 @@ public class Util {
     }
 
     public static Member getMemberFromUser(Object object) {
+        if (object == null) {
+            return null;
+        }
         if (object instanceof User) {
             User user = (User) object;
             Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             for (ShardManager jda : jdaInstances) {
-                Bot bot = Util.botFrom(jda);
-                if (bot.getSelfUser().getId().equalsIgnoreCase(user.getId())) {
-                    return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
+                Guild guild = jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0);
+                if (guild != null) {
+                    if (guild.getSelfMember().getUser().getId().equalsIgnoreCase(user.getId())) {
+                        return guild.getSelfMember();
+                    }
                 }
                 User searchedUser = jda.getUserById(user.getId());
                 if (searchedUser != null) {
-                    System.out.println("found user! " + searchedUser);
                     List<Guild> guildList = jda.getMutualGuilds(searchedUser);
                     if (guildList != null) {
                         return guildList.iterator().next().getMember(searchedUser);
@@ -423,6 +427,17 @@ public class Util {
         }
         return null;
     }
+
+//    public static Member getMemberFromUser(Object object) {
+//       if (object instanceof User) {
+//           User user = (User) object;
+//           Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+//           for (ShardManager jda : jdaInstances) {
+//               Bot bot = Util.botFrom(jda);
+//           }
+//       }
+//       return null;
+//    }
 
     public static void sync(Runnable runnable) {
         Bukkit.getScheduler().runTask(Vixio.getInstance(), runnable);

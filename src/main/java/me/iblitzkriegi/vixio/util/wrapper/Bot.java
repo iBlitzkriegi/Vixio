@@ -84,6 +84,6 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     public SelfUser getSelfUser() {
-        return getJDA().getSelfUser();
+        return shardManager.getShards().get(0).getSelfUser();
     }
 }
