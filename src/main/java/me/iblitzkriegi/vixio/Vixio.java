@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import me.iblitzkriegi.vixio.registration.*;
 import me.iblitzkriegi.vixio.util.Metrics;
+import me.iblitzkriegi.vixio.util.ParseOrderWorkaround;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.JDA;
@@ -83,13 +84,12 @@ public class Vixio extends JavaPlugin {
                     .loadClasses("me.iblitzkriegi.vixio", "effects", "events", "scopes",
                             "expressions", "commands", "changers", "literals", "conditions")
                     .setLanguageFileDirectory("lang");
-
             Vixio.setup();
             AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
             AudioSourceManagers.registerRemoteSources(playerManager);
             AudioSourceManagers.registerLocalSource(playerManager);
-
             this.playerManager = playerManager;
+            ParseOrderWorkaround.reorderSyntax();
         } catch (IOException e) {
             e.printStackTrace();
         }

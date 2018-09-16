@@ -57,20 +57,20 @@ public class EffChange extends Effect {
     public static Bot currentBot;
     private static boolean parsing;
     private static Patterns<ChangeMode> patterns = new Patterns<>(new Object[][]{
-            {"(add|give) %objects% to (%~objects%) (with|using) %bot/string%", ChangeMode.ADD},
-            {"increase %~objects% by (%objects%) (with|using) %bot/string%", ChangeMode.ADD},
+            {"(add|give) %objects% to (%~objects%) [(with|using) %bot/string%]", ChangeMode.ADD},
+            {"increase %~objects% by (%objects%) [(with|using) %bot/string%]", ChangeMode.ADD},
             {"give %~objects% (%objects%) as %bot/string%", ChangeMode.ADD},
 
-            {"set %~objects% to (%objects%) (with|using) %bot/string%", ChangeMode.SET},
+            {"set %~objects% to (%objects%) [(with|using) %bot/string%]", ChangeMode.SET},
 
-            {"remove (all|every) %objects% from (%~objects%) (with|using) %bot/string%", ChangeMode.REMOVE_ALL},
+            {"remove (all|every) %objects% from (%~objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE_ALL},
 
-            {"(remove|subtract) %objects% from (%~objects%) (with|using) %bot/string%", ChangeMode.REMOVE},
-            {"reduce %~objects% by (%objects%) (with|using) %bot/string%", ChangeMode.REMOVE},
+            {"(remove|subtract) %objects% from (%~objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE},
+            {"reduce %~objects% by (%objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE},
 
-            {"(delete|clear) (%~objects%) (with|using) %bot/string%", ChangeMode.DELETE},
+            {"(delete|clear) (%~objects%) [(with|using) %bot/string%]", ChangeMode.DELETE},
 
-            {"reset (%~objects%) (with|using) %bot/string%", ChangeMode.RESET}
+            {"reset (%~objects%) [(with|using) %bot/string%]", ChangeMode.RESET}
     });
 
     static {
@@ -110,7 +110,6 @@ public class EffChange extends Effect {
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parser) {
         parsing = true;
         mode = patterns.getInfo(matchedPattern);
-
         switch (mode) {
             case ADD:
                 bot = (Expression<Bot>) exprs[2];
@@ -150,10 +149,14 @@ public class EffChange extends Effect {
                 bot = (Expression<Bot>) exprs[1];
                 changed = exprs[0];
         }
+        if (bot.isDefault() && String.class.isAssignableFrom(bot.getReturnType())) {
+            return false;
+        }
 
         if (!(changed instanceof ChangeablePropertyExpression ||
                 changed instanceof ChangeableSimpleExpression ||
                 changed instanceof ChangeableSimplePropertyExpression ||
+                bot.isDefault() ||
                 Classes.getSuperClassInfo(changed.getReturnType()).getChanger() instanceof VixioChanger)) {
             Skript.error(changed.toString(null, false) + " can't be changed with Vixio's changer effects");
             parsing = false;
