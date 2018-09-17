@@ -156,9 +156,10 @@ public class EffChange extends Effect {
         if (!(changed instanceof ChangeablePropertyExpression ||
                 changed instanceof ChangeableSimpleExpression ||
                 changed instanceof ChangeableSimplePropertyExpression ||
-                bot.isDefault() ||
                 Classes.getSuperClassInfo(changed.getReturnType()).getChanger() instanceof VixioChanger)) {
-            Skript.error(changed.toString(null, false) + " can't be changed with Vixio's changer effects");
+            if (!bot.isDefault()) {
+                Skript.error(changed.toString(null, false) + " can't be changed with Vixio's changer effects");
+            }
             parsing = false;
             return false;
         }

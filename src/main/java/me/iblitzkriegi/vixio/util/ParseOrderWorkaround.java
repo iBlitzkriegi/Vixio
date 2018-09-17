@@ -22,7 +22,7 @@ public class ParseOrderWorkaround {
                 .findFirst();
         optionalElementInfo.ifPresent(e -> {
             elements.remove(e);
-            ((List)elements).add(0,e);
+            ((List) elements).add(0, e);
         });
 
 
