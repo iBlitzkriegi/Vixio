@@ -6,14 +6,17 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.core.managers.RoleManager;
 import org.bukkit.event.Event;
 
-public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Channel, Number> {
+public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Object, Number> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprChannelPosition.class, Number.class, "[discord] position", "channels")
-                .setName("Position of Channel")
-                .setDesc("Get or set the current position of a channel. 0 being the first channel, or the highest position channel.")
+        Vixio.getInstance().registerPropertyExpression(ExprChannelPosition.class, Number.class, "discord position", "channels/roles")
+                .setName("Position of")
+                .setDesc("Get or set the current position of a role or a channel. With channels, 0 is the highest channel, with roles 0 is the lowest custom role, then 1 is the next role up, then 2...")
                 .setExample(
                         "discord command $pos <text>:",
                         "\ttrigger:",
@@ -25,12 +28,17 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Chan
 
     @Override
     protected String getPropertyName() {
-        return "position";
+        return "discord position";
     }
 
     @Override
-    public Number convert(Channel channel) {
-        return channel.getPosition();
+    public Number convert(Object object) {
+        if (object instanceof Role) {
+            return ((Role)object).getPosition();
+        } else if (object instanceof Channel) {
+            return ((Channel)object).getPosition();
+        }
+        return null;
     }
 
     @Override
@@ -49,13 +57,30 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Chan
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         int position = ((Number) delta[0]).intValue();
-        for (Channel channel : getExpr().getAll(e)) {
-            Channel bindedChannel = Util.bindChannel(bot, channel);
-            if (bindedChannel != null) {
+        for (Object object : getExpr().getAll(e)) {
+            if (object instanceof Channel) {
+                Channel boundChannel = Util.bindChannel(bot, (Channel) object);
+                if (boundChannel != null) {
+                    try {
+                        boundChannel.getManager().setPosition(position).queue();
+                    } catch (PermissionException x) {
+                        Vixio.getErrorHandler().needsPerm(bot, "set position of channel", x.getPermission().getName());
+                    }
+                }
+            } else if (object instanceof Role) {
+                Role role = ((Role)object);
                 try {
-                    bindedChannel.getManager().setPosition(position).queue();
+                    Guild guild = Util.botIsConnected(bot, role.getJDA()) ? role.getGuild() : Util.bindGuild(bot, role.getGuild());
+                    if (guild != null) {
+                        guild.getController().modifyRolePositions()
+                                .selectPosition(role)
+                                .moveTo(position)
+                                .queue();
+                    }
                 } catch (PermissionException x) {
-                    Vixio.getErrorHandler().needsPerm(bot, "set position of channel", x.getPermission().getName());
+                    Vixio.getErrorHandler().needsPerm(bot, "set position of role", x.getPermission().getName());
+                } catch (IllegalStateException x) {
+                    Vixio.getErrorHandler().warn("Vixio attempted to move a role higher than it may go");
                 }
             }
         }
