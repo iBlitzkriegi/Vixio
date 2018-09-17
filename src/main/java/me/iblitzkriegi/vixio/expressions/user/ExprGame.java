@@ -3,7 +3,6 @@ package me.iblitzkriegi.vixio.expressions.user;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Game;
@@ -25,6 +24,10 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
                 );
     }
 
+    private String getGame(Bot bot) {
+        return bot.getJDA().getPresence().getGame() == null ? null : bot.getJDA().getPresence().getGame().getName();
+    }
+
     @Override
     protected String getPropertyName() {
         return "game";
@@ -34,23 +37,25 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
     public String convert(Object object) {
         if (object instanceof Member) {
             Member member = (Member) object;
+            if (Util.botFromID(member.getUser().getId()) != null) {
+                return getGame(Util.botFromID(member.getUser().getId()));
+            }
             return member.getGame() == null ? null : member.getGame().getName();
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
             if (member == null) {
                 return null;
             }
-
+            if (Util.botFromID(member.getUser().getId()) != null) {
+                return getGame(Util.botFromID(member.getUser().getId()));
+            }
             return member.getGame() == null ? null : member.getGame().getName();
         } else {
             Bot bot = Util.botFrom(object);
             if (bot == null) {
                 return null;
             }
-            if (bot.getJDA().getPresence().getGame() == null) {
-                return null;
-            }
-            return Util.botFrom(object).getJDA().getPresence().getGame().getName();
+            return getGame(bot);
         }
     }
 
