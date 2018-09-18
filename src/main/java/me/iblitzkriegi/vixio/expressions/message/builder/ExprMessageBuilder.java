@@ -18,9 +18,13 @@ public class ExprMessageBuilder extends SimpleExpression<MessageBuilder> {
                 .setExample("set {e} to a new message builder");
     }
 
+    public static MessageBuilder lastMessageBuilder;
+
     @Override
     protected MessageBuilder[] get(Event e) {
-        return new MessageBuilder[]{new MessageBuilder()};
+        MessageBuilder messageBuilder = new MessageBuilder();
+        lastMessageBuilder = messageBuilder;
+        return new MessageBuilder[]{messageBuilder};
     }
 
     @Override
