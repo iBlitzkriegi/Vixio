@@ -27,7 +27,7 @@ public class LitNewLine extends SimpleLiteral<String> {
     }
 
     public LitNewLine() {
-        super(System.getProperty("line.separator"), true);
+        super("\n", true);
     }
 
     @Override

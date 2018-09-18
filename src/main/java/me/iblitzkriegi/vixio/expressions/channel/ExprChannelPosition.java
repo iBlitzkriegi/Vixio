@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.managers.RoleManager;
 import org.bukkit.event.Event;
 
 public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Object, Number> {
@@ -34,9 +33,9 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Obje
     @Override
     public Number convert(Object object) {
         if (object instanceof Role) {
-            return ((Role)object).getPosition();
+            return ((Role) object).getPosition();
         } else if (object instanceof Channel) {
-            return ((Channel)object).getPosition();
+            return ((Channel) object).getPosition();
         }
         return null;
     }
@@ -68,7 +67,7 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Obje
                     }
                 }
             } else if (object instanceof Role) {
-                Role role = ((Role)object);
+                Role role = ((Role) object);
                 try {
                     Guild guild = Util.botIsConnected(bot, role.getJDA()) ? role.getGuild() : Util.bindGuild(bot, role.getGuild());
                     if (guild != null) {
