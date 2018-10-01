@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
+import javafx.scene.media.AudioTrack;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;

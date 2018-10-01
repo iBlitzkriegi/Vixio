@@ -16,7 +16,10 @@ import net.dv8tion.jda.core.entities.Guild;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.event.Event;
 
+import java.util.HashMap;
+
 public class EffPlay extends Effect {
+
     static {
         Vixio.getInstance().registerEffect(EffPlay.class, "play %strings/tracks% [in %guild%] [with %bot/string%]")
                 .setName("Play audio")
@@ -27,6 +30,7 @@ public class EffPlay extends Effect {
     private Expression<Guild> guild;
     private Expression<Object> audio;
     private Expression<Object> bot;
+    public static HashMap<GuildMusicManager, AudioTrack> lastLoaded = new HashMap<>();
 
     @Override
     protected void execute(Event e) {
@@ -39,13 +43,17 @@ public class EffPlay extends Effect {
         GuildMusicManager musicManager = bot.getAudioManager(guild);
         for (Object track : this.audio.getAll(e)) {
             if (track instanceof AudioTrack) {
-                musicManager.scheduler.queue((AudioTrack) track);
+                AudioTrack audioTrack = (AudioTrack) track;
+                musicManager.scheduler.queue(audioTrack);
+                lastLoaded.put(musicManager, audioTrack);
             } else if (track instanceof String) {
                 if (!(StringUtils.startsWithIgnoreCase((String) track, "ytsearch:") || StringUtils.startsWithIgnoreCase((String) track, "scsearch:"))) {
                     Vixio.getInstance().playerManager.loadItemOrdered(musicManager, (String) track, new AudioLoadResultHandler() {
                         @Override
                         public void trackLoaded(AudioTrack track) {
                             musicManager.scheduler.queue(track);
+                            lastLoaded.put(musicManager, track);
+
                         }
 
                         @Override
@@ -53,6 +61,8 @@ public class EffPlay extends Effect {
                             for (AudioTrack track : playlist.getTracks()) {
                                 musicManager.scheduler.queue(track);
                             }
+                            lastLoaded.put(musicManager, playlist.getTracks().get(playlist.getTracks().size() - 1));
+
                         }
 
                         @Override
@@ -84,4 +94,5 @@ public class EffPlay extends Effect {
         bot = (Expression<Object>) exprs[2];
         return true;
     }
+
 }
