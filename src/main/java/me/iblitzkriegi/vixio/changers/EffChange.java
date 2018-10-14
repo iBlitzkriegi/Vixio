@@ -40,6 +40,7 @@ import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
@@ -57,20 +58,20 @@ public class EffChange extends Effect {
     public static Bot currentBot;
     private static boolean parsing;
     private static Patterns<ChangeMode> patterns = new Patterns<>(new Object[][]{
-            {"(add|give) %objects% to (%~objects%) [(with|using) %bot/string%]", ChangeMode.ADD},
-            {"increase %~objects% by (%objects%) [(with|using) %bot/string%]", ChangeMode.ADD},
-            {"give %~objects% (%objects%) as %bot/string%", ChangeMode.ADD},
+            {"(add|give) %objects% to (%~objects%) [(with|using) %-bot/string%]", ChangeMode.ADD},
+            {"increase %~objects% by (%objects%) [(with|using) %-bot/string%]", ChangeMode.ADD},
+            {"give %~objects% (%objects%) as %-bot/string%", ChangeMode.ADD},
 
-            {"set %~objects% to (%objects%) [(with|using) %bot/string%]", ChangeMode.SET},
+            {"set %~objects% to (%objects%) [(with|using) %-bot/string%]", ChangeMode.SET},
 
-            {"remove (all|every) %objects% from (%~objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE_ALL},
+            {"remove (all|every) %objects% from (%~objects%) [(with|using) %-bot/string%]", ChangeMode.REMOVE_ALL},
 
-            {"(remove|subtract) %objects% from (%~objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE},
-            {"reduce %~objects% by (%objects%) [(with|using) %bot/string%]", ChangeMode.REMOVE},
+            {"(remove|subtract) %objects% from (%~objects%) [(with|using) %-bot/string%]", ChangeMode.REMOVE},
+            {"reduce %~objects% by (%objects%) [(with|using) %-bot/string%]", ChangeMode.REMOVE},
 
-            {"(delete|clear) (%~objects%) [(with|using) %bot/string%]", ChangeMode.DELETE},
+            {"(delete|clear) (%~objects%) [(with|using) %-bot/string%]", ChangeMode.DELETE},
 
-            {"reset (%~objects%) [(with|using) %bot/string%]", ChangeMode.RESET}
+            {"reset (%~objects%) [(with|using) %-bot/string%]", ChangeMode.RESET}
     });
 
     static {
@@ -149,7 +150,9 @@ public class EffChange extends Effect {
                 bot = (Expression<Bot>) exprs[1];
                 changed = exprs[0];
         }
-        if (bot.isDefault() && String.class.isAssignableFrom(bot.getReturnType())) {
+
+        this.bot = SkriptUtil.defaultToEventValue(bot, Bot.class);
+        if (bot == null) {
             return false;
         }
 

@@ -3,15 +3,21 @@ package me.iblitzkriegi.vixio.util.skript;
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 import ch.njol.skript.variables.Variables;
+import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.expressions.retrieve.ExprMember;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import org.bukkit.event.Event;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Locale;
 
@@ -70,6 +76,55 @@ public class SkriptUtil {
         Variables.setVariable(name + "*", null, e, local);
         for (int i = 0; i < objects.length; i++)
             Variables.setVariable(name + (i + 1), objects[i], e, local);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> defaultToEventValue(Expression<T> expr, Class<T> clazz) {
+        if (expr != null)
+            return expr;
+        Class<? extends Event>[] events = ScriptLoader.getCurrentEvents();
+        for (Class<? extends Event> e : events == null ? new Class[0] : events) {
+            Getter getter = EventValues.getEventValueGetter(e, clazz, 0);
+            if (getter != null) {
+                return new SimpleExpression<T>() {
+                    @Override
+                    protected T[] get(Event e) {
+                        T value = (T) getter.get(e);
+                        if (value == null)
+                            return null;
+                        T[] arr = (T[]) Array.newInstance(clazz, 1);
+                        arr[0] = value;
+                        return arr;
+                    }
+
+                    @Override
+                    public boolean isSingle() {
+                        return true;
+                    }
+
+                    @Override
+                    public Class<? extends T> getReturnType() {
+                        return clazz;
+                    }
+
+                    @Override
+                    public boolean isDefault() {
+                        return true;
+                    }
+
+                    @Override
+                    public String toString(Event e, boolean debug) {
+                        return "defaulted event value expression";
+                    }
+
+                    @Override
+                    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+                        return true;
+                    }
+                };
+            }
+        }
+        return null;
     }
 
 }
