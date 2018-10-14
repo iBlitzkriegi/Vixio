@@ -1,6 +1,6 @@
 # Vixio
 
-The Skript Addon made to fit all of your Discord needs. http://vixio.space/
+The Skript Addon made to fit all of your Discord needs. You can join our Discord here: https://discord.gg/kNHmqYH
 
 # Installing
 
@@ -34,7 +34,7 @@ You can now reference your bot from any skript at any time.
 
 # Usage
 
-Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time, or at http://vixio.space/docs/
+Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time
 
 # Compiling
 
