@@ -53,7 +53,7 @@ public class DiscordCommandFactory {
             .addEntry("executable in", true)
             .addSection("trigger", false);
 
-    public HashMap<String, DiscordCommand> commandMap = new HashMap<>();
+    public HashMap<Storage, DiscordCommand> commandMap = new HashMap<>();
     public List<DiscordArgument<?>> currentArguments;
 
     private DiscordCommandFactory() {
@@ -148,12 +148,6 @@ public class DiscordCommandFactory {
         }
 
         command = matcher.group(2);
-        DiscordCommand existingCommand = this.commandMap.get(command);
-        if (existingCommand != null) {
-            File script = existingCommand.getScript();
-            Skript.error("A discord command with the name \"" + existingCommand.getName() + "\" is already defined" + (script == null ? "" : " in " + script.getName()));
-        }
-
         String arguments = matcher.group(4);
         if (arguments == null) {
             arguments = "";
@@ -270,11 +264,23 @@ public class DiscordCommandFactory {
             this.currentArguments = null;
             EffectSection.stopLog(errors);
         }
-
-        this.commandMap.put(command, discordCommand);
-
-        currentArguments = null;
-        return discordCommand;
+        boolean existingCommand = false;
+        for (Storage storage : this.commandMap.keySet()) {
+            if (storage.getCommand().getName().equalsIgnoreCase(command)) {
+                if (storage.getCommand().getScript().equals(node.getConfig().getFile())) {
+                    existingCommand = true;
+                }
+            }
+        }
+        if (existingCommand) {
+            //TODO Trying to workout when to error
+            System.out.println("Attempted to create a duplicate command. " + " there is already a " + command + " in " + node.getConfig().getFileName());
+            return null;
+        } else {
+            this.commandMap.put(new Storage(command, discordCommand), discordCommand);
+            currentArguments = null;
+            return discordCommand;
+        }
 
     }
 
@@ -282,7 +288,7 @@ public class DiscordCommandFactory {
         return commandMap.remove(name) != null;
     }
 
-    public Collection<DiscordCommand> getCommands() {
-        return commandMap.values();
+    public Collection<Storage> getCommands() {
+        return commandMap.keySet();
     }
 }

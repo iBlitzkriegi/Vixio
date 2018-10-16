@@ -5,7 +5,6 @@ import ch.njol.skript.localization.Language;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 
 public class CommandListener extends ListenerAdapter {
@@ -20,8 +19,8 @@ public class CommandListener extends ListenerAdapter {
 
         String content = e.getMessage().getContentRaw();
 
-        for (DiscordCommand command : DiscordCommandFactory.getInstance().getCommands()) {
-
+        for (Storage storage : DiscordCommandFactory.getInstance().getCommands()) {
+            DiscordCommand command = storage.getCommand();
             for (Expression<String> prefix : command.getPrefixes()) {
 
                 for (String alias : command.getUsableAliases()) {
@@ -30,7 +29,7 @@ public class CommandListener extends ListenerAdapter {
                             e.getGuild(), e.getChannel(), e.getTextChannel(), e.getMessage(),
                             e.getAuthor(), e.getMember(), Util.botFrom(e.getJDA()));
                     String rawPrefix = prefix.getSingle(event);
-                    String usedCommand = content.split( " ")[0];
+                    String usedCommand = content.split(" ")[0];
                     if (nonNull(rawPrefix) && usedCommand.equalsIgnoreCase(rawPrefix + alias)) {
                         event.setPrefix(rawPrefix);
                         try {

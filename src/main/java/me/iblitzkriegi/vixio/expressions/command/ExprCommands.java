@@ -8,9 +8,12 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.commands.Storage;
 import org.bukkit.event.Event;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 public class ExprCommands extends SimpleExpression<DiscordCommand> {
 
@@ -31,8 +34,11 @@ public class ExprCommands extends SimpleExpression<DiscordCommand> {
 
     @Override
     protected DiscordCommand[] get(Event e) {
-        Collection<DiscordCommand> cmds = DiscordCommandFactory.getInstance().getCommands();
-        return cmds.toArray(new DiscordCommand[cmds.size()]);
+       // Collection<DiscordCommand> cmds = DiscordCommandFactory.getInstance().getCommands();
+        return DiscordCommandFactory.getInstance().getCommands().stream()
+                .filter(Objects::nonNull)
+                .map(Storage::getCommand)
+                .toArray(DiscordCommand[]::new);
     }
 
     @Override
