@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 public class EffPermissionOverride extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffPermissionOverride.class,
-                "(allow|1¦deny) %roles/members% [the] permission[s] %permissions% [in %-channels%] [with %bot/string%]")
+                "(allow|1¦deny) %roles/members% [the] permission[s] %permissions% [in %channels%] [with %bot/string%]")
                 .setName("Member Permission in Channel")
                 .setDesc("Allow, or deny a role or a member permissions to a channel")
                 .setExample(
@@ -62,7 +62,7 @@ public class EffPermissionOverride extends Effect {
                         if (allow) {
                             channel.putPermissionOverride(member).setAllow(permissions).queue();
                         } else {
-                            channel.putPermissionOverride(member).setAllow(permissions).queue();
+                            channel.putPermissionOverride(member).setDeny(permissions).queue();
                         }
                     }
                 } catch (PermissionException x) {
@@ -73,9 +73,10 @@ public class EffPermissionOverride extends Effect {
         }
     }
 
+
     @Override
     public String toString(Event e, boolean debug) {
-        return (allow ? "allow " : "deny ") + inputs.toString(e, debug) + " the permission " + permissions.toString(e, debug) + " in " + channel.toString(e, debug) + " with " + bot.toString(e, debug);
+        return (allow ? "allow " : "deny ") + inputs.toString(e, debug) + " the permission " + permissions.toString(e, debug) + (channel == null ? "" : " in " + channel.toString(e, debug)) + " with " + bot.toString(e, debug);
     }
 
     @Override
