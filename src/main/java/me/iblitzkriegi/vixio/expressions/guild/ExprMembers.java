@@ -19,7 +19,7 @@ public class ExprMembers extends SimpleExpression<Member> {
                 .setExample(
                         "discord command $guild:",
                         "\ttrigger:",
-                        "\t\treply with \"%size of members of event-guild%\""
+                        "\t\treply with \"%size of discord members of event-guild%\""
                 );
     }
 

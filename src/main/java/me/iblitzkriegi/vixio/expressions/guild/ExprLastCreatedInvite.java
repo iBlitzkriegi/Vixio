@@ -15,6 +15,7 @@ public class ExprLastCreatedInvite extends SimpleExpression<String> {
     static {
         Vixio.getInstance().registerExpression(ExprLastCreatedInvite.class, String.class, ExpressionType.SIMPLE,
                 "[the] last created invite [for %-channel%]")
+                .setName("Last Created Invitation")
                 .setDesc("Get the last invite created by vixio, can specify the specific channel if you want.")
                 .setExample(
                         "discord command invite:",
