@@ -19,7 +19,7 @@ public class CondMemberRole extends Condition {
                 .setExample(
                         "discord command $role <member> <string>:",
                         "\ttrigger:",
-                        "\t\tif arg-1 has role named arg-2:",
+                        "\t\tif arg-1 has role role named arg-2:",
                         "\t\t\treply with \"%arg-1% does have a role named %arg-2%\"",
                         "\t\t\tstop",
                         "\t\treply with \"%arg-1% does not have a role named %arg-2%\""
