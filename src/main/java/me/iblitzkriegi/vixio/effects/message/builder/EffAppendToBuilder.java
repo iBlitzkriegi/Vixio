@@ -12,7 +12,7 @@ import org.bukkit.event.Event;
 public class EffAppendToBuilder extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffAppendToBuilder.class, "append [(1¦line)] %strings% [to %-messagebuilder%]")
-                .setName("Append String to Message Buillder")
+                .setName("Append String to Message Builder")
                 .setDesc("Add text to a Message Builder. If you include the word 'line' then it will append a new line for you after your text.")
                 .setUserFacing("append [line] %strings% to %messagebuilder%")
                 .setExample(
