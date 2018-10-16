@@ -62,7 +62,7 @@ public class EffPermissionOverride extends Effect {
                         if (allow) {
                             channel.putPermissionOverride(member).setAllow(permissions).queue();
                         } else {
-                            channel.putPermissionOverride(member).setAllow(permissions).queue();
+                            channel.putPermissionOverride(member).setDeny(permissions).queue();
                         }
                     }
                 } catch (PermissionException x) {
