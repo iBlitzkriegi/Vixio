@@ -23,14 +23,9 @@ import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.core.entities.ChannelType;
 import org.bukkit.event.Event;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,12 +43,12 @@ public class DiscordCommandFactory {
             .addEntry("description", true)
             .addEntry("roles", true)
             .addEntry("aliases", true)
-			.addEntry("prefixes", true)
+            .addEntry("prefixes", true)
             .addEntry("bots", true)
             .addEntry("executable in", true)
             .addSection("trigger", false);
 
-    public HashMap<Storage, DiscordCommand> commandMap = new HashMap<>();
+    public HashMap<Signature, DiscordCommand> commandMap = new HashMap<>();
     public List<DiscordArgument<?>> currentArguments;
 
     private DiscordCommandFactory() {
@@ -148,6 +143,16 @@ public class DiscordCommandFactory {
         }
 
         command = matcher.group(2);
+
+        for (Signature storage : this.commandMap.keySet()) {
+            DiscordCommand discordCommand = storage.getCommand();
+            if (discordCommand.getName().equalsIgnoreCase(command)) {
+                if (discordCommand.getScript().equals(node.getConfig().getFile())) {
+                    Skript.error("A discord command with the name \"" + command + "\" is already defined in " + discordCommand.getScript().getName());
+                }
+            }
+        }
+
         String arguments = matcher.group(4);
         if (arguments == null) {
             arguments = "";
@@ -218,27 +223,27 @@ public class DiscordCommandFactory {
         String aliasesString = ScriptLoader.replaceOptions(node.get("aliases", ""));
         List<String> aliases = aliasesString.isEmpty() ? null : Arrays.asList(aliasesString.split(listPattern));
 
-		List<Expression<String>> prefixes = new ArrayList<>();
-		String rawPrefixes = ScriptLoader.replaceOptions(node.get("prefixes", ""));
-		if (rawPrefixes.isEmpty()) {
-			if (command.length() == 1) {
-				prefixes.add(new SimpleLiteral<>("", false));
-			} else {
-				prefixes.add(new SimpleLiteral<>(String.valueOf(command.charAt(0)), false));
-				command = command.substring(1);
-			}
-		} else {
-			for (String prefix : rawPrefixes.split(listPattern)) {
-				if (!prefix.equals("%") && !prefix.equals("%%") && prefix.startsWith("%") && prefix.endsWith("%")) {
-					VariableString p = VariableString.newInstance(prefix, StringMode.MESSAGE);
-					if (p == null)
-						return null;
-					prefixes.add(p);
-				} else {
-					prefixes.add(new SimpleLiteral<>(prefix, false));
-				}
-			}
-		}
+        List<Expression<String>> prefixes = new ArrayList<>();
+        String rawPrefixes = ScriptLoader.replaceOptions(node.get("prefixes", ""));
+        if (rawPrefixes.isEmpty()) {
+            if (command.length() == 1) {
+                prefixes.add(new SimpleLiteral<>("", false));
+            } else {
+                prefixes.add(new SimpleLiteral<>(String.valueOf(command.charAt(0)), false));
+                command = command.substring(1);
+            }
+        } else {
+            for (String prefix : rawPrefixes.split(listPattern)) {
+                if (!prefix.equals("%") && !prefix.equals("%%") && prefix.startsWith("%") && prefix.endsWith("%")) {
+                    VariableString p = VariableString.newInstance(prefix, StringMode.MESSAGE);
+                    if (p == null)
+                        return null;
+                    prefixes.add(p);
+                } else {
+                    prefixes.add(new SimpleLiteral<>(prefix, false));
+                }
+            }
+        }
 
         String roleString = ScriptLoader.replaceOptions(node.get("roles", ""));
         List<String> roles = roleString.isEmpty() ? null : Arrays.asList(roleString.split(listPattern));
@@ -258,29 +263,16 @@ public class DiscordCommandFactory {
         try {
             discordCommand = new DiscordCommand(
                     node.getConfig().getFile(), command, pattern.toString(), currentArguments,
-					prefixes, aliases, description, usage, roles, places, bots, ScriptLoader.loadItems(trigger)
+                    prefixes, aliases, description, usage, roles, places, bots, ScriptLoader.loadItems(trigger)
             );
         } finally {
             this.currentArguments = null;
             EffectSection.stopLog(errors);
         }
-        boolean existingCommand = false;
-        for (Storage storage : this.commandMap.keySet()) {
-            if (storage.getCommand().getName().equalsIgnoreCase(command)) {
-                if (storage.getCommand().getScript().equals(node.getConfig().getFile())) {
-                    existingCommand = true;
-                }
-            }
-        }
-        if (existingCommand) {
-            //TODO Trying to workout when to error
-            System.out.println("Attempted to create a duplicate command. " + " there is already a " + command + " in " + node.getConfig().getFileName());
-            return null;
-        } else {
-            this.commandMap.put(new Storage(command, discordCommand), discordCommand);
-            currentArguments = null;
-            return discordCommand;
-        }
+
+        this.commandMap.put(new Signature(command, discordCommand), discordCommand);
+        currentArguments = null;
+        return discordCommand;
 
     }
 
@@ -288,7 +280,7 @@ public class DiscordCommandFactory {
         return commandMap.remove(name) != null;
     }
 
-    public Collection<Storage> getCommands() {
+    public Collection<Signature> getCommands() {
         return commandMap.keySet();
     }
 }

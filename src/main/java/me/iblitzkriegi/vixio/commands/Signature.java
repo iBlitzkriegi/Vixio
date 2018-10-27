@@ -1,10 +1,10 @@
 package me.iblitzkriegi.vixio.commands;
 
-public class Storage {
+public class Signature {
     private String name;
     private DiscordCommand command;
 
-    public Storage(String name, DiscordCommand command) {
+    public Signature(String name, DiscordCommand command) {
         this.name = name;
         this.command = command;
     }

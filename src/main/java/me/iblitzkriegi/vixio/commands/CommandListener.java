@@ -19,7 +19,7 @@ public class CommandListener extends ListenerAdapter {
 
         String content = e.getMessage().getContentRaw();
 
-        for (Storage storage : DiscordCommandFactory.getInstance().getCommands()) {
+        for (Signature storage : DiscordCommandFactory.getInstance().getCommands()) {
             DiscordCommand command = storage.getCommand();
             for (Expression<String> prefix : command.getPrefixes()) {
 
