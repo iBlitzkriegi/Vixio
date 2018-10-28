@@ -231,14 +231,14 @@ public class DiscordCommandFactory {
             }
         } else {
             for (String prefix : rawPrefixes.split(listPattern)) {
-                if (!prefix.equals("%") && !prefix.equals("%%") && prefix.startsWith("%") && prefix.endsWith("%")) {
-                    VariableString p = VariableString.newInstance(prefix, StringMode.MESSAGE);
-                    if (p == null)
-                        return null;
-                    prefixes.add(p);
-                } else {
-                    prefixes.add(new SimpleLiteral<>(prefix, false));
+                if (prefix.startsWith("\"") && prefix.endsWith("\"")) {
+                    prefix = prefix.substring(1, prefix.length() - 1);
                 }
+                Expression<String> prefixExpr = VariableString.newInstance(prefix, StringMode.MESSAGE);
+                if (((VariableString) prefixExpr).isSimple()) {
+                    prefixExpr = new SimpleLiteral<>(prefix, false);
+                }
+                prefixes.add(prefixExpr);
             }
         }
 

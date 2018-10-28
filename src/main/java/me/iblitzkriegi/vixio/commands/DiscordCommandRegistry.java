@@ -30,7 +30,7 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
                 .setDesc("Vixio's custom Discord command system")
                 .setExample(
                         "discord command cmd <member>:",
-                        "\tprefixes: %{prefix}%, ##",
+                        "\tprefixes: \"hey \", \"%mention tag of event-bot% \", ##",
                         "\taliases: info, user",
                         "\troles: Dev",
                         "\tdescription: Get some information about a user",
