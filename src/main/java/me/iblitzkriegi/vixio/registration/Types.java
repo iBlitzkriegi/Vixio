@@ -11,6 +11,7 @@ import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.commands.DiscordCommand;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
+import me.iblitzkriegi.vixio.commands.Signature;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.embed.Title;
@@ -43,6 +44,8 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
+
+import java.util.Arrays;
 
 public class Types {
 
@@ -748,7 +751,12 @@ public class Types {
 
             @Override
             public DiscordCommand parse(String s, ParseContext pc) {
-                return DiscordCommandFactory.getInstance().commandMap.get(s);
+                for (Signature signature : DiscordCommandFactory.getInstance().commandMap.keySet()) {
+                    if (signature.getName().equalsIgnoreCase(s)) {
+                        return signature.getCommand();
+                    }
+                }
+                return null;
             }
 
             @Override
