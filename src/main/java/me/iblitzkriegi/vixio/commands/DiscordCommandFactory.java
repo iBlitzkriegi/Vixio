@@ -273,8 +273,13 @@ public class DiscordCommandFactory {
 
     }
 
-    public boolean remove(String name) {
-        return commandMap.remove(name) != null;
+    public void remove(String name) {
+        commandMap.keySet()
+                .stream()
+                .map(Signature::getCommand)
+                .map(DiscordCommand::getName)
+                .filter(name::equalsIgnoreCase)
+                .forEach(commandMap::remove);
     }
 
     public Collection<Signature> getCommands() {
