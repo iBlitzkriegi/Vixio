@@ -7,20 +7,22 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.Date;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import org.bukkit.event.Event;
 
 import java.time.Instant;
 
-public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, Date> {
+public class ExprEmbedTimestamp extends SimplePropertyExpression<Object, Date> {
 
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprEmbedTimestamp.class, Date.class,
-                "(timestamp|date)", "embedbuilders")
-                .setName("Timestamp of Embed")
-                .setDesc("Returns the timestamp of an embed. Can be set to any date (e.g. now).")
+                "(timestamp|date)", "embedbuilders/messages")
+                .setName("Timestamp of")
+                .setDesc("Returns the timestamp of either a message or an embed. You can set the time of an embed to any date (e.g. now).")
                 .setExample(
                         "set the timestamp of {_embed} to now",
                         "",
@@ -35,13 +37,20 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
     @Override
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
-        setExpr((Expression<EmbedBuilder>) exprs[0]);
+        setExpr(exprs[0]);
         return true;
     }
 
     @Override
-    public Date convert(final EmbedBuilder embed) {
-        return embed.isEmpty() || embed.build().getTimestamp() == null ? null : Util.getDate(embed.build().getTimestamp());
+    public Date convert(final Object object) {
+        if (object instanceof EmbedBuilder) {
+            EmbedBuilder embed = (EmbedBuilder) object;
+            return embed.isEmpty() || embed.build().getTimestamp() == null ? null : Util.getDate(embed.build().getTimestamp());
+        } else if (object instanceof UpdatingMessage) {
+            Message message = ((UpdatingMessage) object).getMessage();
+            return Util.getDate(message.getCreationTime());
+        }
+        return null;
     }
 
     @Override
@@ -56,8 +65,11 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
 
     @Override
     public void change(final Event e, final Object[] delta, final ChangeMode mode) {
-
-        EmbedBuilder embed = getExpr().getSingle(e);
+        Object input = getExpr().getSingle(e);
+        if (!(input instanceof EmbedBuilder)) {
+            return;
+        }
+        EmbedBuilder embed = (EmbedBuilder) input;
         if (embed == null) {
             return;
         }
@@ -81,7 +93,7 @@ public class ExprEmbedTimestamp extends SimplePropertyExpression<EmbedBuilder, D
 
     @Override
     protected String getPropertyName() {
-        return "timestamp of embed";
+        return "timestamp of";
     }
 
     @Override
