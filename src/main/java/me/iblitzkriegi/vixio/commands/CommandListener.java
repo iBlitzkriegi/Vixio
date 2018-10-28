@@ -28,29 +28,43 @@ public class CommandListener extends ListenerAdapter {
                     DiscordCommandEvent event = new DiscordCommandEvent(null, alias, command, null,
                             e.getGuild(), e.getChannel(), e.getTextChannel(), e.getMessage(),
                             e.getAuthor(), e.getMember(), Util.botFrom(e.getJDA()));
-                    String rawPrefix = prefix.getSingle(event);
-                    String usedCommand = content.split(" ")[0];
-                    if (nonNull(rawPrefix) && usedCommand.equalsIgnoreCase(rawPrefix + alias)) {
-                        event.setPrefix(rawPrefix);
-                        try {
-                            event.setArguments(content.substring((usedCommand).length() + 1));
-                        } catch (StringIndexOutOfBoundsException e1) {
-                            event.setArguments(null);
+
+
+                    String rawPrefix = prefix.getSingle(event); // The found commands prefix
+                    String usedCommand = null;
+                    if (rawPrefix.endsWith(" ")) {
+                        String[] spacedCommand = content.split(" ");
+                        if ((spacedCommand[0] + " ").equalsIgnoreCase(rawPrefix)) {
+                            usedCommand = spacedCommand[0] + " " + spacedCommand[1];
                         }
-                        // Because most of bukkit's apis are sync only, make sure to run this on bukkit's thread
-                        Util.sync(() -> {
 
-                            lastCommandEvent = e;
-
-                            Bukkit.getPluginManager().callEvent(event);
-                            if (!event.isCancelled()) {
-                                command.execute(event);
+                    } else {
+                        usedCommand = content.split(" ")[0];
+                    }
+                    if (nonNull(usedCommand)) {
+                        if (nonNull(rawPrefix) && usedCommand.equalsIgnoreCase(rawPrefix + alias)) {
+                            event.setPrefix(rawPrefix);
+                            try {
+                                event.setArguments(content.replaceFirst(rawPrefix, "").replaceFirst(alias, ""));
+                                // event.setArguments(content.substring((usedCommand).length() + 1));
+                            } catch (StringIndexOutOfBoundsException e1) {
+                                event.setArguments(null);
                             }
+                            // Because most of bukkit's apis are sync only, make sure to run this on bukkit's thread
+                            Util.sync(() -> {
 
-                        });
+                                lastCommandEvent = e;
 
-                        return;
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+                                    command.execute(event);
+                                }
 
+                            });
+
+                            return;
+
+                        }
                     }
 
                 }
