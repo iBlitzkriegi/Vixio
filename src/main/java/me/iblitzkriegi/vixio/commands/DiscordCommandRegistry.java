@@ -15,12 +15,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -30,7 +25,27 @@ import java.util.List;
 public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
 
     static {
-        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandRegistry.class, DiscordCommandEvent.class, "discord command <([^\\s]+)( .+)?$>");
+        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandRegistry.class, DiscordCommandEvent.class, "discord command <([^\\s]+)( .+)?$>")
+                .setName("Discord Command")
+                .setDesc("Vixio's custom Discord command system")
+                .setExample(
+                        "discord command cmd <member>:",
+                        "\tprefixes: %{prefix}%, ##",
+                        "\taliases: info, user",
+                        "\troles: Dev",
+                        "\tdescription: Get some information about a user",
+                        "\tusage: hey info <member>",
+                        "\tbots: {@bot}",
+                        "\texecutable in: guild",
+                        "\ttrigger:",
+                        "\t\tset {_} to a message builder",
+                        "\t\tappend line \"-=Who is %name of arg-1%=-\"",
+                        "\t\tappend line \"Name: %name of arg-1%\"",
+                        "\t\tappend line \"ID: %id of arg-1%\"",
+                        "\t\tappend line \"Mention tag: %mention tag of arg-1%\"",
+                        "\t\tappend line \"Status: %online status of arg-1%\"",
+                        "\t\treply with {_}"
+                );
 
         EventValues.registerEventValue(DiscordCommandEvent.class, DiscordCommand.class, new Getter<DiscordCommand, DiscordCommandEvent>() {
                     @Override
