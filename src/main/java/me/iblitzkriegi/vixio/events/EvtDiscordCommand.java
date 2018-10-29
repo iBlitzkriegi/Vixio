@@ -1,11 +1,12 @@
 package me.iblitzkriegi.vixio.events;
 
+import org.bukkit.event.Event;
+
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
-import org.bukkit.event.Event;
 
 public class EvtDiscordCommand extends SkriptEvent {
 
@@ -15,7 +16,7 @@ public class EvtDiscordCommand extends SkriptEvent {
                 .setName("Vixio Command")
                 .setDesc("Used to detect when a specific vixio command is fired")
                 .setExample("on vixio command \"eval\":")
-                .setEvent(DiscordCommandEvent.class);
+				.setEvents(DiscordCommandEvent.class);
     }
 
     private String command;

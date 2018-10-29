@@ -1,5 +1,14 @@
 package me.iblitzkriegi.vixio.events.base;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.event.Event;
+
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.Config;
@@ -13,14 +22,6 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.registration.Registration;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.VixioGetter;
-import org.bukkit.event.Event;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> extends SelfRegisteringSkriptEvent {
 
@@ -62,7 +63,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> ext
         for (int i = 0; i < patterns.length; i++) {
             patterns[i] += " " + ending;
         }
-        return Vixio.getInstance().registerEvent(name, type, clazz, patterns).setEvent(clazz);
+		return Vixio.getInstance().registerEvent(name, type, clazz, patterns).setEvents(clazz);
     }
 
     @Override

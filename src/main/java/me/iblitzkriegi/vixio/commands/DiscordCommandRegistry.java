@@ -1,5 +1,11 @@
 package me.iblitzkriegi.vixio.commands;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.bukkit.event.Event;
+
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.config.Config;
 import ch.njol.skript.config.Node;
@@ -18,19 +24,15 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import org.bukkit.event.Event;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
 
     static {
-        Vixio.getInstance().registerEvent("Discord Command", DiscordCommandRegistry.class, DiscordCommandEvent.class, "discord command <([^\\s]+)( .+)?$>");
+        Vixio.getInstance().registerSection("Discord Command", DiscordCommandRegistry.class,
+                new Class[]{DiscordCommandEvent.class}, "discord command <([^\\s]+)( .+)?$>")
+                .setUserFacing("discord command %command% [%arguments%]");
 
         EventValues.registerEventValue(DiscordCommandEvent.class, DiscordCommand.class, new Getter<DiscordCommand, DiscordCommandEvent>() {
                     @Override

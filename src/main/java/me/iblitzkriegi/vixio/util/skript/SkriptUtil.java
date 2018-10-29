@@ -1,19 +1,27 @@
 package me.iblitzkriegi.vixio.util.skript;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.bukkit.event.Event;
+
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
+import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.VariableString;
+import ch.njol.skript.registrations.Classes;
+import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.variables.Variables;
 import me.iblitzkriegi.vixio.expressions.retrieve.ExprMember;
+import me.iblitzkriegi.vixio.util.ReflectionUtils;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
-import org.bukkit.event.Event;
-
-import java.lang.reflect.Field;
-import java.util.Locale;
 
 public class SkriptUtil {
 
@@ -70,6 +78,33 @@ public class SkriptUtil {
         Variables.setVariable(name + "*", null, e, local);
         for (int i = 0; i < objects.length; i++)
             Variables.setVariable(name + (i + 1), objects[i], e, local);
+    }
+
+
+    public static String getClassInfoName(Class<?> clazz) {
+        ClassInfo<?> classInfo = Classes.getExactClassInfo(clazz);
+        if (classInfo == null) {
+            classInfo = Classes.getExactClassInfo(Object.class);
+        }
+        return classInfo.getCodeName();
+    }
+
+    public static List<String> getEventValues(Class<? extends Event>... classes) {
+
+        Method m = ReflectionUtils.getMethod(EventValues.class, "getEventValuesList", int.class);
+        List<?> values = ReflectionUtils.invokeMethod(m, null, 0);
+        List<String> eventValues = new ArrayList<>();
+        if (values != null)
+            for (Class<?> c : classes) {
+                for (Object eventValue : values) {
+                    Class<?> event = ReflectionUtils.getField(eventValue.getClass(), eventValue, "event");
+                    if (event != null && (c.isAssignableFrom(event) || event.isAssignableFrom(c))) {
+                        Class<?> ret = ReflectionUtils.getField(eventValue.getClass(), eventValue, "c");
+                        eventValues.add("event-" + getClassInfoName(ret));
+                    }
+                }
+            }
+        return eventValues;
     }
 
 }

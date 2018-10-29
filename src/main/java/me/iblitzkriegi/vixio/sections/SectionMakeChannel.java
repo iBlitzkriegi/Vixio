@@ -1,4 +1,6 @@
-package me.iblitzkriegi.vixio.scopes;
+package me.iblitzkriegi.vixio.sections;
+
+import org.bukkit.event.Event;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -7,14 +9,13 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import net.dv8tion.jda.core.entities.ChannelType;
-import org.bukkit.event.Event;
 
-public class ScopeMakeChannel extends EffectSection {
+public class SectionMakeChannel extends EffectSection {
 
     public static ChannelBuilder channelBuilder;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeChannel.class, "(make|create) [text] channel", "(make|create) voice channel")
+        Vixio.getInstance().registerSection(SectionMakeChannel.class, "(make|create) [text] channel", "(make|create) voice channel")
                 .setName("Create channel scope")
                 .setDesc("Provides a easy way to create either a text channel or a voice channel.")
                 .setExample(

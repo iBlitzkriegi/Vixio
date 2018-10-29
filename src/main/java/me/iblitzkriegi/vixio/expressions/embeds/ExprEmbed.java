@@ -1,15 +1,16 @@
 package me.iblitzkriegi.vixio.expressions.embeds;
 
+import org.bukkit.event.Event;
+
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.scopes.ScopeMakeEmbed;
+import me.iblitzkriegi.vixio.sections.SectionMakeEmbed;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.core.EmbedBuilder;
-import org.bukkit.event.Event;
 
 public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
 
@@ -34,14 +35,14 @@ public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        scope = EffectSection.isCurrentSection(ScopeMakeEmbed.class);
+		scope = EffectSection.isCurrentSection(SectionMakeEmbed.class);
         return true;
     }
 
     @Override
     protected EmbedBuilder[] get(Event e) {
         return new EmbedBuilder[]{
-                scope ? ScopeMakeEmbed.lastEmbed : new EmbedBuilder()
+				scope ? SectionMakeEmbed.lastEmbed : new EmbedBuilder()
         };
     }
 

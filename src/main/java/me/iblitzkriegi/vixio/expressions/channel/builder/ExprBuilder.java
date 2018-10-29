@@ -1,15 +1,16 @@
 package me.iblitzkriegi.vixio.expressions.channel.builder;
 
+import org.bukkit.event.Event;
+
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import me.iblitzkriegi.vixio.scopes.ScopeMakeChannel;
+import me.iblitzkriegi.vixio.sections.SectionMakeChannel;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import org.bukkit.event.Event;
 
 public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
     static {
@@ -33,7 +34,7 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
     @Override
     protected ChannelBuilder[] get(Event e) {
         return new ChannelBuilder[]{
-                scope ? ScopeMakeChannel.channelBuilder : new ChannelBuilder()
+				scope ? SectionMakeChannel.channelBuilder : new ChannelBuilder()
         };
     }
 
@@ -55,7 +56,7 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        scope = EffectSection.isCurrentSection(ScopeMakeChannel.class);
+		scope = EffectSection.isCurrentSection(SectionMakeChannel.class);
         return true;
     }
 }

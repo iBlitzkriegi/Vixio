@@ -1,4 +1,6 @@
-package me.iblitzkriegi.vixio.scopes;
+package me.iblitzkriegi.vixio.sections;
+
+import org.bukkit.event.Event;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
@@ -7,14 +9,13 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.core.EmbedBuilder;
-import org.bukkit.event.Event;
 
-public class ScopeMakeEmbed extends EffectSection {
+public class SectionMakeEmbed extends EffectSection {
 
     public static EmbedBuilder lastEmbed;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeEmbed.class, "(make|create) (embed|embed %-embedbuilder%)")
+		Vixio.getInstance().registerSection(SectionMakeEmbed.class, "(make|create) (embed|embed %-embedbuilder%)")
                 .setName("Make Embed")
                 .setDesc("Provides a pretty and easy way of making a new embed with a bunch of different attributes")
                 .setExample(

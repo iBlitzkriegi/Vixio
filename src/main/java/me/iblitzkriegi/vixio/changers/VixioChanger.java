@@ -28,10 +28,10 @@ public abstract class VixioChanger<T> implements Changer<T> {
 
     @SuppressWarnings("unchecked")
     public VixioChanger documentation(String title, String desc, String pattern, String... example) {
-        Registration reg = new Registration(pattern).setName(title)
+        Registration reg = new Registration("Effects", pattern).setName(title)
                 .setDesc(desc)
                 .setExample(example);
-        Vixio.getInstance().effects.add(reg);
+        Vixio.getInstance().syntaxElements.add(reg);
         return this;
     }
 
