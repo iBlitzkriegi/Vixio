@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions.embeds;
+package me.iblitzkriegi.vixio.expressions.message;
 
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
@@ -15,11 +15,11 @@ import org.bukkit.event.Event;
 
 import java.time.Instant;
 
-public class ExprEmbedTimestamp extends SimplePropertyExpression<Object, Date> {
+public class ExprTimestamp extends SimplePropertyExpression<Object, Date> {
 
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprEmbedTimestamp.class, Date.class,
+        Vixio.getInstance().registerPropertyExpression(ExprTimestamp.class, Date.class,
                 "(timestamp|date)", "embedbuilders/messages")
                 .setName("Timestamp of")
                 .setDesc("Returns the timestamp of either a message or an embed. You can set the time of an embed to any date (e.g. now).")
