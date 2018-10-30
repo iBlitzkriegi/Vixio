@@ -8,7 +8,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.event.Event;
 
 import java.util.List;
@@ -16,30 +16,30 @@ import java.util.List;
 /**
  * Created by Blitz on 7/27/2017.
  */
-public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMultiple<UpdatingMessage, User> {
+public class ExprMentionedChannels extends SimpleExpression<TextChannel> implements EasyMultiple<UpdatingMessage, TextChannel> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprMentionedUsers.class, User.class,
-                "mentioned user", "messages")
-                .setName("Mentioned Users")
-                .setDesc("Get the mentioned Users in a Message")
-                .setExample("set {_var::*} to event-message's mentioned users");
+        Vixio.getInstance().registerPropertyExpression(ExprMentionedChannels.class, TextChannel.class,
+                "mentioned channel", "messages")
+                .setName("Mentioned Channels")
+                .setDesc("Get the mentioned Channels in a Message")
+                .setExample("set {_var::*} to event-message's mentioned channels");
     }
 
     private Expression<UpdatingMessage> messages;
 
     @Override
-    protected User[] get(Event e) {
+    protected TextChannel[] get(Event e) {
         return convert(getReturnType(), messages.getAll(e), msg -> {
             Message message = UpdatingMessage.convert(msg);
-            List<User> users = message.getMentionedUsers();
-            return users.toArray(new User[users.size()]);
+            List<TextChannel> textChannels = message.getMentionedChannels();
+            return textChannels.toArray(new TextChannel[textChannels.size()]);
         });
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "mentioned users of " + messages.toString(e, debug);
+        return "mentioned channels of " + messages.toString(e, debug);
     }
 
     public boolean isSingle() {
@@ -47,8 +47,8 @@ public class ExprMentionedUsers extends SimpleExpression<User> implements EasyMu
     }
 
     @Override
-    public Class<? extends User> getReturnType() {
-        return User.class;
+    public Class<? extends TextChannel> getReturnType() {
+        return TextChannel.class;
     }
 
     @Override
