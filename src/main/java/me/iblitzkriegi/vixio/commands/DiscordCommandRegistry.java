@@ -128,10 +128,10 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
         ScriptLoader.setCurrentEvent("discord command", DiscordCommandEvent.class);
 
         DiscordCommand cmd = DiscordCommandFactory.getInstance().add(sectionNode);
+        command = cmd == null ? command : cmd.getName();
 
         ScriptLoader.setCurrentEvent(originalName, originalEvents);
         ScriptLoader.hasDelayBefore = originalDelay;
-
         nukeSectionNode(sectionNode);
 
         return cmd != null;
