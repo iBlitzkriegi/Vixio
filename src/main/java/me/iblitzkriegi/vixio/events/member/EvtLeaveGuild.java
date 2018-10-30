@@ -19,7 +19,7 @@ public class EvtLeaveGuild extends BaseEvent<GuildMemberLeaveEvent> {
                 "(guild|member) leave (guild|server)")
                 .setName("Guild Leave")
                 .setDesc("Fired when a user leaves a guild. Could be caused by kicking them or them leaving on their own free will.")
-                .setExample("on guild join:");
+                .setExample("on member leave guild:");
 
         EventValues.registerEventValue(JoinGuildEvent.class, Bot.class, new Getter<Bot, JoinGuildEvent>() {
             @Override
