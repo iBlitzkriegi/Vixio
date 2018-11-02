@@ -21,7 +21,7 @@ public class ScopeMakeEmbed extends EffectSection {
                         "command $scope:",
                         "\ttrigger:",
                         "\t\tmake a new embed:",
-                        "\t\t\tset color of embed the embed to red",
+                        "\t\t\tset color of the embed to red",
                         "\t\t\tset url of the embed to \"https://google.com\"",
                         "\t\t\tset title of the embed to \"Google!\"",
                         "\t\tset {_embed} to last made embed"
