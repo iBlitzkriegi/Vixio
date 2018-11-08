@@ -15,11 +15,11 @@ import org.bukkit.event.Event;
 public class ExprNickname extends ChangeableSimplePropertyExpression<Member, String> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprNickname.class, String.class, "nickname",
+        Vixio.getInstance().registerPropertyExpression(ExprNickname.class, String.class, "discord nickname",
                 "members")
                 .setName("Nickname of")
                 .setDesc("Gets a member's nickname (guild sensitive name). You can set this expression.")
-                .setExample("set nickname of event-member to \"new nickname\" with event-bot");
+                .setExample("set the discord nickname of event-member to \"new nickname\" with event-bot");
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
 
     @Override
     public String getPropertyName() {
-        return "nickname";
+        return "discord nickname";
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "nickname of " + getExpr().toString(e, debug);
+        return "discord nickname of " + getExpr().toString(e, debug);
     }
 
 }
