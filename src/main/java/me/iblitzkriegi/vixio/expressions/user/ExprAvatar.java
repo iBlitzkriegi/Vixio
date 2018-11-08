@@ -35,23 +35,20 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
                 );
     }
 
-    private boolean custom;
+    private boolean defaultAvatar;
 
     @Override
     public Avatar convert(Object object) {
         if (object instanceof User) {
-            User user = (User) object;
-            return new Avatar(user, custom ? user.getAvatarUrl() : user.getDefaultAvatarUrl(), custom);
+            return getAvatar((User) object);
         } else if (object instanceof String || object instanceof Bot) {
             Bot bot = Util.botFrom(object);
             if (bot == null) {
                 return null;
             }
-            SelfUser selfUser = bot.getSelfUser();
-            return new Avatar(selfUser, custom ? selfUser.getAvatarUrl() : selfUser.getDefaultAvatarUrl(), custom);
+            return getAvatar(bot.getSelfUser());
         } else if (object instanceof Member) {
-            User user = ((Member) object).getUser();
-            return new Avatar(user, custom ? user.getAvatarUrl() : user.getDefaultAvatarUrl(), custom);
+            return getAvatar(((Member) object).getUser());
         }
         return null;
     }
@@ -63,13 +60,13 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
 
     @Override
     protected String getPropertyName() {
-        return custom ? "avatar" : "default avatar";
+        return defaultAvatar ? "default avatar" : "avatar";
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr(exprs[0]);
-        custom = parseResult.regexes.size() == 0;
+        defaultAvatar = parseResult.regexes.size() == 1;
         return true;
     }
 
@@ -83,7 +80,7 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        if (!custom) {
+        if (defaultAvatar) {
             return;
         }
         for (Object object : getExpr().getAll(e)) {
@@ -119,4 +116,13 @@ public class ExprAvatar extends SimplePropertyExpression<Object, Avatar> {
         }
 
     }
+
+    public Avatar getAvatar(User user) {
+        if (defaultAvatar) {
+            return new Avatar(user, user.getDefaultAvatarUrl(), false);
+        }
+        String avatar = user.getAvatarUrl() == null ? user.getDefaultAvatarUrl() : user.getAvatarUrl();
+        return new Avatar(user, avatar, defaultAvatar);
+    }
+
 }
