@@ -51,6 +51,6 @@ gradlew.bat clean build
 ```
 
 # Contact
-<a href="http://www.vixio.space/discord"><img src="https://discordapp.com/api/v7/guilds/236641445363056651/widget.png?style=banner3"></a>
+<a href="https://discord.gg/kNHmqYH"><img src="https://discordapp.com/api/v7/guilds/236641445363056651/widget.png?style=banner3"></a>
 
 
