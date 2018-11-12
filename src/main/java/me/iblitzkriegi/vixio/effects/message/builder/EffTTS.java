@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.effects.message;
+package me.iblitzkriegi.vixio.effects.message.builder;
 
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
