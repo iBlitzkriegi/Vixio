@@ -101,7 +101,7 @@ public class Vixio extends JavaPlugin {
         saveConfig();
         Metrics metrics = new Metrics(this);
         Documentation.setupSyntaxFile();
-        this.getCommand("vixio").setExecutor(new VixioCMD());
+        this.getCommand("vixio").setExecutor(new VixioCommand());
 
     }
 
