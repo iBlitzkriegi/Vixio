@@ -22,7 +22,7 @@ public class ExprOwner extends ChangeableSimplePropertyExpression<Guild, Member>
                 .setExample(
                         "discord command $transfer <member>:",
                         "\ttrigger:",
-                        "\t\tset owner of event-guild to arg-1 with event-bot"
+                        "\t\tset discord owner of event-guild to arg-1 with event-bot"
                 );
     }
 
