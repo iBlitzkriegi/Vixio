@@ -19,7 +19,7 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
                 "members")
                 .setName("Nickname of")
                 .setDesc("Gets a member's nickname (guild sensitive name). You can set this expression.")
-                .setExample("set nickname of event-member to \"new nickname\" with event-bot");
+                .setExample("set discord nickname of event-member to \"new nickname\" with event-bot");
     }
 
     @Override
