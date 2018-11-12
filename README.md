@@ -25,7 +25,7 @@ To use Vixio, you must first have a bot on your Discord server. To do so, follow
 - Now, in a skript add this:
 ```
 on skript load:
-        login to user with token "BOT TOKEN HERE" with name "NAME OF BOT HERE"
+        login to "BOT TOKEN HERE" with the name "NAME OF BOT HERE"
 ```
 (or using a trigger of your choice)
 
@@ -34,7 +34,7 @@ You can now reference your bot from any skript at any time.
 
 # Usage
 
-Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time
+Documentation for Vixio can be found at `plugins/Vixio/Syntaxes.txt` after Vixio loads for the first time. Or through the Lookup bot in the Vixio Discord.
 
 # Compiling
 
