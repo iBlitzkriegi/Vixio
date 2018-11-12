@@ -44,6 +44,7 @@ public class Documentation {
                 } else {
                     bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+                bw.write(tab("example: " + registration.getExample(), 2));
 
             }
             bw.write(tab("Effects:", 0));
@@ -58,6 +59,7 @@ public class Documentation {
                 } else {
                     bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+                bw.write(tab("example: " + registration.getExample(), 2));
 
             }
             bw.write(tab("Expressions:", 0));
@@ -72,6 +74,7 @@ public class Documentation {
                 } else {
                     bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+                bw.write(tab("example: " + registration.getExample(), 2));
 
             }
             bw.write(tab("Events:", 0));
@@ -86,6 +89,7 @@ public class Documentation {
                 } else {
                     bw.write(tab("- " + registration.getUserFacing(), 3));
                 }
+                bw.write(tab("example: " + registration.getExample(), 2));
 
             }
             bw.flush();
