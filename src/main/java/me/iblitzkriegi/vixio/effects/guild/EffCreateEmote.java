@@ -1,11 +1,11 @@
 package me.iblitzkriegi.vixio.effects.guild;
 
-import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Icon;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class EffCreateEmote extends Effect {
+public class EffCreateEmote extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffCreateEmote.class, "create emote %string% with [the] name %string% [in %guild%] [with %bot/string%]")
                 .setName("Create emote")
