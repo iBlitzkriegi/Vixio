@@ -3,10 +3,12 @@ package me.iblitzkriegi.vixio.commands;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.localization.Language;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class CommandListener extends ListenerAdapter {
     public static MessageReceivedEvent lastCommandEvent;
@@ -33,19 +35,20 @@ public class CommandListener extends ListenerAdapter {
                     String usedCommand = null;
                     String rawPrefix = prefix.getSingle(event);
                     boolean mentions = false;
-                    if (!e.getMessage().getMentionedMembers().isEmpty()) {
-                        Member suspectedBot = e.getMessage().getMentionedMembers().get(0);
-                        if (rawPrefix.contains(suspectedBot.getUser().getId())) {
+                    List<User> mentionedUsers = e.getMessage().getMentionedUsers();
+                    if (!mentionedUsers.isEmpty()) {
+                        if (rawPrefix.contains(mentionedUsers.get(0).getId())) {
                             rawPrefix = rawPrefix.replaceFirst("!", "");
                             mentions = true;
                         }
                     }
 
                     if (rawPrefix.endsWith(" ")) {
+                        //TODO I'm now questioning the need for the regex replacing, check this out
                         String[] spacedCommand = content.split(" ");
                         String suspectedPrefix = mentions ? spacedCommand[0].replaceFirst("!", "") : spacedCommand[0];
                         if ((suspectedPrefix + " ").equalsIgnoreCase(rawPrefix)) {
-                            usedCommand = rawPrefix + spacedCommand[1];
+                            usedCommand = rawPrefix + (spacedCommand.length == 1 ? "" : spacedCommand[1]);
                         }
 
                     } else {
@@ -57,7 +60,7 @@ public class CommandListener extends ListenerAdapter {
                             event.setPrefix(rawPrefix);
                             try {
                                 //event.setArguments(content.replaceFirst(rawPrefix, "").replaceFirst(alias, ""));
-                                 event.setArguments(content.substring((usedCommand).length() + 1));
+                                event.setArguments(content.substring((usedCommand).length() + 1));
                             } catch (StringIndexOutOfBoundsException e1) {
                                 event.setArguments(null);
                             }
