@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.expressions;
+package me.iblitzkriegi.vixio.expressions.member;
 
 import ch.njol.skript.classes.Changer;
 import me.iblitzkriegi.vixio.Vixio;

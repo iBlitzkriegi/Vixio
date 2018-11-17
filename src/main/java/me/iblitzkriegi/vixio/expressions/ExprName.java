@@ -109,7 +109,11 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                     Channel channel = Util.bindChannel(bot, (Channel) object);
 
                     try {
-                        channel.getManager().setName(name.replaceAll(" ", "-")).queue();
+                        if (channel.getType() == ChannelType.TEXT) {
+                            channel.getManager().setName(name.replaceAll(" ", "-")).queue();
+                        } else {
+                            channel.getManager().setName(name).queue();;
+                        }
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "name of", this.object, bot),
                                 x.getPermission().getName());
