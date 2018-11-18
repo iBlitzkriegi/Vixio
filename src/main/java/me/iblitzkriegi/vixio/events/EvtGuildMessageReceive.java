@@ -20,10 +20,11 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent> {
 
     static {
-        BaseEvent.register("guild message received", "<receive(d)?( seen)?|sent> [by %-string%]",
+        BaseEvent.register("guild message received", "(1¦receive[d] [seen]|2¦ sent) [by %-string%]",
                 EvtGuildMessageReceive.class, GuildMessageReceiveEvent.class, "(guild|server) message")
                 .setName("Guild Message Received")
                 .setDesc("Fired when a message is sent in a text channel that the bot can read.")
+                .setUserFacing("(guild|server) message (receive[d] [seen]| sent) [by %-string%]")
                 .setExample("on guild message received seen by \"a bot\":");
         EventValues.registerEventValue(GuildMessageReceiveEvent.class, Channel.class, new Getter<Channel, GuildMessageReceiveEvent>() {
             @Override
@@ -80,7 +81,7 @@ public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent>
 
     @Override
     public boolean init(Literal<?>[] exprs, int matchedPattern, SkriptParser.ParseResult parser) {
-        sent = parser.regexes.get(0).group().equals("sent");
+        sent = parser.mark == 2;
         return super.init(exprs, matchedPattern, parser);
     }
 
