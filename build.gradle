@@ -116,6 +116,7 @@ shadowJar {
     relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
     relocate 'org.apache.http', project.group + ".org.apache.http"
     relocate 'org.apache.commons.io', project.group + ".org.apache.commons.io"
+    relocate 'org.json', project.group + ".org.json"
     destinationDir = new File(project.property('destinationDir'))
 
 }
