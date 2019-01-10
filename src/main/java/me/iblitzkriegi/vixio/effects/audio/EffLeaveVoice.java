@@ -40,7 +40,7 @@ public class EffLeaveVoice extends Effect {
             Bot bot = Util.botFrom(object);
             Guild bindedGuild = Util.bindGuild(bot, guild);
             if (bindedGuild != null) {
-                bindedGuild.getAudioManager().closeAudioConnection();
+                new Thread(() -> bindedGuild.getAudioManager().closeAudioConnection()).start();
             }
 
         }
