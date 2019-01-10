@@ -5,6 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Message;
@@ -20,16 +21,17 @@ public class EffPinMessage extends Effect {
                 .setExample("pin event-message in event-channel");
     }
 
-    private Expression<Message> message;
+    private Expression<UpdatingMessage> message;
     private Expression<Object> bot;
 
     @Override
     protected void execute(Event e) {
-        Message message = this.message.getSingle(e);
+        UpdatingMessage updatingMessage = this.message.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        if (message == null || bot == null) {
+        if (updatingMessage == null || bot == null) {
             return;
         }
+        Message message = updatingMessage.getMessage();
         MessageChannel channel = Util.bindMessageChannel(bot, message.getChannel());
         if (channel == null) {
             return;
@@ -48,7 +50,7 @@ public class EffPinMessage extends Effect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        message = (Expression<Message>) exprs[0];
+        message = (Expression<UpdatingMessage>) exprs[0];
         bot = (Expression<Object>) exprs[1];
         return true;
     }
