@@ -39,7 +39,6 @@ public class ExprGrabbedMessages extends SimpleExpression<UpdatingMessage> {
         if (messages == null) {
             return null;
         }
-        EffGrabMessages.updatingMessages = null;
         return messages.toArray(new UpdatingMessage[messages.size()]);
     }
 
