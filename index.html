@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Vixio Documentation</title>
+		<link rel="shortcut icon" href="./images/logo.png" type="image/x-icon">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
+		<link rel="stylesheet" href="./css/material.css">
+		<link rel="stylesheet" href="./css/prettify-theme.css">
+		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+		<script src="./js/index.js"></script>
+	</head>
+
+<style>
+.top {
+	margin-top: 4%;
+}
+
+.center-all {
+	padding: 0;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+</style>
+
+<body>
+	<nav class="navbar" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+	
+			<a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarHamburger">
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+				<span aria-hidden="true"></span>
+			</a>
+		</div>
+	
+		<div id="navbarHamburger" class="navbar-menu">
+			<div class="navbar-start">
+	
+				<a class="navbar-item"> Documentation </a>
+	
+				<div class="navbar-item has-dropdown is-hoverable">
+					<a class="navbar-link">
+						<span><i class="fab fa-github"></i></span>
+						<span style="margin-left: 10%;">GitHub</span>
+					</a>
+	
+					<div class="navbar-dropdown">
+						<a class="navbar-item" target="_blank" href="https://github.com/iBlitzkriegi/Vixio/issues/new?template=bug_report.md"> Report issue </a>
+						<a class="navbar-item" target="_blank" href="https://github.com/iBlitzkriegi/Vixio/issues/new?template=feature_request.md"> Report suggestion / idea </a>
+					</div>
+				</div>
+
+				<a class="navbar-item" target="_blank" href="https://discord.gg/kNHmqYH"> 
+					<span><i class="fab fa-discord"></i></span>
+					<span style="margin-left: 10%;">Discord</span>
+				</a>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="container top">
+		<input class="input has-text-centered search-input" type="text" placeholder="Find a syntax">
+		<div class="syntaxes">
+
+			<div class="card top">
+				<header class="card-header">
+					<p class="card-header-title">Component</p>
+					<a aria-label="more options" class="card-header-icon" href="#">
+						<span>Copy Link</span>
+						<span class="icon"><i class="fas fa-hashtag"></i></i></span>
+					</a>
+				</header>
+				<div class="card-content">
+					<div class="content">
+<pre class="prettyprint lang-python">
+The lang-* class specifies the language file extensions.
+	File extensions supported by default include:
+	"bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java",
+	"js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml",
+	"xsl".
+</pre>
+					</div>
+				</div>
+			</div>
+			
+
+		</div>
+	</div>
+
+</body>
+</html>
