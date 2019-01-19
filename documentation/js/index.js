@@ -3,12 +3,58 @@ fetch("./Syntaxes.txt")
 		return response.text();
 	})
 	.then(function(syntaxes) {
-		let lines = syntaxes.split("\n")
-		let type = lines[0];
+		const lines = syntaxes.split("\n")
+		const type = lines[0];
+		const id = null;
+		const name = null;
+		const description = null
+		const pattern = null;
+		const example = null;
 		for (line in lines) {
+			if (line.includes("name: ")) {
+				fetch("./card.html")
+					.then(function(response) {
+						return response.text();
+					})
+					.then(function(card) {
+						card = card
+							.replace("%id%", id)
+							.replace("%name%", name)
+							.replace("%description%", description)
+							.replace("%pattern%", pattern)
+							.replace("%example%", example)
+						document.getElementsByClassName(type)[0].innerHTML += card;
+					})
+				
+				if (
+					line === "Conditions"
+					|| line === "Effects" 
+					|| line === "Expressions"
+					|| line === "Events"
+				) {
+					type = line;
+				}
+
+				id = line.split("name: ")[1].toLowerCase().replace(" ", "_")
+				name = line.split("name: ")[1]
+			
+			} else if (line.includes("description:")) {
+				description = line.split("description: ")[1]
+			} else if (line.includes("pattern:")) {
+				pattern = line.split("pattern: ")[1]
+			} else if (line.includes("example:")) {
+				example = line.split("example: ")[1]
+			}
 			
 		}
+		
 	});
+
+function copyLink() {
+	document.getElementById("myInput").select();
+	document.execCommand("copy");
+	console.log(document.getElementById("myInput").select())
+}
 
 const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
