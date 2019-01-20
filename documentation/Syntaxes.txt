@@ -169,7 +169,7 @@ Effects:
 	name: Member Permission in Channel
 		description: Allow, or deny a role or a member permissions to a channel
 		patterns:
-			- (allow|1¦deny) %roles/members% [the] permission[s] %permissions% [in %channels%] [with %bot/string%]
+			- (allow|1ï¿½deny) %roles/members% [the] permission[s] %permissions% [in %channels%] [with %bot/string%]
 	name: Ban user
 		description: Ban either a user, a member, or a user by their ID
 		patterns:
