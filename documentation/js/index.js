@@ -6,8 +6,6 @@ const filter = {
 	patterns: document.getElementsByClassName("card-pattern")
 }
 
-//console.log(filter)
-
 async function request(link) {
 	let back = await fetch(link)
 	.then(function(response) {
@@ -22,6 +20,8 @@ async function request(link) {
 async function start() {
 	maincard.card = await request("https://raw.githubusercontent.com/" + user + "/Vixio/master/documentation/card.html");
 	maincard.syntaxes = await request("https://raw.githubusercontent.com/" + user + "/Vixio/master/documentation/Syntaxes.txt");
+	if (maincard.card.includes("404") || maincard.syntaxes.includes("404")) return;
+	maincard.syntaxes.replace("<", "&lt;").replace(">", "&gt;")
 	const lines = maincard.syntaxes.split("\n")
 	maincard.type = lines[0].toLowerCase().replace(":", "");
 	maincard.id = lines[1].split("name: ")[1].toLowerCase().replace(" ", "_")
@@ -34,13 +34,15 @@ async function start() {
 	for (i = 0; i < lines.length; i++) {
 		line = lines[i]
 		if (line.includes("name: ")) {
-			console.log(maincard.type)
 			card = maincard.card
 				.replace("%id%", maincard.id)
 				.replace("#%id%", "#" + maincard.id)
-				.replace("%name%", '<span class="tag is-large" style="background-color: rgb(97, 237, 120)">' + maincard.type + '</span><p class="card-header-title" style="margin-left: 3%">' + maincard.name + '</p>')
+				.replace("%name%", '<span class="tag is-large" style="background-color: rgb(97, 237, 120)">' + maincard.type + '</span><p class="card-header-title">' + maincard.name + '</p>')
 				.replace("%description%", maincard.description)
-				.replace("%pattern%", maincard.patterns.join("\n"))
+				.replace("%patterns%", maincard.patterns.join("\n")
+					.replace(new RegExp("\\b(seen|from|of|in)\\b", "gm"), '<span style="color: rgb(69, 134, 239)">$&</span>')
+					.replace(new RegExp("\\b(bot|guild|user|member|role|channel|permission|emote|embed)(builder)?s?\\b", "gm"), '<span style="color: rgb(61, 226, 75)">$&</span>')
+				)
 				.replace("%example%", maincard.example)
 			document.getElementsByClassName(maincard.type)[0].innerHTML += card;
 			maincard.id = line.split("name: ")[1].toLowerCase().replace(" ", "_");
@@ -65,8 +67,6 @@ async function start() {
 
 		if (maincard.is_pattern === true) {
 			maincard.patterns.push(line.split("- ")[1])
-				/*.replace("from", "<span>")
-			)*/
 		}
 		
 	}
@@ -87,26 +87,56 @@ function search() {
 	}
 }
 
+function convert() {
+	code = document.getElementsByClassName("code-converter")[0].value
+	if (code.replace(" ", "") === "") {
+		alert("You must put a code!")
+		return;
+	}
+	document.getElementsByClassName("code-converter-output")[0].value = code.split("\n").join("\\n").replace("    ", "\\t")
+}
+
 start()
 
 
-const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+document.addEventListener('DOMContentLoaded', () => {
 
-// Check if there are any navbar burgers
-if ($navbarBurgers.length > 0) {
-
-// Add a click event on each of them
-$navbarBurgers.forEach( el => {
-el.addEventListener('click', () => {
-
-  // Get the target from the "data-target" attribute
-  const target = el.dataset.target;
-  const $target = document.getElementById(target);
-
-  // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-  el.classList.toggle('is-active');
-  $target.classList.toggle('is-active');
-
+	// Get all "navbar-burger" elements
+	const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  
+	// Check if there are any navbar burgers
+	if ($navbarBurgers.length > 0) {
+  
+	  // Add a click event on each of them
+	  $navbarBurgers.forEach( el => {
+		el.addEventListener('click', () => {
+  
+		  // Get the target from the "data-target" attribute
+		  const target = el.dataset.target;
+		  const $target = document.getElementById(target);
+  
+		  // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+		  el.classList.toggle('is-active');
+		  $target.classList.toggle('is-active');
+  
+		});
+	  });
+	}
+  
 });
-});
-};
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+		document.getElementById("topButton").style.display = "block";
+	} else {
+		document.getElementById("topButton").style.display = "none";
+	}
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+	document.body.scrollTop = 0;
+	document.documentElement.scrollTop = 0;
+}
