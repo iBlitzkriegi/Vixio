@@ -15,7 +15,7 @@ public class CondMemberRole extends Condition {
                 "%member% (has|have) [the] role %role%", "%member% (does[n[']t]|does not) have [the] role %role%",
                 "%member% (has|have) [the] role [named] %string%", "%member% (does[n[']t]|does not) have [the] role [named] %string%")
                 .setName("Member has role")
-                .setDesc("Check if a member either does, or does not have either a specific %role$ or a role with a certain name.")
+                .setDesc("Check if a member either does, or does not have either a specific %role% or a role with a certain name.")
                 .setExample(
                         "discord command $role <member> <string>:",
                         "\ttrigger:",
