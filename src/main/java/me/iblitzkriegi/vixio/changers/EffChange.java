@@ -150,9 +150,9 @@ public class EffChange extends Effect {
                 bot = (Expression<Bot>) exprs[1];
                 changed = exprs[0];
         }
-
         this.bot = SkriptUtil.defaultToEventValue(bot, Bot.class);
         if (bot == null) {
+            parsing = false;
             return false;
         }
 
