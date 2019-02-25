@@ -15,7 +15,7 @@ public class ExprId extends SimplePropertyExpression<Object, String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "id", "channel/guild/bot/user/message/role/avatar/category/member/emote")
                 .setName("ID of")
-                .setDesc("Get the ID of of any discord entity.")
+                .setDesc("Get the ID of any discord entity.")
                 .setExample("reply with \"%id of event-user%\"");
     }
 
