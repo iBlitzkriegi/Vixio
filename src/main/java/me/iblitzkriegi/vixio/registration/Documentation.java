@@ -33,61 +33,17 @@ public class Documentation {
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(tab("Conditions:", 0));
-            for (Registration registration : Vixio.getInstance().conditions) {
-                bw.write(tab("name: " + registration.getName(), 1));
-                bw.write(tab("description: " + registration.getDesc(), 2));
-                bw.write(tab("patterns:", 2));
-                if (registration.getUserFacing() == null) {
-                    for (String pattern : registration.getSyntaxes()) {
-                        bw.write(tab("- " + pattern, 3));
-                    }
-                } else {
-                    bw.write(tab("- " + registration.getUserFacing(), 3));
-                }
+            writeRegistration(bw, Vixio.getInstance().conditions);
 
-            }
             bw.write(tab("Effects:", 0));
-            for (Registration registration : Vixio.getInstance().effects) {
-                bw.write(tab("name: " + registration.getName(), 1));
-                bw.write(tab("description: " + registration.getDesc(), 2));
-                bw.write(tab("patterns:", 2));
-                if (registration.getUserFacing() == null) {
-                    for (String pattern : registration.getSyntaxes()) {
-                        bw.write(tab("- " + pattern, 3));
-                    }
-                } else {
-                    bw.write(tab("- " + registration.getUserFacing(), 3));
-                }
+            writeRegistration(bw, Vixio.getInstance().effects);
 
-            }
             bw.write(tab("Expressions:", 0));
-            for (Registration registration : Vixio.getInstance().expressions) {
-                bw.write(tab("name: " + registration.getName(), 1));
-                bw.write(tab("description: " + registration.getDesc(), 2));
-                bw.write(tab("patterns:", 2));
-                if (registration.getUserFacing() == null) {
-                    for (String pattern : registration.getSyntaxes()) {
-                        bw.write(tab("- " + pattern, 3));
-                    }
-                } else {
-                    bw.write(tab("- " + registration.getUserFacing(), 3));
-                }
+            writeRegistration(bw, Vixio.getInstance().expressions);
 
-            }
             bw.write(tab("Events:", 0));
-            for (Registration registration : Vixio.getInstance().events) {
-                bw.write(tab("name: " + registration.getName(), 1));
-                bw.write(tab("description: " + registration.getDesc(), 2));
-                bw.write(tab("patterns:", 2));
-                if (registration.getUserFacing() == null) {
-                    for (String pattern : registration.getSyntaxes()) {
-                        bw.write(tab("- " + pattern, 3));
-                    }
-                } else {
-                    bw.write(tab("- " + registration.getUserFacing(), 3));
-                }
+            writeRegistration(bw, Vixio.getInstance().events);
 
-            }
             bw.flush();
             bw.close();
 
@@ -95,6 +51,28 @@ public class Documentation {
             e.printStackTrace();
         }
 
+    }
+
+    public static boolean writeRegistration(BufferedWriter bw, List<Registration> registrationList) {
+        try {
+            for (Registration registration : registrationList) {
+                bw.write(tab("name: " + registration.getName(), 1));
+                bw.write(tab("description: " + registration.getDesc(), 2));
+                bw.write(tab("patterns:", 2));
+                if (registration.getUserFacing() == null) {
+                    for (String pattern : registration.getSyntaxes()) {
+                        bw.write(tab("- " + pattern, 3));
+                    }
+                } else {
+                    bw.write(tab("- " + registration.getUserFacing(), 3));
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     public static void generateJson() {
