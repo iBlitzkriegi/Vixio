@@ -152,7 +152,9 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
 
     @Override
     public void unregisterAll() {
+        DiscordCommandFactory.getInstance().commandMap.clear();
     }
+
 
     @Override
     public String toString(final Event e, final boolean debug) {
