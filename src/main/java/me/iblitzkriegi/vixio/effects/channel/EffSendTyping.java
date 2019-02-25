@@ -18,7 +18,7 @@ public class EffSendTyping extends Effect{
         Vixio.getInstance().registerEffect(EffSendTyping.class, "send typing (to|in) %channel/user% [with %bot/string%]")
                 .setName("Send typing")
                 .setDesc("Make a bot start typing in a text channel.")
-                .setUserFacing("send typing in %textchannel% [with %bot/string%]")
+                .setUserFacing("send typing in %textchannel/user% [with %bot/string%]")
                 .setExample("send typing in event-channel");
     }
 
