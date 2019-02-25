@@ -4,6 +4,7 @@ import ch.njol.skript.lang.*;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.core.entities.Channel;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class EffCloneChannel extends Effect {
+public class EffCloneChannel extends AsyncEffect {
 
     static {
         Vixio.getInstance().registerEffect(EffCloneChannel.class,
