@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.Member;
  */
 public class ExprId extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "id", "channel/guild/bot/user/message/role/avatar/category/member/emote")
+        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "discord id", "channel/guild/bot/user/message/role/avatar/category/member/emote")
                 .setName("ID of")
                 .setDesc("Get the ID of any discord entity.")
                 .setExample("reply with \"%id of event-user%\"");

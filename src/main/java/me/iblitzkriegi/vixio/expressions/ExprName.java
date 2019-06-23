@@ -73,7 +73,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "name of " + object.toString(e, debug);
+        return "discord name of " + object.toString(e, debug);
     }
 
     @SuppressWarnings("unchecked")
