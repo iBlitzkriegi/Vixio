@@ -1,15 +1,15 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.IMentionable;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.Role;
 
 import java.util.List;
 
 public class Emote implements IMentionable {
     private String name;
-    private net.dv8tion.jda.core.entities.Emote emote;
+    private net.dv8tion.jda.api.entities.Emote emote;
     private boolean isEmote = false;
     private String mention;
 
@@ -18,7 +18,7 @@ public class Emote implements IMentionable {
         this.mention = name;
     }
 
-    public Emote(net.dv8tion.jda.core.entities.Emote emote) {
+    public Emote(net.dv8tion.jda.api.entities.Emote emote) {
         this.name = emote.getName();
         this.emote = emote;
         this.isEmote = true;
@@ -29,7 +29,7 @@ public class Emote implements IMentionable {
         return isEmote ? emote.getGuild() : null;
     }
 
-    public net.dv8tion.jda.core.entities.Emote getEmote() {
+    public net.dv8tion.jda.api.entities.Emote getEmote() {
         return isEmote ? emote : null;
     }
 
@@ -62,4 +62,8 @@ public class Emote implements IMentionable {
         return isEmote ? mention : name;
     }
 
+    @Override
+    public long getIdLong() {
+        return 0;
+    }
 }

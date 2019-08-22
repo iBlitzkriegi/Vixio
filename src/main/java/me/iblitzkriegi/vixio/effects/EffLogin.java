@@ -9,10 +9,10 @@ import me.iblitzkriegi.vixio.events.base.EventListener;
 import me.iblitzkriegi.vixio.util.MessageUpdater;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.exceptions.AccountTypeException;
+import net.dv8tion.jda.api.AccountType;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.exceptions.AccountTypeException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 

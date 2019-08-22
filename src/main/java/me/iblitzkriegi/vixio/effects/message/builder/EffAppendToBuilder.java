@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.builder.ExprMessageBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import org.bukkit.event.Event;
 
 public class EffAppendToBuilder extends Effect {

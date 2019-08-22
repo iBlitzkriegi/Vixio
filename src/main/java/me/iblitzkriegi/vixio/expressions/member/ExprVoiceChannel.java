@@ -3,8 +3,8 @@ package me.iblitzkriegi.vixio.expressions.member;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.ExpressionType;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 public class ExprVoiceChannel extends SimplePropertyExpression<Member, VoiceChannel> {
     static {

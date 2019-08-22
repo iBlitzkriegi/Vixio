@@ -7,8 +7,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import org.bukkit.event.Event;
 
 public class EffDeafen extends Effect {
@@ -54,7 +54,7 @@ public class EffDeafen extends Effect {
         for (Member member : members.getAll(e)) {
             Guild guild = Util.bindGuild(bot, member.getGuild());
             if (guild != null) {
-                guild.getController().setDeafen(member, newState).queue();
+                guild.deafen(member, newState).queue();
             }
         }
     }

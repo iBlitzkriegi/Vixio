@@ -7,8 +7,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffChannelWithName extends Effect {
@@ -46,10 +46,10 @@ public class EffChannelWithName extends Effect {
         }
         try {
             if (not) {
-                bindedGuild.getController().createTextChannel(name).queue();
+                bindedGuild.createTextChannel(name).queue();
                 return;
             }
-            bindedGuild.getController().createVoiceChannel(name).queue();
+            bindedGuild.createVoiceChannel(name).queue();
             return;
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "create channel");

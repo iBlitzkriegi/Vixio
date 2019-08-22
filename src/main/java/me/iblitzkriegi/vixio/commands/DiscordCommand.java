@@ -8,7 +8,7 @@ import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.skript.util.Utils;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.ChannelType;
 
 import java.io.File;
 import java.util.ArrayList;

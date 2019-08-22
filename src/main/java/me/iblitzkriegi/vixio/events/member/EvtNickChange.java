@@ -6,13 +6,15 @@ import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.guild.member.GuildMemberNickChangeEvent;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 
-public class EvtNickChange extends BaseEvent<GuildMemberNickChangeEvent> {
+
+public class EvtNickChange extends BaseEvent<GuildMemberUpdateNicknameEvent> {
     static {
+
         BaseEvent.register("member nickname change", EvtNickChange.class, MemberNickChange.class, "[member] nick[name] (change|update)")
                 .setName("Nickname Change")
                 .setDesc("Fired when a member changes their nickname.")
@@ -49,7 +51,7 @@ public class EvtNickChange extends BaseEvent<GuildMemberNickChangeEvent> {
 
     }
 
-    public class MemberNickChange extends SimpleVixioEvent<GuildMemberNickChangeEvent> {
+    public class MemberNickChange extends SimpleVixioEvent<GuildMemberUpdateNicknameEvent> {
 
     }
 

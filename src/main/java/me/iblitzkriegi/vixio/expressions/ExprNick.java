@@ -28,9 +28,9 @@ public class ExprNick extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         if (not) {
-            return new String[]{((EvtNickChange.MemberNickChange) e).getJDAEvent().getPrevNick()};
+            return new String[]{((EvtNickChange.MemberNickChange) e).getJDAEvent().getOldNickname()};
         }
-        return new String[]{((EvtNickChange.MemberNickChange) e).getJDAEvent().getNewNick()};
+        return new String[]{((EvtNickChange.MemberNickChange) e).getJDAEvent().getNewNickname()};
     }
 
     @Override

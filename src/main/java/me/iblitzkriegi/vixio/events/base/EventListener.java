@@ -1,7 +1,7 @@
 package me.iblitzkriegi.vixio.events.base;
 
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -31,7 +31,7 @@ public class EventListener<T> extends ListenerAdapter {
     }
 
     @Override
-    public void onGenericEvent(net.dv8tion.jda.core.events.Event event) {
+    public void onGenericEvent(net.dv8tion.jda.api.events.GenericEvent event) {
         if (enabled && clazz.isInstance(event)) {
             consumer.accept((T) event);
         }

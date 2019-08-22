@@ -3,9 +3,9 @@ package me.iblitzkriegi.vixio.commands;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.localization.Language;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 
 import java.util.List;

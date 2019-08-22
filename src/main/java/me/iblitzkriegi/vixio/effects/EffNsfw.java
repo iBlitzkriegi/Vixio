@@ -7,8 +7,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.event.Event;
 
 public class EffNsfw extends Effect {
@@ -31,7 +31,7 @@ public class EffNsfw extends Effect {
 
     private boolean newState;
     private Expression<Bot> bot;
-    private Expression<Channel> channels;
+    private Expression<GuildChannel> channels;
 
     @Override
     protected void execute(Event e) {
@@ -40,7 +40,7 @@ public class EffNsfw extends Effect {
             return;
         }
 
-        for (Channel channel : channels.getAll(e)) {
+        for (GuildChannel channel : channels.getAll(e)) {
             if (channel instanceof TextChannel) {
                 channel = Util.bindChannel(bot, (TextChannel) channel);
                 if (channel != null) {
@@ -57,7 +57,7 @@ public class EffNsfw extends Effect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channels = (Expression<Channel>) exprs[0];
+        channels = (Expression<GuildChannel>) exprs[0];
         bot = (Expression<Bot>) exprs[1];
         newState = parseResult.regexes.size() == 1;
         return true;

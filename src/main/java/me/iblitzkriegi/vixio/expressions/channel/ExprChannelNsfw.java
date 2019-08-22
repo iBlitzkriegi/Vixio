@@ -5,7 +5,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.event.Event;
 
 public class ExprChannelNsfw extends ChangeableSimplePropertyExpression<TextChannel, Boolean> {

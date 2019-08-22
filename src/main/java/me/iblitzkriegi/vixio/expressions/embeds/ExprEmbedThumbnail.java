@@ -7,8 +7,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed.Thumbnail;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed.Thumbnail;
 import org.bukkit.event.Event;
 
 public class ExprEmbedThumbnail extends SimplePropertyExpression<EmbedBuilder, Thumbnail> {

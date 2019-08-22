@@ -9,13 +9,13 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent> {
 
@@ -26,9 +26,9 @@ public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent>
                 .setDesc("Fired when a message is sent in a text channel that the bot can read.")
                 .setUserFacing("(guild|server) message (receive[d] [seen]| sent) [by %-string%]")
                 .setExample("on guild message received seen by \"a bot\":");
-        EventValues.registerEventValue(GuildMessageReceiveEvent.class, Channel.class, new Getter<Channel, GuildMessageReceiveEvent>() {
+        EventValues.registerEventValue(GuildMessageReceiveEvent.class, GuildChannel.class, new Getter<GuildChannel, GuildMessageReceiveEvent>() {
             @Override
-            public Channel get(GuildMessageReceiveEvent event) {
+            public GuildChannel get(GuildMessageReceiveEvent event) {
                 return event.getJDAEvent().getChannel();
             }
         }, 0);

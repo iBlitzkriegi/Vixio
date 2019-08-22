@@ -2,12 +2,12 @@ package me.iblitzkriegi.vixio.commands;
 
 import me.iblitzkriegi.vixio.events.base.SimpleBukkitEvent;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.Cancellable;
 
 public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellable {
@@ -21,12 +21,12 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
     private String prefix;
     private String usedAlias;
     private boolean cancelled;
-    private Channel channel;
+    private GuildChannel channel;
     private Bot bot;
 	private String arguments;
 
 	public DiscordCommandEvent(String prefix, String usedAlias, DiscordCommand command, String arguments, Guild guild,
-                               MessageChannel messagechannel, Channel channel, Message message, User user,
+                               MessageChannel messagechannel, GuildChannel channel, Message message, User user,
                                Member member, Bot bot) {
 		this.arguments = arguments == null ? "" : arguments;
         this.command = command;
@@ -75,7 +75,7 @@ public class DiscordCommandEvent extends SimpleBukkitEvent implements Cancellabl
         return user;
     }
 
-    public Channel getChannel() {
+    public GuildChannel getChannel() {
         return channel;
     }
 

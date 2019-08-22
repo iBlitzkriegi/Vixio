@@ -7,9 +7,9 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffJoinVoice extends Effect {
@@ -21,13 +21,13 @@ public class EffJoinVoice extends Effect {
                 .setExample("join event-channel");
     }
 
-    private Expression<Channel> channel;
+    private Expression<GuildChannel> channel;
     private Expression<Object> bot;
 
     @Override
     protected void execute(Event e) {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Channel channel = this.channel.getSingle(e);
+        GuildChannel channel = this.channel.getSingle(e);
         if (bot == null || channel == null || (!(channel instanceof VoiceChannel))) {
             return;
         }
@@ -53,7 +53,7 @@ public class EffJoinVoice extends Effect {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channel = (Expression<Channel>) exprs[0];
+        channel = (Expression<GuildChannel>) exprs[0];
         bot = (Expression<Object>) exprs[1];
         return true;
     }

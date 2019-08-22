@@ -4,7 +4,7 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Category;
+import net.dv8tion.jda.api.entities.Category;
 import org.bukkit.event.Event;
 
 public class ExprBuilderParent extends SimplePropertyExpression<ChannelBuilder, Category> {

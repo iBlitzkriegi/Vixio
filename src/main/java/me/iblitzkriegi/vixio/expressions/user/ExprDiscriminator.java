@@ -2,7 +2,7 @@ package me.iblitzkriegi.vixio.expressions.user;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.User;
 
 public class ExprDiscriminator extends SimplePropertyExpression<User, String> {
 

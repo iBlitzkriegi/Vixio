@@ -5,12 +5,12 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class ExprChannelParent extends ChangeableSimplePropertyExpression<Channel, Category> {
+public class ExprChannelParent extends ChangeableSimplePropertyExpression<GuildChannel, Category> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelParent.class, Category.class,
@@ -28,7 +28,7 @@ public class ExprChannelParent extends ChangeableSimplePropertyExpression<Channe
     }
 
     @Override
-    public Category convert(Channel channel) {
+    public Category convert(GuildChannel channel) {
         return channel.getParent();
     }
 
@@ -52,7 +52,7 @@ public class ExprChannelParent extends ChangeableSimplePropertyExpression<Channe
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for (Channel channel : getExpr().getAll(e)) {
+        for (GuildChannel channel : getExpr().getAll(e)) {
             channel = Util.bindChannel(bot, channel);
             if (channel != null) {
                 try {

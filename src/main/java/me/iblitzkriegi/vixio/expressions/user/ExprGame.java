@@ -5,9 +5,9 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.Event;
 
 public class ExprGame extends SimplePropertyExpression<Object, String> {
@@ -25,7 +25,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
     }
 
     private String getGame(Bot bot) {
-        return bot.getJDA().getPresence().getGame() == null ? null : bot.getJDA().getPresence().getGame().getName();
+        return bot.getJDA().getPresence().getActivity() == null ? null : bot.getJDA().getPresence().getActivity().getName();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
             if (Util.botFromID(member.getUser().getId()) != null) {
                 return getGame(Util.botFromID(member.getUser().getId()));
             }
-            return member.getGame() == null ? null : member.getGame().getName();
+            return member.getActivities().isEmpty() ? null : member.getActivities().get(0).getName();
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
             if (member == null) {
@@ -49,7 +49,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
             if (Util.botFromID(member.getUser().getId()) != null) {
                 return getGame(Util.botFromID(member.getUser().getId()));
             }
-            return member.getGame() == null ? null : member.getGame().getName();
+            return member.getActivities().isEmpty() ? null : member.getActivities().get(0).getName();
         } else {
             Bot bot = Util.botFrom(object);
             if (bot == null) {
@@ -77,7 +77,7 @@ public class ExprGame extends SimplePropertyExpression<Object, String> {
         for (Object object : getExpr().getAll(e)) {
             if (Util.botFrom(object) != null) {
                 Bot bot = Util.botFrom(object);
-                bot.getJDA().getPresence().setGame(mode == Changer.ChangeMode.SET ? Game.of(Game.GameType.DEFAULT, (String) delta[0]) : null);
+                bot.getJDA().getPresence().setActivity(mode == Changer.ChangeMode.SET ? Activity.of(Activity.ActivityType.DEFAULT, (String) delta[0]) : null);
             }
         }
     }

@@ -2,7 +2,7 @@ package me.iblitzkriegi.vixio.expressions.guild;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 public class ExprIcon extends SimplePropertyExpression<Guild, String> {
     static {

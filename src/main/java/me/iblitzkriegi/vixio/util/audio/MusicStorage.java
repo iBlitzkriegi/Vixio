@@ -1,7 +1,7 @@
 package me.iblitzkriegi.vixio.util.audio;
 
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 
 public class MusicStorage {
     private Bot bot;

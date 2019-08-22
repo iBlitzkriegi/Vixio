@@ -7,8 +7,8 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class EvtMessageReceived extends BaseEvent<MessageReceivedEvent> {
     static {
@@ -67,9 +67,9 @@ public class EvtMessageReceived extends BaseEvent<MessageReceivedEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(GlobalMessageReceived.class, Channel.class, new Getter<Channel, GlobalMessageReceived>() {
+        EventValues.registerEventValue(GlobalMessageReceived.class, GuildChannel.class, new Getter<GuildChannel, GlobalMessageReceived>() {
             @Override
-            public Channel get(GlobalMessageReceived event) {
+            public GuildChannel get(GlobalMessageReceived event) {
                 return event.getJDAEvent().getTextChannel();
             }
         }, 0);

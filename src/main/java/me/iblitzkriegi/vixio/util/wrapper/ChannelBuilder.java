@@ -1,7 +1,7 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.ChannelType;
 
 public class ChannelBuilder {
 

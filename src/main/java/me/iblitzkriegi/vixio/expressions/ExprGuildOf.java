@@ -4,11 +4,11 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 
 public class ExprGuildOf extends SimplePropertyExpression<Object, Guild> {
     static {
@@ -24,8 +24,8 @@ public class ExprGuildOf extends SimplePropertyExpression<Object, Guild> {
 
     @Override
     public Guild convert(Object o) {
-        if (o instanceof Channel) {
-            return ((Channel) o).getGuild();
+        if (o instanceof GuildChannel) {
+            return ((GuildChannel) o).getGuild();
         }else if (o instanceof UpdatingMessage) {
             return ((UpdatingMessage) o).getMessage().getGuild();
         } else if (o instanceof Emote) {

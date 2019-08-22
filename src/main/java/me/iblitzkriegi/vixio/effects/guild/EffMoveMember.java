@@ -7,10 +7,10 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffMoveMember extends Effect {
@@ -32,7 +32,7 @@ public class EffMoveMember extends Effect {
 
     Expression<Object> bot;
     Expression<Member> member;
-    Expression<Channel> channel;
+    Expression<GuildChannel> channel;
 
     @Override
     protected void execute(Event e) {
@@ -47,7 +47,7 @@ public class EffMoveMember extends Effect {
             return;
         }
         try {
-            voiceChannel.getGuild().getController().moveVoiceMember(member, voiceChannel).queue();
+            voiceChannel.getGuild().moveVoiceMember(member, voiceChannel).queue();
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, "move member to voice channel", x.getPermission().getName());
         }
@@ -62,7 +62,7 @@ public class EffMoveMember extends Effect {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         member = (Expression<Member>) exprs[0];
-        channel = (Expression<Channel>) exprs[1];
+        channel = (Expression<GuildChannel>) exprs[1];
         bot = (Expression<Object>) exprs[2];
         return true;
     }

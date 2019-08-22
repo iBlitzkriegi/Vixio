@@ -15,7 +15,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -72,9 +72,9 @@ public class DiscordCommandRegistry extends SelfRegisteringSkriptEvent {
                 }
                 , 0);
 
-        EventValues.registerEventValue(DiscordCommandEvent.class, Channel.class, new Getter<Channel, DiscordCommandEvent>() {
+        EventValues.registerEventValue(DiscordCommandEvent.class, GuildChannel.class, new Getter<GuildChannel, DiscordCommandEvent>() {
                     @Override
-                    public Channel get(DiscordCommandEvent event) {
+                    public GuildChannel get(DiscordCommandEvent event) {
                         return event.getChannel();
                     }
                 }

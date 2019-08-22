@@ -10,8 +10,8 @@ import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import org.bukkit.event.Event;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class EffGrabMessages extends AsyncEffect {
     }
 
     private Expression<Number> messages;
-    private Expression<Channel> channel;
+    private Expression<GuildChannel> channel;
     public static List<UpdatingMessage> updatingMessages;
     private Variable<?> varExpr;
     private VariableString varName;
@@ -47,7 +47,7 @@ public class EffGrabMessages extends AsyncEffect {
     @Override
     protected void execute(Event e) {
         Number messages = this.messages.getSingle(e);
-        Channel channel = this.channel.getSingle(e);
+        GuildChannel channel = this.channel.getSingle(e);
         if (messages == null || !(channel instanceof MessageChannel)) {
             return;
         }
@@ -70,7 +70,7 @@ public class EffGrabMessages extends AsyncEffect {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         messages = (Expression<Number>) exprs[0];
-        channel = (Expression<Channel>) exprs[1];
+        channel = (Expression<GuildChannel>) exprs[1];
         if (exprs[2] instanceof Variable) {
             varExpr = (Variable<?>) exprs[2];
             varName = SkriptUtil.getVariableName(varExpr);

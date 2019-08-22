@@ -9,12 +9,14 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.managers.GuildController;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ExprRolesOfMember extends ChangeableSimpleExpression<Role> implements EasyMultiple<Member, Role> {
 
@@ -71,23 +73,24 @@ public class ExprRolesOfMember extends ChangeableSimpleExpression<Role> implemen
             if (guild == null) {
                 return;
             }
-            GuildController controller = guild.getController();
             try {
                 switch (mode) {
                     case RESET:
                     case DELETE:
                     case SET:
-                        controller.removeRolesFromMember(member, member.getRoles()).queue();
                         if (mode == Changer.ChangeMode.SET) {
-                            controller.addRolesToMember(member, Util.convertedArray(Role.class, delta)).queue();
+                            List<Role> roles = Arrays.asList(Util.convertedArray(Role.class, delta));
+
+                            guild.modifyMemberRoles(member, Util.convertedArray(Role.class, delta)).queue();
                         }
                         break;
                     case ADD:
-                        controller.addRolesToMember(member, Util.convertedArray(Role.class, delta)).queue();
+                       // guild.addRolesToMember(member, Util.convertedArray(Role.class, delta)).queue();
+                        guild.modifyMemberRoles(member, Arrays.asList(Util.convertedArray(Role.class, delta)), null).queue();
                         break;
                     case REMOVE:
                     case REMOVE_ALL:
-                        controller.removeRolesFromMember(member, Util.convertedArray(Role.class, delta)).queue();
+                        guild.modifyMemberRoles(member, null, Arrays.asList(Util.convertedArray(Role.class, delta)));
                 }
             } catch (PermissionException e1) {
                 Vixio.getErrorHandler().warn("Vixio encountered a permission exception while trying to change roles");

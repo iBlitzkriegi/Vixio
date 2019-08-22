@@ -4,13 +4,15 @@ import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
-public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType> {
+import java.util.List;
+
+public class ExprGametype extends SimplePropertyExpression<Object, Activity.ActivityType> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprGametype.class, Game.GameType.class, "game type", "bots/users/strings")
+        Vixio.getInstance().registerPropertyExpression(ExprGametype.class, Activity.ActivityType.class, "game type", "bots/users/strings")
                 .setName("Game type")
                 .setDesc("Get the type of game a user, a bot, or a bot specified by name is playing.")
                 .setExample(
@@ -30,16 +32,19 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
     }
 
     @Override
-    public Game.GameType convert(Object object) {
+    public Activity.ActivityType convert(Object object) {
         if (object instanceof Bot || object instanceof String) {
             Bot bot = Util.botFrom(object);
             if (bot != null) {
-                return bot.getJDA().getPresence().getGame().getType();
+                return bot.getJDA().getPresence().getActivity().getType();
             }
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
+            List<Activity> thing = member.getActivities();
+            Activity t = thing.get(0);
+
             if (member != null) {
-                return member.getGame() == null ? null : member.getGame().getType();
+                return member.getActivities().isEmpty() ? null : member.getActivities().get(0).getType();
             }
             return null;
         }
@@ -47,8 +52,8 @@ public class ExprGametype extends SimplePropertyExpression<Object, Game.GameType
     }
 
     @Override
-    public Class<? extends Game.GameType> getReturnType() {
-        return Game.GameType.class;
+    public Class<? extends Activity.ActivityType> getReturnType() {
+        return Activity.ActivityType.class;
     }
 
 }

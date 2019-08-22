@@ -5,7 +5,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.api.entities.*;
 import org.bukkit.event.Event;
 
 import java.util.List;
@@ -35,8 +35,8 @@ public class ExprMembers extends SimpleExpression<Member> {
         } else if (object instanceof Guild) {
             List<Member> members = ((Guild) object).getMembers();
             return members.toArray(new Member[members.size()]);
-        } else if (object instanceof Channel) {
-            List<Member> members = ((Channel) object).getMembers();
+        } else if (object instanceof GuildChannel) {
+            List<Member> members = ((GuildChannel) object).getMembers();
             return members.toArray(new Member[members.size()]);
         }
 

@@ -11,11 +11,11 @@ import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.exceptions.PermissionException;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 public class EffCreateChannelBuilder extends AsyncEffect {
@@ -52,13 +52,13 @@ public class EffCreateChannelBuilder extends AsyncEffect {
         if (varExpr == null) {
             try {
                 if (channelBuilder.getType() == ChannelType.TEXT) {
-                    guild.getController().createTextChannel(channelBuilder.getName())
+                    guild.createTextChannel(channelBuilder.getName())
                             .setParent(channelBuilder.getParent())
                             .setNSFW(channelBuilder.isNSFW())
                             .setTopic(channelBuilder.getTopic()).queue();
                     return;
                 }
-                guild.getController().createVoiceChannel(channelBuilder.getName())
+                guild.createVoiceChannel(channelBuilder.getName())
                         .setParent(channelBuilder.getParent())
                         .setBitrate(channelBuilder.getBitRate() * 1000)
                         .setUserlimit(channelBuilder.getUserLimit()).queue();
@@ -71,15 +71,15 @@ public class EffCreateChannelBuilder extends AsyncEffect {
             }
             return;
         }
-        Channel channel;
+        GuildChannel channel;
         try {
             if (channelBuilder.getType() == ChannelType.TEXT) {
-                channel = guild.getController().createTextChannel(channelBuilder.getName())
+                channel = guild.createTextChannel(channelBuilder.getName())
                         .setParent(channelBuilder.getParent())
                         .setNSFW(channelBuilder.isNSFW())
                         .setTopic(channelBuilder.getTopic()).complete(true);
             } else {
-                channel = guild.getController().createVoiceChannel(channelBuilder.getName())
+                channel = guild.createVoiceChannel(channelBuilder.getName())
                         .setParent(channelBuilder.getParent())
                         .setBitrate(channelBuilder.getBitRate() * 1000)
                         .setUserlimit(channelBuilder.getUserLimit()).complete(true);

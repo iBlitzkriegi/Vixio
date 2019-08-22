@@ -5,21 +5,21 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import org.bukkit.event.Event;
 
 public class CondHasPermission extends Condition {
 
     static {
         Vixio.getInstance().registerCondition(CondHasPermission.class,
-                "%member% has permission %permission% [in %-channel%]", "%user% has permission %permission% [in %guild/channel%]",
-                "%member% (doesn[']t|does not) have permission %permission% [in %-channel%]", "%user% (doesn[']t|does not) have permission %permission% [in %guild/channel%]")
+                "%member% has permission %permission% [in %-GuildChannel%]", "%user% has permission %permission% [in %guild/GuildChannel%]",
+                "%member% (doesn[']t|does not) have permission %permission% [in %-GuildChannel%]", "%user% (doesn[']t|does not) have permission %permission% [in %guild/GuildChannel%]")
                 .setName("Member Has Permission")
-                .setDesc("Check if a member has a permission, can also check if they have a permission in a certain channel.")
+                .setDesc("Check if a member has a permission, can also check if they have a permission in a certain GuildChannel.")
                 .setExample("if event-member has permission voice connect");
     }
 
@@ -55,8 +55,8 @@ public class CondHasPermission extends Condition {
             if (object == null) {
                 return isNegated() != member.hasPermission(permission);
             }
-            if (object instanceof Channel) {
-                return isNegated() != member.hasPermission((Channel) object, permission);
+            if (object instanceof GuildChannel) {
+                return isNegated() != member.hasPermission((GuildChannel) object, permission);
             }
             return false;
         }
@@ -65,8 +65,8 @@ public class CondHasPermission extends Condition {
             Guild guild = null;
             if (object instanceof Guild) {
                 guild = (Guild) object;
-            } else if (object instanceof Channel) {
-                guild = ((Channel) object).getGuild();
+            } else if (object instanceof GuildChannel) {
+                guild = ((GuildChannel) object).getGuild();
             }
             if (guild == null) {
                 return false;
@@ -76,8 +76,8 @@ public class CondHasPermission extends Condition {
                 return false;
             }
 
-            if (object instanceof Channel) {
-                return isNegated() != member.hasPermission((Channel) object, permission);
+            if (object instanceof GuildChannel) {
+                return isNegated() != member.hasPermission((GuildChannel) object, permission);
             } else if (object instanceof Guild) {
                 return isNegated() != member.hasPermission(permission);
             }

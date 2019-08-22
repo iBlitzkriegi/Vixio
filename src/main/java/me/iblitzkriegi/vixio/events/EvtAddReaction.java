@@ -9,14 +9,14 @@ import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
 
@@ -71,9 +71,9 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(ReactionAddEvent.class, Channel.class, new Getter<Channel, ReactionAddEvent>() {
+        EventValues.registerEventValue(ReactionAddEvent.class, GuildChannel.class, new Getter<GuildChannel, ReactionAddEvent>() {
             @Override
-            public Channel get(ReactionAddEvent event) {
+            public GuildChannel get(ReactionAddEvent event) {
                 return event.getJDAEvent().getTextChannel();
             }
         }, 0);
@@ -81,7 +81,7 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, Emote.class, new Getter<Emote, ReactionAddEvent>() {
             @Override
             public Emote get(ReactionAddEvent event) {
-                net.dv8tion.jda.core.entities.Emote emote = event.getJDAEvent().getReactionEmote().getEmote();
+                net.dv8tion.jda.api.entities.Emote emote = event.getJDAEvent().getReactionEmote().getEmote();
                 if (emote == null) {
                     return Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
                 } else {
@@ -101,7 +101,7 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         return new BaseEvent.Value[] {
                 new Value(Message.class, e -> {
                     try {
-                        return e.getChannel().getMessageById(e.getMessageId()).complete(true);
+                        return e.getChannel().retrieveMessageById(e.getMessageId()).complete(true);
                     } catch (RateLimitedException e1) {
                         Vixio.getErrorHandler().warn("Vixio tried to get the message event value for the reaction add event but was rate limited");
                         return null;
