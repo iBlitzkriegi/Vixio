@@ -9,12 +9,7 @@ import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
@@ -81,11 +76,11 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
         EventValues.registerEventValue(ReactionAddEvent.class, Emote.class, new Getter<Emote, ReactionAddEvent>() {
             @Override
             public Emote get(ReactionAddEvent event) {
-                net.dv8tion.jda.api.entities.Emote emote = event.getJDAEvent().getReactionEmote().getEmote();
-                if (emote == null) {
-                    return Util.unicodeFrom(event.getJDAEvent().getReactionEmote().getName());
+                MessageReaction.ReactionEmote reactionEmote = event.getJDAEvent().getReactionEmote();
+                if (!reactionEmote.isEmote()) {
+                    return Util.unicodeFrom(reactionEmote.getName());
                 } else {
-                    return new Emote(emote);
+                    return new Emote(reactionEmote.getEmote());
                 }
             }
         }, 0);
