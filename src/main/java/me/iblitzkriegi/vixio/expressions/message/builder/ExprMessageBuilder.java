@@ -6,7 +6,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import org.bukkit.event.Event;
 
 public class ExprMessageBuilder extends SimpleExpression<MessageBuilder> {

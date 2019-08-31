@@ -22,28 +22,28 @@ import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.Region;
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.entities.SelfUser;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.Region;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 
 import java.util.Arrays;
 
@@ -51,10 +51,10 @@ public class Types {
 
     @SuppressWarnings("unchecked")
     public static void register() {
-        new SimpleType<Channel>(Channel.class, "channel", "channels?") {
+        new SimpleType<GuildChannel>(GuildChannel.class, "channel", "channels?") {
 
             @Override
-            public Channel parse(String s, ParseContext pc) {
+            public GuildChannel parse(String s, ParseContext pc) {
                 return null;
             }
 
@@ -64,16 +64,16 @@ public class Types {
             }
 
             @Override
-            public String toString(Channel channel, int arg1) {
+            public String toString(GuildChannel channel, int arg1) {
                 return channel.getName();
             }
 
             @Override
-            public String toVariableNameString(Channel channel) {
+            public String toVariableNameString(GuildChannel channel) {
                 return channel.getId();
             }
 
-        }.changer(new VixioChanger<Channel>() {
+        }.changer(new VixioChanger<GuildChannel>() {
                     @Override
                     public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
                         if (mode == ChangeMode.DELETE) {
@@ -83,9 +83,9 @@ public class Types {
                     }
 
                     @Override
-                    public void change(Channel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
-                        for (Channel channel : channels) {
-                            Channel bindedChannel = Util.bindChannel(bot, channel);
+                    public void change(GuildChannel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
+                        for (GuildChannel channel : channels) {
+                            GuildChannel bindedChannel = Util.bindChannel(bot, channel);
                             if (bindedChannel != null) {
                                 try {
                                     bindedChannel.delete().queue();
@@ -122,11 +122,11 @@ public class Types {
 
         };
 
-        EnumUtils<Game.GameType> gameEnumUtils = new EnumUtils<>(Game.GameType.class, "gametypes");
-        new SimpleType<Game.GameType>(Game.GameType.class, "gametype", "gametype") {
+        EnumUtils<Activity.ActivityType> gameEnumUtils = new EnumUtils<>(Activity.ActivityType.class, "gametypes");
+        new SimpleType<Activity.ActivityType>(Activity.ActivityType.class, "gametype", "gametype") {
 
             @Override
-            public Game.GameType parse(String s, ParseContext pc) {
+            public Activity.ActivityType parse(String s, ParseContext pc) {
                 return gameEnumUtils.parse(s);
             }
 
@@ -136,12 +136,12 @@ public class Types {
             }
 
             @Override
-            public String toString(Game.GameType gameType, int arg1) {
+            public String toString(Activity.ActivityType gameType, int arg1) {
                 return gameEnumUtils.toString(gameType, arg1);
             }
 
             @Override
-            public String toVariableNameString(Game.GameType gameType) {
+            public String toVariableNameString(Activity.ActivityType gameType) {
                 return gameType.toString();
             }
 
@@ -184,7 +184,7 @@ public class Types {
                                 if (Util.botIsConnected(bot, message.getJDA())) {
                                     message.delete().queue();
                                 } else {
-                                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                                    channel.retrieveMessageById(message.getId()).queue(m -> m.delete().queue());
                                 }
                             } else {
                                 Vixio.getErrorHandler().warn("Vixio attempted to delete a message sent by another user in DM but that is impossible.");
@@ -194,7 +194,7 @@ public class Types {
                                 if (Util.botIsConnected(bot, message.getJDA())) {
                                     message.delete().queue();
                                 } else {
-                                    channel.getMessageById(message.getId()).queue(m -> m.delete().queue());
+                                    channel.retrieveMessageById(message.getId()).queue(m -> m.delete().queue());
                                 }
                             } catch (PermissionException x) {
                                 Vixio.getErrorHandler().needsPerm(bot, "delete message", x.getPermission().getName());

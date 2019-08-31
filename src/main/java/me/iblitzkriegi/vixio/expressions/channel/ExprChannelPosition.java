@@ -5,10 +5,10 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Object, Number> {
@@ -34,8 +34,8 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Obje
     public Number convert(Object object) {
         if (object instanceof Role) {
             return ((Role) object).getPosition();
-        } else if (object instanceof Channel) {
-            return ((Channel) object).getPosition();
+        } else if (object instanceof GuildChannel) {
+            return ((GuildChannel) object).getPosition();
         }
         return null;
     }
@@ -57,8 +57,8 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Obje
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         int position = ((Number) delta[0]).intValue();
         for (Object object : getExpr().getAll(e)) {
-            if (object instanceof Channel) {
-                Channel boundChannel = Util.bindChannel(bot, (Channel) object);
+            if (object instanceof GuildChannel) {
+                GuildChannel boundChannel = Util.bindChannel(bot, (GuildChannel) object);
                 if (boundChannel != null) {
                     try {
                         boundChannel.getManager().setPosition(position).queue();
@@ -71,7 +71,7 @@ public class ExprChannelPosition extends ChangeableSimplePropertyExpression<Obje
                 try {
                     Guild guild = Util.botIsConnected(bot, role.getJDA()) ? role.getGuild() : Util.bindGuild(bot, role.getGuild());
                     if (guild != null) {
-                        guild.getController().modifyRolePositions()
+                        guild.modifyRolePositions()
                                 .selectPosition(role)
                                 .moveTo(position)
                                 .queue();

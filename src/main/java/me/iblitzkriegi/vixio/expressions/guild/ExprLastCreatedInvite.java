@@ -7,8 +7,8 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.effects.guild.EffCreateInvite;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Invite;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Invite;
 import org.bukkit.event.Event;
 
 public class ExprLastCreatedInvite extends SimpleExpression<String> {
@@ -25,16 +25,16 @@ public class ExprLastCreatedInvite extends SimpleExpression<String> {
                 );
     }
 
-    private Expression<Channel> channel;
+    private Expression<GuildChannel> channel;
 
     @Override
     protected String[] get(Event e) {
         if (channel != null) {
             Invite invite = EffCreateInvite.guildInviteHashMap.get(channel.getSingle(e));
-            return invite == null ? null : new String[]{invite.getURL()};
+            return invite == null ? null : new String[]{invite.getUrl()};
         }
 
-        return EffCreateInvite.lastCreatedInvite == null ? null : new String[]{EffCreateInvite.lastCreatedInvite.getURL()};
+        return EffCreateInvite.lastCreatedInvite == null ? null : new String[]{EffCreateInvite.lastCreatedInvite.getUrl()};
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ExprLastCreatedInvite extends SimpleExpression<String> {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        channel = (Expression<Channel>) exprs[0];
+        channel = (Expression<GuildChannel>) exprs[0];
         return true;
     }
 }

@@ -7,18 +7,18 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffPermissionOverride extends Effect {
     static {
         Vixio.getInstance().registerEffect(EffPermissionOverride.class,
                 "(allow|1¦deny) %roles/members% [the] permission[s] %permissions% [in %channels%] [with %bot/string%]")
-                .setName("Member Permission in Channel")
+                .setName("Member Permission in GuildChannel")
                 .setDesc("Allow, or deny a role or a member permissions to a channel")
                 .setExample(
                         "discord command grant <text> <permission>:",
@@ -31,7 +31,7 @@ public class EffPermissionOverride extends Effect {
                 );
     }
 
-    private Expression<Channel> channel;
+    private Expression<GuildChannel> channel;
     private Expression<Object> bot;
     private Expression<Permission> permissions;
     private Expression<Object> inputs;
@@ -46,8 +46,8 @@ public class EffPermissionOverride extends Effect {
         }
         Permission[] permissions = this.permissions.getAll(e);
         Object[] inputs = this.inputs.getAll(e);
-        Channel[] channels = this.channel.getAll(e);
-        for (Channel channel : channels) {
+        GuildChannel[] channels = this.channel.getAll(e);
+        for (GuildChannel channel : channels) {
             for (Object input : inputs) {
                 try {
                     if (input instanceof Role) {
@@ -83,7 +83,7 @@ public class EffPermissionOverride extends Effect {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         inputs = (Expression<Object>) exprs[0];
         permissions = (Expression<Permission>) exprs[1];
-        channel = (Expression<Channel>) exprs[2];
+        channel = (Expression<GuildChannel>) exprs[2];
         bot = (Expression<Object>) exprs[3];
         allow = parseResult.mark == 0;
         return true;

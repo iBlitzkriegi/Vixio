@@ -6,9 +6,9 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 
@@ -63,9 +63,9 @@ public class ExprNickname extends ChangeableSimplePropertyExpression<Member, Str
                     if (delta[0] == null || ((String) delta[0]).isEmpty()) {
                         return;
                     }
-					boundGuild.getController().setNickname(member, (String) delta[0]).queue();
+					boundGuild.modifyNickname(member, (String) delta[0]).queue();
                 } else {
-					boundGuild.getController().setNickname(member, null).queue();
+					boundGuild.modifyNickname(member, null).queue();
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, EffChange.format(mode, "nickname of", getExpr(), bot), x.getPermission().getName());

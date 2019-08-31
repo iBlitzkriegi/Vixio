@@ -6,12 +6,12 @@ import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 
 public class EvtJoinVoice extends BaseEvent<GuildVoiceJoinEvent> {
 
@@ -50,9 +50,9 @@ public class EvtJoinVoice extends BaseEvent<GuildVoiceJoinEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(JoinVoiceEvent.class, Channel.class, new Getter<Channel, JoinVoiceEvent>() {
+        EventValues.registerEventValue(JoinVoiceEvent.class, GuildChannel.class, new Getter<GuildChannel, JoinVoiceEvent>() {
             @Override
-            public Channel get(JoinVoiceEvent event) {
+            public GuildChannel get(JoinVoiceEvent event) {
                 return event.getJDAEvent().getChannelJoined();
             }
         }, 0);

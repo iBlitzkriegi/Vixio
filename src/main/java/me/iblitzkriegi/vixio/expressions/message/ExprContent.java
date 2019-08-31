@@ -10,10 +10,10 @@ import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 /**
@@ -90,7 +90,7 @@ public class ExprContent extends ChangeableSimplePropertyExpression<UpdatingMess
             }
 
             try {
-                bindedChannel.getMessageById(message.getId()).queue(message1 -> message1.editMessage(content).queue());
+                bindedChannel.retrieveMessageById(message.getId()).queue(message1 -> message1.editMessage(content).queue());
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "edit message", x.getPermission().getName());
             }

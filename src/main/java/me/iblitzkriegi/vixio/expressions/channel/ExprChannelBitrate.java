@@ -5,11 +5,11 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
-public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Channel, Integer> {
+public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<GuildChannel, Integer> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelBitrate.class, Integer.class,
                 "bitrate", "voicechannels/channels")
@@ -26,7 +26,7 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Chann
     }
 
     @Override
-    public Integer convert(Channel channel) {
+    public Integer convert(GuildChannel channel) {
         return channel instanceof VoiceChannel ? ((VoiceChannel) channel).getBitrate() / 1000 : null;
     }
 
@@ -54,7 +54,7 @@ public class ExprChannelBitrate extends ChangeableSimplePropertyExpression<Chann
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for (Channel channel : getExpr().getAll(e)) {
+        for (GuildChannel channel : getExpr().getAll(e)) {
             if (channel instanceof VoiceChannel) {
                 channel = Util.bindVoiceChannel(bot, (VoiceChannel) channel);
                 if (channel != null) {

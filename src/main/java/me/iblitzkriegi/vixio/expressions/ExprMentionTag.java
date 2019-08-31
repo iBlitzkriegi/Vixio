@@ -2,10 +2,10 @@ package me.iblitzkriegi.vixio.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.IMentionable;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 /**
  * Created by Blitz on 7/25/2017.
@@ -25,7 +25,7 @@ public class ExprMentionTag extends SimplePropertyExpression<Object, String> {
 
     @Override
     public String convert(Object o) {
-        if (o instanceof Channel) {
+        if (o instanceof GuildChannel) {
             if (o instanceof TextChannel) {
                 return ((TextChannel)o).getAsMention();
             }

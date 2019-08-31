@@ -7,10 +7,10 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.events.message.MessageDeleteEvent;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 
 public class EvtDeleteMessage extends BaseEvent<MessageDeleteEvent> {
     static {
@@ -41,9 +41,9 @@ public class EvtDeleteMessage extends BaseEvent<MessageDeleteEvent> {
             }
         }, 0);
 
-        EventValues.registerEventValue(DeleteMessageEvent.class, Channel.class, new Getter<Channel, DeleteMessageEvent>() {
+        EventValues.registerEventValue(DeleteMessageEvent.class, GuildChannel.class, new Getter<GuildChannel, DeleteMessageEvent>() {
             @Override
-            public Channel get(DeleteMessageEvent event) {
+            public GuildChannel get(DeleteMessageEvent event) {
                 return event.getJDAEvent().getTextChannel();
             }
         }, 0);

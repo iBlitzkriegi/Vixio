@@ -16,7 +16,7 @@ import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.ParseOrderWorkaround;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.api.JDA;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;

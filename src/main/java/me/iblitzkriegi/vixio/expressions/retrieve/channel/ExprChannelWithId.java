@@ -6,20 +6,20 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ExprChannelWithId extends SimpleExpression<Channel> {
+public class ExprChannelWithId extends SimpleExpression<GuildChannel> {
     static {
-        Vixio.getInstance().registerExpression(ExprChannelWithId.class, Channel.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprChannelWithId.class, GuildChannel.class, ExpressionType.SIMPLE,
                 "channel with id %string% [in %-guild%]")
                 .setName("Channel with ID")
                 .setDesc("Grabs a channel by its ID")
@@ -30,7 +30,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
     private Expression<Guild> guild;
 
     @Override
-    protected Channel[] get(Event e) {
+    protected GuildChannel[] get(Event e) {
         String id = this.id.getSingle(e);
         if (id == null || id.isEmpty()) {
             return null;
@@ -45,7 +45,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
                 return null;
             }
 
-            List<Channel> channels = new ArrayList<>();
+            List<GuildChannel> channels = new ArrayList<>();
             for (JDA jda : jdaInstances) {
                 TextChannel textChannel = jda.getTextChannelById(id);
                 VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
@@ -57,7 +57,7 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
 
             }
 
-            return channels.isEmpty() ? null : new Channel[]{channels.get(0)};
+            return channels.isEmpty() ? null : new GuildChannel[]{channels.get(0)};
         }
 
         Guild guild = this.guild.getSingle(e);
@@ -66,14 +66,14 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
         }
         TextChannel textChannel = guild.getTextChannelById(id);
         VoiceChannel voiceChannel = guild.getVoiceChannelById(id);
-        List<Channel> channels = new ArrayList<>();
+        List<GuildChannel> channels = new ArrayList<>();
         if (textChannel != null) {
             channels.add(textChannel);
         } else if (voiceChannel != null) {
             channels.add(voiceChannel);
         }
 
-        return channels.isEmpty() ? null : new Channel[]{channels.get(0)};
+        return channels.isEmpty() ? null : new GuildChannel[]{channels.get(0)};
     }
 
     @Override
@@ -82,8 +82,8 @@ public class ExprChannelWithId extends SimpleExpression<Channel> {
     }
 
     @Override
-    public Class<? extends Channel> getReturnType() {
-        return Channel.class;
+    public Class<? extends GuildChannel> getReturnType() {
+        return GuildChannel.class;
     }
 
     @Override

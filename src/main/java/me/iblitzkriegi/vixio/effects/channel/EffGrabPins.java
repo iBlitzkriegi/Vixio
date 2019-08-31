@@ -8,8 +8,8 @@ import me.iblitzkriegi.vixio.expressions.channel.ExprGrabbedPins;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 public class EffGrabPins extends AsyncEffect {
@@ -32,7 +32,7 @@ public class EffGrabPins extends AsyncEffect {
         if (channel != null) {
             try {
                 ExprGrabbedPins.pinnedMessages = null;
-                ExprGrabbedPins.pinnedMessages = channel.getPinnedMessages().complete(true);
+                ExprGrabbedPins.pinnedMessages = channel.retrievePinnedMessages().complete(true);
             } catch (RateLimitedException e1) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve pinned messages but was ratelimited");
             }

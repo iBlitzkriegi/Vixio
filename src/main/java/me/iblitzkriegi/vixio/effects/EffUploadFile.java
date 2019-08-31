@@ -11,8 +11,8 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.io.File;
@@ -60,7 +60,7 @@ public class EffUploadFile extends AsyncEffect {
                 Vixio.getErrorHandler().warn("Vixio attempted to open a private channel but was ratelimited");
                 return;
             }
-        } else if (channel instanceof Channel) {
+        } else if (channel instanceof GuildChannel) {
             if (channel instanceof TextChannel) {
                 messageChannel = (MessageChannel) channel;
             }

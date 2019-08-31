@@ -9,9 +9,9 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimpleExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class ExprCategories extends ChangeableSimpleExpression<Category> implements EasyMultiple<Guild, Category> {
@@ -75,7 +75,7 @@ public class ExprCategories extends ChangeableSimpleExpression<Category> impleme
                 switch (mode) {
                     case ADD:
                         String name = (String) delta[0];
-                        guild.getController().createCategory(name).queue();
+                        guild.createCategory(name).queue();
                         break;
                     case DELETE:
                         for (Category category : guild.getCategories()) {

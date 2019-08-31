@@ -7,10 +7,10 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.message.ExprLastRetrievedMessage;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 public class EffRetrieveMessage extends AsyncEffect {
@@ -56,7 +56,7 @@ public class EffRetrieveMessage extends AsyncEffect {
 
         if (messageChannel != null) {
             try {
-                Message message = messageChannel.getMessageById(id).complete(true);
+                Message message = messageChannel.retrieveMessageById(id).complete(true);
                 ExprLastRetrievedMessage.lastRetrievedMessage = UpdatingMessage.from(message);
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message but was ratelimited.");

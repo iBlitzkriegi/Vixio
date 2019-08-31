@@ -17,7 +17,7 @@ import ch.njol.util.NonNullPair;
 import ch.njol.util.StringUtils;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
-import net.dv8tion.jda.core.entities.ChannelType;
+import net.dv8tion.jda.api.entities.ChannelType;
 import org.bukkit.event.Event;
 
 import java.lang.reflect.InvocationTargetException;

@@ -7,9 +7,9 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Icon;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Icon;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 import java.io.File;
@@ -53,7 +53,7 @@ public class EffCreateEmote extends AsyncEffect {
             InputStream inputStream = Util.getInputStreamFromUrl(file);
             if (inputStream != null) {
                 try {
-                    bindedGuild.getController().createEmote(name, Icon.from(inputStream)).queue();
+                    bindedGuild.createEmote(name, Icon.from(inputStream)).queue();
                 } catch (IOException e1) {
 
                 } catch (PermissionException x) {
@@ -64,7 +64,7 @@ public class EffCreateEmote extends AsyncEffect {
             File toSend = new File(file);
             if (toSend.exists()) {
                 try {
-                    bindedGuild.getController().createEmote(name, Icon.from(toSend)).queue();
+                    bindedGuild.createEmote(name, Icon.from(toSend)).queue();
                 } catch (IOException e1) {
 
                 } catch (PermissionException x) {

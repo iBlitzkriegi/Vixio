@@ -7,7 +7,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.api.entities.Member;
 import org.bukkit.event.Event;
 
 public class ExprDeafened extends ChangeableSimplePropertyExpression<Member, Boolean> {
@@ -59,7 +59,7 @@ public class ExprDeafened extends ChangeableSimplePropertyExpression<Member, Boo
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         for (Member member : getExpr().getAll(e)) {
             boolean state = mode == Changer.ChangeMode.RESET ? false : (Boolean) delta[0];
-            member.getGuild().getController().setDeafen(member, state).queue();
+            member.getGuild().deafen(member, state).queue();
         }
     }
 }

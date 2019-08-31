@@ -6,21 +6,21 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ExprChannelNamed extends SimpleExpression<Channel> {
+public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
 
     static {
-        Vixio.getInstance().registerExpression(ExprChannelNamed.class, Channel.class, ExpressionType.SIMPLE,
+        Vixio.getInstance().registerExpression(ExprChannelNamed.class, GuildChannel.class, ExpressionType.SIMPLE,
                 "[(1¦voice|2¦text)][(-| )]channel[<s>] (named|with name) %string% [in %-guild%]")
                 .setName("Channel Named")
                 .setDesc("Get a channel via it's name, you can include the type of channel and/or the guild to speed the retrieval process up. The searching is case sensitive.")
@@ -43,7 +43,7 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
     private int mark;
 
     @Override
-    protected Channel[] get(Event e) {
+    protected GuildChannel[] get(Event e) {
         String name = this.name.getSingle(e);
         Guild guild = this.guild == null ? null : this.guild.getSingle(e);
         if (name == null) {
@@ -60,10 +60,10 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
                     return null;
                 }
                 if (singular) {
-                    Channel channel = textChannels.isEmpty() ? voiceChannels.get(0) : textChannels.get(0);
-                    return new Channel[]{channel};
+                    GuildChannel channel = textChannels.isEmpty() ? voiceChannels.get(0) : textChannels.get(0);
+                    return new GuildChannel[]{channel};
                 }
-                List<Channel> channels = new ArrayList<>();
+                List<GuildChannel> channels = new ArrayList<>();
                 int size = 0;
                 if (!textChannels.isEmpty()) {
                     channels.addAll(textChannels);
@@ -73,7 +73,7 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
                     channels.addAll(voiceChannels);
                     size = size + voiceChannels.size();
                 }
-                return channels.toArray(new Channel[size]);
+                return channels.toArray(new GuildChannel[size]);
             } else if (mark == 1) {
                 voiceChannels = guild.getVoiceChannelsByName(name, false);
                 if (voiceChannels.isEmpty()) {
@@ -97,7 +97,7 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
                     if (singular) {
                         return voiceChannels.isEmpty() ? new TextChannel[]{textChannels.get(0)} : new VoiceChannel[]{voiceChannels.get(0)};
                     }
-                    List<Channel> channels = new ArrayList<>();
+                    List<GuildChannel> channels = new ArrayList<>();
                     int size = 0;
                     if (!textChannels.isEmpty()) {
                         channels.addAll(textChannels);
@@ -107,7 +107,7 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
                         channels.addAll(voiceChannels);
                         size = size + voiceChannels.size();
                     }
-                    return channels.toArray(new Channel[size]);
+                    return channels.toArray(new GuildChannel[size]);
                 }
             } else if (mark == 1) {
                 voiceChannels = jda.getVoiceChannelByName(name, false);
@@ -131,8 +131,8 @@ public class ExprChannelNamed extends SimpleExpression<Channel> {
     }
 
     @Override
-    public Class<? extends Channel> getReturnType() {
-        return Channel.class;
+    public Class<? extends GuildChannel> getReturnType() {
+        return GuildChannel.class;
     }
 
     @Override

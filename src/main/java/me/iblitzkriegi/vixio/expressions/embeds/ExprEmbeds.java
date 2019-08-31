@@ -7,8 +7,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.bukkit.event.Event;
 
 public class ExprEmbeds extends PropertyExpression<UpdatingMessage, EmbedBuilder> implements EasyMultiple<UpdatingMessage, EmbedBuilder> {

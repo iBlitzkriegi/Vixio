@@ -19,20 +19,21 @@ import me.iblitzkriegi.vixio.util.enums.SearchableSite;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.PrivateChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.VoiceChannel;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import net.dv8tion.jda.core.requests.RestAction;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.PrivateChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.internal.requests.EmptyRestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -233,9 +234,10 @@ public class Util {
 
     public static RestAction<Message> bindMessage(Bot bot, Message message) {
         if (!(bot.getJDA() == message.getJDA())) {
-            return bot.getJDA().getTextChannelById(message.getChannel().getId()).getMessageById(message.getId());
+            return bot.getJDA().getTextChannelById(message.getChannel().getId()).retrieveMessageById(message.getId());
         } else {
-            return new RestAction.EmptyRestAction<>(bot.getJDA(), message);
+
+            return new EmptyRestAction<>(bot.getJDA(), message);
         }
 
     }
@@ -272,7 +274,7 @@ public class Util {
         }
     }
 
-    public static Channel bindChannel(Bot bot, Channel channel) {
+    public static GuildChannel bindChannel(Bot bot, GuildChannel channel) {
         if (!(channel.getJDA() == bot.getJDA())) {
             TextChannel textChannel = bot.getJDA().getTextChannelById(channel.getId());
             VoiceChannel voiceChannel = bot.getJDA().getVoiceChannelById(channel.getId());
@@ -290,14 +292,14 @@ public class Util {
                 if (guild == null) {
                     Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
                     for (JDA jda : jdaInstances) {
-                        Collection<net.dv8tion.jda.core.entities.Emote> emoteCollection = jda.getEmotesByName(input, false);
+                        Collection<net.dv8tion.jda.api.entities.Emote> emoteCollection = jda.getEmotesByName(input, false);
                         if (!emoteCollection.isEmpty()) {
                             return new Emote(emoteCollection.iterator().next());
                         }
                     }
                     return unicodeFrom(input);
                 }
-                Collection<net.dv8tion.jda.core.entities.Emote> emotes = guild.getEmotesByName(input, false);
+                Collection<net.dv8tion.jda.api.entities.Emote> emotes = guild.getEmotesByName(input, false);
                 if (emotes.isEmpty()) {
                     return unicodeFrom(input);
                 }
@@ -310,7 +312,7 @@ public class Util {
             if (guild == null) {
                 Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
                 for (JDA jda : jdaInstances) {
-                    net.dv8tion.jda.core.entities.Emote emote = jda.getEmoteById(id);
+                    net.dv8tion.jda.api.entities.Emote emote = jda.getEmoteById(id);
                     if (emote != null) {
                         return new Emote(emote);
                     }
@@ -318,9 +320,9 @@ public class Util {
                 return unicodeFrom(input);
             }
             try {
-                net.dv8tion.jda.core.entities.Emote emote = guild.getEmoteById(id);
+                net.dv8tion.jda.api.entities.Emote emote = guild.getEmoteById(id);
                 if (emote == null) {
-                    net.dv8tion.jda.core.entities.Emote emote1 = guild.getJDA().getEmoteById(id);
+                    net.dv8tion.jda.api.entities.Emote emote1 = guild.getJDA().getEmoteById(id);
                     if (!(emote1 == null)) {
                         return new Emote(emote1);
                     }

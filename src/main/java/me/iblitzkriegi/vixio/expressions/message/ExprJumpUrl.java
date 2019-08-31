@@ -3,7 +3,7 @@ package me.iblitzkriegi.vixio.expressions.message;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 public class ExprJumpUrl extends SimplePropertyExpression<UpdatingMessage, String> {
     static {

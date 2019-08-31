@@ -2,16 +2,17 @@ package me.iblitzkriegi.vixio.util.wrapper;
 
 import javafx.scene.media.AudioTrack;
 import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.IMentionable;
-import net.dv8tion.jda.core.entities.ISnowflake;
-import net.dv8tion.jda.core.entities.SelfUser;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.IMentionable;
+import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.SelfUser;
 
 import java.util.HashMap;
 
 public class Bot implements IMentionable, ISnowflake {
     private String name;
+
     private JDA jda;
     private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();

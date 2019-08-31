@@ -3,7 +3,7 @@ package me.iblitzkriegi.vixio.events.base;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleVixioEvent<D extends net.dv8tion.jda.core.events.Event> extends SimpleBukkitEvent {
+public class SimpleVixioEvent<D extends net.dv8tion.jda.api.events.Event> extends SimpleBukkitEvent {
 
     private D JDAEvent;
     private Map<Class<?>, Object> valueMap = new HashMap<>();

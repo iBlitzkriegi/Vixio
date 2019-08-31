@@ -1,8 +1,8 @@
 package me.iblitzkriegi.vixio.util;
 
-import net.dv8tion.jda.core.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.core.events.message.react.GenericMessageReactionEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageUpdater extends ListenerAdapter {
 
@@ -16,7 +16,7 @@ public class MessageUpdater extends ListenerAdapter {
     @Override
     public void onGenericMessageReaction(GenericMessageReactionEvent e) {
         if (shouldUpdate(e.getMessageId())) {
-            e.getChannel().getMessageById(e.getMessageId())
+            e.getChannel().retrieveMessageById(e.getMessageId())
                     .queue(message -> UpdatingMessage.put(e.getMessageId(), message));
         }
     }

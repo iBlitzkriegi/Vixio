@@ -9,8 +9,8 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.bukkit.event.Event;
 
 import java.time.Instant;
@@ -48,7 +48,7 @@ public class ExprTimestamp extends SimplePropertyExpression<Object, Date> {
             return embed.isEmpty() || embed.build().getTimestamp() == null ? null : Util.getDate(embed.build().getTimestamp());
         } else if (object instanceof UpdatingMessage) {
             Message message = ((UpdatingMessage) object).getMessage();
-            return Util.getDate(message.getCreationTime());
+            return Util.getDate(message.getTimeCreated());
         }
         return null;
     }

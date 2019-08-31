@@ -6,7 +6,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -44,11 +44,11 @@ public class ExprEmotes extends SimpleExpression<Emote> {
         Guild guild = this.guild.getSingle(e);
         ArrayList<Emote> emotes = new ArrayList<>();
         if (global) {
-            for (net.dv8tion.jda.core.entities.Emote emote : guild.getEmotes()) {
+            for (net.dv8tion.jda.api.entities.Emote emote : guild.getEmotes()) {
                 emotes.add(new Emote(emote));
             }
         } else {
-            for (net.dv8tion.jda.core.entities.Emote emote : guild.getEmotes()) {
+            for (net.dv8tion.jda.api.entities.Emote emote : guild.getEmotes()) {
                 if (emote.isManaged()) {
                     emotes.add(new Emote(emote));
                 }

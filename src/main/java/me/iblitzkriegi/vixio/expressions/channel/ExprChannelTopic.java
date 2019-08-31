@@ -5,12 +5,12 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
-public class ExprChannelTopic extends ChangeableSimplePropertyExpression<Channel, String> {
+public class ExprChannelTopic extends ChangeableSimplePropertyExpression<GuildChannel, String> {
 
     static {
         Vixio.getInstance().registerPropertyExpression(ExprChannelTopic.class, String.class,
@@ -22,7 +22,7 @@ public class ExprChannelTopic extends ChangeableSimplePropertyExpression<Channel
     }
 
     @Override
-    public String convert(Channel channel) {
+    public String convert(GuildChannel channel) {
         return channel instanceof TextChannel ? ((TextChannel) channel).getTopic() : null;
     }
 
@@ -45,7 +45,7 @@ public class ExprChannelTopic extends ChangeableSimplePropertyExpression<Channel
 
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
-        for (Channel channel : getExpr().getAll(e)) {
+        for (GuildChannel channel : getExpr().getAll(e)) {
             if (channel instanceof TextChannel) {
                 channel = Util.bindChannel(bot, (TextChannel) channel);
                 if (channel != null) {

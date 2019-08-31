@@ -1,8 +1,9 @@
 package me.iblitzkriegi.vixio.util;
 
 import ch.njol.util.Validate;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.impl.DataMessage;
+import net.dv8tion.jda.api.entities.Message;
+
+import net.dv8tion.jda.internal.entities.DataMessage;
 import org.eclipse.jdt.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
@@ -16,7 +17,6 @@ public class UpdatingMessage {
     private static final Map<String, Message> MESSAGE_MAP = new HashMap<>();
     // it's important to use a weakreference to prevent a memory leak here
     private static final Map<String, WeakReference<UpdatingMessage>> UPDATING_MESSAGES = new HashMap<>();
-
     private DataMessage dataMessage; // for built messages we don't have a real message in the map.
     private String ID;
     private boolean paused;

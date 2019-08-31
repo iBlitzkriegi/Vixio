@@ -6,9 +6,9 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.expressions.guild.ExprBanned;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.exceptions.PermissionException;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.exceptions.PermissionException;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class EffGrabBanned extends AsyncEffect {
         if (guild != null) {
             try {
                 ExprBanned.lastRetrievedBanList = null;
-                List<Guild.Ban> banList = guild.getBanList().complete(true);
+                List<Guild.Ban> banList = guild.retrieveBanList().complete(true);
                 if (banList != null) {
                     ExprBanned.lastRetrievedBanList = banList;
                 }

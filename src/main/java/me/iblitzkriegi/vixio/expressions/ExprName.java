@@ -12,8 +12,8 @@ import me.iblitzkriegi.vixio.changers.EffChange;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 /**
@@ -38,8 +38,8 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             return new String[]{((User) o).getName()};
         } else if (o instanceof Guild) {
             return new String[]{((Guild) o).getName()};
-        } else if (o instanceof Channel) {
-            return new String[]{((Channel) o).getName()};
+        } else if (o instanceof GuildChannel) {
+            return new String[]{((GuildChannel) o).getName()};
         } else if (o instanceof Bot) {
             return new String[]{((Bot) o).getName()};
         } else if (o instanceof Role) {
@@ -105,8 +105,8 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             case SET:
                 if (object instanceof Bot) {
                     bot.getSelfUser().getManager().setName(name).queue();
-                } else if (object instanceof Channel) {
-                    Channel channel = Util.bindChannel(bot, (Channel) object);
+                } else if (object instanceof GuildChannel) {
+                    GuildChannel channel = Util.bindChannel(bot, (GuildChannel) object);
 
                     try {
                         if (channel.getType() == ChannelType.TEXT) {

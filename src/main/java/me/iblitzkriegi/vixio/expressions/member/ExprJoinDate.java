@@ -7,8 +7,8 @@ import ch.njol.skript.util.Date;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 
 public class ExprJoinDate extends SimplePropertyExpression<Object, Date> {
     static {
@@ -29,9 +29,9 @@ public class ExprJoinDate extends SimplePropertyExpression<Object, Date> {
     public Date convert(Object object) {
         if (object instanceof Member) {
             Member member = (Member) object;
-            return discord ? Util.getDate(member.getJoinDate()) : Util.getDate(member.getUser().getCreationTime());
+            return discord ? Util.getDate(member.getTimeJoined()) : Util.getDate(member.getUser().getTimeCreated());
         } else if (object instanceof User) {
-            return discord ? null : Util.getDate(((User) object).getCreationTime());
+            return discord ? null : Util.getDate(((User) object).getTimeCreated());
         }
         return null;
     }

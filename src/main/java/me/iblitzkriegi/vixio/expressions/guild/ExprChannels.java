@@ -5,17 +5,17 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
-import net.dv8tion.jda.core.entities.Category;
-import net.dv8tion.jda.core.entities.Channel;
-import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.entities.GuildChannel;
+import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExprChannels extends SimpleExpression<Channel> {
+public class ExprChannels extends SimpleExpression<GuildChannel> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprChannels.class, Channel.class,
+        Vixio.getInstance().registerPropertyExpression(ExprChannels.class, GuildChannel.class,
                 "channel", "guild/category")
                 .setName("Channels of")
                 .setDesc("Get all of the channels of a guild or category.")
@@ -33,19 +33,19 @@ public class ExprChannels extends SimpleExpression<Channel> {
     private Expression<Object> object;
 
     @Override
-    protected Channel[] get(Event e) {
+    protected GuildChannel[] get(Event e) {
         Object object = this.object.getSingle(e);
 
         if (object instanceof Guild) {
             Guild guild = (Guild) object;
-            List<Channel> channels = new ArrayList<>();
+            List<GuildChannel> channels = new ArrayList<>();
             channels.addAll(guild.getTextChannels());
             channels.addAll(guild.getVoiceChannels());
 
-            return channels.toArray(new Channel[channels.size()]);
+            return channels.toArray(new GuildChannel[channels.size()]);
         } else if (object instanceof Category) {
-            List<Channel> channels = ((Category) object).getChannels();
-            return channels.toArray(new Channel[channels.size()]);
+            List<GuildChannel> channels = ((Category) object).getChannels();
+            return channels.toArray(new GuildChannel[channels.size()]);
         }
 
         return null;
@@ -57,8 +57,8 @@ public class ExprChannels extends SimpleExpression<Channel> {
     }
 
     @Override
-    public Class<? extends Channel> getReturnType() {
-        return Channel.class;
+    public Class<? extends GuildChannel> getReturnType() {
+        return GuildChannel.class;
     }
 
     @Override

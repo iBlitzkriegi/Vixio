@@ -6,9 +6,9 @@ import me.iblitzkriegi.vixio.changers.ChangeableSimplePropertyExpression;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 
@@ -53,7 +53,7 @@ public class ExprOwner extends ChangeableSimplePropertyExpression<Guild, Member>
             }
 
             try {
-                guild.getController().transferOwnership((Member) delta[0]).queue();
+                guild.transferOwnership((Member) delta[0]).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "set owner of guild", x.getPermission().getName());
             }

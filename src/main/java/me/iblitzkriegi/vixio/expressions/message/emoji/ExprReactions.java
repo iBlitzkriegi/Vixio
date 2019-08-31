@@ -11,11 +11,11 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageReaction;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
                         if (Util.botIsConnected(bot, message.getJDA())) {
                             message.clearReactions().queue();
                         } else {
-                            channel.getMessageById(message.getId()).queue(m -> m.clearReactions().queue());
+                            channel.retrieveMessageById(message.getId()).queue(m -> m.clearReactions().queue());
                         }
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, "remove all emojis", x.getPermission().getName());
@@ -149,7 +149,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
                             if (Util.botIsConnected(bot, message.getJDA())) {
                                 for (MessageReaction messageReaction : message.getReactions()) {
                                     if (messageReaction.getReactionEmote().getName().equals(emoji.getName())) {
-                                        for (User user : messageReaction.getUsers()) {
+                                        for (User user : messageReaction.retrieveUsers()) {
                                             messageReaction.removeReaction(user).queue();
                                         }
                                     }

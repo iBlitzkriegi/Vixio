@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseEvent<D extends net.dv8tion.jda.core.events.Event> extends SelfRegisteringSkriptEvent {
+public abstract class BaseEvent<D extends net.dv8tion.jda.api.events.Event> extends SelfRegisteringSkriptEvent {
 
     /**
      * The ending appended to patterns if no custom ending is specified

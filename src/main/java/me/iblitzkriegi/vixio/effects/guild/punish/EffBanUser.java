@@ -7,9 +7,9 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.exceptions.PermissionException;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
 public class EffBanUser extends Effect {
@@ -45,7 +45,7 @@ public class EffBanUser extends Effect {
         for (Object object : users) {
             String user = object instanceof User ? ((User) object).getId() : (String) object;
             try {
-                guild.getController().ban(user, days.intValue(), reason).queue();
+                guild.ban(user, days.intValue(), reason).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "ban user", x.getPermission().getName());
             } catch (IllegalArgumentException x) {
