@@ -10,6 +10,7 @@ import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
@@ -62,6 +63,8 @@ public class EffRetrieveMessage extends AsyncEffect {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message but was ratelimited.");
             } catch (NumberFormatException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message with a ID but the input was not a number");
+            } catch (ErrorResponseException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to retrieve a message with ID but the message was unknown.");
             }
         }
 
