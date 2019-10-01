@@ -228,6 +228,25 @@ public class Types {
 
         };
 
+        new SimpleType<Message.Attachment>(Message.Attachment.class, "attachment", "attachments?") {
+
+            @Override
+            public Message.Attachment parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Message.Attachment messageAttachment, int arg1) {
+                return messageAttachment.getFileName();
+            }
+
+        };
+
         EnumUtils<OnlineStatus> status = new EnumUtils<>(OnlineStatus.class, "online status");
         new SimpleType<OnlineStatus>(OnlineStatus.class, "onlinestatus", "onlinestatus") {
 
