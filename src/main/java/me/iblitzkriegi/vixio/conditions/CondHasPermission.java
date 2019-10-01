@@ -16,8 +16,8 @@ public class CondHasPermission extends Condition {
 
     static {
         Vixio.getInstance().registerCondition(CondHasPermission.class,
-                "%member% has permission %permission% [in %-GuildChannel%]", "%user% has permission %permission% [in %guild/GuildChannel%]",
-                "%member% (doesn[']t|does not) have permission %permission% [in %-GuildChannel%]", "%user% (doesn[']t|does not) have permission %permission% [in %guild/GuildChannel%]")
+                "%member% has permission %permission% [in %-channel%]", "%user% has permission %permission% [in %guild/channel%]",
+                "%member% (doesn[']t|does not) have permission %permission% [in %-channel%]", "%user% (doesn[']t|does not) have permission %permission% [in %guild/channel%]")
                 .setName("Member Has Permission")
                 .setDesc("Check if a member has a permission, can also check if they have a permission in a certain GuildChannel.")
                 .setExample("if event-member has permission voice connect");
