@@ -22,7 +22,7 @@ import org.bukkit.event.Event;
 public class ExprName extends ChangeableSimpleExpression<String> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprName.class, String.class,
-                "discord name", "channel/guild/bot/user/role/track/category/emote/field")
+                "discord name", "channel/guild/bot/user/role/track/category/emote/field/attachment")
                 .setName("Name of")
                 .setDesc("Get the name of any discord entity. You can set the name of channels, guilds, bots, categories, and channel builders.")
                 .setExample("broadcast \"%name of event-user%\"");
@@ -57,6 +57,8 @@ public class ExprName extends ChangeableSimpleExpression<String> {
             return null;
         } else if (o instanceof MessageEmbed.Field) {
             return new String[]{((MessageEmbed.Field) o).getName()};
+        } else if (o instanceof Message.Attachment) {
+            return new String[]{((Message.Attachment) o).getFileName()};
         }
         return null;
     }
