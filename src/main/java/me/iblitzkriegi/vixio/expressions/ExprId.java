@@ -7,13 +7,14 @@ import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Created by Blitz on 7/26/2017.
  */
 public class ExprId extends SimplePropertyExpression<Object, String> {
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "discord id", "channel/guild/bot/user/message/role/avatar/category/member/emote")
+        Vixio.getInstance().registerPropertyExpression(ExprId.class, String.class, "discord id", "channel/guild/bot/user/message/role/avatar/category/member/emote/attachment")
                 .setName("ID of")
                 .setDesc("Get the ID of any discord entity.")
                 .setExample("reply with \"%id of event-user%\"");
@@ -37,6 +38,8 @@ public class ExprId extends SimplePropertyExpression<Object, String> {
             return ((Member) o).getUser().getId();
         } else if (o instanceof Emote) {
             return ((Emote) o).getID();
+        } else if (o instanceof Message.Attachment) {
+            return ((Message.Attachment) o).getId();
         }
         return null;
     }
