@@ -22,7 +22,7 @@ public class ExprId extends SimplePropertyExpression<Object, String> {
 
     @Override
     protected String getPropertyName() {
-        return "id";
+        return "discord id";
     }
 
     @Override
