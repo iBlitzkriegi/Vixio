@@ -13,7 +13,7 @@ import org.bukkit.event.Event;
 public class ExprSlowMode extends ChangeableSimplePropertyExpression<GuildChannel, Number> {
 
     static {
-        Vixio.getInstance().registerPropertyExpression(ExprSlowMode.class, Number.class, "slowmode", "channel")
+        Vixio.getInstance().registerPropertyExpression(ExprSlowMode.class, Number.class, "slowmode", "channel/textchannel")
                 .setName("Slowmode of TextChannel")
                 .setDesc("Set the slowmode of a text channel. Only text channels can have have their slowmode set and retrieved. This can be set, reset, and deleted.")
                 .setExample("broadcast \"slowmode of event-channel\"");
