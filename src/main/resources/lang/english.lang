@@ -34,3 +34,10 @@ gametypes:
     streaming: streaming
     listening: listening
     watching: watching
+verificationlevels:
+    high: high
+    low: low
+    medium: medium
+    very_high : very high
+    none: none
+    unknown: unknown
