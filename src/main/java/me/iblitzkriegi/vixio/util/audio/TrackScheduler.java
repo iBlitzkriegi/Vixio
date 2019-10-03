@@ -72,6 +72,18 @@ public class TrackScheduler extends AudioEventAdapter {
         for (Object track : items) {
             queue.offer((AudioTrack) track);
         }
-
     }
+
+    public void forceTrackToPlay(AudioTrack track) {
+        AudioTrack trackToReadd = player.getPlayingTrack();
+        ArrayList currentQueue = new ArrayList<>(queue);
+        currentQueue.set(0, trackToReadd);
+        queue.clear();
+        player.stopTrack();
+        player.playTrack(track);
+        for (Object audioTrack : currentQueue) {
+            queue.offer((AudioTrack) audioTrack);
+        }
+    }
+
 }
