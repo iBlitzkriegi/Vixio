@@ -73,34 +73,7 @@ public class Types {
                 return channel.getId();
             }
 
-        }.changer(new VixioChanger<GuildChannel>() {
-                    @Override
-                    public Class<?>[] acceptChange(ChangeMode mode, boolean vixioChanger) {
-                        if (mode == ChangeMode.DELETE) {
-                            return new Class[0];
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    public void change(GuildChannel[] channels, Object[] delta, Bot bot, ChangeMode mode) {
-                        for (GuildChannel channel : channels) {
-                            GuildChannel bindedChannel = Util.bindChannel(bot, channel);
-                            if (bindedChannel != null) {
-                                try {
-                                    bindedChannel.delete().queue();
-                                } catch (PermissionException x) {
-                                    Vixio.getErrorHandler().needsPerm(bot, "delete channel", x.getPermission().getName());
-                                }
-                            }
-                        }
-                    }
-                }.documentation(
-                "Delete Channel",
-                "Delete a channel with a specific bot",
-                "delete %channel% with %bot/string%",
-                "delete event-channel with event-bot")
-        );
+        };
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
         new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
