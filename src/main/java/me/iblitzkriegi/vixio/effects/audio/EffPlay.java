@@ -20,6 +20,8 @@ import java.util.HashMap;
 
 public class EffPlay extends Effect {
 
+    public static HashMap<GuildMusicManager, AudioTrack> lastLoaded = new HashMap<>();
+
     static {
         Vixio.getInstance().registerEffect(EffPlay.class, "play %strings/tracks% [in %guild%] [with %bot/string%]")
                 .setName("Play audio")
@@ -30,7 +32,6 @@ public class EffPlay extends Effect {
     private Expression<Guild> guild;
     private Expression<Object> audio;
     private Expression<Object> bot;
-    public static HashMap<GuildMusicManager, AudioTrack> lastLoaded = new HashMap<>();
 
     @Override
     protected void execute(Event e) {
@@ -62,7 +63,6 @@ public class EffPlay extends Effect {
                                 musicManager.scheduler.queue(track);
                             }
                             lastLoaded.put(musicManager, playlist.getTracks().get(playlist.getTracks().size() - 1));
-
                         }
 
                         @Override
