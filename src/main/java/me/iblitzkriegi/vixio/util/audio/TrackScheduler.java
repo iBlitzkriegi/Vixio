@@ -75,7 +75,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void forceTrackToPlay(AudioTrack track) {
-        AudioTrack trackToReadd = player.getPlayingTrack();
+        AudioTrack trackToReadd = player.getPlayingTrack().makeClone();
         ArrayList currentQueue = new ArrayList<>(queue);
         currentQueue.set(0, trackToReadd);
         queue.clear();
