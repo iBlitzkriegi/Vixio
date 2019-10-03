@@ -122,6 +122,26 @@ public class Types {
 
         };
 
+        EnumUtils<Guild.VerificationLevel> verificationLevelUtils = new EnumUtils<>(Guild.VerificationLevel.class, "verificationlevels");
+        new SimpleType<Guild.VerificationLevel>(Guild.VerificationLevel.class, "verificationlevel", "verificationlevelss?") {
+
+            @Override
+            public Guild.VerificationLevel parse(String s, ParseContext pc) {
+                return verificationLevelUtils.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(Guild.VerificationLevel verificationLevel, int arg1) {
+                return verificationLevelUtils.toString(verificationLevel, arg1);
+            }
+
+        };
+
         EnumUtils<Activity.ActivityType> gameEnumUtils = new EnumUtils<>(Activity.ActivityType.class, "gametypes");
         new SimpleType<Activity.ActivityType>(Activity.ActivityType.class, "gametype", "gametype") {
 
