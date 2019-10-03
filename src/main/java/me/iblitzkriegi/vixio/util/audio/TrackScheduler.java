@@ -9,6 +9,7 @@ import me.iblitzkriegi.vixio.events.base.TrackEvent;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -59,5 +60,14 @@ public class TrackScheduler extends AudioEventAdapter {
     }
     public ArrayList getQueue() {
         return new ArrayList<>(queue);
+    }
+    public void shuffleQueue() {
+        ArrayList items = new ArrayList<>(queue);
+        queue.clear();
+        Collections.shuffle(items);
+        for (Object track : items) {
+            queue.offer((AudioTrack) track);
+        }
+
     }
 }
