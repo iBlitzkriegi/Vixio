@@ -48,9 +48,11 @@ public class TrackScheduler extends AudioEventAdapter {
     public AudioPlayer getPlayer() {
         return player;
     }
-    public void resetPlayer(){
+
+    public void resetPlayer() {
         queue.clear();
     }
+
     @Override
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         MusicStorage musicStorage = Vixio.getInstance().musicStorage.get(player);
@@ -58,9 +60,11 @@ public class TrackScheduler extends AudioEventAdapter {
             Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.START, musicStorage.getBot(), musicStorage.getGuild(), track));
         }
     }
+
     public ArrayList getQueue() {
         return new ArrayList<>(queue);
     }
+
     public void shuffleQueue() {
         ArrayList items = new ArrayList<>(queue);
         queue.clear();
