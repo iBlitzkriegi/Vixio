@@ -72,7 +72,7 @@ public class EffPlay extends Effect {
 
                         @Override
                         public void loadFailed(FriendlyException exception) {
-                            Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to.");
+                            Vixio.getErrorHandler().warn("Vixio attempted to load " + track + " but was unable to. Here is the response Vixio got; " + exception.getLocalizedMessage());
                         }
 
                     });
