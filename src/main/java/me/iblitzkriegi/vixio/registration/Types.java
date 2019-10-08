@@ -238,30 +238,6 @@ public class Types {
         };
 
 
-        new SimpleType<TextChannel>(TextChannel.class, "textchannel", "textchannels?") {
-
-            @Override
-            public TextChannel parse(String s, ParseContext pc) {
-                return null;
-            }
-
-            @Override
-            public boolean canParse(ParseContext pc) {
-                return false;
-            }
-
-            @Override
-            public String toString(TextChannel textChannel, int arg1) {
-                return textChannel.getName();
-            }
-
-            @Override
-            public String toVariableNameString(TextChannel textChannel) {
-                return textChannel.getId();
-            }
-
-        };
-
         new SimpleType<Guild>(Guild.class, "guild", "guilds?") {
 
             @Override
@@ -484,6 +460,77 @@ public class Types {
             @Override
             public String toVariableNameString(GuildChannel channel) {
                 return channel.getId();
+            }
+
+        };
+
+        Parser<TextChannel> TEXT_CHANNEL_PARSER = new Parser<TextChannel>() {
+            @Override
+            public String toString(TextChannel o, int flags) {
+                return null;
+            }
+
+            @Override
+            public String toVariableNameString(TextChannel o) {
+                return null;
+            }
+
+            @Override
+            public String getVariableNamePattern() {
+                return null;
+            }
+
+            @Override
+            public TextChannel parse(String s, ParseContext context) {
+                MessageReceivedEvent event = CommandListener.lastCommandEvent;
+                Message message = event.getMessage();
+                if (message.isFromType(ChannelType.PRIVATE)) {
+                    return null;
+                }
+
+                List<TextChannel> mentionedTextChannels = message.getMentionedChannels();
+                if (mentionedTextChannels.size() > 0) {
+                    if (mentionedTextChannels.size() > 1) {
+                        return null;
+                    }
+                    return mentionedTextChannels.get(0);
+                }
+                Guild guild = event.getGuild();
+                String id = s.replaceAll("[^0-9]", "");
+                if (!id.isEmpty()) {
+                    return guild.getTextChannelById(id);
+                }
+                List<TextChannel> textChannelsWithName = guild.getTextChannelsByName(s, false);
+                if (textChannelsWithName.isEmpty()) {
+                    return null;
+                }
+                return textChannelsWithName.get(0);
+            }
+        };
+
+        new SimpleType<TextChannel>(TextChannel.class, "textchannel", "textchannels?") {
+
+            @Override
+            public TextChannel parse(String s, ParseContext pc) {
+                if (CommandListener.lastCommandEvent == null) {
+                    return null;
+                }
+                return TEXT_CHANNEL_PARSER.parse(s, pc);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return pc == ParseContext.COMMAND;
+            }
+
+            @Override
+            public String toString(TextChannel textChannel, int arg1) {
+                return textChannel.getName();
+            }
+
+            @Override
+            public String toVariableNameString(TextChannel textChannel) {
+                return textChannel.getId();
             }
 
         };
