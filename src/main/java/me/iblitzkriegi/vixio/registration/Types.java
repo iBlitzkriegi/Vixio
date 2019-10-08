@@ -262,16 +262,57 @@ public class Types {
 
         };
 
-        new SimpleType<VoiceChannel>(VoiceChannel.class, "voicechannel", "voicechannels?") {
-
+        Parser<VoiceChannel> VOICE_CHANNEL_PARSER = new Parser<VoiceChannel>() {
             @Override
-            public VoiceChannel parse(String s, ParseContext pc) {
+            public String toString(VoiceChannel o, int flags) {
                 return null;
             }
 
             @Override
+            public String toVariableNameString(VoiceChannel o) {
+                return null;
+            }
+
+            @Override
+            public String getVariableNamePattern() {
+                return null;
+            }
+
+            @Override
+            public VoiceChannel parse(String s, ParseContext context) {
+                MessageReceivedEvent event = CommandListener.lastCommandEvent;
+                Message message = event.getMessage();
+                if (!message.isFromGuild()) {
+                    return null;
+                }
+
+                String id = s.replaceAll("[^0-9]", "");
+                Guild guild = event.getGuild();
+                if (id.isEmpty()) {
+                    List<VoiceChannel> voiceChannels = guild.getVoiceChannelsByName(s, false);
+                    if (voiceChannels.isEmpty() || voiceChannels.size() > 1) {
+                        return null;
+                    }
+                    return voiceChannels.get(0);
+                } else {
+                    return guild.getVoiceChannelById(id);
+                }
+            }
+        };
+
+        new SimpleType<VoiceChannel>(VoiceChannel.class, "voicechannel", "voicechannels?") {
+
+            @Override
+            public VoiceChannel parse(String s, ParseContext pc) {
+                if (CommandListener.lastCommandEvent == null) {
+                    return null;
+                }
+                return VOICE_CHANNEL_PARSER.parse(s, pc);
+            }
+
+            @Override
             public boolean canParse(ParseContext pc) {
-                return false;
+                return pc == ParseContext.COMMAND;
             }
 
             @Override
@@ -484,7 +525,7 @@ public class Types {
             public TextChannel parse(String s, ParseContext context) {
                 MessageReceivedEvent event = CommandListener.lastCommandEvent;
                 Message message = event.getMessage();
-                if (message.isFromType(ChannelType.PRIVATE)) {
+                if (!message.isFromGuild()) {
                     return null;
                 }
 
