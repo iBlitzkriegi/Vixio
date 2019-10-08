@@ -1,11 +1,10 @@
 package me.iblitzkriegi.vixio.registration;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.util.EnumUtils;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.changers.VixioChanger;
 import me.iblitzkriegi.vixio.commands.CommandListener;
@@ -22,58 +21,17 @@ import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.Region;
-import net.dv8tion.jda.api.entities.Category;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.PrivateChannel;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.SelfUser;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class Types {
 
     @SuppressWarnings("unchecked")
     public static void register() {
-        new SimpleType<GuildChannel>(GuildChannel.class, "channel", "channels?") {
-
-            @Override
-            public GuildChannel parse(String s, ParseContext pc) {
-                return null;
-            }
-
-            @Override
-            public boolean canParse(ParseContext pc) {
-                return false;
-            }
-
-            @Override
-            public String toString(GuildChannel channel, int arg1) {
-                return channel.getName();
-            }
-
-            @Override
-            public String toVariableNameString(GuildChannel channel) {
-                return channel.getId();
-            }
-
-        };
 
         EnumUtils<Region> regionEnumUtils = new EnumUtils<>(Region.class, "regions");
         new SimpleType<Region>(Region.class, "serverregion", "serverregions?") {
@@ -405,6 +363,7 @@ public class Types {
             public String getVariableNamePattern() {
                 return null;
             }
+
             @Override
             public User parse(String s, ParseContext context) {
                 MessageReceivedEvent e = CommandListener.lastCommandEvent;
@@ -452,6 +411,81 @@ public class Types {
                 }
                 return member.getUser();
             }
+        };
+
+        Parser<GuildChannel> CHANNEL_PARSER = new Parser<GuildChannel>() {
+            @Override
+            public String toString(GuildChannel o, int flags) {
+                return null;
+            }
+
+            @Override
+            public String toVariableNameString(GuildChannel o) {
+                return null;
+            }
+
+            @Override
+            public String getVariableNamePattern() {
+                return null;
+            }
+
+            @Override
+            public GuildChannel parse(String s, ParseContext context) {
+                MessageReceivedEvent event = CommandListener.lastCommandEvent;
+                if (event.getChannelType() == ChannelType.PRIVATE) {
+                    return null;
+                }
+
+                List<TextChannel> possibleMentionedChannels = event.getMessage().getMentionedChannels();
+
+                if (possibleMentionedChannels.size() > 0) {
+                    if (possibleMentionedChannels.size() > 1) {
+                        return null;
+                    }
+                    return possibleMentionedChannels.get(0);
+                }
+                String id = s.replaceAll("[^0-9]", "");
+                if (!id.isEmpty()) {
+                    return event.getGuild().getGuildChannelById(id);
+                }
+
+                List<TextChannel> textChannels = event.getGuild().getTextChannelsByName(s, false);
+                if (textChannels.size() == 0) {
+                    List<VoiceChannel> guildChannels = event.getGuild().getVoiceChannelsByName(s, false);
+                    if (guildChannels.size() == 0) {
+                        return null;
+                    }
+                    return guildChannels.get(0);
+                }
+                return textChannels.get(0);
+            }
+        };
+
+        new SimpleType<GuildChannel>(GuildChannel.class, "channel", "channels?") {
+
+            @Override
+            public GuildChannel parse(String s, ParseContext pc) {
+                if (CommandListener.lastCommandEvent == null) {
+                    return null;
+                }
+                return CHANNEL_PARSER.parse(s, pc);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return pc == ParseContext.COMMAND;
+            }
+
+            @Override
+            public String toString(GuildChannel channel, int arg1) {
+                return channel.getName();
+            }
+
+            @Override
+            public String toVariableNameString(GuildChannel channel) {
+                return channel.getId();
+            }
+
         };
 
         new SimpleType<User>(User.class, "user", "users?") {
