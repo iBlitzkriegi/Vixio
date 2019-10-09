@@ -3,6 +3,7 @@ package me.iblitzkriegi.vixio.util.wrapper;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.requests.restaction.InviteAction;
 
 public class Invite {
 
@@ -87,4 +88,16 @@ public class Invite {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public InviteAction create() {
+        if (this.getChannel() == null) {
+            return null;
+        }
+        return this.getChannel().createInvite()
+                .setMaxAge(this.getMaxAge())
+                .setMaxUses(this.getMaxUses())
+                .setTemporary(this.isTemporary())
+                .setUnique(this.isUnique());
+    }
+
 }
