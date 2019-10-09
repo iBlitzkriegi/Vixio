@@ -1,5 +1,6 @@
 package me.iblitzkriegi.vixio.util.wrapper;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -10,7 +11,7 @@ public class Invite {
     private boolean temporary;
     private boolean unique;
     private GuildChannel channel;
-    private boolean guild;
+    private Guild guild;
     private User inviter;
     private String url;
     private String code;
@@ -55,11 +56,11 @@ public class Invite {
         this.channel = channel;
     }
 
-    public boolean isGuild() {
+    public Guild getGuild() {
         return guild;
     }
 
-    public void setGuild(boolean guild) {
+    public void setGuild(Guild guild) {
         this.guild = guild;
     }
 
