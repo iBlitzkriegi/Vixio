@@ -21,6 +21,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
+import me.iblitzkriegi.vixio.util.wrapper.Invite;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -342,6 +343,25 @@ public class Types {
             @Override
             public String toString(ChannelBuilder channelBuilder, int arg1) {
                 return channelBuilder.getName();
+            }
+
+        };
+
+        new SimpleType<Invite>(Invite.class, "invite", "invites?") {
+
+            @Override
+            public Invite parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Invite invite, int arg1) {
+                return invite.getUrl();
             }
 
         };
