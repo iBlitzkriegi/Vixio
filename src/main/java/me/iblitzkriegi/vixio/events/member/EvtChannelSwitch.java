@@ -20,8 +20,8 @@ public class EvtChannelSwitch extends BaseEvent<GuildVoiceMoveEvent> {
                 .setName("Member Switch Voice Channel")
                 .setDesc("Fired when a member switches voice channels.")
                 .setExample(
-                        "on member switch voice channel:",
-                        "\tbroadcast \"%event-user% left %old channel% and joined %event-channel%\""
+                        "on member switch voice channel:\n",
+                        "\tbroadcast \"%event-user% left %old channel% and joined %new channel%\""
                 );
 
         EventValues.registerEventValue(MoveVoiceEvent.class, Bot.class, new Getter<Bot, MoveVoiceEvent>() {
@@ -60,9 +60,9 @@ public class EvtChannelSwitch extends BaseEvent<GuildVoiceMoveEvent> {
         }, 0);
 
 
-
     }
 
-    public class MoveVoiceEvent extends SimpleVixioEvent<GuildVoiceMoveEvent> {}
+    public class MoveVoiceEvent extends SimpleVixioEvent<GuildVoiceMoveEvent> {
+    }
 
 }
