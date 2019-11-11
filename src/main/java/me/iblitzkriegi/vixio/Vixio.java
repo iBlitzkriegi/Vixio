@@ -11,9 +11,11 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import me.iblitzkriegi.vixio.registration.*;
 import me.iblitzkriegi.vixio.util.Metrics;
 import me.iblitzkriegi.vixio.util.ParseOrderWorkaround;
+import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.JDA;
@@ -89,6 +91,7 @@ public class Vixio extends JavaPlugin {
             AudioSourceManagers.registerRemoteSources(playerManager);
             AudioSourceManagers.registerLocalSource(playerManager);
             this.playerManager = playerManager;
+            Util.youtubeSourceManager = new YoutubeAudioSourceManager();
             ParseOrderWorkaround.reorderSyntax();
         } catch (IOException e) {
             e.printStackTrace();

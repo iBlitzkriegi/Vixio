@@ -5,8 +5,10 @@ import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.util.Date;
 import ch.njol.skript.variables.Variables;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioTrack;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider;
 import com.sedmelluq.discord.lavaplayer.track.AudioItem;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -59,13 +61,13 @@ public class Util {
 
     public static final int DEFAULT_BITRATE = 64000;
 
+    public static YoutubeAudioSourceManager youtubeSourceManager;
+
     private static HashMap<String, Color> colors = new HashMap<>();
 
     private static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static YoutubeSearchProvider youtubeSearchProvider =
-            new YoutubeSearchProvider(
-                    new YoutubeAudioSourceManager(false)
-            );
+            new YoutubeSearchProvider();
     private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
 
     static {
@@ -94,7 +96,7 @@ public class Util {
             switch (site) {
 
                 case YOUTUBE:
-                    playlist = youtubeSearchProvider.loadSearchResult(query);
+                    playlist = youtubeSearchProvider.loadSearchResult(query, info -> new YoutubeAudioTrack(info, youtubeSourceManager));
                     break;
 
                 case SOUNDCLOUD:
