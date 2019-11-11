@@ -86,7 +86,7 @@ public class ExprRolesOfMember extends ChangeableSimpleExpression<Role> implemen
                         break;
                     case REMOVE:
                     case REMOVE_ALL:
-                        guild.modifyMemberRoles(member, null, Arrays.asList(Util.convertedArray(Role.class, delta)));
+                        guild.modifyMemberRoles(member, null, Arrays.asList(Util.convertedArray(Role.class, delta))).queue();
                 }
             } catch (PermissionException e1) {
                 Vixio.getErrorHandler().warn("Vixio encountered a permission exception while trying to change roles");
