@@ -22,6 +22,7 @@ Skript version:
 Vixio version: 
 Minecraft Version: 
 Server software name and version:
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
