@@ -1,6 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
@@ -14,6 +17,11 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
+**Information**
+Skript version: 
+Vixio version: 
+Minecraft Version: 
+Server software name and version:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
