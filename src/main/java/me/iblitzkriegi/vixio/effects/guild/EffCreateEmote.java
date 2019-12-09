@@ -44,8 +44,8 @@ public class EffCreateEmote extends AsyncEffect {
         if (file == null || name == null || guild == null || bot == null) {
             return;
         }
-        Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (bindedGuild == null) {
+        Guild boundGuild = Util.bindGuild(bot, guild);
+        if (boundGuild == null) {
             return;
         }
 
@@ -53,7 +53,7 @@ public class EffCreateEmote extends AsyncEffect {
             InputStream inputStream = Util.getInputStreamFromUrl(file);
             if (inputStream != null) {
                 try {
-                    bindedGuild.createEmote(name, Icon.from(inputStream)).queue();
+                    boundGuild.createEmote(name, Icon.from(inputStream)).queue();
                 } catch (IOException e1) {
 
                 } catch (PermissionException x) {
@@ -64,7 +64,7 @@ public class EffCreateEmote extends AsyncEffect {
             File toSend = new File(file);
             if (toSend.exists()) {
                 try {
-                    bindedGuild.createEmote(name, Icon.from(toSend)).queue();
+                    boundGuild.createEmote(name, Icon.from(toSend)).queue();
                 } catch (IOException e1) {
 
                 } catch (PermissionException x) {

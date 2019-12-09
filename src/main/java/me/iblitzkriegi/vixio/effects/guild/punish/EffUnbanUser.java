@@ -32,15 +32,15 @@ public class EffUnbanUser extends Effect {
         Bot bot = Util.botFrom(this.bot.getSingle(e));
         Guild guild = this.guild.getSingle(e);
         Object[] users = this.users.getAll(e);
-        Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (users == null || guild == null || bot == null || bindedGuild == null) {
+        Guild boundGuild = Util.bindGuild(bot, guild);
+        if (users == null || guild == null || bot == null || boundGuild == null) {
             return;
         }
 
         for (Object object : users) {
             try {
                 String user = object instanceof User ? ((User) object).getId() : (String) object;
-                bindedGuild.unban(user).queue();
+                boundGuild.unban(user).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "unban user", x.getPermission().getName());
             } catch (IllegalArgumentException x) {

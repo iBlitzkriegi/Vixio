@@ -39,10 +39,10 @@ public class EffSendTyping extends Effect{
                 user.openPrivateChannel().queue(privateChannel -> privateChannel.sendTyping().queue());
             }
         } else if (location instanceof TextChannel) {
-            TextChannel bindedChannel = Util.bindChannel(bot, (TextChannel) location);
-            if (bindedChannel != null) {
+            TextChannel boundChannel = Util.bindChannel(bot, (TextChannel) location);
+            if (boundChannel != null) {
                 try {
-                    bindedChannel.sendTyping().queue();
+                    boundChannel.sendTyping().queue();
                 } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "send typing", x.getPermission().getName());
                 }

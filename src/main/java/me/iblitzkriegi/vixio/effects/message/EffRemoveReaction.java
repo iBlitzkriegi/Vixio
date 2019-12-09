@@ -39,11 +39,11 @@ public class EffRemoveReaction extends AsyncEffect {
         if (user == null || message == null || bot == null) {
             return;
         }
-        Util.bindMessage(bot, message).queue(bindedMessage -> {
-            if (bindedMessage == null) {
+        Util.bindMessage(bot, message).queue(boundMessage -> {
+            if (boundMessage == null) {
                 return;
             }
-            for (MessageReaction messageReaction : bindedMessage.getReactions()) {
+            for (MessageReaction messageReaction : boundMessage.getReactions()) {
                 for (Emote emote : this.emote.getAll(e)) {
                     if (messageReaction.getReactionEmote().getName().equalsIgnoreCase(emote.getName())) {
                         try {

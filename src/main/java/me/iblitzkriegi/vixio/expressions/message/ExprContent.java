@@ -84,13 +84,13 @@ public class ExprContent extends ChangeableSimplePropertyExpression<UpdatingMess
                 return;
             }
 
-            TextChannel bindedChannel = Util.bindChannel(bot, message.getTextChannel());
-            if (bindedChannel == null) {
+            TextChannel boundChannel = Util.bindChannel(bot, message.getTextChannel());
+            if (boundChannel == null) {
                 return;
             }
 
             try {
-                bindedChannel.retrieveMessageById(message.getId()).queue(message1 -> message1.editMessage(content).queue());
+                boundChannel.retrieveMessageById(message.getId()).queue(message1 -> message1.editMessage(content).queue());
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "edit message", x.getPermission().getName());
             }

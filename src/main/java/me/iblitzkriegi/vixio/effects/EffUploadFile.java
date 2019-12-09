@@ -65,8 +65,8 @@ public class EffUploadFile extends AsyncEffect {
                 messageChannel = (MessageChannel) channel;
             }
         }
-        MessageChannel bindedChannel = Util.bindMessageChannel(bot, messageChannel);
-        if (bindedChannel == null) {
+        MessageChannel boundChannel = Util.bindMessageChannel(bot, messageChannel);
+        if (boundChannel == null) {
             return;
         }
         if (Util.isLink(file)) {
@@ -74,20 +74,20 @@ public class EffUploadFile extends AsyncEffect {
             String extension = Util.getExtensionFromUrl(file);
             if (message != null) {
                 if (varExpr != null) {
-                    Message resultingMessage = bindedChannel.sendMessage(message)
+                    Message resultingMessage = boundChannel.sendMessage(message)
                             .addFile(inputStream, "file." + extension).complete();
                     Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
                 } else {
-                    bindedChannel.sendMessage(message)
+                    boundChannel.sendMessage(message)
                             .addFile(inputStream, "file." + extension).queue();
                 }
             } else {
                 if (varExpr != null) {
-                    Message resultingMessage = bindedChannel.sendFile(inputStream, "file." + extension).complete();
+                    Message resultingMessage = boundChannel.sendFile(inputStream, "file." + extension).complete();
                     Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
 
                 } else {
-                    bindedChannel.sendFile(inputStream, "file." + extension).queue();
+                    boundChannel.sendFile(inputStream, "file." + extension).queue();
                 }
             }
 
@@ -96,19 +96,19 @@ public class EffUploadFile extends AsyncEffect {
             if (toSend.exists()) {
                 if (message != null) {
                     if (varExpr != null) {
-                        Message resultingMessage = bindedChannel.sendMessage(message)
+                        Message resultingMessage = boundChannel.sendMessage(message)
                                 .addFile(toSend).complete();
                         Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
                     } else {
-                        bindedChannel.sendMessage(message)
+                        boundChannel.sendMessage(message)
                                 .addFile(toSend).queue();
                     }
                 } else {
                     if (varExpr != null) {
-                        Message resultingMessage = bindedChannel.sendFile(toSend).complete();
+                        Message resultingMessage = boundChannel.sendFile(toSend).complete();
                         Util.storeInVar(varName, varExpr, UpdatingMessage.from(resultingMessage), e);
                     } else {
-                        bindedChannel.sendFile(toSend).queue();
+                        boundChannel.sendFile(toSend).queue();
                     }
                 }
             }

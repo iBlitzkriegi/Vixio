@@ -34,8 +34,8 @@ public class EffKickUser extends Effect {
         Object[] users = this.users.getAll(e);
         Guild guild = this.guild.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (bot == null || guild == null || users == null || bindedGuild == null) {
+        Guild boundGuild = Util.bindGuild(bot, guild);
+        if (bot == null || guild == null || users == null || boundGuild == null) {
             return;
         }
 
@@ -44,7 +44,7 @@ public class EffKickUser extends Effect {
         for (Object object : users) {
             String user = object instanceof User ? ((User) object).getId() : (String) object;
             try {
-                bindedGuild.kick(user, kickReason).queue();
+                boundGuild.kick(user, kickReason).queue();
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, "kick user", x.getPermission().getName());
             } catch (IllegalArgumentException x) {

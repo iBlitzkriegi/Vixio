@@ -54,10 +54,10 @@ public class ExprRegionOfGuild extends ChangeableSimplePropertyExpression<Guild,
     @Override
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         for (Guild guild : getExpr().getAll(e)) {
-            Guild bindedGuild = Util.bindGuild(bot, guild);
-            if (bindedGuild != null) {
+            Guild boundGuild = Util.bindGuild(bot, guild);
+            if (boundGuild != null) {
                 try {
-                    bindedGuild.getManager().setRegion((Region) delta[0]).queue();
+                    boundGuild.getManager().setRegion((Region) delta[0]).queue();
                 } catch (PermissionException x) {
                     Vixio.getErrorHandler().needsPerm(bot, "set region", x.getPermission().getName());
                 }

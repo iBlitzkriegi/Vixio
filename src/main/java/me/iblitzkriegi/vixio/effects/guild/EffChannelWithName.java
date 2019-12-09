@@ -40,16 +40,16 @@ public class EffChannelWithName extends Effect {
         String name = this.name.getSingle(e);
         Guild guild = this.guild.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
-        Guild bindedGuild = Util.bindGuild(bot, guild);
-        if (bot == null || guild == null || name == null || name.isEmpty() || bindedGuild == null) {
+        Guild boundGuild = Util.bindGuild(bot, guild);
+        if (bot == null || guild == null || name == null || name.isEmpty() || boundGuild == null) {
             return;
         }
         try {
             if (not) {
-                bindedGuild.createTextChannel(name).queue();
+                boundGuild.createTextChannel(name).queue();
                 return;
             }
-            bindedGuild.createVoiceChannel(name).queue();
+            boundGuild.createVoiceChannel(name).queue();
             return;
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, x.getPermission().getName(), "create channel");

@@ -38,9 +38,9 @@ public class EffLeaveVoice extends Effect {
 
         for (Object object : bot.getAll(e)) {
             Bot bot = Util.botFrom(object);
-            Guild bindedGuild = Util.bindGuild(bot, guild);
-            if (bindedGuild != null) {
-                new Thread(() -> bindedGuild.getAudioManager().closeAudioConnection()).start();
+            Guild boundGuild = Util.bindGuild(bot, guild);
+            if (boundGuild != null) {
+                new Thread(() -> boundGuild.getAudioManager().closeAudioConnection()).start();
             }
 
         }
