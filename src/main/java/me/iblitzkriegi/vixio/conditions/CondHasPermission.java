@@ -71,8 +71,8 @@ public class CondHasPermission extends Condition {
             if (guild == null) {
                 return false;
             }
-            Member guildMember = guild.getMember(user);
-            if (guildMember == null) {
+            member = guild.getMember(user);
+            if (member == null) {
                 return false;
             }
 
