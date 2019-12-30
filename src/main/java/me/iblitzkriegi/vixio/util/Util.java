@@ -69,7 +69,7 @@ public class Util {
     private static DefaultAudioPlayerManager defaultAudioPlayerManager = new DefaultAudioPlayerManager();
     private static YoutubeSearchProvider youtubeSearchProvider =
             new YoutubeSearchProvider();
-    private static SoundCloudAudioSourceManager soundCloudSearchProvider = new SoundCloudAudioSourceManager(true);
+    private static SoundCloudAudioSourceManager soundCloudSearchProvider = SoundCloudAudioSourceManager.createDefault();
 
     static {
         try {
