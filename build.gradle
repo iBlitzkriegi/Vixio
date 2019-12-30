@@ -73,10 +73,10 @@ dependencies {
 
     // JDA
 
-    compile "net.dv8tion:JDA:4.0.0_39"
+    compile "net.dv8tion:JDA:4.1.0_88"
 
     // LavaPlayer
-    compile 'com.sedmelluq:lavaplayer:1.3.25'
+    compile 'com.sedmelluq:lavaplayer:1.3.32'
     compile 'club.minnced:opus-java-api:v1.0.1'
 
     // Skript API

@@ -35,7 +35,8 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.requests.RestAction;
-import net.dv8tion.jda.internal.requests.EmptyRestAction;
+
+import net.dv8tion.jda.internal.requests.CompletedRestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -239,7 +240,7 @@ public class Util {
             return bot.getJDA().getTextChannelById(message.getChannel().getId()).retrieveMessageById(message.getId());
         } else {
 
-            return new EmptyRestAction<>(bot.getJDA(), message);
+            return new CompletedRestAction<>(bot.getJDA(), message);
         }
 
     }
