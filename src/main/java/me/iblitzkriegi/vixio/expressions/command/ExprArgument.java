@@ -18,7 +18,7 @@ import me.iblitzkriegi.vixio.commands.DiscordArgument;
 import me.iblitzkriegi.vixio.commands.DiscordCommandEvent;
 import me.iblitzkriegi.vixio.commands.DiscordCommandFactory;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

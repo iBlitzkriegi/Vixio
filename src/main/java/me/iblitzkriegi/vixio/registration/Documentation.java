@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Documentation {
     public static void setupSyntaxFile() {
-        File file = new File(Vixio.getInstance().getDataFolder(), "Syntaxes.txt");
+        File file = new File(Vixio.getInstance().getDataFolder(), "Syntaxes.js");
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -32,17 +32,23 @@ public class Documentation {
             FileWriter fw;
             fw = new FileWriter(file, true);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(tab("Conditions:", 0));
+            bw.write(tab("export default {", 0));
+            bw.write(tab("Conditions: [", 1));
             writeRegistration(bw, Vixio.getInstance().conditions);
 
-            bw.write(tab("Effects:", 0));
+            bw.write(tab("],", 1));
+            bw.write(tab("Effects: [", 1));
             writeRegistration(bw, Vixio.getInstance().effects);
 
-            bw.write(tab("Expressions:", 0));
+            bw.write(tab("],", 1));
+            bw.write(tab("Expressions: [", 1));
             writeRegistration(bw, Vixio.getInstance().expressions);
 
-            bw.write(tab("Events:", 0));
+            bw.write(tab("],", 1));
+            bw.write(tab("Events: [", 1));
             writeRegistration(bw, Vixio.getInstance().events);
+            bw.write(tab("]", 1));
+            bw.write(tab("}", 0));
 
             bw.flush();
             bw.close();
@@ -56,15 +62,24 @@ public class Documentation {
     public static boolean writeRegistration(BufferedWriter bw, List<Registration> registrationList) {
         try {
             for (Registration registration : registrationList) {
-                bw.write(tab("name: " + registration.getName(), 1));
-                bw.write(tab("description: " + registration.getDesc(), 2));
-                bw.write(tab("patterns:", 2));
+                bw.write(tab("{", 2));
+                bw.write(tab("name: \"" + registration.getName() + "\",", 3));
+                bw.write(tab("description: \"" + registration.getDesc() + "\",", 3));
+                bw.write(tab("patterns: [", 3));
                 if (registration.getUserFacing() == null) {
                     for (String pattern : registration.getSyntaxes()) {
-                        bw.write(tab("- " + pattern, 3));
+                        bw.write(tab("\"" + pattern + "\",", 4));
                     }
                 } else {
-                    bw.write(tab("- " + registration.getUserFacing(), 3));
+                    bw.write(tab("\"" + registration.getUserFacing() + "\"", 4));
+                }
+                if (registration.getExample() != null) {
+                    bw.write(tab("],", 3));
+                    bw.write(tab("example: \"" + registration.getExample() + "\"", 3));
+                    bw.write(tab("},", 2));
+                } else {
+                    bw.write(tab("]", 3));
+                    bw.write(tab("},", 2));
                 }
 
             }
