@@ -11,10 +11,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageReaction;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
 
@@ -94,7 +91,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         change(messages.getAll(e), msg -> {
             Message message = UpdatingMessage.convert(msg);
-            TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
+            MessageChannel channel = Util.bindChannel(bot, message.getChannel());
             //TODO: use Util#bindMessage to bind the message and remove botIsConnected checks after this
             if (channel == null) {
                 return;
