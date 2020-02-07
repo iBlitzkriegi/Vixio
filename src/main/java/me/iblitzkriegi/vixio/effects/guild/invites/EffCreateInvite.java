@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.effects.guild;
+package me.iblitzkriegi.vixio.effects.guild.invites;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
