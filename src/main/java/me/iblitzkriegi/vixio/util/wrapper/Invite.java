@@ -16,6 +16,8 @@ public class Invite {
     private User inviter;
     private String url;
     private String code;
+    private net.dv8tion.jda.api.entities.Invite.Channel parsedChannel;
+    private net.dv8tion.jda.api.entities.Invite.Guild parsedGuild;
 
     public int getMaxUses() {
         return maxUses;
@@ -98,6 +100,28 @@ public class Invite {
                 .setMaxUses(this.getMaxUses())
                 .setTemporary(this.isTemporary())
                 .setUnique(this.isUnique());
+    }
+
+    public static Invite parseInvite(net.dv8tion.jda.api.entities.Invite invite) {
+        Invite newInvite = new Invite();
+        newInvite.setMaxAge(invite.getMaxAge());
+        newInvite.setInviter(invite.getInviter());
+        newInvite.setChannel(invite.getChannel());
+        newInvite.setCode(invite.getCode());
+        newInvite.setUrl(invite.getUrl());
+        newInvite.setGuild(invite.getGuild());
+        newInvite.setMaxUses(invite.getMaxUses());
+        newInvite.setTemporary(invite.isTemporary());
+        newInvite.setUnique(invite.isExpanded());
+        return newInvite;
+    }
+
+    private void setGuild(net.dv8tion.jda.api.entities.Invite.Guild guild) {
+        this.parsedGuild = guild;
+    }
+
+    private void setChannel(net.dv8tion.jda.api.entities.Invite.Channel channel) {
+        this.parsedChannel = channel;
     }
 
 }
