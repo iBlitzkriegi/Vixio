@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.restaction.InviteAction;
 
+import java.time.OffsetDateTime;
+
 public class Invite {
 
     private int maxUses;
@@ -18,6 +20,8 @@ public class Invite {
     private String code;
     private net.dv8tion.jda.api.entities.Invite.Channel parsedChannel;
     private net.dv8tion.jda.api.entities.Invite.Guild parsedGuild;
+    private OffsetDateTime timeCreated;
+
 
     public int getMaxUses() {
         return maxUses;
@@ -75,6 +79,14 @@ public class Invite {
         this.inviter = inviter;
     }
 
+    public void setTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public OffsetDateTime getTimeCreated() {
+        return timeCreated;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -104,9 +116,12 @@ public class Invite {
 
     public static Invite parseInvite(net.dv8tion.jda.api.entities.Invite invite) {
         Invite newInvite = new Invite();
+
         newInvite.setMaxAge(invite.getMaxAge());
         newInvite.setInviter(invite.getInviter());
         newInvite.setChannel(invite.getChannel());
+        newInvite.setTimeCreated(invite.getTimeCreated());
+
         newInvite.setCode(invite.getCode());
         newInvite.setUrl(invite.getUrl());
         newInvite.setGuild(invite.getGuild());
