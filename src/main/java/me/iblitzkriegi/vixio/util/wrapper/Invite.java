@@ -21,6 +21,7 @@ public class Invite {
     private net.dv8tion.jda.api.entities.Invite.Channel parsedChannel;
     private net.dv8tion.jda.api.entities.Invite.Guild parsedGuild;
     private OffsetDateTime timeCreated;
+    private boolean isExpanded;
 
 
     public int getMaxUses() {
@@ -37,6 +38,14 @@ public class Invite {
 
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 
     public boolean isTemporary() {
@@ -128,6 +137,7 @@ public class Invite {
         newInvite.setMaxUses(invite.getMaxUses());
         newInvite.setTemporary(invite.isTemporary());
         newInvite.setUnique(invite.isExpanded());
+        newInvite.setExpanded(invite.isExpanded());
         return newInvite;
     }
 
