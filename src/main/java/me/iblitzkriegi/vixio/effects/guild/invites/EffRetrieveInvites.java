@@ -52,12 +52,12 @@ public class EffRetrieveInvites extends AsyncEffect {
                 ExprRetrievedInvites.lastRetrievedInvites = invites.stream()
                         .map(me.iblitzkriegi.vixio.util.wrapper.Invite::parseInvite)
                         .collect(Collectors.toList());
-                return;
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve invites from a guild but was rate limited.");
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to perform action \"retrieve invites\" but was missing the " + x.getPermission().getName() + " permission.");
             }
+            return;
 
         }
         GuildChannel guildChannel = (GuildChannel) input;

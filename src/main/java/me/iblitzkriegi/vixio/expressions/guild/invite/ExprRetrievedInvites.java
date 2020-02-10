@@ -30,7 +30,7 @@ public class ExprRetrievedInvites extends SimpleExpression<Invite> {
 
     @Override
     protected Invite[] get(Event e) {
-        return lastRetrievedInvites.toArray(new Invite[lastRetrievedInvites.size()]);
+        return lastRetrievedInvites == null ? null : lastRetrievedInvites.toArray(new Invite[lastRetrievedInvites.size()]);
     }
 
     @Override
