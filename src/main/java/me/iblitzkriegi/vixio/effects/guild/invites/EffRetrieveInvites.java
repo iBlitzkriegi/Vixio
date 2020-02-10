@@ -9,6 +9,7 @@ import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.exceptions.PermissionException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.bukkit.event.Event;
 
@@ -54,6 +55,8 @@ public class EffRetrieveInvites extends AsyncEffect {
                 return;
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to retrieve invites from a guild but was rate limited.");
+            } catch (PermissionException x) {
+                Vixio.getErrorHandler().warn("Vixio attempted to perform action \"retrieve invites\" but was missing the " + x.getPermission().getName() + " permission.");
             }
 
         }
