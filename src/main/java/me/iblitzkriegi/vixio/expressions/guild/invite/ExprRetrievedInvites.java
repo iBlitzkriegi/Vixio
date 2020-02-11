@@ -16,7 +16,7 @@ public class ExprRetrievedInvites extends SimpleExpression<Invite> {
 
     static {
         Vixio.getInstance().registerExpression(ExprRetrievedInvites.class, Invite.class, ExpressionType.SIMPLE,
-                "last (grabbed|retrieved) invites")
+                "[the] last (grabbed|retrieved) invites")
                 .setName("Retrieved Invites")
                 .setDesc("Get the invites the retrieve invites effect retrieved.")
                 .setExample(
