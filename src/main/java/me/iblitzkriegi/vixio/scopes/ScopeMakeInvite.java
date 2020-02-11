@@ -53,12 +53,14 @@ public class ScopeMakeInvite extends EffectSection {
             return;
         }
         try {
-            boundChannel.createInvite()
+            net.dv8tion.jda.api.entities.Invite invite2;
+            invite2 = boundChannel.createInvite()
                     .setUnique(invite.isUnique())
                     .setMaxUses(invite.getMaxUses())
                     .setMaxAge(invite.getMaxAge())
                     .setTemporary(invite.isTemporary())
-                    .queue();
+                    .complete();
+            invite.setTimeCreated(invite2.getTimeCreated());
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, "create invite to channel", x.getPermission().getName());
         }
