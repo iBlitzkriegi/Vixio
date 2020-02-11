@@ -61,6 +61,8 @@ public class ScopeMakeInvite extends EffectSection {
                     .setTemporary(invite.isTemporary())
                     .complete();
             invite.setTimeCreated(invite2.getTimeCreated());
+            invite.setUrl(invite2.getUrl());
+            invite.setCode(invite2.getCode());
         } catch (PermissionException x) {
             Vixio.getErrorHandler().needsPerm(bot, "create invite to channel", x.getPermission().getName());
         }
