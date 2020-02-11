@@ -18,12 +18,36 @@ public class Invite {
     private User inviter;
     private String url;
     private String code;
-    private net.dv8tion.jda.api.entities.Invite.Channel parsedChannel;
-    private net.dv8tion.jda.api.entities.Invite.Guild parsedGuild;
     private OffsetDateTime timeCreated;
     private boolean isExpanded;
     private boolean isCreated = false;
 
+    public static Invite parseInvite(net.dv8tion.jda.api.entities.Invite invite) {
+        Invite newInvite = new Invite();
+
+        newInvite.setMaxAge(invite.getMaxAge());
+        newInvite.setInviter(invite.getInviter());
+        newInvite.setChannel(invite.getJDA().getGuildChannelById(invite.getChannel().getId()));
+        newInvite.setTimeCreated(invite.getTimeCreated());
+
+        newInvite.setCode(invite.getCode());
+        newInvite.setUrl(invite.getUrl());
+        newInvite.setGuild(invite.getJDA().getGuildById(invite.getGuild().getId()));
+        newInvite.setMaxUses(invite.getMaxUses());
+        newInvite.setTemporary(invite.isTemporary());
+        newInvite.setUnique(invite.isExpanded());
+        newInvite.setExpanded(invite.isExpanded());
+        newInvite.setCreated(true);
+        return newInvite;
+    }
+
+    public void setGuild(Guild parsedGuild) {
+        this.guild = parsedGuild;
+    }
+
+    public Guild getGuild() {
+        return this.guild;
+    }
 
     public int getMaxUses() {
         return maxUses;
@@ -73,14 +97,6 @@ public class Invite {
         this.channel = channel;
     }
 
-    public Guild getGuild() {
-        return guild;
-    }
-
-    public void setGuild(Guild guild) {
-        this.guild = guild;
-    }
-
     public User getInviter() {
         return inviter;
     }
@@ -89,12 +105,12 @@ public class Invite {
         this.inviter = inviter;
     }
 
-    public void setTimeCreated(OffsetDateTime timeCreated) {
-        this.timeCreated = timeCreated;
-    }
-
     public OffsetDateTime getTimeCreated() {
         return timeCreated;
+    }
+
+    public void setTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
     }
 
     public String getUrl() {
@@ -124,39 +140,12 @@ public class Invite {
                 .setUnique(this.isUnique());
     }
 
-    public static Invite parseInvite(net.dv8tion.jda.api.entities.Invite invite) {
-        Invite newInvite = new Invite();
-
-        newInvite.setMaxAge(invite.getMaxAge());
-        newInvite.setInviter(invite.getInviter());
-        newInvite.setChannel(invite.getChannel());
-        newInvite.setTimeCreated(invite.getTimeCreated());
-
-        newInvite.setCode(invite.getCode());
-        newInvite.setUrl(invite.getUrl());
-        newInvite.setGuild(invite.getGuild());
-        newInvite.setMaxUses(invite.getMaxUses());
-        newInvite.setTemporary(invite.isTemporary());
-        newInvite.setUnique(invite.isExpanded());
-        newInvite.setExpanded(invite.isExpanded());
-        newInvite.setCreated(true);
-        return newInvite;
-    }
-
-    private void setCreated(boolean b) {
-        this.isCreated = b;
-    }
-
     public boolean isCreated() {
         return isCreated;
     }
 
-    private void setGuild(net.dv8tion.jda.api.entities.Invite.Guild guild) {
-        this.parsedGuild = guild;
-    }
-
-    private void setChannel(net.dv8tion.jda.api.entities.Invite.Channel channel) {
-        this.parsedChannel = channel;
+    private void setCreated(boolean b) {
+        this.isCreated = b;
     }
 
 }
