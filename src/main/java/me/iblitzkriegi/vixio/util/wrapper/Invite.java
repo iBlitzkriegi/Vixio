@@ -22,6 +22,7 @@ public class Invite {
     private net.dv8tion.jda.api.entities.Invite.Guild parsedGuild;
     private OffsetDateTime timeCreated;
     private boolean isExpanded;
+    private boolean isCreated = false;
 
 
     public int getMaxUses() {
@@ -138,7 +139,16 @@ public class Invite {
         newInvite.setTemporary(invite.isTemporary());
         newInvite.setUnique(invite.isExpanded());
         newInvite.setExpanded(invite.isExpanded());
+        newInvite.setCreated(true);
         return newInvite;
+    }
+
+    private void setCreated(boolean b) {
+        this.isCreated = b;
+    }
+
+    public boolean isCreated() {
+        return isCreated;
     }
 
     private void setGuild(net.dv8tion.jda.api.entities.Invite.Guild guild) {
