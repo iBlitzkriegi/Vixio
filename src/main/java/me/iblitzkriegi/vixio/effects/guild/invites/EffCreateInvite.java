@@ -23,7 +23,7 @@ public class EffCreateInvite extends AsyncEffect {
 
     static {
         Vixio.getInstance().registerEffect(EffCreateInvite.class, "create a[n] (invite|invitation) to %channel% [with %bot/string%] [and store it in %-objects%]")
-                .setName("Create Invite to Guild")
+                .setName("Create Invite to Channel")
                 .setDesc("Create a invitation to a channel. Can store the newly created invite with the storage option or use the last created invite expression.")
                 .setExample(
                         "discord command invite:",
