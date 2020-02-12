@@ -86,9 +86,7 @@ public class ExprUserWithName extends SimpleExpression<User> {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        System.out.println(parseResult.mark);
         if (parseResult.mark == 1) {
-            System.out.println("MATCH");
             this.isSingle = false;
         }
         name = (Expression<String>) exprs[0];
