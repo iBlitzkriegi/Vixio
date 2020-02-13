@@ -16,6 +16,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'java'
+apply plugin: 'maven'
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -32,9 +33,9 @@ repositories {
     }
 
     //LavaPlayer
-    maven {
-        url 'http://maven.sedmelluq.com'
-    }
+    //maven {
+    //    url 'http://maven.sedmelluq.com'
+    //}
 
     //Bungeecord-chat (needed for Spigot)
     maven {
