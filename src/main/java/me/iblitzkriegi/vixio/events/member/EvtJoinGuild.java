@@ -16,10 +16,10 @@ public class EvtJoinGuild extends BaseEvent<GuildMemberJoinEvent> {
     static {
 
         BaseEvent.register("user join guild", EvtJoinGuild.class, JoinGuildEvent.class,
-                "(guild|member) join (guild|server)")
+                "(user|member) join (guild|server)")
                 .setName("Guild Join")
                 .setDesc("Fired when a user joins a guild")
-                .setExample("on guild join:");
+                .setExample("on member join guild:");
 
         EventValues.registerEventValue(JoinGuildEvent.class, Bot.class, new Getter<Bot, JoinGuildEvent>() {
             @Override
