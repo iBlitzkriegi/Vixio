@@ -12,8 +12,8 @@ import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageReaction;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 import org.bukkit.event.Event;
@@ -94,8 +94,7 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
     public void change(Event e, Object[] delta, Bot bot, Changer.ChangeMode mode) {
         change(messages.getAll(e), msg -> {
             Message message = UpdatingMessage.convert(msg);
-            TextChannel channel = Util.bindChannel(bot, message.getTextChannel());
-            //TODO: use Util#bindMessage to bind the message and remove botIsConnected checks after this
+            MessageChannel channel = Util.bindChannel(bot, message.getChannel());
             if (channel == null) {
                 return;
             }
@@ -103,28 +102,22 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
             switch (mode) {
                 case ADD:
                     try {
-                        if (Util.botIsConnected(bot, message.getJDA())) {
-                            for (Object o : delta) {
-                                try {
-                                    Emote emoji = (Emote) o;
-                                    if (Util.botIsConnected(bot, message.getJDA())) {
-                                        if (emoji.isEmote()) {
-                                            message.addReaction(emoji.getEmote()).queue();
+                        Util.bindMessage(bot, message).queue(boundMessage -> {
+                            if (boundMessage != null) {
+                                for (Object o : delta) {
+                                    try {
+                                        Emote emote = (Emote) o;
+                                        if (emote.isEmote()) {
+                                            boundMessage.addReaction(emote.getEmote()).queue();
                                         } else {
-                                            message.addReaction(emoji.getName()).queue();
+                                            boundMessage.addReaction(emote.getName()).queue();
                                         }
-                                    } else {
-                                        if (emoji.isEmote()) {
-                                            channel.addReactionById(message.getId(), emoji.getEmote()).queue();
-                                        } else {
-                                            channel.addReactionById(message.getId(), emoji.getName()).queue();
-                                        }
+                                    } catch (IllegalArgumentException x) {
+                                        Vixio.getErrorHandler().warn("Vixio attempted to add a emote to " + message.getId() + " with " + bot.getName() + " but was unable to find the emoji.");
                                     }
-                                } catch (IllegalArgumentException x) {
-                                    Vixio.getErrorHandler().warn("Vixio attempted to add a emote to " + message.getId() + " with " + bot.getName() + " but was unable to find the emoji.");
                                 }
                             }
-                        }
+                        });
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, "add emoji", x.getPermission().getName());
                     }

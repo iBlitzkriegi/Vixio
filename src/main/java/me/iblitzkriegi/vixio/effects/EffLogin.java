@@ -52,11 +52,7 @@ public class EffLogin extends AsyncEffect {
 
         JDA api;
         try {
-            try {
-                api = new JDABuilder(AccountType.BOT).setToken(token).build().awaitReady();
-            } catch (AccountTypeException x) {
-                api = new JDABuilder(AccountType.CLIENT).setToken(token).build().awaitReady();
-            }
+            api = new JDABuilder(AccountType.BOT).setToken(token).build().awaitReady();
         } catch (LoginException | InterruptedException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");

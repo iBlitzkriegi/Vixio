@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.restaction.InviteAction;
 
+import java.time.OffsetDateTime;
+
 public class Invite {
 
     private int maxUses;
@@ -16,6 +18,36 @@ public class Invite {
     private User inviter;
     private String url;
     private String code;
+    private OffsetDateTime timeCreated;
+    private boolean isExpanded;
+    private boolean isCreated = false;
+
+    public static Invite parseInvite(net.dv8tion.jda.api.entities.Invite invite) {
+        Invite newInvite = new Invite();
+
+        newInvite.setMaxAge(invite.getMaxAge());
+        newInvite.setInviter(invite.getInviter());
+        newInvite.setChannel(invite.getJDA().getGuildChannelById(invite.getChannel().getId()));
+        newInvite.setTimeCreated(invite.getTimeCreated());
+
+        newInvite.setCode(invite.getCode());
+        newInvite.setUrl(invite.getUrl());
+        newInvite.setGuild(invite.getJDA().getGuildById(invite.getGuild().getId()));
+        newInvite.setMaxUses(invite.getMaxUses());
+        newInvite.setTemporary(invite.isTemporary());
+        newInvite.setUnique(invite.isExpanded());
+        newInvite.setExpanded(invite.isExpanded());
+        newInvite.setCreated(true);
+        return newInvite;
+    }
+
+    public void setGuild(Guild parsedGuild) {
+        this.guild = parsedGuild;
+    }
+
+    public Guild getGuild() {
+        return this.guild;
+    }
 
     public int getMaxUses() {
         return maxUses;
@@ -31,6 +63,14 @@ public class Invite {
 
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
     }
 
     public boolean isTemporary() {
@@ -57,20 +97,20 @@ public class Invite {
         this.channel = channel;
     }
 
-    public Guild getGuild() {
-        return guild;
-    }
-
-    public void setGuild(Guild guild) {
-        this.guild = guild;
-    }
-
     public User getInviter() {
         return inviter;
     }
 
     public void setInviter(User inviter) {
         this.inviter = inviter;
+    }
+
+    public OffsetDateTime getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
     }
 
     public String getUrl() {
@@ -98,6 +138,14 @@ public class Invite {
                 .setMaxUses(this.getMaxUses())
                 .setTemporary(this.isTemporary())
                 .setUnique(this.isUnique());
+    }
+
+    public boolean isCreated() {
+        return isCreated;
+    }
+
+    private void setCreated(boolean b) {
+        this.isCreated = b;
     }
 
 }

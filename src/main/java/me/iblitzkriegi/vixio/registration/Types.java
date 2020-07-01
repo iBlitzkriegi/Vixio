@@ -21,6 +21,7 @@ import me.iblitzkriegi.vixio.util.wrapper.Avatar;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import me.iblitzkriegi.vixio.util.wrapper.ChannelBuilder;
 import me.iblitzkriegi.vixio.util.wrapper.Emote;
+import me.iblitzkriegi.vixio.util.wrapper.Invite;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -258,6 +259,30 @@ public class Types {
             @Override
             public String toVariableNameString(Guild guild) {
                 return guild.getId();
+            }
+
+        };
+
+        new SimpleType<Invite>(Invite.class, "invite", "invites?") {
+
+            @Override
+            public Invite parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(Invite invite, int arg1) {
+                return invite.getUrl();
+            }
+
+            @Override
+            public String toVariableNameString(Invite invite) {
+                return invite.getUrl();
             }
 
         };
@@ -944,6 +969,63 @@ public class Types {
             @Override
             public String toString(ChannelType type, int arg1) {
                 return type.name();
+            }
+
+        };
+
+        new SimpleType<StoreChannel>(StoreChannel.class, "storechanneltype", "store ? channel ? types?") {
+
+            @Override
+            public StoreChannel parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(StoreChannel type, int arg1) {
+                return type.getName();
+            }
+
+        };
+
+        new SimpleType<IPermissionHolder>(IPermissionHolder.class, "ipermissionholdertype", "ipermission ? holder ? types?") {
+
+            @Override
+            public IPermissionHolder parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(IPermissionHolder type, int arg1) {
+                return type.getId();
+            }
+
+        };
+
+        new SimpleType<PermissionOverride>(PermissionOverride.class, "permissionoverridetype", "permission ? override ? types?") {
+
+            @Override
+            public PermissionOverride parse(String s, ParseContext pc) {
+                return null;
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return false;
+            }
+
+            @Override
+            public String toString(PermissionOverride type, int arg1) {
+                return type.getId();
             }
 
         };

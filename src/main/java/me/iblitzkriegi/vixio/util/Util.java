@@ -237,7 +237,11 @@ public class Util {
 
     public static RestAction<Message> bindMessage(Bot bot, Message message) {
         if (!(bot.getJDA() == message.getJDA())) {
-            return bot.getJDA().getTextChannelById(message.getChannel().getId()).retrieveMessageById(message.getId());
+            if (message.isFromGuild()) {
+                return bot.getJDA().getTextChannelById(message.getChannel().getId()).retrieveMessageById(message.getId());
+            } else {
+                return bot.getJDA().getUserById(message.getChannel().getId()).openPrivateChannel().complete().retrieveMessageById(message.getId());
+            }
         } else {
 
             return new CompletedRestAction<>(bot.getJDA(), message);
