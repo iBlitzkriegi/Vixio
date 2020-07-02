@@ -1,21 +1,9 @@
-group 'me.iblitzkriegi.vixio'
+import org.apache.tools.ant.filters.ReplaceTokens
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
-        classpath 'de.undercouch:gradle-download-task:3.3.0'
-    }
-
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'java'
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'de.undercouch.download'
-apply plugin: 'java'
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
@@ -69,7 +57,7 @@ repositories {
 dependencies {
 
     // Spigot API
-    shadow group: 'org.spigotmc', name: 'spigot-api', version: project.property('apiversion')
+    implementation 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
 
     // JDA
 
@@ -80,7 +68,8 @@ dependencies {
     compile 'club.minnced:opus-java-api:v1.0.1'
 
     // Skript API
-    shadow group: 'ch.njol', name: 'skript', version: project.property('skriptapiversion')
+    implementation 'com.github.SkriptLang:Skript:2.3.7'
+
     compile 'ch.qos.logback:logback-classic:1.2.3'
     compile 'com.vdurmont:emoji-java:3.3.0'
     compile group: 'org.json', name: 'json', version: '20180813'
@@ -88,34 +77,10 @@ dependencies {
 
 }
 
-jar.enabled = false
-assemble.dependsOn(shadowJar)
-
-def pluginDir = 'src/main/resources/plugin.yml'
-def tempDir = 'build/tmp/tempResources'
-
-
-processResources.doFirst {
-    copy {
-        from(pluginDir)
-        into(tempDir)
-    }
-    ant.replace(file: pluginDir, token: '@VERSION@', value: project.property('version'))
-}
-
-processResources.doLast {
-    copy {
-        from(tempDir + '/plugin.yml')
-        into(project.file(pluginDir).parent)
-    }
+processResources {
+    filter(ReplaceTokens, tokens: [version: version])
 }
 
 shadowJar {
-    classifier = ''
-
-    relocate 'org.apache.commons.lang3', project.group + ".org.apache.commons.lang3"
-    relocate 'org.apache.http', project.group + ".org.apache.http"
-    relocate 'org.apache.commons.io', project.group + ".org.apache.commons.io"
-    destinationDir = new File(project.property('destinationDir'))
-
+    configurations = [project.configurations.compile]
 }
