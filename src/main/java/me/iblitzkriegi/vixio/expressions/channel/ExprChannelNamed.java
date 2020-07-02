@@ -91,7 +91,7 @@ public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
         Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
         for (JDA jda : jdaInstances) {
             if (mark == 0) {
-                voiceChannels = jda.getVoiceChannelByName(name, false);
+                voiceChannels = jda.getVoiceChannelsByName(name, false);
                 textChannels = jda.getTextChannelsByName(name, false);
                 if (!(voiceChannels.isEmpty()) || (!(textChannels.isEmpty()))) {
                     if (singular) {
@@ -110,7 +110,7 @@ public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
                     return channels.toArray(new GuildChannel[size]);
                 }
             } else if (mark == 1) {
-                voiceChannels = jda.getVoiceChannelByName(name, false);
+                voiceChannels = jda.getVoiceChannelsByName(name, false);
                 if (!voiceChannels.isEmpty()) {
                     return singular ? new VoiceChannel[]{voiceChannels.get(0)} : voiceChannels.toArray(new VoiceChannel[voiceChannels.size()]);
                 }
@@ -141,6 +141,7 @@ public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         singular = parseResult.regexes.size() == 0;
         mark = parseResult.mark;

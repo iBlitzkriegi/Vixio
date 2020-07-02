@@ -86,6 +86,7 @@ public class ExprAfkChannel extends ChangeableSimpleExpression<VoiceChannel> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guilds = (Expression<Guild>) exprs[0];
         return true;

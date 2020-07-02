@@ -47,6 +47,7 @@ public class ExprNewEmbedTitle extends SimpleExpression<Title> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         text = (Expression<String>) exprs[0];
         url = (Expression<String>) exprs[1];

@@ -105,6 +105,7 @@ public class EffCreateChannelBuilder extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channelBuilder = (Expression<ChannelBuilder>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

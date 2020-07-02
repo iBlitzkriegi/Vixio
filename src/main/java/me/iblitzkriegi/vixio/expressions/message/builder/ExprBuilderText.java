@@ -26,8 +26,8 @@ public class ExprBuilderText extends SimplePropertyExpression<MessageBuilder, St
 
     private boolean stripped;
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<MessageBuilder>) exprs[0]);
         stripped = parseResult.regexes.size() == 1;
@@ -75,6 +75,8 @@ public class ExprBuilderText extends SimplePropertyExpression<MessageBuilder, St
                 for (MessageBuilder messageBuilder : messageBuilders) {
                     messageBuilder.setContent((String) delta[0]);
                 }
+                break;
+            default:
                 break;
         }
     }

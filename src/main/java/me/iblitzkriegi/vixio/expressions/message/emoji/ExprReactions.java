@@ -70,8 +70,8 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
 
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         messages = (Expression<UpdatingMessage>) exprs[0];
         return true;
@@ -153,6 +153,8 @@ public class ExprReactions extends ChangeableSimpleExpression<Emote> implements 
                     } catch (PermissionException x) {
                         Vixio.getErrorHandler().needsPerm(bot, "remove emoji", x.getPermission().getName());
                     }
+                    break;
+                default:
                     break;
 
             }

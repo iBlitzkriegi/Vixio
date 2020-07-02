@@ -43,6 +43,7 @@ public class CondMuted extends Condition implements EasyMultiple<Member, Void> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         members = (Expression<Member>) exprs[0];
         guild = parseResult.regexes.size() == 1;

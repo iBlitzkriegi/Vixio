@@ -8,8 +8,6 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 
-import java.util.List;
-
 public class ExprGametype extends SimplePropertyExpression<Object, Activity.ActivityType> {
     static {
         Vixio.getInstance().registerPropertyExpression(ExprGametype.class, Activity.ActivityType.class, "game type", "bots/users/strings")
@@ -40,13 +38,7 @@ public class ExprGametype extends SimplePropertyExpression<Object, Activity.Acti
             }
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
-            List<Activity> thing = member.getActivities();
-            Activity t = thing.get(0);
-
-            if (member != null) {
-                return member.getActivities().isEmpty() ? null : member.getActivities().get(0).getType();
-            }
-            return null;
+            return member.getActivities().isEmpty() ? null : member.getActivities().get(0).getType();
         }
         return null;
     }

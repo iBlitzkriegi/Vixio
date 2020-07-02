@@ -1,4 +1,4 @@
-package me.iblitzkriegi.vixio.events;
+package me.iblitzkriegi.vixio.events.guild;
 
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser;
@@ -35,78 +35,91 @@ public class EvtPermissionOverride extends BaseEvent<GenericPermissionOverrideEv
                 return event.getJDAEvent().getChannel();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, ChannelType.class, new Getter<ChannelType, GuildPermissionOverrideEvent>() {
             @Override
             public ChannelType get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getChannelType();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Category.class, new Getter<Category, GuildPermissionOverrideEvent>() {
             @Override
             public Category get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getCategory();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, TextChannel.class, new Getter<TextChannel, GuildPermissionOverrideEvent>() {
             @Override
             public TextChannel get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getTextChannel();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, VoiceChannel.class, new Getter<VoiceChannel, GuildPermissionOverrideEvent>() {
             @Override
             public VoiceChannel get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getVoiceChannel();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Member.class, new Getter<Member, GuildPermissionOverrideEvent>() {
             @Override
             public Member get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getMember();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, IPermissionHolder.class, new Getter<IPermissionHolder, GuildPermissionOverrideEvent>() {
             @Override
             public IPermissionHolder get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getPermissionHolder();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, PermissionOverride.class, new Getter<PermissionOverride, GuildPermissionOverrideEvent>() {
             @Override
             public PermissionOverride get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getPermissionOverride();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Role.class, new Getter<Role, GuildPermissionOverrideEvent>() {
             @Override
             public Role get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getRole();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, StoreChannel.class, new Getter<StoreChannel, GuildPermissionOverrideEvent>() {
             @Override
             public StoreChannel get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().getStoreChannel();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Bot.class, new Getter<Bot, GuildPermissionOverrideEvent>() {
             @Override
             public Bot get(GuildPermissionOverrideEvent event) {
                 return Util.botFrom(event.getJDAEvent().getJDA());
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Boolean.class, new Getter<Boolean, GuildPermissionOverrideEvent>() {
             @Override
             public Boolean get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().isMemberOverride();
             }
         }, 0);
+
         EventValues.registerEventValue(GuildPermissionOverrideEvent.class, Boolean.class, new Getter<Boolean, GuildPermissionOverrideEvent>() {
             @Override
             public Boolean get(GuildPermissionOverrideEvent event) {
                 return event.getJDAEvent().isRoleOverride();
             }
         }, 0);
+
     }
 
     @Override

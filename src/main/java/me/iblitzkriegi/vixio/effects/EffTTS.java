@@ -28,6 +28,7 @@ public class EffTTS extends Effect implements EasyMultiple<MessageBuilder, Void>
     private Expression<MessageBuilder> builders;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         builders = (Expression<MessageBuilder>) exprs[0];
         tts = parseResult.mark == 1;

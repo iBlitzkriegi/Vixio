@@ -51,6 +51,7 @@ public class ExprArgument extends SimpleExpression<Object> {
     private DiscordArgument<?> arg;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final ParseResult parser) {
         if (!ScriptLoader.isCurrentEvent(DiscordCommandEvent.class))
             return false;
@@ -88,7 +89,7 @@ public class ExprArgument extends SimpleExpression<Object> {
                 break;
             case 4:
             case 5:
-                @SuppressWarnings("unchecked") final ClassInfo<?> c = ((Literal<ClassInfo<?>>) exprs[0]).getSingle();
+                final ClassInfo<?> c = ((Literal<ClassInfo<?>>) exprs[0]).getSingle();
                 @SuppressWarnings("null") final int num = parser.regexes.size() > 0 ? Utils.parseInt(parser.regexes.get(0).group()) : -1;
                 int j = 1;
                 for (final DiscordArgument<?> a : currentArguments) {

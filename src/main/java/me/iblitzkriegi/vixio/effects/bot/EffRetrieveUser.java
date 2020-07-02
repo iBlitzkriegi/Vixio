@@ -5,7 +5,6 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.skript.SkriptUtil;
-import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
@@ -62,6 +61,7 @@ public class EffRetrieveUser extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         user = (Expression<String>) exprs[0];
         if (exprs[1] instanceof Variable) {

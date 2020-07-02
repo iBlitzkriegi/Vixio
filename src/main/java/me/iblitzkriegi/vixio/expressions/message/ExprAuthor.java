@@ -3,7 +3,6 @@ package me.iblitzkriegi.vixio.expressions.message;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 
 public class ExprAuthor extends SimplePropertyExpression<UpdatingMessage, User> {

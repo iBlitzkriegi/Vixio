@@ -29,7 +29,7 @@ public class CondHasPermission extends Condition {
     private Expression<Object> object;
 
     @Override
-
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         if (matchedPattern == 1 || matchedPattern == 3) {
             user = (Expression<User>) exprs[0];
@@ -77,9 +77,9 @@ public class CondHasPermission extends Condition {
             }
 
             if (object instanceof GuildChannel) {
-                return isNegated() != member.hasPermission((GuildChannel) object, permission);
+                return isNegated() != guildMember.hasPermission((GuildChannel) object, permission);
             } else if (object instanceof Guild) {
-                return isNegated() != member.hasPermission(permission);
+                return isNegated() != guildMember.hasPermission(permission);
             }
 
             return false;

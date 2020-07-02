@@ -50,6 +50,7 @@ public class ExprRoles extends SimpleExpression<Role> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guild = (Expression<Guild>) exprs[0];
         return true;

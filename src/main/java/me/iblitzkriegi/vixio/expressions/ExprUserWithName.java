@@ -85,6 +85,7 @@ public class ExprUserWithName extends SimpleExpression<User> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         if (parseResult.mark == 1) {
             this.isSingle = false;

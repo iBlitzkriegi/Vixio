@@ -51,6 +51,7 @@ public class ExprCategories extends ChangeableSimpleExpression<Category> impleme
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guilds = (Expression<Guild>) exprs[0];
         return true;
@@ -81,6 +82,8 @@ public class ExprCategories extends ChangeableSimpleExpression<Category> impleme
                         for (Category category : guild.getCategories()) {
                             category.delete().queue();
                         }
+                    default:
+                        break;
                 }
             } catch (PermissionException x) {
                 Vixio.getErrorHandler().needsPerm(bot, mode.name().toLowerCase() + " category", x.getPermission().getName());

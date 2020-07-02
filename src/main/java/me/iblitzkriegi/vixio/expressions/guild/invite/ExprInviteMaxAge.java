@@ -53,6 +53,7 @@ public class ExprInviteMaxAge extends ChangeableSimplePropertyExpression<Invite,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<Invite>) exprs[0]);
         return true;

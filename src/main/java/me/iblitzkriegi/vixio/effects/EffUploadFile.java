@@ -122,6 +122,7 @@ public class EffUploadFile extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         file = (Expression<String>) exprs[0];
         message = (Expression<Object>) exprs[1];

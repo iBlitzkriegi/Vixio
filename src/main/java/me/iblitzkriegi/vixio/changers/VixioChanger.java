@@ -26,7 +26,6 @@ public abstract class VixioChanger<T> implements Changer<T> {
 
     public abstract void change(T[] what, Object[] delta, Bot bot, Changer.ChangeMode mode);
 
-    @SuppressWarnings("unchecked")
     public VixioChanger documentation(String title, String desc, String pattern, String... example) {
         Registration reg = new Registration(pattern).setName(title)
                 .setDesc(desc)

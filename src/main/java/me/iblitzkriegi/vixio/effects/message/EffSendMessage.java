@@ -77,6 +77,7 @@ public class EffSendMessage extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         message = (Expression<Object>) exprs[0];
         sources = (Expression<Object>) exprs[1];

@@ -46,6 +46,7 @@ public class CondNsfw extends Condition implements EasyMultiple<Object, Void> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channels = (Expression<Object>) exprs[0];
         setNegated(matchedPattern == 1);

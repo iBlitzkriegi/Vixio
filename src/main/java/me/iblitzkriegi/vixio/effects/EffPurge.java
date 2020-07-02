@@ -78,6 +78,7 @@ public class EffPurge extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         messages = (Expression<UpdatingMessage>) exprs[0];
         bot = (Expression<Object>) exprs[1];

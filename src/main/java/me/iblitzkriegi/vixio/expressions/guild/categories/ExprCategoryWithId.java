@@ -52,6 +52,7 @@ public class ExprCategoryWithId extends SimpleExpression<Category> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         categoryId = (Expression<String>) exprs[0];
         return true;

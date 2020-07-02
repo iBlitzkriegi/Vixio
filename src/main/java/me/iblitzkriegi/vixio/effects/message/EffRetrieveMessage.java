@@ -76,6 +76,7 @@ public class EffRetrieveMessage extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
         channel = (Expression<Object>) expressions[1];

@@ -9,9 +9,9 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 
-public class EvtLeaveGuild extends BaseEvent<GuildMemberLeaveEvent> {
+public class EvtLeaveGuild extends BaseEvent<GuildMemberRemoveEvent> {
 
     static {
 
@@ -51,7 +51,7 @@ public class EvtLeaveGuild extends BaseEvent<GuildMemberLeaveEvent> {
 
     }
 
-    public class JoinGuildEvent extends SimpleVixioEvent<GuildMemberLeaveEvent> {
+    public class JoinGuildEvent extends SimpleVixioEvent<GuildMemberRemoveEvent> {
     }
 
 }

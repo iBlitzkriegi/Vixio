@@ -38,6 +38,7 @@ public class ExprRegionOfGuild extends ChangeableSimplePropertyExpression<Guild,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(final Expression<?>[] exprs, final int matchedPattern, final Kleenean isDelayed, final SkriptParser.ParseResult parseResult) {
         setExpr((Expression<? extends Guild>) exprs[0]);
         return true;

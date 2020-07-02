@@ -33,6 +33,7 @@ public class ExprEmbed extends SimpleExpression<EmbedBuilder> {
     private boolean scope = false;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         scope = EffectSection.isCurrentSection(ScopeMakeEmbed.class);
         return true;

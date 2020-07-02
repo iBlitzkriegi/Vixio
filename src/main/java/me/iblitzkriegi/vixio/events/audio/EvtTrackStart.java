@@ -19,6 +19,7 @@ public class EvtTrackStart extends SkriptEvent {
     private Expression<String> bot;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
         bot = (Expression<String>) args[0];
         return true;

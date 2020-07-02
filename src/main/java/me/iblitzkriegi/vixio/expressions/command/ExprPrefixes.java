@@ -22,6 +22,7 @@ public class ExprPrefixes extends PropertyExpression<DiscordCommand, String> imp
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<DiscordCommand>) exprs[0]);
         return true;

@@ -58,6 +58,7 @@ public class ExprContent extends ChangeableSimplePropertyExpression<UpdatingMess
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<UpdatingMessage>) exprs[0]);
         hasModifiers = parseResult.regexes.size() == 1;

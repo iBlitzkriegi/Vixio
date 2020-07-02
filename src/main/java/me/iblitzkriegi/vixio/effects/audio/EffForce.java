@@ -77,6 +77,7 @@ public class EffForce extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         audio = (Expression<Object>) exprs[1];

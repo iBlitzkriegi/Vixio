@@ -56,8 +56,8 @@ public class ExprUserWithId extends SimpleExpression<User> {
         return "user with id " + id.toString(e, debug);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];
         return true;

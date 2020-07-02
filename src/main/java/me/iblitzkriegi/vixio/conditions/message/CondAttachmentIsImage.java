@@ -36,6 +36,7 @@ public class CondAttachmentIsImage extends Condition implements EasyMultiple<Mes
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         attachments = (Expression<Message.Attachment>) exprs[0];
         setNegated(matchedPattern == 1);

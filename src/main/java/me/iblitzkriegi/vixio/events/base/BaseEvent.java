@@ -66,6 +66,7 @@ public abstract class BaseEvent<D extends net.dv8tion.jda.api.events.Event> exte
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] exprs, int matchedPattern, SkriptParser.ParseResult parser) {
         bot = (String) (exprs[0] == null ? null : exprs[0].getSingle());
 

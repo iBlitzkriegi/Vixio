@@ -4,12 +4,11 @@ import me.iblitzkriegi.vixio.util.audio.GuildMusicManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.IMentionable;
-import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.SelfUser;
 
 import java.util.HashMap;
 
-public class Bot implements IMentionable, ISnowflake {
+public class Bot implements IMentionable {
     private String name;
 
     private JDA jda;

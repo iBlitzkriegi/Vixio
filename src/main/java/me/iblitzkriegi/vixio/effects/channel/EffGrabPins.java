@@ -45,6 +45,7 @@ public class EffGrabPins extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         source = (Expression<Object>) exprs[0];
         bot = (Expression<Object>) exprs[1];

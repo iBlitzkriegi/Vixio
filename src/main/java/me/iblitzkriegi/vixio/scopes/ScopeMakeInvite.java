@@ -37,8 +37,8 @@ public class ScopeMakeInvite extends EffectSection {
 
     @Override
     protected void execute(Event e) {
-        Invite invite = this.lastInvite == null ? new Invite() : this.lastInvite;
-        this.lastInvite = invite;
+        Invite invite = lastInvite == null ? new Invite() : lastInvite;
+        lastInvite = invite;
         runSection(e);
         Object object = this.object.getSingle(e);
         Bot bot = Util.botFrom(this.bot.getSingle(e));
@@ -78,6 +78,7 @@ public class ScopeMakeInvite extends EffectSection {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         if (checkIfCondition())
             return false;

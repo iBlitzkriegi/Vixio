@@ -58,13 +58,13 @@ public class ScopeMakeEmbed extends EffectSection {
         lastEmbed = embed == null ? new EmbedBuilder() : embed;
         runSection(e);
         if (matchedPattern == 1) {
-            Bot bot = Util.botFrom(this.bot.getSingle(e));
-            if (bot == null) {
+            Bot currentBot = Util.botFrom(bot.getSingle(e));
+            if (currentBot == null) {
                 return;
             }
             try {
                 for (Object source : sources.getArray(e)) {
-                    MessageChannel messageChannel = Util.getMessageChannel(bot, source);
+                    MessageChannel messageChannel = Util.getMessageChannel(currentBot, source);
                     if (messageChannel != null) {
                         if (varExpr == null) {
                             messageChannel.sendMessage(embed.build()).queue();
@@ -79,16 +79,16 @@ public class ScopeMakeEmbed extends EffectSection {
             } catch (RateLimitedException e1) {
                 Vixio.getErrorHandler().cantOpenPrivateChannel();
             } catch (PermissionException x) {
-                Vixio.getErrorHandler().needsPerm(bot, "send embed", x.getPermission().getName());
+                Vixio.getErrorHandler().needsPerm(currentBot, "send embed", x.getPermission().getName());
             }
         } else if (matchedPattern == 2) {
             MessageChannel messageChannel = EventValues.getEventValue(e, MessageChannel.class, 0);
-            Bot bot = EventValues.getEventValue(e, Bot.class, 0);
-            if (bot == null | messageChannel == null) {
+            Bot currentBot = EventValues.getEventValue(e, Bot.class, 0);
+            if (currentBot == null | messageChannel == null) {
                 return;
             }
             try {
-                MessageChannel boundChannel = Util.bindChannel(bot, messageChannel);
+                MessageChannel boundChannel = Util.bindChannel(currentBot, messageChannel);
                 if (boundChannel == null) {
                     return;
                 }
@@ -101,7 +101,7 @@ public class ScopeMakeEmbed extends EffectSection {
                     }
                 }
             } catch (PermissionException x) {
-                Vixio.getErrorHandler().needsPerm(bot, "send embed", x.getPermission().getName());
+                Vixio.getErrorHandler().needsPerm(currentBot, "send embed", x.getPermission().getName());
             } catch (RateLimitedException x) {
                 Vixio.getErrorHandler().warn("Vixio attempted to send a embed but got rate limited.");
             }
@@ -114,6 +114,7 @@ public class ScopeMakeEmbed extends EffectSection {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         if (checkIfCondition())
             return false;

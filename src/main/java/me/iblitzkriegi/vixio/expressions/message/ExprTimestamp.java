@@ -83,6 +83,8 @@ public class ExprTimestamp extends SimplePropertyExpression<Object, Date> {
 
             case SET:
                 embed.setTimestamp(Instant.ofEpochMilli(((Date) delta[0]).getTimestamp()));
+            default:
+                break;
         }
     }
 

@@ -22,6 +22,7 @@ public class ExprEmbedColor extends SimplePropertyExpression<EmbedBuilder, Color
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -56,6 +57,8 @@ public class ExprEmbedColor extends SimplePropertyExpression<EmbedBuilder, Color
 
             case SET:
                 embed.setColor((Color) delta[0]);
+            default:
+                break;
         }
     }
 

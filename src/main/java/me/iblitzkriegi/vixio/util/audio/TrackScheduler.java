@@ -61,12 +61,12 @@ public class TrackScheduler extends AudioEventAdapter {
         }
     }
 
-    public ArrayList getQueue() {
-        return new ArrayList<>(queue);
+    public ArrayList<AudioTrack> getQueue() {
+        return new ArrayList<AudioTrack>(queue);
     }
 
     public void shuffleQueue() {
-        ArrayList items = new ArrayList<>(queue);
+        ArrayList<AudioTrack> items = new ArrayList<AudioTrack>(queue);
         queue.clear();
         Collections.shuffle(items);
         for (Object track : items) {
@@ -76,7 +76,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     public void forceTrackToPlay(AudioTrack track) {
         AudioTrack trackToReadd = player.getPlayingTrack().makeClone();
-        ArrayList currentQueue = new ArrayList<>(queue);
+        ArrayList<AudioTrack> currentQueue = new ArrayList<AudioTrack>(queue);
         currentQueue.set(0, trackToReadd);
         queue.clear();
         player.stopTrack();

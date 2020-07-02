@@ -24,6 +24,7 @@ public class ExprInlineEmbed extends SimpleExpression<EmbedBuilder> {
     private Expression<String> string;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         title = matchedPattern == 0;
         builder = (Expression<EmbedBuilder>) exprs[0];

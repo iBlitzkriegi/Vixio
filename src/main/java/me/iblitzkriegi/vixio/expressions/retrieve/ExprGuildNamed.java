@@ -52,6 +52,7 @@ public class ExprGuildNamed extends SimpleExpression<Guild> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         name = (Expression<String>) exprs[0];
         return true;

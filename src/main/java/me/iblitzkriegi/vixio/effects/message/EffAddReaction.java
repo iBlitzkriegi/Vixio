@@ -58,6 +58,7 @@ public class EffAddReaction extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         emote = (Expression<Emote>) exprs[0];
         message = (Expression<UpdatingMessage>) exprs[1];

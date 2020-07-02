@@ -2,8 +2,6 @@ package me.iblitzkriegi.vixio.registration;
 
 import ch.njol.util.StringUtils;
 
-import java.util.ArrayList;
-
 /**
  * Created by Blitz on 7/22/2017.
  */

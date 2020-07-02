@@ -56,6 +56,7 @@ public class EffNsfw extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channels = (Expression<GuildChannel>) exprs[0];
         bot = (Expression<Bot>) exprs[1];

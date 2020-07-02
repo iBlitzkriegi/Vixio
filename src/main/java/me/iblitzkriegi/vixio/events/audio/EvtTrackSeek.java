@@ -4,13 +4,8 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import me.iblitzkriegi.vixio.events.base.BaseEvent;
 import me.iblitzkriegi.vixio.events.base.TrackEvent;
-import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.api.entities.Guild;
 import org.bukkit.event.Event;
 
 public class EvtTrackSeek extends SkriptEvent {
@@ -24,6 +19,7 @@ public class EvtTrackSeek extends SkriptEvent {
     private Expression<String> bot;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
         bot = (Expression<String>) args[0];
         return true;

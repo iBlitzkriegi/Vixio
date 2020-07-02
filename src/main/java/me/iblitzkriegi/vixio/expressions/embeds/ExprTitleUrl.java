@@ -19,6 +19,7 @@ public class ExprTitleUrl extends SimplePropertyExpression<Title, String> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<Title>) exprs[0]);

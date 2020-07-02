@@ -65,6 +65,7 @@ public class ExprNewEmbedField extends SimpleExpression<MessageEmbed.Field> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         name = (Expression<String>) exprs[0];
         value = (Expression<String>) exprs[1];

@@ -60,6 +60,7 @@ public class EffMoveMember extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         member = (Expression<Member>) exprs[0];
         channel = (Expression<GuildChannel>) exprs[1];

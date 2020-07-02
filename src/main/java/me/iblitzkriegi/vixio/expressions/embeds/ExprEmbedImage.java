@@ -22,6 +22,7 @@ public class ExprEmbedImage extends SimplePropertyExpression<EmbedBuilder, Messa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -65,6 +66,8 @@ public class ExprEmbedImage extends SimplePropertyExpression<EmbedBuilder, Messa
                 } catch (IllegalArgumentException e1) {
                     Skript.error("Vixio encountered the error \"" + e1.getMessage() + "\" while trying to set the image of " + getExpr().toString(e, false) + " to " + "\"" + url + "\"");
                 }
+            default:
+                break;
         }
     }
 

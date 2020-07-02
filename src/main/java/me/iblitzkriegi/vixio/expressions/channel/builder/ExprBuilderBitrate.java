@@ -52,6 +52,7 @@ public class ExprBuilderBitrate extends SimplePropertyExpression<ChannelBuilder,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<ChannelBuilder>) exprs[0]);
         return true;

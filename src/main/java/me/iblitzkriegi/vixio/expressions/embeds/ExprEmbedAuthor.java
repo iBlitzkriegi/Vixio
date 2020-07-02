@@ -21,6 +21,7 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -62,6 +63,8 @@ public class ExprEmbedAuthor extends SimplePropertyExpression<EmbedBuilder, Mess
                 for (EmbedBuilder embedBuilder : embeds) {
                     embedBuilder.setAuthor(null, null, null);
                 }
+                break;
+            default:
                 break;
         }
     }

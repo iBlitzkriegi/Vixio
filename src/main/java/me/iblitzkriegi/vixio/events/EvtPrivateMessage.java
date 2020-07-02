@@ -10,7 +10,6 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -60,6 +59,7 @@ public class EvtPrivateMessage extends BaseEvent<PrivateMessageReceivedEvent> {
     private boolean sent;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] exprs, int matchedPattern, SkriptParser.ParseResult parser) {
         sent = parser.regexes.get(0).group().equals("sent");
         return super.init(exprs, matchedPattern, parser);

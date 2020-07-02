@@ -6,7 +6,6 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.util.UpdatingMessage;
-import net.dv8tion.jda.api.entities.Message;
 import org.bukkit.event.Event;
 
 public class EffUpdates extends Effect {
@@ -26,6 +25,7 @@ public class EffUpdates extends Effect {
 	private Expression<UpdatingMessage> messages;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		messages = (Expression<UpdatingMessage>) exprs[0];
 		pause = parseResult.regexes.get(0).group().equals("pause");

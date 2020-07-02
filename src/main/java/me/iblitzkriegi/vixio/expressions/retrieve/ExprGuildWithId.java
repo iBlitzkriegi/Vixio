@@ -58,6 +58,7 @@ public class ExprGuildWithId extends SimpleExpression<Guild> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) expressions[0];
         return true;

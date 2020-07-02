@@ -40,7 +40,7 @@ public class EffGrabMessages extends AsyncEffect {
 
     private Expression<Number> messages;
     private Expression<GuildChannel> channel;
-    public static List<UpdatingMessage> updatingMessages;
+    public static List<UpdatingMessage> updatedMessages;
     private Variable<?> varExpr;
     private VariableString varName;
 
@@ -55,7 +55,7 @@ public class EffGrabMessages extends AsyncEffect {
                 .limit(messages.intValue())
                 .map(UpdatingMessage::from)
                 .collect(Collectors.toList());
-        this.updatingMessages = updatingMessages;
+        updatedMessages = updatingMessages;
         if (varExpr != null) {
             Util.storeInVar(varName, varExpr, updatingMessages, e);
         }
@@ -68,6 +68,7 @@ public class EffGrabMessages extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         messages = (Expression<Number>) exprs[0];
         channel = (Expression<GuildChannel>) exprs[1];

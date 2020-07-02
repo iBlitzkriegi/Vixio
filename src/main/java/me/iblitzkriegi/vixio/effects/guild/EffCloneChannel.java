@@ -59,7 +59,7 @@ public class EffCloneChannel extends AsyncEffect {
                 Util.storeInVar(varName, varExpr, copiedChannel, e);
             }
         } catch (PermissionException x) {
-            Vixio.getInstance().getErrorHandler().needsPerm(bot, "copy channel ", x.getPermission().getName());
+            Vixio.getErrorHandler().needsPerm(bot, "copy channel ", x.getPermission().getName());
         }
     }
 
@@ -69,6 +69,7 @@ public class EffCloneChannel extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channel = (Expression<GuildChannel>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

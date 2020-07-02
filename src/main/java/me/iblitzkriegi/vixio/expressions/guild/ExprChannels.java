@@ -66,8 +66,8 @@ public class ExprChannels extends SimpleExpression<GuildChannel> {
         return "channels of " + object.toString(e, debug);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         object = (Expression<Object>) exprs[0];
         return true;

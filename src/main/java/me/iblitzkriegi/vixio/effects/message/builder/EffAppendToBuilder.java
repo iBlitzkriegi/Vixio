@@ -52,6 +52,7 @@ public class EffAppendToBuilder extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         toAppend = (Expression<String>) exprs[0];
         builder = (Expression<MessageBuilder>) exprs[1];

@@ -57,6 +57,7 @@ public class ExprMutualGuilds extends SimpleExpression<Guild> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         user = (Expression<User>) exprs[0];
         bot = (Expression<Object>) exprs[1];

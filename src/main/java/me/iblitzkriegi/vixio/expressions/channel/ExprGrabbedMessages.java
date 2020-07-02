@@ -35,7 +35,7 @@ public class ExprGrabbedMessages extends SimpleExpression<UpdatingMessage> {
 
     @Override
     protected UpdatingMessage[] get(Event e) {
-        List<UpdatingMessage> messages = EffGrabMessages.updatingMessages;
+        List<UpdatingMessage> messages = EffGrabMessages.updatedMessages;
         if (messages == null) {
             return null;
         }

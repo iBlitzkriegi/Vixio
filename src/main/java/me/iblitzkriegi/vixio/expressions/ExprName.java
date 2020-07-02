@@ -87,7 +87,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
 
     @Override
     public Class<?>[] acceptChange(Changer.ChangeMode mode, boolean vixioChanger) {
-        if ((mode == Changer.ChangeMode.SET && object.isSingle())) {
+        if (mode == Changer.ChangeMode.SET && object.isSingle()) {
             return new Class[]{String.class};
         }
         return null;
@@ -133,6 +133,8 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                                 x.getPermission().getName());
                     }
                 }
+            default:
+                break;
         }
     }
 }

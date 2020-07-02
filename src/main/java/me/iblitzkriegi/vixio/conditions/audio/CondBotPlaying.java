@@ -40,6 +40,7 @@ public class CondBotPlaying extends Condition {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

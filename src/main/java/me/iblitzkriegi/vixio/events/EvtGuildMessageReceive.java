@@ -79,6 +79,7 @@ public class EvtGuildMessageReceive extends BaseEvent<GuildMessageReceivedEvent>
     private boolean sent;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] exprs, int matchedPattern, SkriptParser.ParseResult parser) {
         sent = parser.mark == 2;
         return super.init(exprs, matchedPattern, parser);

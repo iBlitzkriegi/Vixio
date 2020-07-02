@@ -82,6 +82,7 @@ public class EffCreateEmote extends AsyncEffect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         file = (Expression<String>) exprs[0];
         name = (Expression<String>) exprs[1];

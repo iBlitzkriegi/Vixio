@@ -65,8 +65,8 @@ public class ExprCategoryNamed extends SimpleExpression<Category> {
         return "category named " + category.toString(e, debug) + " in " + guild.toString(e, debug);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         category = (Expression<String>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

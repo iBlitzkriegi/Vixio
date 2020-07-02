@@ -7,9 +7,9 @@ import me.iblitzkriegi.vixio.events.base.SimpleVixioEvent;
 import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 
-public class EvtBotGuildLeave extends BaseEvent<GuildLeaveEvent> {
+public class EvtBotGuildLeave extends BaseEvent<GuildMemberRemoveEvent> {
     static {
         BaseEvent.register("bot leave guild", EvtBotGuildLeave.class, BotLeaveGuild.class, "bot (leave|exit) guild")
                 .setName("Bot Leave Guild")
@@ -32,5 +32,5 @@ public class EvtBotGuildLeave extends BaseEvent<GuildLeaveEvent> {
 
     }
 
-    public class BotLeaveGuild extends SimpleVixioEvent<GuildLeaveEvent> {}
+    public class BotLeaveGuild extends SimpleVixioEvent<GuildMemberRemoveEvent> {}
 }

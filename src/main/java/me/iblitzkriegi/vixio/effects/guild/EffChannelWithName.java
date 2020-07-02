@@ -62,6 +62,7 @@ public class EffChannelWithName extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         name = (Expression<String>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

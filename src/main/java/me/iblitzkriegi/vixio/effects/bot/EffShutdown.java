@@ -31,7 +31,7 @@ public class EffShutdown extends Effect {
         }
 
         bot.getJDA().shutdown();
-        Vixio.getInstance().botHashMap.remove(bot);
+        Vixio.getInstance().botHashMap.remove(bot.getJDA());
         Vixio.getInstance().botNameHashMap.remove(bot.getName());
     }
 
@@ -41,6 +41,7 @@ public class EffShutdown extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         return true;

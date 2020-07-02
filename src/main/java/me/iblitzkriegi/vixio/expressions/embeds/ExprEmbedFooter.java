@@ -21,6 +21,7 @@ public class ExprEmbedFooter extends SimplePropertyExpression<EmbedBuilder, Mess
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -61,6 +62,8 @@ public class ExprEmbedFooter extends SimplePropertyExpression<EmbedBuilder, Mess
                         new EmbedBuilder().setFooter((String) delta[0], null).build().getFooter()
                         : (MessageEmbed.Footer) delta[0];
                 embed.setFooter(footer.getText(), footer.getIconUrl());
+            default:
+                break;
 
         }
     }

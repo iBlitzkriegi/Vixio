@@ -74,6 +74,7 @@ public class ExprEmotes extends SimpleExpression<Emote> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         guild = (Expression<Guild>) exprs[0];
         global = parseResult.regexes.size() == 0;

@@ -56,6 +56,7 @@ public class EffSendTyping extends Effect{
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         location = (Expression<Object>) exprs[0];
         bot = (Expression<Object>) exprs[1];

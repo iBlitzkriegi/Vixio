@@ -53,6 +53,7 @@ public class ExprLastCreatedInvite extends SimpleExpression<String> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         channel = (Expression<GuildChannel>) exprs[0];
         return true;

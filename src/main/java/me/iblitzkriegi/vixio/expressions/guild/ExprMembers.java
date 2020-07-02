@@ -60,6 +60,7 @@ public class ExprMembers extends SimpleExpression<Member> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         object = (Expression<Object>) exprs[0];
         return true;

@@ -37,6 +37,7 @@ public class EffMute extends Effect {
     private boolean newState;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         members = (Expression<Member>) exprs[0];
         bot = (Expression<Bot>) exprs[1];

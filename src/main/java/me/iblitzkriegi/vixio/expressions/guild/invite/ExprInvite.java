@@ -33,6 +33,7 @@ public class ExprInvite extends SimpleExpression<Invite> {
     private boolean scope = false;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         scope = EffectSection.isCurrentSection(ScopeMakeInvite.class);
         return true;

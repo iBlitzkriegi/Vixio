@@ -60,6 +60,7 @@ public class ExprRolesOfMember extends ChangeableSimpleExpression<Role> implemen
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         members = (Expression<Member>) exprs[0];
         return true;

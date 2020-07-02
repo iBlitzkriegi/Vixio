@@ -46,6 +46,7 @@ public class CondEmoteAnimated extends Condition implements EasyMultiple<Emote, 
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         emotes = (Expression<Emote>) exprs[0];
         setNegated(matchedPattern == 1);

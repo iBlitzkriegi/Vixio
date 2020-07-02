@@ -49,6 +49,7 @@ public class ExprEmbedFields extends SimpleExpression<MessageEmbed.Field> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         builder = (Expression<EmbedBuilder>) exprs[0];
         return true;

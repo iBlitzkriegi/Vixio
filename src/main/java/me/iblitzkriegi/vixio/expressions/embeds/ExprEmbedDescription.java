@@ -21,6 +21,7 @@ public class ExprEmbedDescription extends SimplePropertyExpression<EmbedBuilder,
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -55,6 +56,8 @@ public class ExprEmbedDescription extends SimplePropertyExpression<EmbedBuilder,
 
             case SET:
                 embed.setDescription((String) delta[0]);
+            default:
+                break;
         }
     }
 

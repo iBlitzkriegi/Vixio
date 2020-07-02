@@ -31,6 +31,7 @@ public class ExprBuilderEmbed extends SimplePropertyExpression<MessageBuilder, M
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<MessageBuilder>) exprs[0]);
@@ -73,6 +74,8 @@ public class ExprBuilderEmbed extends SimplePropertyExpression<MessageBuilder, M
                 } else {
                     Vixio.getErrorHandler().warn("Vixio tried to access a empty Embed to set its title! This is not possible.");
                 }
+            default:
+                break;
         }
     }
 

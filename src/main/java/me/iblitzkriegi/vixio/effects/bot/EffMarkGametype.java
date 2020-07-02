@@ -64,6 +64,8 @@ public class EffMarkGametype extends Effect {
                     return;
                 }
                 bot.getJDA().getPresence().setActivity(Activity.of(gameType, title, url));
+            default:
+                break;
 
         }
 
@@ -75,6 +77,7 @@ public class EffMarkGametype extends Effect {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         gameType = (Expression<Activity.ActivityType>) exprs[1];

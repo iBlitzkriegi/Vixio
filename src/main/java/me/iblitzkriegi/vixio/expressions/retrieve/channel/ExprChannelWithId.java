@@ -91,8 +91,8 @@ public class ExprChannelWithId extends SimpleExpression<GuildChannel> {
         return "channel with id " + id.toString(e, debug) + (guild == null ? "" : " in " + guild.toString(e, debug));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         id = (Expression<String>) exprs[0];
         guild = (Expression<Guild>) exprs[1];

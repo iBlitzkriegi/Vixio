@@ -23,6 +23,7 @@ public class ExprAliases extends PropertyExpression<DiscordCommand, String> impl
     private boolean usable;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setExpr((Expression<DiscordCommand>) exprs[0]);
         usable = parseResult.regexes.size() == 1;

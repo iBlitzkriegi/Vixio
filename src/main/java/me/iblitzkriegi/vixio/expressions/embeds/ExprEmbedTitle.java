@@ -23,6 +23,7 @@ public class ExprEmbedTitle extends SimplePropertyExpression<EmbedBuilder, Title
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<EmbedBuilder>) exprs[0]);
@@ -65,6 +66,8 @@ public class ExprEmbedTitle extends SimplePropertyExpression<EmbedBuilder, Title
             case SET:
                 Title title = delta[0] instanceof String ? new Title((String) delta[0], null) : (Title) delta[0];
                 embed.setTitle(title.getText(), title.getUrl());
+            default:
+                break;
 
         }
     }

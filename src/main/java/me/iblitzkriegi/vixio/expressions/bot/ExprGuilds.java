@@ -49,6 +49,7 @@ public class ExprGuilds extends SimpleExpression<Guild> implements EasyMultiple<
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         bot = (Expression<Object>) exprs[0];
         return true;

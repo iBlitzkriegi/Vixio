@@ -21,6 +21,7 @@ public class EvtDiscordCommand extends SkriptEvent {
     private String command;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
         command = args[0] == null ? null : ((Literal<String>) args[0]).getSingle();
         return true;

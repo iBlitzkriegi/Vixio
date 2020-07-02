@@ -37,6 +37,7 @@ public class EffSearch extends AsyncEffect {
     private VariableString variable;
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         site = (Expression<SearchableSite>) exprs[0];
         queries = (Expression<String>) exprs[1];

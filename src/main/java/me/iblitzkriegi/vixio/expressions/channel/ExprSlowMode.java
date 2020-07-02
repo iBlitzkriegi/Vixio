@@ -70,6 +70,8 @@ public class ExprSlowMode extends ChangeableSimplePropertyExpression<GuildChanne
                         Vixio.getErrorHandler().needsPerm(bot, "Set slowmode of channel", x.getPermission().getName());
                     }
                 }
+            default:
+                break;
         }
     }
 

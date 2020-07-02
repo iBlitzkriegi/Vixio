@@ -25,8 +25,8 @@ public class ExprMessageBuilderTts extends SimplePropertyExpression<MessageBuild
                 );
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         super.init(exprs, matchedPattern, isDelayed, parseResult);
         setExpr((Expression<MessageBuilder>) exprs[0]);

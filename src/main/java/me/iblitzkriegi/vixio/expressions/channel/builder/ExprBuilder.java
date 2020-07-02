@@ -52,8 +52,8 @@ public class ExprBuilder extends SimpleExpression<ChannelBuilder> {
         return "the channel builder";
     }
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         scope = EffectSection.isCurrentSection(ScopeMakeChannel.class);
         return true;
