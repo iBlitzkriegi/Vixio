@@ -102,3 +102,4 @@ testserver/logs/2016-12-08-1.log.gz
 .idea/modules/Vixio_main.iml
 *.iml
 
+.idea/jarRepositories.xml
