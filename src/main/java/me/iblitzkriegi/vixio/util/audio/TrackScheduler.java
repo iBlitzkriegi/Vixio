@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.events.base.TrackEvent;
+import me.iblitzkriegi.vixio.util.Util;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -39,7 +40,9 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         MusicStorage musicStorage = Vixio.getInstance().musicStorage.get(player);
         if (musicStorage != null) {
-            Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.END, musicStorage.getBot(), musicStorage.getGuild(), track));
+            Util.sync(() -> {
+                Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.END, musicStorage.getBot(), musicStorage.getGuild(), track));
+            });
         }
 
     }
@@ -57,7 +60,9 @@ public class TrackScheduler extends AudioEventAdapter {
     public void onTrackStart(AudioPlayer player, AudioTrack track) {
         MusicStorage musicStorage = Vixio.getInstance().musicStorage.get(player);
         if (musicStorage != null) {
-            Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.START, musicStorage.getBot(), musicStorage.getGuild(), track));
+            Util.sync(() -> {
+                Bukkit.getPluginManager().callEvent(new TrackEvent(TrackEvent.TrackState.START, musicStorage.getBot(), musicStorage.getGuild(), track));
+            });
         }
     }
 
