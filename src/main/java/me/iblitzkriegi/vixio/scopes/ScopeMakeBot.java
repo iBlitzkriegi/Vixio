@@ -15,24 +15,27 @@ public class ScopeMakeBot extends EffectSection {
     public static JDABuilder jdaBuilder;
 
     static {
-        Vixio.getInstance().registerCondition(ScopeMakeBot.class, "(make|create) [verified|privileged] bot with name %string% and token %string%")
+        Vixio.getInstance().registerCondition(ScopeMakeBot.class, "(make|create) vixio bot")
                 .setName("Create Bot Scope")
                 .setDesc("This is for verified bots or bots that have enabled privileged intents and need to activate them in Vixio")
-                .setExample("create bot with name \"yes\":");
+                .setExample(
+                        "discord command neeko:",
+                        "\ttrigger:",
+                        "\t\tcreate vixio bot:",
+                        "\t\t\tenable the guild members intent",
+                        "\t\t\tlogin to \"YAHITAMUH\" with the name \"Neeko\""
+                );
     }
-
-    private Expression<String> token;
-    private Expression<String> botName;
 
     @Override
     protected void execute(Event e) {
-        jdaBuilder = JDABuilder.createDefault(token.getSingle(e));
+        jdaBuilder = JDABuilder.createDefault("temporary token");
         runSection(e);
     }
 
     @Override
     public String toString(Event e, boolean debug) {
-        return "create bot with name " + botName.toString(e, debug) + " and token " + token.toString(e, debug);
+        return "create bot";
     }
 
     @Override
@@ -44,8 +47,7 @@ public class ScopeMakeBot extends EffectSection {
             return false;
         }
         loadSection(true);
-        botName = (Expression<String>) exprs[0];
-        token = (Expression<String>) exprs[1];
+
         return true;
     }
 }
