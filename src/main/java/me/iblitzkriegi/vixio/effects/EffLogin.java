@@ -6,13 +6,16 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
+import me.iblitzkriegi.vixio.scopes.ScopeMakeBot;
 import me.iblitzkriegi.vixio.util.MessageUpdater;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.exceptions.AccountTypeException;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -24,7 +27,7 @@ public class EffLogin extends AsyncEffect {
     static {
         Vixio.getInstance().registerEffect(EffLogin.class, "(login|connect) to %string% (using|with) [the] name %string%")
                 .setName("Login")
-                .setDesc("Login to a bot account with a token")
+                .setDesc("Login to a bot account with a token. If you need to enable custom intents, see the create bot scope.")
                 .setExample(
                         "on skript load:",
                         "\tlogin to \"MjM3MDYyNzE0MTY0MjQ4NTc2.DFfAvg.S_YgY26hqyS1SgNvibrpcdhSk94\" with the name \"VixioButler\""
@@ -33,6 +36,7 @@ public class EffLogin extends AsyncEffect {
 
     private Expression<String> token;
     private Expression<String> name;
+    private boolean scope = false;
 
     @Override
     protected void execute(Event e) {
@@ -52,11 +56,7 @@ public class EffLogin extends AsyncEffect {
 
         JDA api;
         try {
-            try {
-                api = new JDABuilder(AccountType.BOT).setToken(token).build().awaitReady();
-            } catch (AccountTypeException x) {
-                api = new JDABuilder(AccountType.CLIENT).setToken(token).build().awaitReady();
-            }
+            api = scope ? ScopeMakeBot.jdaBuilder.setToken(token).build().awaitReady() : JDABuilder.createDefault(token).build().awaitReady();
         } catch (LoginException | InterruptedException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
@@ -86,6 +86,7 @@ public class EffLogin extends AsyncEffect {
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         token = (Expression<String>) expr[0];
         name = (Expression<String>) expr[1];
+        scope = EffectSection.isCurrentSection(ScopeMakeBot.class);
         return true;
     }
 
