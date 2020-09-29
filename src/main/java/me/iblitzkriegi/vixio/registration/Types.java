@@ -446,7 +446,9 @@ public class Types {
                         }
                         return null;
                     }
+
                     for (Member member : e.getGuild().getMembers()) {
+                        System.out.println(member.getEffectiveName());
                         User user = member.getUser();
                         if (user.getName().equalsIgnoreCase(discrim[0])) {
                             if (user.getDiscriminator().equalsIgnoreCase(discrim[1])) {
@@ -470,7 +472,12 @@ public class Types {
                 }
                 Member member = e.getGuild().getMemberById(id);
                 if (member == null) {
-                    return null;
+                    try {
+                        Member retrievedMember = e.getGuild().retrieveMemberById(id).complete();
+                        return retrievedMember == null ? null : retrievedMember.getUser();
+                    } catch (Exception x) {
+                        return null;
+                    }
                 }
                 return member.getUser();
             }
@@ -712,7 +719,12 @@ public class Types {
                 if (user == null) {
                     return null;
                 }
-                return e.getGuild().getMember(user);
+                Member member = e.getGuild().getMember(user);
+                try {
+                    return member == null ? e.getGuild().retrieveMember(user).complete() : member;
+                } catch (Exception x) {
+                    return null;
+                }
             }
 
             @Override
