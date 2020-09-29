@@ -6,6 +6,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.event.Event;
 
 import java.util.List;
@@ -33,7 +34,14 @@ public class ExprMembers extends SimpleExpression<Member> {
             List<Member> members = ((Category) object).getMembers();
             return members.toArray(new Member[members.size()]);
         } else if (object instanceof Guild) {
-            List<Member> members = ((Guild) object).getMembers();
+            Guild guild = ((Guild) object);
+            List<Member> members;
+            if (guild.getJDA().getGatewayIntents().contains(GatewayIntent.GUILD_MEMBERS)) {
+                guild.loadMembers().get();
+                members = guild.getMembers();
+            } else {
+                members = guild.getMembers();
+            }
             return members.toArray(new Member[members.size()]);
         } else if (object instanceof GuildChannel) {
             List<Member> members = ((GuildChannel) object).getMembers();
