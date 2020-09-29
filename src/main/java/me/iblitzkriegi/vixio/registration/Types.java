@@ -26,6 +26,7 @@ import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.PermissionException;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import java.util.List;
 
@@ -70,6 +71,26 @@ public class Types {
             @Override
             public String toString(Guild.VerificationLevel verificationLevel, int arg1) {
                 return verificationLevelUtils.toString(verificationLevel, arg1);
+            }
+
+        };
+
+        EnumUtils<GatewayIntent> gatewayIntentEnumUtils = new EnumUtils<>(GatewayIntent.class, "gatewayintents");
+        new SimpleType<GatewayIntent>(GatewayIntent.class, "gatewayintent", "gatewayintents?") {
+
+            @Override
+            public GatewayIntent parse(String s, ParseContext pc) {
+                return gatewayIntentEnumUtils.parse(s);
+            }
+
+            @Override
+            public boolean canParse(ParseContext pc) {
+                return true;
+            }
+
+            @Override
+            public String toString(GatewayIntent intent, int arg1) {
+                return gatewayIntentEnumUtils.toString(intent, arg1);
             }
 
         };
