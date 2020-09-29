@@ -97,9 +97,13 @@ public class EvtReactionRemove extends BaseEvent<MessageReactionRemoveEvent> {
         return new BaseEvent.Value[] {
                 new Value(Message.class, e -> {
                     try {
-                        return e.getChannel().retrieveMessageById(e.getMessageId()).complete(true);
+                        UpdatingMessage updatingMessage = UpdatingMessage.from(e.getMessageId());
+                        if (updatingMessage == null) {
+                            return e.getChannel().retrieveMessageById(e.getMessageId()).complete(true);
+                        }
+                        return updatingMessage.getMessage();
                     } catch (RateLimitedException e1) {
-                        Vixio.getErrorHandler().warn("Vixio tried to get the message event value for the reaction add event but was rate limited");
+                        Vixio.getErrorHandler().warn("Vixio tried to get the message event value for the reaction remove event but was rate limited");
                         return null;
                     }
                 })

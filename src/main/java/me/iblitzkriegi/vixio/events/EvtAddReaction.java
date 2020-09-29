@@ -23,7 +23,6 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
                 .setExample("on reaction add:");
 
 
-
         EventValues.registerEventValue(ReactionAddEvent.class, Bot.class, new Getter<Bot, ReactionAddEvent>() {
             @Override
             public Bot get(ReactionAddEvent event) {
@@ -93,15 +92,15 @@ public class EvtAddReaction extends BaseEvent<MessageReactionAddEvent> {
     @Override
     @SuppressWarnings("unchecked")
     public Value[] getValues() {
-        return new BaseEvent.Value[] {
+        return new BaseEvent.Value[]{
                 new Value(Message.class, e -> {
                     try {
                         UpdatingMessage updatingMessage = UpdatingMessage.from(e.getMessageId());
                         if (updatingMessage == null) {
                             return e.getChannel().retrieveMessageById(e.getMessageId()).complete(true);
-                        } else {
-                            return updatingMessage.getMessage();
                         }
+                        return updatingMessage.getMessage();
+
                     } catch (RateLimitedException e1) {
                         Vixio.getErrorHandler().warn("Vixio tried to get the message event value for the reaction add event but was rate limited");
                         return null;
