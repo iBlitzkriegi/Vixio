@@ -6,7 +6,9 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
+import me.iblitzkriegi.vixio.scopes.ScopeMakeBot;
 import me.iblitzkriegi.vixio.util.MessageUpdater;
+import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.AccountType;
@@ -34,6 +36,7 @@ public class EffLogin extends AsyncEffect {
 
     private Expression<String> token;
     private Expression<String> name;
+    private boolean scope = false;
 
     @Override
     protected void execute(Event e) {
@@ -53,7 +56,7 @@ public class EffLogin extends AsyncEffect {
 
         JDA api;
         try {
-            api = JDABuilder.createDefault(token).build().awaitReady();
+            api = scope ? ScopeMakeBot.jdaBuilder.setToken(token).build().awaitReady() : JDABuilder.createDefault(token).build().awaitReady();
         } catch (LoginException | InterruptedException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
@@ -83,6 +86,7 @@ public class EffLogin extends AsyncEffect {
     public boolean init(Expression<?>[] expr, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
         token = (Expression<String>) expr[0];
         name = (Expression<String>) expr[1];
+        scope = EffectSection.isCurrentSection(ScopeMakeBot.class);
         return true;
     }
 
