@@ -9,6 +9,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import me.iblitzkriegi.vixio.scopes.ScopeMakeBot;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.bukkit.event.Event;
 
 public class EffEnableIntent extends Effect {
@@ -36,6 +37,10 @@ public class EffEnableIntent extends Effect {
             return;
         }
         ScopeMakeBot.jdaBuilder.enableIntents(gatewayIntent);
+        System.out.println(gatewayIntent);
+        if (gatewayIntent == GatewayIntent.GUILD_MEMBERS) {
+            ScopeMakeBot.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        }
 
     }
 
