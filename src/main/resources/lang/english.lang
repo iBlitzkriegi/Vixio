@@ -41,3 +41,16 @@ verificationlevels:
     very_high : very high
     none: none
     unknown: unknown
+gatewayintents:
+    guild_members: guild members
+    guild_bans: guild bans
+    guild_emojis: guild emojis
+    guild_invites: guild invites
+    guild_voice_states: guild voice states
+    guild_presences: guild presences
+    guild_messages: guild messages
+    guild_message_reactions: guild message reactions
+    guild_message_type: guild message typing
+    direct_messages: direct messages
+    direct_message_reactions: direct message reactions
+    direct_message_typing: direct message typing
