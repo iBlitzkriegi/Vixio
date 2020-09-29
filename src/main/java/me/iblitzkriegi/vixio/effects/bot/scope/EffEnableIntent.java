@@ -37,7 +37,6 @@ public class EffEnableIntent extends Effect {
             return;
         }
         ScopeMakeBot.jdaBuilder.enableIntents(gatewayIntent);
-        System.out.println(gatewayIntent);
         if (gatewayIntent == GatewayIntent.GUILD_MEMBERS) {
             ScopeMakeBot.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         }
