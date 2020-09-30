@@ -73,13 +73,17 @@ public class CondHasPermission extends Condition {
             }
             Member guildMember = guild.getMember(user);
             if (guildMember == null) {
-                return false;
+                guildMember = guild.retrieveMember(user).complete();
+                if (guildMember == null) {
+                    return false;
+                }
             }
 
+
             if (object instanceof GuildChannel) {
-                return isNegated() != member.hasPermission((GuildChannel) object, permission);
+                return isNegated() != guildMember.hasPermission((GuildChannel) object, permission);
             } else if (object instanceof Guild) {
-                return isNegated() != member.hasPermission(permission);
+                return isNegated() != guildMember.hasPermission(permission);
             }
 
             return false;
