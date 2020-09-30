@@ -448,7 +448,6 @@ public class Types {
                     }
 
                     for (Member member : e.getGuild().getMembers()) {
-                        System.out.println(member.getEffectiveName());
                         User user = member.getUser();
                         if (user.getName().equalsIgnoreCase(discrim[0])) {
                             if (user.getDiscriminator().equalsIgnoreCase(discrim[1])) {
