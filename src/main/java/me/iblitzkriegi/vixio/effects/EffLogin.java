@@ -54,26 +54,29 @@ public class EffLogin extends AsyncEffect {
             return;
         }
 
-        JDA api;
+        JDABuilder api = scope ? ScopeMakeBot.jdaBuilder.setToken(token) : JDABuilder.createDefault(token);
+
+        // Make the new bot listen to active events and commands
+
+        for (EventListener<?> listener : EventListener.listeners) {
+            api.addEventListeners(listener);
+        }
+        api.addEventListeners(
+                new CommandListener(),
+                new MessageUpdater()
+        );
+        JDA jda;
         try {
-            api = scope ? ScopeMakeBot.jdaBuilder.setToken(token).build().awaitReady() : JDABuilder.createDefault(token).build().awaitReady();
+            jda = api.build().awaitReady();
         } catch (LoginException | InterruptedException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
             return;
         }
-
-        // Make the new bot listen to active events and commands
-        for (EventListener<?> listener : EventListener.listeners) {
-            api.addEventListener(listener);
-        }
-
-        api.addEventListener(new CommandListener());
-        api.addEventListener(new MessageUpdater());
-        Bot bot = new Bot(name, api);
+        Bot bot = new Bot(name, jda);
 
         bot.setLoginTime(Instant.now().getEpochSecond());
-        Vixio.getInstance().botHashMap.put(api, bot);
+        Vixio.getInstance().botHashMap.put(jda, bot);
         Vixio.getInstance().botNameHashMap.put(name, bot);
     }
 
