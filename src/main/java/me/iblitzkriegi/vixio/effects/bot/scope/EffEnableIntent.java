@@ -10,6 +10,7 @@ import me.iblitzkriegi.vixio.scopes.ScopeMakeBot;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.bukkit.event.Event;
 
 public class EffEnableIntent extends Effect {
@@ -37,9 +38,22 @@ public class EffEnableIntent extends Effect {
             return;
         }
         ScopeMakeBot.jdaBuilder.enableIntents(gatewayIntent);
-        if (gatewayIntent == GatewayIntent.GUILD_MEMBERS) {
-            ScopeMakeBot.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        switch (gatewayIntent) {
+            case GUILD_MEMBERS:
+                ScopeMakeBot.jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
+                break;
+            case GUILD_PRESENCES:
+                ScopeMakeBot.jdaBuilder.enableCache(CacheFlag.CLIENT_STATUS);
+                ScopeMakeBot.jdaBuilder.enableCache(CacheFlag.ACTIVITY);
+                break;
+            case GUILD_VOICE_STATES:
+                ScopeMakeBot.jdaBuilder.enableCache(CacheFlag.VOICE_STATE);
+                break;
+            case GUILD_EMOJIS:
+                ScopeMakeBot.jdaBuilder.enableCache(CacheFlag.EMOTE);
+                break;
         }
+
 
     }
 
