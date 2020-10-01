@@ -30,7 +30,12 @@ public class ExprMember extends SimpleExpression<Member> {
         if (guild == null || user == null) {
             return null;
         }
-        return new Member[]{guild.getMember(user)};
+        try {
+            Member member = guild.getMember(user) == null ? guild.retrieveMember(user).complete() : guild.getMember(user);
+            return new Member[]{member};
+        } catch (Exception x) {
+            return null;
+        }
     }
 
     @Override
