@@ -1,0 +1,54 @@
+package me.iblitzkriegi.vixio.expressions.bot;
+
+import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.util.Kleenean;
+import me.iblitzkriegi.vixio.Vixio;
+import me.iblitzkriegi.vixio.util.Util;
+import me.iblitzkriegi.vixio.util.skript.EasyMultiple;
+import me.iblitzkriegi.vixio.util.wrapper.Bot;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.bukkit.event.Event;
+
+public class ExprGatewayIntents extends SimpleExpression<GatewayIntent> implements EasyMultiple<Bot, GatewayIntent> {
+    static {
+        Vixio.getInstance().registerPropertyExpression(ExprGatewayIntents.class, GatewayIntent.class,
+                "[gateway] intent", "bot/string")
+                .setName("Gateway Intents of bot")
+                .setDesc("Get all enabled Gateway intentions a bot has")
+                .setExample("gateway intents of event-bot");
+    }
+
+    private Expression<Object> bot;
+
+    @Override
+    protected GatewayIntent[] get(Event e) {
+        Bot bot = Util.botFrom(this.bot.getSingle(e));
+        if (bot != null) {
+            return bot.getJDA().getGatewayIntents().toArray(new GatewayIntent[0]);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isSingle() {
+        return false;
+    }
+
+    @Override
+    public Class<? extends GatewayIntent> getReturnType() {
+        return GatewayIntent.class;
+    }
+
+    @Override
+    public String toString(Event e, boolean debug) {
+        return bot.toString(e, debug) + "'s gateway intents";
+    }
+
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        bot = (Expression<Object>) exprs[0];
+        return true;
+    }
+}
