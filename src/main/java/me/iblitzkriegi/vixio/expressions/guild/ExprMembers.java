@@ -38,10 +38,8 @@ public class ExprMembers extends SimpleExpression<Member> {
             List<Member> members;
             if (guild.getJDA().getGatewayIntents().contains(GatewayIntent.GUILD_MEMBERS)) {
                 guild.loadMembers().get();
-                members = guild.getMembers();
-            } else {
-                members = guild.getMembers();
             }
+            members = guild.getMembers();
             return members.toArray(new Member[members.size()]);
         } else if (object instanceof GuildChannel) {
             List<Member> members = ((GuildChannel) object).getMembers();
