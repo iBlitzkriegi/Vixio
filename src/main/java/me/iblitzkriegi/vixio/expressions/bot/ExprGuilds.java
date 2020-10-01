@@ -17,9 +17,7 @@ public class ExprGuilds extends SimpleExpression<Guild> implements EasyMultiple<
                 "guild", "bot/string")
                 .setName("Guilds of bot")
                 .setDesc("Get all the guilds of a bot")
-                .setExample(
-                        ""
-                );
+                .setExample("guilds of event-bot");
     }
 
     private Expression<Object> bot;
