@@ -36,6 +36,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.requests.RestAction;
 
+import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.internal.requests.CompletedRestAction;
 import org.bukkit.Bukkit;
@@ -134,7 +135,13 @@ public class Util {
         } else if (input instanceof String) {
             return Vixio.getInstance().botNameHashMap.get(input);
         } else if (input instanceof JDA) {
-            return Vixio.getInstance().botHashMap.get(input);
+            JDA jda = ((JDA) input);
+            Set<ShardManager> shardManagers = Vixio.getInstance().botHashMap.keySet();
+            for (ShardManager shardManager : shardManagers) {
+                if (shardManager.getShards().stream().anyMatch(shardJda -> shardJda.equals(jda))) {
+                    return Vixio.getInstance().botHashMap.get(shardManager);
+                }
+            }
         }
         return null;
     }
