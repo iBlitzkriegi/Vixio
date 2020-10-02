@@ -53,7 +53,7 @@ public class EffMarkGametype extends Effect {
             case DEFAULT:
             case WATCHING:
             case LISTENING:
-                bot.getJDA().getPresence().setActivity(Activity.of(gameType, title));
+                bot.getJDA().setActivity(Activity.of(gameType, title));
                 break;
             case STREAMING:
                 if (url == null) {
@@ -63,7 +63,7 @@ public class EffMarkGametype extends Effect {
                 if (!Activity.isValidStreamingUrl(url)) {
                     return;
                 }
-                bot.getJDA().getPresence().setActivity(Activity.of(gameType, title, url));
+                bot.getJDA().setActivity(Activity.of(gameType, title, url));
 
         }
 

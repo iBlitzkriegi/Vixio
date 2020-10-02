@@ -11,11 +11,13 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
 
@@ -88,11 +90,11 @@ public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
                 return singular ? new TextChannel[]{textChannels.get(0)} : textChannels.toArray(new TextChannel[textChannels.size()]);
             }
         }
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        for (JDA jda : jdaInstances) {
+        Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+        for (ShardManager shardManager : jdaInstances) {
             if (mark == 0) {
-                voiceChannels = jda.getVoiceChannelsByName(name, false);
-                textChannels = jda.getTextChannelsByName(name, false);
+                voiceChannels = shardManager.getVoiceChannels().stream().filter(voiceChannel -> voiceChannel.getName().equals(name)).collect(Collectors.toList());
+                textChannels = shardManager.getTextChannels().stream().filter(textChannel -> textChannel.getName().equals(name)).collect(Collectors.toList());
                 if (!(voiceChannels.isEmpty()) || (!(textChannels.isEmpty()))) {
                     if (singular) {
                         return voiceChannels.isEmpty() ? new TextChannel[]{textChannels.get(0)} : new VoiceChannel[]{voiceChannels.get(0)};
@@ -110,12 +112,12 @@ public class ExprChannelNamed extends SimpleExpression<GuildChannel> {
                     return channels.toArray(new GuildChannel[size]);
                 }
             } else if (mark == 1) {
-                voiceChannels = jda.getVoiceChannelsByName(name, false);
+                voiceChannels = shardManager.getVoiceChannels().stream().filter(voiceChannel -> voiceChannel.getName().equals(name)).collect(Collectors.toList());
                 if (!voiceChannels.isEmpty()) {
                     return singular ? new VoiceChannel[]{voiceChannels.get(0)} : voiceChannels.toArray(new VoiceChannel[voiceChannels.size()]);
                 }
             } else if (mark == 2) {
-                textChannels = jda.getTextChannelsByName(name, false);
+                textChannels = shardManager.getTextChannels().stream().filter(textChannel -> textChannel.getName().equals(name)).collect(Collectors.toList());
                 if (!textChannels.isEmpty()) {
                     return singular ? new TextChannel[]{textChannels.get(0)} : textChannels.toArray(new TextChannel[textChannels.size()]);
                 }

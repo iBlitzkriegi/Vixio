@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 public class EffRetrieveUser extends Effect {
@@ -32,9 +33,9 @@ public class EffRetrieveUser extends Effect {
             return;
         }
         User retrievedUser = null;
-        for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
+        for (ShardManager shardManager: Vixio.getInstance().botHashMap.keySet()) {
             try {
-                retrievedUser = jda.retrieveUserById(user).complete(true);
+                retrievedUser = shardManager.retrieveUserById(user).complete(true);
             } catch (RateLimitedException e1) {
                 e1.printStackTrace();
             } catch (NumberFormatException x) {
