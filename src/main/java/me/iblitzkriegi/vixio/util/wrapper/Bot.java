@@ -7,26 +7,27 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.IMentionable;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.entities.SelfUser;
+import net.dv8tion.jda.api.sharding.ShardManager;
 
 import java.util.HashMap;
 
 public class Bot implements IMentionable, ISnowflake {
     private String name;
 
-    private JDA jda;
+    private ShardManager shardManager;
     private SelfUser selfUser;
     private HashMap<Guild, GuildMusicManager> guildMusicManagerMap = new HashMap<>();
     private long uptime;
 
-    public Bot(String name, JDA jda) {
+    public Bot(String name, ShardManager shardManager) {
         this.name = name;
-        this.jda = jda;
-        this.selfUser = jda.getSelfUser();
+        this.shardManager = shardManager;
+        this.selfUser = shardManager.getShards().get(0).getSelfUser();
     }
 
-    public Bot(JDA jda) {
-        this.jda = jda;
-        this.selfUser = jda.getSelfUser();
+    public Bot(ShardManager shardManager) {
+        this.shardManager = shardManager;
+        this.selfUser = shardManager.getShards().get(0).getSelfUser();
         this.name = null;
 
     }
@@ -36,8 +37,8 @@ public class Bot implements IMentionable, ISnowflake {
     }
 
     // Getters \\
-    public JDA getJDA() {
-        return this.jda;
+    public ShardManager getJDA() {
+        return this.shardManager;
     }
 
     public SelfUser getSelfUser() {

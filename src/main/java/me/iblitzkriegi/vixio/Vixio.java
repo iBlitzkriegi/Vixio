@@ -19,6 +19,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.audio.MusicStorage;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class Vixio extends JavaPlugin {
     public List<Registration> effects = new ArrayList<>();
     public List<Registration> expressions = new ArrayList<>();
     // JDA Related \\
-    public HashMap<JDA, Bot> botHashMap = new HashMap<>();
+    public HashMap<ShardManager, Bot> botHashMap = new HashMap<>();
     public HashMap<String, Bot> botNameHashMap = new HashMap<>();
 
     public AudioPlayerManager playerManager;
