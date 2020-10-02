@@ -49,7 +49,7 @@ public class ExprUserWithName extends SimpleExpression<User> {
             Vixio.getInstance().botHashMap
                     .keySet()
                     .stream()
-                    .forEach(jda -> userList.addAll(jda.getUsersByName(name, false)));
+                    .forEach(jda -> userList.addAll(jda.getUsers().stream().filter(user -> user.getName().equals(name)).collect(Collectors.toList())));
         } else {
             userList.addAll(
                     guild.getMembersByName(name, false)
