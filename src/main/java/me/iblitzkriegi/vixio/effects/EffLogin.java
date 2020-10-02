@@ -77,9 +77,6 @@ public class EffLogin extends AsyncEffect {
 
                 }
                 Bot bot = new Bot(name, shardManager);
-                System.out.println(bot);
-                System.out.println(shardManager);
-                System.out.println(bot.getName());
 
                 bot.setLoginTime(Instant.now().getEpochSecond());
                 Vixio.getInstance().botHashMap.put(shardManager, bot);

@@ -10,7 +10,6 @@ public class ShardReadyEvent extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         readyEvents++;
-        System.out.println(readyEvents);
     }
 
 }
