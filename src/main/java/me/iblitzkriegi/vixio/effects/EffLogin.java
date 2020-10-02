@@ -8,11 +8,14 @@ import me.iblitzkriegi.vixio.commands.CommandListener;
 import me.iblitzkriegi.vixio.events.base.EventListener;
 import me.iblitzkriegi.vixio.scopes.ScopeMakeBot;
 import me.iblitzkriegi.vixio.util.MessageUpdater;
+import me.iblitzkriegi.vixio.util.ShardReadyEvent;
+import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.Bukkit;
@@ -62,21 +65,31 @@ public class EffLogin extends AsyncEffect {
         }
         api.addEventListeners(
                 new CommandListener(),
-                new MessageUpdater()
+                new MessageUpdater(),
+                new ShardReadyEvent()
         );
         ShardManager shardManager;
         try {
             shardManager = api.build();
+            Util.async(() -> {
+
+                while (ShardReadyEvent.readyEvents != shardManager.getShards().stream().count()) {
+
+                }
+                Bot bot = new Bot(name, shardManager);
+                System.out.println(bot);
+                System.out.println(shardManager);
+                System.out.println(bot.getName());
+
+                bot.setLoginTime(Instant.now().getEpochSecond());
+                Vixio.getInstance().botHashMap.put(shardManager, bot);
+                Vixio.getInstance().botNameHashMap.put(name, bot);
+            });
         } catch (LoginException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
             return;
         }
-        Bot bot = new Bot(name, shardManager);
-
-        bot.setLoginTime(Instant.now().getEpochSecond());
-        Vixio.getInstance().botHashMap.put(shardManager, bot);
-        Vixio.getInstance().botNameHashMap.put(name, bot);
     }
 
     @Override
