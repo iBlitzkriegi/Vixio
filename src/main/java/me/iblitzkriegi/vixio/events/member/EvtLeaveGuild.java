@@ -9,16 +9,16 @@ import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 
-public class EvtLeaveGuild extends BaseEvent<GuildMemberLeaveEvent> {
+public class EvtLeaveGuild extends BaseEvent<GuildMemberRemoveEvent> {
 
     static {
 
         BaseEvent.register("user join guild", EvtLeaveGuild.class, JoinGuildEvent.class,
                 "(guild|member) leave (guild|server)")
                 .setName("Guild Leave")
-                .setDesc("Fired when a user leaves a guild. Could be caused by kicking them or them leaving on their own free will.")
+                .setDesc("Fired when a user leaves a guild. Could be caused by kicking them or them leaving on their own free will. This event only fires if you have the guild members intent enabled.")
                 .setExample("on member leave guild:");
 
         EventValues.registerEventValue(JoinGuildEvent.class, Bot.class, new Getter<Bot, JoinGuildEvent>() {
@@ -51,7 +51,7 @@ public class EvtLeaveGuild extends BaseEvent<GuildMemberLeaveEvent> {
 
     }
 
-    public class JoinGuildEvent extends SimpleVixioEvent<GuildMemberLeaveEvent> {
+    public class JoinGuildEvent extends SimpleVixioEvent<GuildMemberRemoveEvent> {
     }
 
 }
