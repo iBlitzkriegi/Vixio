@@ -11,11 +11,10 @@ import me.iblitzkriegi.vixio.util.MessageUpdater;
 import me.iblitzkriegi.vixio.util.scope.EffectSection;
 import me.iblitzkriegi.vixio.util.skript.AsyncEffect;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
-import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.exceptions.AccountTypeException;
-import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -54,7 +53,7 @@ public class EffLogin extends AsyncEffect {
             return;
         }
 
-        JDABuilder api = scope ? ScopeMakeBot.jdaBuilder.setToken(token) : JDABuilder.createDefault(token);
+        DefaultShardManagerBuilder api = scope ? ScopeMakeBot.jdaBuilder.setToken(token) : DefaultShardManagerBuilder.createDefault(token);
 
         // Make the new bot listen to active events and commands
 
@@ -65,18 +64,18 @@ public class EffLogin extends AsyncEffect {
                 new CommandListener(),
                 new MessageUpdater()
         );
-        JDA jda;
+        ShardManager shardManager;
         try {
-            jda = api.build().awaitReady();
-        } catch (LoginException | InterruptedException e1) {
+            shardManager = api.build();
+        } catch (LoginException e1) {
             Vixio.getErrorHandler().warn("Vixio tried to login but encountered \"" + e1.getMessage() + "\"");
             Vixio.getErrorHandler().warn("Maybe your token is wrong?");
             return;
         }
-        Bot bot = new Bot(name, jda);
+        Bot bot = new Bot(name, shardManager);
 
         bot.setLoginTime(Instant.now().getEpochSecond());
-        Vixio.getInstance().botHashMap.put(jda, bot);
+        Vixio.getInstance().botHashMap.put(shardManager, bot);
         Vixio.getInstance().botNameHashMap.put(name, bot);
     }
 
