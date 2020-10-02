@@ -68,6 +68,8 @@ public class EffSendMessage extends AsyncEffect {
             Vixio.getErrorHandler().needsPerm(bot, "send message", x.getPermission().getName());
         } catch (RateLimitedException e1) {
             Vixio.getErrorHandler().cantOpenPrivateChannel();
+        } catch (Exception x ){
+            Vixio.getErrorHandler().cantOpenPrivateChannel();
         }
     }
 
