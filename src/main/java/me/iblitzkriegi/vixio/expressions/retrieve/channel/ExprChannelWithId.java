@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -40,15 +41,15 @@ public class ExprChannelWithId extends SimpleExpression<GuildChannel> {
         }
 
         if (guild == null) {
-            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+            Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
             if (jdaInstances.isEmpty()) {
                 return null;
             }
 
             List<GuildChannel> channels = new ArrayList<>();
-            for (JDA jda : jdaInstances) {
-                TextChannel textChannel = jda.getTextChannelById(id);
-                VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
+            for (ShardManager shardManager : jdaInstances) {
+                TextChannel textChannel = shardManager.getTextChannelById(id);
+                VoiceChannel voiceChannel = shardManager.getVoiceChannelById(id);
                 if (textChannel != null) {
                     channels.add(textChannel);
                 } else if (voiceChannel != null) {

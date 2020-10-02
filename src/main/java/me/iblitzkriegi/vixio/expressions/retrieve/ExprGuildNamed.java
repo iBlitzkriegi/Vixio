@@ -8,6 +8,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ public class ExprGuildNamed extends SimpleExpression<Guild> {
             return null;
         }
         ArrayList<Guild> guilds = new ArrayList<>();
-        for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
-            guilds.addAll(jda.getGuildsByName(name, false));
+        for (ShardManager shardManager : Vixio.getInstance().botHashMap.keySet()) {
+            guilds.addAll(shardManager.getGuildsByName(name, false));
         }
         return guilds.toArray(new Guild[guilds.size()]);
     }

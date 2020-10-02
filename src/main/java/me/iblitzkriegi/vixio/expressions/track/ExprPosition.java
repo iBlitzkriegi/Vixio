@@ -10,6 +10,7 @@ import me.iblitzkriegi.vixio.util.Util;
 import me.iblitzkriegi.vixio.util.wrapper.Bot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
@@ -51,8 +52,8 @@ public class ExprPosition extends SimplePropertyExpression<AudioTrack, Timespan>
         for (AudioTrack track : getExpr().getAll(e)) {
             track.setPosition(position);
             Util.async(() -> {
-                for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
-                    Bot bot = Util.botFrom(jda);
+                for (ShardManager shardManager : Vixio.getInstance().botHashMap.keySet()) {
+                    Bot bot = Util.botFrom(shardManager);
                     for (Guild guild : bot.getGuildMusicManagerMap().keySet()) {
                         if (bot.getAudioManager(guild).player.getPlayingTrack() == track) {
                             Util.sync(() -> {

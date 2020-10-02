@@ -36,6 +36,7 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import net.dv8tion.jda.api.requests.RestAction;
 
+import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.internal.requests.CompletedRestAction;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -244,7 +245,7 @@ public class Util {
             }
         } else {
 
-            return new CompletedRestAction<>(bot.getJDA(), message);
+            return new CompletedRestAction<>(bot.getJDA().getShards().get(0), message);
         }
 
     }
@@ -297,9 +298,9 @@ public class Util {
         if (id.isEmpty()) {
             try {
                 if (guild == null) {
-                    Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-                    for (JDA jda : jdaInstances) {
-                        Collection<net.dv8tion.jda.api.entities.Emote> emoteCollection = jda.getEmotesByName(input, false);
+                    Set<ShardManager> shardManagers = Vixio.getInstance().botHashMap.keySet();
+                    for (ShardManager shardManager: shardManagers) {
+                        Collection<net.dv8tion.jda.api.entities.Emote> emoteCollection = shardManager.getEmotesByName(input, false);
                         if (!emoteCollection.isEmpty()) {
                             return new Emote(emoteCollection.iterator().next());
                         }
@@ -317,9 +318,9 @@ public class Util {
             }
         } else {
             if (guild == null) {
-                Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-                for (JDA jda : jdaInstances) {
-                    net.dv8tion.jda.api.entities.Emote emote = jda.getEmoteById(id);
+                Set<ShardManager> shardManagers = Vixio.getInstance().botHashMap.keySet();
+                for (ShardManager shardManager : shardManagers) {
+                    net.dv8tion.jda.api.entities.Emote emote = shardManager.getEmoteById(id);
                     if (emote != null) {
                         return new Emote(emote);
                     }
@@ -396,14 +397,14 @@ public class Util {
     public static Member getMemberFromUser(Object object) {
         if (object instanceof User) {
             User user = (User) object;
-            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-            for (JDA jda : jdaInstances) {
-                if (jda.getSelfUser().getId().equalsIgnoreCase(user.getId())) {
-                    return jda.getGuilds().isEmpty() ? null : jda.getGuilds().get(0).getSelfMember();
+            Set<ShardManager> jdaInstances = Vixio.getInstance().botHashMap.keySet();
+            for (ShardManager shardManager : jdaInstances) {
+                if (Util.botFrom(shardManager).getSelfUser().getId().equalsIgnoreCase(user.getId())) {
+                    return shardManager.getGuilds().isEmpty() ? null : shardManager.getGuilds().get(0).getSelfMember();
                 }
-                User searchedUser = jda.getUserById(user.getId());
+                User searchedUser = shardManager.getUserById(user.getId());
                 if (searchedUser != null) {
-                    List<Guild> guildList = jda.getMutualGuilds(searchedUser);
+                    List<Guild> guildList = shardManager.getMutualGuilds(searchedUser);
                     if (guildList != null) {
                         return guildList.iterator().next().getMember(searchedUser);
                     }

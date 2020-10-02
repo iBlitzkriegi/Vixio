@@ -30,7 +30,7 @@ public class ExprOnlineStatus extends SimplePropertyExpression<Object, OnlineSta
         if (object instanceof String || object instanceof Bot) {
             Bot bot = Util.botFrom(object);
             if (bot != null) {
-                return bot.getJDA().getPresence().getStatus();
+                return bot.getJDA().getShards().get(0).getPresence().getStatus();
             }
         } else if (object instanceof User) {
             Member member = Util.getMemberFromUser(object);
@@ -62,7 +62,7 @@ public class ExprOnlineStatus extends SimplePropertyExpression<Object, OnlineSta
             if (input instanceof Bot || input instanceof String) {
                 Bot bot = Util.botFrom(input);
                 if (bot != null) {
-                    bot.getJDA().getPresence().setStatus((OnlineStatus) delta[0]);
+                    bot.getJDA().setStatus((OnlineStatus) delta[0]);
                 }
             }
         }

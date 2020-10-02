@@ -9,6 +9,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 import java.util.Set;
@@ -34,10 +35,10 @@ public class ExprRoleWithId extends SimpleExpression<Role> {
             return null;
         }
         if (guild == null) {
-            Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-            for (JDA jda : jdaInstances) {
+            Set<ShardManager> shardManagers = Vixio.getInstance().botHashMap.keySet();
+            for (ShardManager shardManager : shardManagers ) {
                 try {
-                    Role role = jda.getRoleById(id);
+                    Role role = shardManager.getRoleById(id);
                     if (role != null) {
                         return new Role[]{role};
                     }

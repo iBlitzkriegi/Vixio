@@ -71,7 +71,7 @@ public class ExprContent extends ChangeableSimplePropertyExpression<UpdatingMess
         change(getExpr().getAll(e), msg -> {
             Message message = UpdatingMessage.convert(msg);
             String content = mode == Changer.ChangeMode.SET ? (String) delta[0] : EmbedBuilder.ZERO_WIDTH_SPACE;
-            if (message == null || !message.getAuthor().getId().equals(bot.getJDA().getSelfUser().getId())) {
+            if (message == null || !message.getAuthor().getId().equals(bot.getSelfUser().getId())) {
                 return;
             }
 

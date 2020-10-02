@@ -9,6 +9,7 @@ import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.VoiceChannel;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 import java.util.Set;
@@ -46,14 +47,14 @@ public class ExprVoiceChannelWithId extends SimpleExpression<VoiceChannel> {
             return null;
         }
 
-        Set<JDA> jdaInstances = Vixio.getInstance().botHashMap.keySet();
-        if (jdaInstances.isEmpty()) {
+        Set<ShardManager> shardManagers = Vixio.getInstance().botHashMap.keySet();
+        if (shardManagers.isEmpty()) {
             Vixio.getErrorHandler().warn("Vixio attempted to get a voice channel by ID but no Bots were logged in to do so.");
             return null;
         }
 
-        for (JDA jda : jdaInstances) {
-            VoiceChannel voiceChannel = jda.getVoiceChannelById(id);
+        for (ShardManager shardManager: shardManagers) {
+            VoiceChannel voiceChannel = shardManager.getVoiceChannelById(id);
             if (voiceChannel != null) {
                 return new VoiceChannel[]{voiceChannel};
             }
