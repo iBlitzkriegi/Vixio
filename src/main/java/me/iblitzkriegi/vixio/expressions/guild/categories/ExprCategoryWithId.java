@@ -8,6 +8,7 @@ import ch.njol.util.Kleenean;
 import me.iblitzkriegi.vixio.Vixio;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Category;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import org.bukkit.event.Event;
 
 public class ExprCategoryWithId extends SimpleExpression<Category> {
@@ -27,8 +28,8 @@ public class ExprCategoryWithId extends SimpleExpression<Category> {
         if (id == null || id.isEmpty()) {
             return null;
         }
-        for (JDA jda : Vixio.getInstance().botHashMap.keySet()) {
-            Category category = jda.getCategoryById(id);
+        for (ShardManager shardManager : Vixio.getInstance().botHashMap.keySet()) {
+            Category category = shardManager.getCategoryById(id);
             if (category != null) {
                 return new Category[]{category};
             }
