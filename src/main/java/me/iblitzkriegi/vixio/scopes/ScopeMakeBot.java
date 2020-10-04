@@ -18,13 +18,12 @@ public class ScopeMakeBot extends EffectSection {
     static {
         Vixio.getInstance().registerCondition(ScopeMakeBot.class, "(make|create) vixio bot")
                 .setName("Create Bot Scope")
-                .setDesc("This is for verified bots or bots that have enabled privileged intents and need to activate them in Vixio")
+                .setDesc("This is for verified bots or bots that have enabled privileged intents and need to activate them in Vixio. The intents must be enabled before you login to your bot.")
                 .setExample(
-                        "discord command neeko:",
-                        "\ttrigger:",
-                        "\t\tcreate vixio bot:",
-                        "\t\t\tenable the guild members intent",
-                        "\t\t\tlogin to \"YAHITAMUH\" with the name \"Neeko\""
+                        "on skript load:",
+                        "\tcreate vixio bot:",
+                        "\t\tenable the guild members intent",
+                        "\t\tlogin to \"YAHITAMUH\" with the name \"Neeko\""
                 );
     }
 
