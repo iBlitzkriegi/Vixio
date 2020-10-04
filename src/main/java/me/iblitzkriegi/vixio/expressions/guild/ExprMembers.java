@@ -36,9 +36,11 @@ public class ExprMembers extends SimpleExpression<Member> {
         } else if (object instanceof Guild) {
             Guild guild = ((Guild) object);
             List<Member> members;
-            if (guild.getJDA().getGatewayIntents().contains(GatewayIntent.GUILD_MEMBERS)) {
-                guild.loadMembers().get();
+            if (!guild.getJDA().getGatewayIntents().contains(GatewayIntent.GUILD_MEMBERS)) {
+                Vixio.getErrorHandler().warn("Vixio attempted to retrieve the members of a guild without the GUILD_MEMBERS intent. This is not possible.");
+                return null;
             }
+            guild.loadMembers().get();
             members = guild.getMembers();
             return members.toArray(new Member[members.size()]);
         } else if (object instanceof GuildChannel) {
