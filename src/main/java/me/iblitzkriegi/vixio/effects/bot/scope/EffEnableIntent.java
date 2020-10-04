@@ -19,13 +19,12 @@ public class EffEnableIntent extends Effect {
         Vixio.getInstance().registerEffect(EffEnableIntent.class,
                 "enable [the] %gatewayintent% [gateway] intent [for bot]")
                 .setName("Enable Gateway Intent")
-                .setDesc("This is used specifically to enable specific gateway intents in the create bot scope.")
+                .setDesc("This is used specifically to enable specific gateway intents in the create bot scope. This must be done before you login to your bot and you must restart for changes to take effect.")
                 .setExample(
-                        "discord command neeko:",
-                        "\ttrigger:",
-                        "\t\tcreate vixio bot:",
-                        "\t\t\tenable the guild members intent",
-                        "\t\t\tlogin to \"YAHITAMUH\" with the name \"Neeko\""
+                        "on skript load:",
+                        "\tcreate vixio bot:",
+                        "\t\tenable the guild members intent",
+                        "\t\tlogin to \"YAHITAMUH\" with the name \"Neeko\""
                 );
     }
 
