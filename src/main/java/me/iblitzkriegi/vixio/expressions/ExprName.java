@@ -25,7 +25,7 @@ public class ExprName extends ChangeableSimpleExpression<String> {
                 "discord name", "channel/guild/bot/user/role/track/category/emote/field/attachment")
                 .setName("Name of")
                 .setDesc("Get the name of any discord entity. You can set the name of channels, guilds, bots, categories, and channel builders.")
-                .setExample("broadcast \"%name of event-user%\"");
+                .setExample("broadcast \"%discord name of event-user%\"");
     }
 
     private Expression<Object> object;
