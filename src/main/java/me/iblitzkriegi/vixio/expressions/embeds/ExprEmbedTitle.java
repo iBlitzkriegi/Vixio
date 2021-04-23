@@ -32,7 +32,6 @@ public class ExprEmbedTitle extends SimplePropertyExpression<EmbedBuilder, Title
     @Override
     public Title convert(EmbedBuilder embed) {
         if (embed.isEmpty()) return null;
-
         MessageEmbed builtEmbed = embed.build();
         return new Title(builtEmbed.getTitle(), builtEmbed.getUrl());
     }
