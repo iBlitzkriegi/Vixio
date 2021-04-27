@@ -103,3 +103,5 @@ testserver/logs/2016-12-08-1.log.gz
 *.iml
 
 .idea/jarRepositories.xml
+*.patch
+.idea/shelf/Uncommitted_changes_before_Checkout_at_10_13_2020_4_52_PM__Default_.xml
