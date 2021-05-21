@@ -45,6 +45,9 @@ public class Vixio extends JavaPlugin {
     public AudioPlayerManager playerManager;
     public HashMap<AudioPlayer, MusicStorage> musicStorage = new HashMap<>();
 
+    // Old Skript Verification \\
+    public static boolean useOldSkript;
+
 
     public Vixio() {
         if (instance == null) {
@@ -105,7 +108,7 @@ public class Vixio extends JavaPlugin {
         Metrics metrics = new Metrics(this);
         Documentation.setupSyntaxFile();
         this.getCommand("vixio").setExecutor(new VixioCommand());
-
+        useOldSkript = (Skript.getVersion().getMajor() >= 3 || (Skript.getVersion().getMajor() == 2 && Skript.getVersion().getMinor() >= 4));
     }
 
     public Registration registerCondition(Class<? extends Condition> cond, String... patterns) {
